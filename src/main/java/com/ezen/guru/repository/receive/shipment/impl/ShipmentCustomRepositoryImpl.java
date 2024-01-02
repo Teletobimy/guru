@@ -1,7 +1,9 @@
 package com.ezen.guru.repository.receive.shipment.impl;
 
-import com.ezen.guru.domain.Shipment;
+import com.ezen.guru.config.QuerydslConfig;
+import com.ezen.guru.domain.QPurchaseOrder;
 import com.ezen.guru.domain.QShipment;
+import com.ezen.guru.domain.Shipment;
 import com.ezen.guru.repository.receive.shipment.ShipmentCustomRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
