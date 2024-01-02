@@ -2,6 +2,7 @@ package com.ezen.guru.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,11 +15,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Recipe {
 
-
+    @Id
     @Column(name="bicycle_id")
     private int bicycleId;
+
+    @Id
     @Column(name="material_code")
     private String materialCode;
+
     @Column(name="recipe_cnt")
     private int recipeCnt;
 

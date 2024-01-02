@@ -1,7 +1,5 @@
 package com.ezen.guru.repository.receive.shipment;
 
-import com.ezen.guru.domain.Company;
-import com.ezen.guru.domain.Material;
 import com.ezen.guru.domain.Shipment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -27,18 +25,16 @@ public class ShipmentRepositoryTest {
     @Transactional
     @DisplayName("QueryDsl 테스트다")
     public void testShipmentList(){
-        Material material = Material.builder().materialId(1).build();
-        Company company = Company.builder().companyId("456-12-78912").build();
         //given
         Shipment shipment = Shipment.builder()
-                .materialId(material)
+                .materialId(1)
                 .materialName("강철손잡이(sus313)")
                 .shipmentCnt(1)
                 .materialPrice(4000)
                 .materialMeasure("1")
                 .materialCategory(1)
                 .shippingDate(LocalDateTime.now())
-                .companyId(company)
+                .companyId("123-45-67891")
                 .build();
         em.persist(shipment);
         em.flush();
