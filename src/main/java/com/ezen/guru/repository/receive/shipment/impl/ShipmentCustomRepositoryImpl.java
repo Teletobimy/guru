@@ -1,8 +1,7 @@
 package com.ezen.guru.repository.receive.shipment.impl;
 
-import com.ezen.guru.config.QuerydslConfig;
-import com.ezen.guru.domain.receive.shipment.QShipment;
-import com.ezen.guru.domain.receive.shipment.Shipment;
+import com.ezen.guru.domain.QShipment;
+import com.ezen.guru.domain.Shipment;
 import com.ezen.guru.repository.receive.shipment.ShipmentCustomRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,8 @@ import java.util.List;
 public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+
     @Override
     public List<Shipment> shipmentList(Shipment shipment) {
         QShipment qShipment = QShipment.shipment;
@@ -22,6 +23,4 @@ public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
                 .selectFrom(qShipment)
                 .fetch();
     }
-
-
 }

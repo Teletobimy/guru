@@ -1,6 +1,6 @@
 package com.ezen.guru.repository.receive.shipment;
 
-import com.ezen.guru.domain.receive.shipment.Shipment;
+import com.ezen.guru.domain.Shipment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -34,7 +34,7 @@ public class ShipmentRepositoryTest {
                 .materialMeasure("1")
                 .materialCategory(1)
                 .shippingDate(LocalDateTime.now())
-                .companyId("123-45-67891")
+                .companyId("456-12-78912")
                 .build();
         em.persist(shipment);
         em.flush();
