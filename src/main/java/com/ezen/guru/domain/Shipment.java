@@ -1,4 +1,4 @@
-package com.ezen.guru.domain.receive.shipment;
+package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

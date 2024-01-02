@@ -15,10 +15,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Recipe {
 
+    @Id
     @Column(name="bicycle_id")
     private int bicycleId;
+
+    @Id
     @Column(name="material_code")
     private String materialCode;
+
     @Column(name="recipe_cnt")
     private int recipeCnt;
 
