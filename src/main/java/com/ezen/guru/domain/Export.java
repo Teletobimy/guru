@@ -10,10 +10,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Export {
 
-    @ManyToOne
-    @JoinColumn(name = "materialId", referencedColumnName = "materialId")
-//    private Material material;
-
-    @Column(name = "materialId", insertable = false, updatable = false)
+    @Id
+    @Column(name = "material_id", insertable = false, updatable = false)
     private int materialId;
+
+    @Id
+    @Column(name = "produce_planer_id", insertable = false, updatable = false)
+    private Long producePlanerId;
+
+    @ManyToOne
+    private Material material;
+
+    @ManyToOne
+    private ProducePlaner producePlaner;
 }
