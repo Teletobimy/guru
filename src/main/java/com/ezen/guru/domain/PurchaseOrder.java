@@ -1,4 +1,4 @@
-package com.ezen.guru.domain.purchaseOrder;
+package com.ezen.guru.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
