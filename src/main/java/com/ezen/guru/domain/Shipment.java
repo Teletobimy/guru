@@ -15,28 +15,37 @@ public class Shipment {
     @Column(name = "shipment_id", nullable = false)
     private int shipmentId;
 
-    @Column(name = "material_id")
-    private int materialId;
+    @OneToOne
+    @JoinColumn(name = "material_id",referencedColumnName = "material_id")
+    private Material materialId;
+
     @Column(name = "material_name")
     private String materialName;
+
     @Column(name = "shipment_cnt")
     private int shipmentCnt;
+
     @Column(name = "material_price")
     private int materialPrice;
+
     @Column(name = "material_measure")
     private String materialMeasure;
+
     @Column(name = "material_category")
     private int materialCategory;
-    @Column(name = "company_id", nullable = false)
-    private String companyId;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false, referencedColumnName = "company_id")
+    private Company companyId;
+
     @Column(name = "shipping_date")
     private LocalDateTime shippingDate;
 
     @Builder
-    public Shipment(int materialId, String materialName,
+    public Shipment(Material materialId, String materialName,
                     int shipmentCnt,int materialPrice,
                     String materialMeasure,int materialCategory,
-                    String companyId, LocalDateTime shippingDate
+                    Company companyId, LocalDateTime shippingDate
                     ){
         this.materialId = materialId;
         this.materialName = materialName;
