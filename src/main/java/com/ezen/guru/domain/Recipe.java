@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class Recipe {
 
     @Id
-    @Column(name="bicycle_id")
+    @Column(name="bicycle_id", insertable = false, nullable = false)
     private int bicycleId;
 
     @Id
-    @Column(name="material_code")
+    @Column(name="material_code", insertable = false, nullable = false)
     private String materialCode;
 
     @Column(name="recipe_cnt")
