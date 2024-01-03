@@ -1,5 +1,6 @@
 package com.ezen.guru.domain;
 
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

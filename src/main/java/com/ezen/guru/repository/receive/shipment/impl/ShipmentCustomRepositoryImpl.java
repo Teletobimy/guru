@@ -1,5 +1,6 @@
 package com.ezen.guru.repository.receive.shipment.impl;
 
+
 import com.ezen.guru.domain.QShipment;
 import com.ezen.guru.domain.Shipment;
 import com.ezen.guru.repository.receive.shipment.ShipmentCustomRepository;
