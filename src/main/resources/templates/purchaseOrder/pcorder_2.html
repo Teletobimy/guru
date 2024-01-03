@@ -27,7 +27,6 @@
     <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
     <!-- ico font -->
     <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
-
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
@@ -60,11 +59,93 @@
         <div class="pcoded-main-container" >
             <div th:include="includes/navbar :: navbar"></div>
 
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- Main-body start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- Page-header start -->
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <div class="d-inline">
+                                                <h4>발주 목록 조회</h4>
+                                                <span>발주한 품목에 대해 조회하는 화면입니다.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a href="index.html">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">구매</a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">발주 목록 조회</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Page-header end -->
 
+                            <!-- Page-body start -->
+                            <div class="page-body">
+
+                                <!-- Hover table card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Hover table</h5>
+                                        <span>use class <code>table-hover</code> inside table element</span>
+                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
+                                    </div>
+                                    <div class="card-block table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>번호</th>
+                                                    <th>회사명</th>
+                                                    <th>품목명</th>
+                                                    <th>날짜</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <th scope="row"></th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hover table card end -->
+
+                            </div>
+                            <!-- Page-body end -->
+                        </div>
+                    </div>
+                    <!-- Main-body end -->
+
+                    <div id="styleSelector">
+
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
 </div>
+
 
 <!-- Warning Section Starts -->
 <!-- Older IE warning message -->
@@ -80,9 +161,12 @@
 <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
 <!-- modernizr js -->
 <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+<script type="text/javascript" src="assets/js/classie/classie.js"></script>
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
