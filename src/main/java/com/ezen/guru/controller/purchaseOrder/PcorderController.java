@@ -17,7 +17,7 @@ public class PcorderController {
 
     @GetMapping("/pcorder_1")
     public String getPcorderList(Model model, int purchaseOrderStatus) {
-        List<PcorderListViewResponse> pclist = pcorderService.findByPurchaseOrderStatus(purchaseOrderStatus).stream()
+        List<PcorderListViewResponse> pclist = pcorderService. findByEntityPurchaseOrderStatus(purchaseOrderStatus).stream()
                 .map(PcorderListViewResponse::new)
                 .toList();
         model.addAttribute("pclist", pclist);

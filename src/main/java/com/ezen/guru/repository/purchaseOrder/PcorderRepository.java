@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PcorderRepository extends JpaRepository<PurchaseOrderDetail, Integer> {
-    public List<PurchaseOrderDetail> findByPurchaseOrderStatus(String purchaseOrderStatus); // where purchaseOrderStatus = ?
+    public List<PurchaseOrderDetail> findByEntityPurchaseOrderStatus(String purchaseOrderStatus); // where purchaseOrderStatus = ?
 }

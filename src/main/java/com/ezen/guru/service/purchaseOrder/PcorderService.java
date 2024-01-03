@@ -13,7 +13,7 @@ public class PcorderService {
 
     private final PcorderRepository pcorderRepository;
 
-    public List<PurchaseOrderDetail> findByPurchaseOrderStatus(int purchaseOrderStatus) {
-        return pcorderRepository.findByPurchaseOrderStatus(String.valueOf(purchaseOrderStatus));
+    public List<PurchaseOrderDetail> findByEntityPurchaseOrderStatus(int purchaseOrderStatus) {
+        return pcorderRepository. findByEntityPurchaseOrderStatus(String.valueOf(purchaseOrderStatus));
     }
 }
