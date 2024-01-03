@@ -1,9 +1,6 @@
 package com.ezen.guru.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,21 +14,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProducePlaner {
 
-    @Id
-    private String producePlanerId;
-
-    @Id
-    @Column(name = "bicycle_id", insertable = false, updatable = false)
-    private int bicycleId;
+    @EmbeddedId
+    private ProducePlanerId id;
 
     @ManyToOne
+    @JoinColumn(name = "bicycle_id", referencedColumnName = "bicycle_id", insertable = false, updatable = false)
     private Bicycle bicycle;
 
-    @Id
-    @Column(name = "material_id", insertable = false, updatable = false)
-    private int materialId;
-
     @ManyToOne
+    @JoinColumn(name = "material_id", referencedColumnName = "material_id", insertable = false, updatable = false)
     private Material material;
 
     @Column(name = "produce_planer_cnt")
@@ -43,27 +34,21 @@ public class ProducePlaner {
     @Column(name = "produce_planer_status")
     private int producePlanerStatus;
 
-    public ProducePlaner(Bicycle bicycle, Material material, int producePlanerCnt, LocalDateTime createdAt, int producePlanerStatus) {
+    @Builder
+    public ProducePlaner(ProducePlanerId id, Bicycle bicycle, Material material, int producePlanerCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
+        this.id = id;
         this.bicycle = bicycle;
         this.material = material;
         this.producePlanerCnt = producePlanerCnt;
-        this.producePlanerDeadline = createdAt;
+        this.producePlanerDeadline = producePlanerDeadline;
         this.producePlanerStatus = producePlanerStatus;
     }
 
-    public void update(Bicycle bicycle, Material material, int producePlanerCnt, LocalDateTime updatedAt, int producePlanerStatus) {
+    public void update(Bicycle bicycle, Material material, int producePlanerCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
         this.bicycle = bicycle;
         this.material = material;
         this.producePlanerCnt = producePlanerCnt;
-        this.producePlanerDeadline = updatedAt;
+        this.producePlanerDeadline = producePlanerDeadline;
         this.producePlanerStatus = producePlanerStatus;
     }
-
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }
