@@ -16,8 +16,8 @@ public class PcorderController {
     private final PcorderService pcorderService;
 
     @GetMapping("/pcorder_1")
-    public String getPcorderList(Model model) {
-        List<PcorderListViewResponse> pclist = pcorderService.findAll().stream()
+    public String getPcorderList(Model model, int purchaseOrderStatus) {
+        List<PcorderListViewResponse> pclist = pcorderService.findByPurchaseOrderStatus(purchaseOrderStatus).stream()
                 .map(PcorderListViewResponse::new)
                 .toList();
         model.addAttribute("pclist", pclist);

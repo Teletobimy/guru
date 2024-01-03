@@ -82,7 +82,7 @@
                                             <i class="icofont icofont-table bg-c-blue"></i>
                                             <div class="d-inline">
                                                 <h4>발주서 발행</h4>
-                                                <span>계약, 조달계획에 대해 발주하는 화면입니다.</span>
+                                                <span>계약서 및 조달계획서에 대해 발주하는 화면입니다.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -135,13 +135,13 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <th scope="row"></th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                    <td><button class="btn btn-card btn-primary">발주</button></td>
-                                                </tr>
+                                                    <tr th:each="item : ${pclist}">
+                                                        <th scope="row" th:text="${item.id}"></th>
+                                                        <td th:text="${item.companyName}"><a th:href="@{/pcorder_1/{id}(id=${item.id})}"></a></td>
+                                                        <td th:text="${item.materialName}"></td>
+                                                        <td th:text="${item.regdate}"></td>
+                                                        <td><button class="btn btn-card btn-primary">발주</button></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

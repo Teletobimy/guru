@@ -2,6 +2,7 @@ package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,4 +43,23 @@ public class PurchaseOrderDetail {
     @ManyToOne
     @JoinColumn(name="material_id")
     private Material material;
+
+    @Builder
+    public PurchaseOrderDetail(int id,
+                               int purchaseOrderCnt,
+                               String materialName,
+                               int materialCategory,
+                               String materialMeasure,
+                               int materialPrice,
+                               PurchaseOrder purchaseOrder,
+                               Material material) {
+        this.id = id;
+        this.purchaseOrderCnt = purchaseOrderCnt;
+        this.materialName = materialName;
+        this.materialCategory = materialCategory;
+        this.materialMeasure = materialMeasure;
+        this.materialPrice = materialPrice;
+        this.purchaseOrder = purchaseOrder;
+        this.material = material;
+    }
 }

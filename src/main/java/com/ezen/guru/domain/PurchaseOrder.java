@@ -48,11 +48,15 @@ public class PurchaseOrder {
 
     @Builder
     public PurchaseOrder(String id,
+                         Document document,
+                         Company company,
                          int purchaseOrderTotalprice,
                          LocalDateTime purchaseOrderRegdate,
                          int purchaseOrderStatus,
                          String purchaseOrderMemo) {
         this.id = id;
+        this.document = document;
+        this.company = company;
         this.purchaseOrderTotalprice = purchaseOrderTotalprice;
         this.purchaseOrderRegdate = purchaseOrderRegdate;
         this.purchaseOrderStatus = purchaseOrderStatus;
