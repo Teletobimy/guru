@@ -18,14 +18,14 @@ public class PurchaseOrder {
 
     @Id
     @Column(name="purchase_order_id", updatable = false)
-    private String purchaseOrderId;
+    private String id;
 
     //private String documentId;
     //private String companyId;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "document_id")
-    private Document document;*/
+    private Document document;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -46,20 +46,16 @@ public class PurchaseOrder {
 //    @OneToMany(mappedBy="purchase_order")
 //    private List<PurchaseOrderDetail> purchaseOrderDetail;
 
-    /*@Builder
+    @Builder
     public PurchaseOrder(String id,
-                         String documentId,
-                         String companyId,
                          int purchaseOrderTotalprice,
                          LocalDateTime purchaseOrderRegdate,
                          int purchaseOrderStatus,
                          String purchaseOrderMemo) {
-        this.purchaseOrderId = purchaseOrderId;
-        this.documentId = documentId;
-        this.companyId = companyId;
+        this.id = id;
         this.purchaseOrderTotalprice = purchaseOrderTotalprice;
         this.purchaseOrderRegdate = purchaseOrderRegdate;
         this.purchaseOrderStatus = purchaseOrderStatus;
         this.purchaseOrderMemo = purchaseOrderMemo;
-    }*/
+    }
 }

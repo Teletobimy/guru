@@ -1,13 +1,26 @@
 package com.ezen.guru.controller.purchaseOrder;
 
+import com.ezen.guru.dto.purchaseOrder.PcorderListViewResponse;
+import com.ezen.guru.service.purchaseOrder.PcorderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+
 @RequiredArgsConstructor
 @Controller
 public class PcorderController {
+
+    private final PcorderService pcorderService;
+
     @GetMapping("/pcorder_1")
-    public String pcorder_1() {
+    public String getPcorderList(Model model) {
+        List<PcorderListViewResponse> pclist = pcorderService.findAll().stream()
+                .map(PcorderListViewResponse::new)
+                .toList();
+        model.addAttribute("pclist", pclist);
         return "purchaseOrder/pcorder_1";
     }
 
