@@ -43,7 +43,7 @@ public class OrderController {
     @GetMapping("/order_2")
     public String pcorder_2() {
 
-        return "order_2";
+        return "purchase/order_2";
     }
 
 //    배송 중인 물품의 번호, 협력사이름, 협력사번호를 목록으로 보여주고

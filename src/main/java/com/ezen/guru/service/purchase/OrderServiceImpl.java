@@ -1,7 +1,7 @@
 package com.ezen.guru.service.purchase;
 
 import com.ezen.guru.domain.PurchaseOrderDetail;
-import com.ezen.guru.repository.purchaseOrder.OrderRepository;
+import com.ezen.guru.repository.purchase.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

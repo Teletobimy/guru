@@ -1,9 +1,6 @@
 package com.ezen.guru.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,18 +17,20 @@ public class ProducePlaner {
     @Id
     private String producePlanerId;
 
-    @Id
-    @Column(name = "bicycle_id", insertable = false, updatable = false)
-    private int bicycleId;
+//    @Id
+//    @Column(name = "bicycle_id", insertable = false, updatable = false)
+//    private int bicycleId;
 
     @ManyToOne
+    @JoinColumn(name="bicycle_id")
     private Bicycle bicycle;
 
-    @Id
-    @Column(name = "material_id", insertable = false, updatable = false)
-    private int materialId;
+//    @Id
+//    @Column(name = "material_id", insertable = false, updatable = false)
+//    private int materialId;
 
     @ManyToOne
+    @JoinColumn(name="material_id")
     private Material material;
 
     @Column(name = "produce_planer_cnt")

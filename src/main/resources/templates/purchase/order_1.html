@@ -135,7 +135,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                        <tr th:each="item : ${pclist}" th:onclick="/purchase/order_1">
+                                                        <tr th:each="item : ${pclist}" th:onclick="#">
                                                             <th scope="row" th:text="${item.id}"></th>
                                                             <td th:text="${item.companyName}"></td>
                                                             <td th:text="${item.materialName}"></td>
