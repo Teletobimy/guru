@@ -31,14 +31,14 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
     <style>
-    .btn-card {
-        text-transform: uppercase;
-        font-size: 13px;
-        padding: 5px 10px;
-        margin: 0px 10px;
-        color: #fff;
-        border-radius: 5px;
-    }
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -118,7 +118,7 @@
                                             <span class="searchbar-toggle">  </span>
                                             <div class="pcoded-search-box ">
                                                 <input type="text" placeholder="Search">
-                                                <span class="search-icon"><i class="ti-search" aria-hidden="true"></i></span>
+                                                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
                                             </div>
                                         </div>
                                     </div>
@@ -135,13 +135,13 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr th:each="item : ${pclist}">
-                                                        <th scope="row" th:text="${item.id}"></th>
-                                                        <td th:text="${item.companyName}"><a th:href="@{/pcorder_1/{id}(id=${item.id})}"></a></td>
-                                                        <td th:text="${item.materialName}"></td>
-                                                        <td th:text="${item.regdate}"></td>
-                                                        <td><button class="btn btn-card btn-primary">발주</button></td>
-                                                    </tr>
+                                                        <tr th:each="item : ${pclist}" th:onclick="/purchase/order_1">
+                                                            <th scope="row" th:text="${item.id}"></th>
+                                                            <td th:text="${item.companyName}"></td>
+                                                            <td th:text="${item.materialName}"></td>
+                                                            <td th:text="${item.regdate}"></td>
+                                                            <td><button class="btn btn-card btn-primary">상세</button></td>
+                                                        </tr>
                                                 </tbody>
                                             </table>
                                         </div>
