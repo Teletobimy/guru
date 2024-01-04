@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        table{
+         border-collapse: collapse;
+         border-spacing: 0
+        }
+        th{
+            background-color:#303549;
+            color:#fff;
+        }
+        th, td{
+            border:1px solid black;
+            padding:10px;
+        }
+        input{
+            border:none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar"></div>
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- Main-body start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- Page start -->
+                            <div class="container">
+                                <h1>제목</h1>
+                                <table width="60%">
+                                    <tbody><tr>
+                                        <th colspan="2">주문번호</th>
+                                        <td colspan="2">
+                                            <input type="text" placeholder="주문번호를 입력하세요">
+                                        </td>
+                                        <th colspan="2">상호</th>
+                                        <td colspan="2">
+                                            <input type="text" placeholder="상호를 입력하세요">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2" colspan="2">수신</th>
+                                        <td rowspan="2" colspan="2">
+                                            <input type="text" placeholder="수신을 입력하세요">
+                                        </td>
+                                        <th rowspan="1" colspan="2">사업자번호</th>
+                                        <td colspan="2">
+                                            <input type="text" placeholder="사업자번호를 입력하세요">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="1" colspan="2">대표자</th>
+                                        <td colspan="2">
+                                            <input type="text" placeholder="대표자를 입력하세요">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2" colspan="2">참조</th>
+                                        <td colspan="2" rowspan="2">
+                                            <input type="text" placeholder="참조 입력하세요">
+                                        </td>
+                                        <th colspan="2" rowspan="2">담당자</th>
+                                        <th>성명</th>
+                                        <td>
+                                            <input type="text" placeholder="성명">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>연락처</th>
+                                        <td>
+                                            <input type="text" placeholder="연락처">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2">제목</th>
+                                        <td colspan="6"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>No</th>
+                                        <th colspan="2">품명</th>
+                                        <th>규격</th>
+                                        <th>수량</th>
+                                        <th>단가</th>
+                                        <th colspan="2">금액</th>
+
+                                    </tr>
+                                    <!---------------------------------------------------->
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="2"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+
+                                    <!---------------------------------------------------->
+                                    <tr>
+                                        <th colspan="3">합계(VAT 포함)</th>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2">특기사항</th>
+                                        <td colspan="6">
+                                            <ol>
+                                                <li>납기 일자 : <input type="text" placeholder="납기일자"></li>
+                                                <li>납품 장소 :  <input type="text" placeholder="납품장소"></li>
+                                                <li>결제 조건 :  <input type="text" placeholder="결제조건"></li>
+                                                <li>기    타 : <input type="text" placeholder="기타"></li>
+                                            </ol>
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </div>
+                            <!-- Page end -->
+                        </div>
+                    </div>
+                    <!-- Main-body end -->
+
+                    <div id="styleSelector">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+<script type="text/javascript" src="assets/js/classie/classie.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+</body>
+</html>

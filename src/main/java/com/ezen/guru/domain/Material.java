@@ -16,20 +16,28 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="material_id", updatable = false)
     private int materialId;
+
     @Column(name="material_code")
     private String materialCode;
+
     @Column(name="company_id")
     private String companyId;
+
     @Column(name="material_name")
     private String materialName;
+
     @Column(name="material_description")
     private String materialDescription;
+
     @Column(name="material_stock")
     private int materialStock;
+
     @Column(name="material_price")
     private int materialPrice;
+
     @Column(name="material_measure")
     private String materialMeasure;
+
     @Column(name="material_category")
     private int materialCategory;
 

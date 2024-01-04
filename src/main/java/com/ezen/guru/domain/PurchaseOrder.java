@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name = "purchase_order")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,33 +19,47 @@ public class PurchaseOrder {
     @Id
     @Column(name="purchase_order_id", updatable = false)
     private String id;
-    @Column(name="document_id")
-    private String documentId;
-    @Column(name="company_id")
-    private String companyId;
-    @Column(name="purchase_order_totalprice")
-    private int totalprice;
-    @Column(name="purchase_order_regdate")
-    private LocalDateTime regdate;
-    @Column(name="purchase_order_status")
-    private int status;
-    @Column(name="purchase_order_memo")
+
+    //private String documentId;
+    //private String companyId;
+
+    @ManyToOne
+    @JoinColumn(name = "document_id")
+    private Document document;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    @Column(name = "purchase_order_totalprice")
+    private int purchaseOrderTotalprice;
+
+    @Column(name = "purchase_order_regdate")
+    private LocalDateTime purchaseOrderRegdate;
+
+    @Column(name = "purchase_order_status")
+    private int purchaseOrderStatus;
+
+    @Column(name = "purchase_order_memo")
     private String purchaseOrderMemo;
+
+//    @OneToMany(mappedBy="purchase_order")
+//    private List<PurchaseOrderDetail> purchaseOrderDetail;
 
     @Builder
     public PurchaseOrder(String id,
-                         String documentId,
-                         String companyId,
-                         int totalprice,
-                         LocalDateTime regdate,
-                         int status,
+                         Document document,
+                         Company company,
+                         int purchaseOrderTotalprice,
+                         LocalDateTime purchaseOrderRegdate,
+                         int purchaseOrderStatus,
                          String purchaseOrderMemo) {
         this.id = id;
-        this.documentId = documentId;
-        this.companyId = companyId;
-        this.totalprice = totalprice;
-        this.regdate = regdate;
-        this.status = status;
+        this.document = document;
+        this.company = company;
+        this.purchaseOrderTotalprice = purchaseOrderTotalprice;
+        this.purchaseOrderRegdate = purchaseOrderRegdate;
+        this.purchaseOrderStatus = purchaseOrderStatus;
         this.purchaseOrderMemo = purchaseOrderMemo;
     }
 }
