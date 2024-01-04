@@ -16,12 +16,16 @@ public class Bicycle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="bicycle_id", updatable = false)
     private int bicycleId;
+
     @Column(name="bicycle_name")
     private String bicycleName;
+
     @Column(name="bicycle_description")
     private String bicycleDescription;
+
     @Column(name="bicycle_stock")
     private int bicycleStock;
+
     @Column(name="bicycle_price")
     private int bicyclePrice;
 
