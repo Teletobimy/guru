@@ -28,7 +28,9 @@ public class QProducePlaner extends EntityPathBase<ProducePlaner> {
 
     public final QMaterial material;
 
-    public final NumberPath<Integer> producePlanerCnt = createNumber("producePlanerCnt", Integer.class);
+    public final NumberPath<Integer> produceBicycleCnt = createNumber("produceBicycleCnt", Integer.class);
+
+    public final NumberPath<Integer> produceMaterialCnt = createNumber("produceMaterialCnt", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> producePlanerDeadline = createDateTime("producePlanerDeadline", java.time.LocalDateTime.class);
 

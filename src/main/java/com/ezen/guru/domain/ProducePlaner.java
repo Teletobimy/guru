@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -18,15 +16,24 @@ public class ProducePlaner {
     private ProducePlanerId id;
 
     @ManyToOne
-    @JoinColumn(name = "bicycle_id", referencedColumnName = "bicycle_id", insertable = false, updatable = false)
+    @JoinColumns({
+            @JoinColumn(name = "bicycle_id", referencedColumnName = "bicycle_id", insertable = false, updatable = false),
+            @JoinColumn(name = "bicycle_name", referencedColumnName = "bicycle_name", insertable = false, updatable = false)
+    })
     private Bicycle bicycle;
 
+    @Column(name = "produce_bicycle_cnt")
+    private int produceBicycleCnt;
+
     @ManyToOne
-    @JoinColumn(name = "material_id", referencedColumnName = "material_id", insertable = false, updatable = false)
+    @JoinColumns({
+            @JoinColumn(name = "material_id", referencedColumnName = "material_id", insertable = false, updatable = false),
+            @JoinColumn(name = "material_name", referencedColumnName = "material_name", insertable = false, updatable = false)
+    })
     private Material material;
 
-    @Column(name = "produce_planer_cnt")
-    private int producePlanerCnt;
+    @Column(name = "produce_material_cnt")
+    private int produceMaterialCnt;
 
     @Column(name = "produce_planer_deadline")
     private LocalDateTime producePlanerDeadline;
@@ -35,19 +42,21 @@ public class ProducePlaner {
     private int producePlanerStatus;
 
     @Builder
-    public ProducePlaner(ProducePlanerId id, Bicycle bicycle, Material material, int producePlanerCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
+    public ProducePlaner(ProducePlanerId id, Bicycle bicycle, int produceBicycleCnt, Material material, int produceMaterialCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
         this.id = id;
         this.bicycle = bicycle;
+        this.produceBicycleCnt = produceBicycleCnt;
         this.material = material;
-        this.producePlanerCnt = producePlanerCnt;
+        this.produceMaterialCnt = produceMaterialCnt;
         this.producePlanerDeadline = producePlanerDeadline;
         this.producePlanerStatus = producePlanerStatus;
     }
 
-    public void update(Bicycle bicycle, Material material, int producePlanerCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
+    public void update(Bicycle bicycle, int produceBicycleCnt, Material material, int produceMaterialCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
         this.bicycle = bicycle;
+        this.produceBicycleCnt = produceBicycleCnt;
         this.material = material;
-        this.producePlanerCnt = producePlanerCnt;
+        this.produceMaterialCnt = produceMaterialCnt;
         this.producePlanerDeadline = producePlanerDeadline;
         this.producePlanerStatus = producePlanerStatus;
     }

@@ -130,17 +130,21 @@
                                                     <th>생산번호</th>
                                                     <th>자전거이름</th>
                                                     <th>생산계획수량</th>
+                                                    <th>원자재이름</th>
+                                                    <th>필요수량</th>
                                                     <th>마감일</th>
                                                     <th>진행상태</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr th:each="item, index : ${producePlanerList}" th:onclick="|location.href='@{/export/producePlanerDetail(producePlanerId=${item.producePlanerId})}'|">
+                                                <tr th:each="item : ${producePlanerList}" th:onclick="/export/producePlanerDetail">
                                                     <th scope="row" th:text="${item.producePlanerId}"></th>
                                                     <td th:text="${item.bicycleName}"></td>
                                                     <td th:text="${item.produceBicycleCnt}"></td>
+                                                    <td th:text="${item.materialName}"></td>
+                                                    <td th:text="${item.produceMaterialCnt}"></td>
                                                     <td th:text="${item.producePlanerDeadline}"></td>
-                                                    <td th:text="${codeList[index.index].codeName}"></td>
+                                                    <td th:text="${item.producePlanerStatus}"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
