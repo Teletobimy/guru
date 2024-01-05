@@ -79,7 +79,7 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
                                                 <h4>발주서 발행</h4>
                                                 <span>계약서 및 조달계획서에 대해 발주하는 화면입니다.</span>
@@ -127,11 +127,10 @@
                                             <table class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>번호</th>
+                                                    <th><!--번호--></th>
                                                     <th>회사명</th>
                                                     <th>품목명</th>
                                                     <th>날짜</th>
-                                                    <th></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -140,7 +139,6 @@
                                                             <td th:text="${item.companyName}"></td>
                                                             <td th:text="${item.materialName}"></td>
                                                             <td th:text="${item.regdate}"></td>
-                                                            <td><button class="btn btn-card btn-primary">상세</button></td>
                                                         </tr>
                                                 </tbody>
                                             </table>

@@ -20,7 +20,8 @@ public class OrderController {
 //    미발주 계약 및 조달 건들의 번호, 회사명, 제목, 날짜를 목록으로 보여주고
 //    상세 버튼을 누르면 상세 내역(trade.html 형태) 열람하는 페이지로 이동
 //    그 후 발주 버튼을 누르면 상세 내역과 비교하며 입력할 수 있는 폼이 있는 모달 창
-//    입력 후 완료 버튼 누르면 유효성 검사 실행, 성공하면 발주 상태로 바뀜, 목록 화면으로 redirect
+//    입력 후 완료 버튼 누르면 유효성 검사 실행, 성공하면 DB에서 발주 상태로 바뀜
+//    필요한 발주를 완료한 후 상세 페이지에서 목록 버튼 누르면 화면으로 redirect
     @GetMapping("/order_1")
     public String getPcorderList(Model model) {
 
@@ -30,10 +31,15 @@ public class OrderController {
         model.addAttribute("pclist", pclist);
         return "purchase/order_1";
     }
-    @GetMapping("/order_1/{id}")
-    public String getDetail() {
+    @GetMapping("/order_1_detail")
+    public String getDocument() {
 
         return "purchase/order_1_detail";
+    }
+    @GetMapping("/order_1_doc")
+    public String getDetail() {
+
+        return "purchase/order_1_doc";
     }
 
 //    발주 완료된 발주서 목록을 보여주고
@@ -55,7 +61,7 @@ public class OrderController {
     }
 
 //    발주가 마감된 품목의 목록을 띄워줍니다
-//    클릭하면 발주서 조회?
+//    클릭하면 발주서 조회
     @GetMapping("/order_4")
     public String pcorder_4() {
 

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<PurchaseOrderDetail, Integer> {
     public List<PurchaseOrderDetail> findByPurchaseOrder_PurchaseOrderStatus(int purchaseOrderStatus); // where purchaseOrderStatus = ?
+
+
 }

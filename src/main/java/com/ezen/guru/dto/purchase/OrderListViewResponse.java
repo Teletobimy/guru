@@ -19,5 +19,4 @@ public class OrderListViewResponse {
         this.materialName = purchaseOrder.getMaterialName();
         this.regdate = purchaseOrder.getPurchaseOrder().getDocument().getRegdate();
     }
-
 }
