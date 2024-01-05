@@ -21,6 +21,6 @@ public class ExportController {
     public String producePlanerList(Model model) {
         List<ProducePlanerDTO> producePlanerList = exportService.findProducePlanerList(0);
         model.addAttribute("producePlanerList", producePlanerList);
-        return "redirect:/export/producePlanerList";
+        return "export/producePlanerList";
     }
 }
