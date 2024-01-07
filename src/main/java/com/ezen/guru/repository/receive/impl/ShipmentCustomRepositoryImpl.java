@@ -58,7 +58,7 @@ public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
                .offset(size * page)
                .limit(size)
                .fetchResults();
-       // 결과를 Page 객체로 변환 getResults
+       // 결과를 Page 객체로 변환 conflict
         List<ShipmentResponse> content = results.getResults();
         long total = results.getTotal();
         PageRequest pageRequest = PageRequest.of(page,size);
