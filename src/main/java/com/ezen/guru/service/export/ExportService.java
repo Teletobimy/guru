@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +24,11 @@ public class ExportService {
     private final ExportRepository exportRepository;
     private final ProducePlanerRepository producePlanerRepository;
     private final CodeRepository codeRepository;
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
 
 //    public List<ProducePlanerDTO> findProducePlanerList(int producePlanerStatus) {
 //
@@ -54,14 +64,14 @@ public class ExportService {
     public List<ProducePlaner> findProducePlanerList(int status) {
 
         List<ProducePlaner> list = producePlanerRepository.findByProducePlanerStatusNot(status);
-        List<ProducePlaner> distinctList = new ArrayList<>();
+        List<ProducePlaner> distinctList = list.stream()
+                .filter(distinctByKey(producePlaner -> producePlaner.getId().getProducePlanerId()))
+                .toList();
 
-        for (int i = 0; i < list.size(); i++) {
+        System.out.println(list.size());
+        System.out.println(distinctList.size());
 
-            list.get(i).getId().getProducePlanerId().
-
-        }
-        return producePlanerDTOList;
+        return distinctList;
     }
 
     public List<ProducePlanerDTO> findByProducePlanerId(String producePlanerId) {

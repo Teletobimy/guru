@@ -1,6 +1,7 @@
 package com.ezen.guru.controller.export;
 
 import com.ezen.guru.domain.Code;
+import com.ezen.guru.domain.ProducePlaner;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import com.ezen.guru.service.export.ExportService;
 import lombok.RequiredArgsConstructor;
@@ -20,23 +21,69 @@ public class ExportController {
 
     private final ExportService exportService;
 
+//    @GetMapping("/producePlanerList")
+//    public String producePlanerList(Model model) {
+//
+//        List<ProducePlanerDTO> producePlanerList = exportService.findProducePlanerList(99);
+//        List<ProducePlanerDTO> producePlanerIdList;
+//        List<Code> codeList = new ArrayList<>();
+//
+//        for (int i = 0; i < producePlanerList.size(); i++) {
+//
+//            producePlanerIdList = new ArrayList<>();
+//            producePlanerIdList = exportService.findByProducePlanerId(producePlanerList.get(i).getProducePlanerId());
+//            int cnt0 = 0;
+//            int cnt99 = 0;
+//
+//            for (int j = 0; j < producePlanerIdList.size(); j++) {
+//
+//                int status = producePlanerIdList.get(j).getProducePlanerStatus();
+//
+//                if (status == 0) {
+//                    cnt0++;
+//                } else if (status == 99) {
+//                    cnt99++;
+//                }
+//            }
+//
+//            int size = producePlanerIdList.size();
+//            Code code = new Code();
+//
+//            if (size == cnt0) {
+//                code = exportService.findByCode("producePlanerStatus", 0);
+//            } else if (size == cnt99) {
+//                code = exportService.findByCode("producePlanerStatus", 99);
+//            } else {
+//                code = exportService.findByCode("producePlanerStatus", 1);
+//            }
+//            System.out.println(code);
+//            codeList.add(code);
+//        }
+//
+//        for (ProducePlanerDTO producePlanerDTO : producePlanerList) {
+//            System.out.println("controller list id : " + producePlanerDTO.getProducePlanerId());
+//        }
+//        model.addAttribute("producePlanerList", producePlanerList);
+//        model.addAttribute("codeList", codeList);
+//
+//        return "/export/producePlanerList";
+//    }
+
     @GetMapping("/producePlanerList")
     public String producePlanerList(Model model) {
 
-        List<ProducePlanerDTO> producePlanerList = exportService.findProducePlanerList(99);
-        List<ProducePlanerDTO> producePlanerIdList;
+        List<ProducePlaner> producePlanerList = exportService.findProducePlanerList(99);
+        List<ProducePlanerDTO> producePlanerDTOList = producePlanerList.stream().map(ProducePlanerDTO::new).toList();
         List<Code> codeList = new ArrayList<>();
 
         for (int i = 0; i < producePlanerList.size(); i++) {
 
-            producePlanerIdList = new ArrayList<>();
-            producePlanerIdList = exportService.findByProducePlanerId(producePlanerList.get(i).getProducePlanerId());
             int cnt0 = 0;
             int cnt99 = 0;
 
-            for (int j = 0; j < producePlanerIdList.size(); j++) {
+            for (int j = 0; j < producePlanerDTOList.size(); j++) {
 
-                int status = producePlanerIdList.get(j).getProducePlanerStatus();
+                int status = producePlanerDTOList.get(j).getProducePlanerStatus();
 
                 if (status == 0) {
                     cnt0++;
@@ -45,7 +92,7 @@ public class ExportController {
                 }
             }
 
-            int size = producePlanerIdList.size();
+            int size = producePlanerDTOList.size();
             Code code = new Code();
 
             if (size == cnt0) {
