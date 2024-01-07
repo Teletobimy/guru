@@ -20,34 +20,46 @@ public class ExportService {
     private final ProducePlanerRepository producePlanerRepository;
     private final CodeRepository codeRepository;
 
-    public List<ProducePlanerDTO> findProducePlanerList(int producePlanerStatus) {
+//    public List<ProducePlanerDTO> findProducePlanerList(int producePlanerStatus) {
+//
+//        List<ProducePlaner> list = producePlanerRepository.findByProducePlanerStatusNot(producePlanerStatus);
+//
+//        List<ProducePlanerDTO> producePlanerDTOList = new ArrayList<>();
+//        ProducePlanerDTO producePlanerDTO;
+//        int cnt = -1;
+//
+//        for (int i = 0; i < list.size(); i++) {
+//
+//            if (i == 0 || !list.get(i).getId().getProducePlanerId().equals(list.get(i - 1).getId().getProducePlanerId())) {
+//
+//                producePlanerDTO = new ProducePlanerDTO();
+//                producePlanerDTO.setProducePlanerId(list.get(i).getId().getProducePlanerId());
+//                producePlanerDTO.setBicycleId(list.get(i).getId().getBicycleId());
+//                producePlanerDTO.setBicycleName(list.get(i).getBicycle().getBicycleName());
+//                producePlanerDTO.setProduceBicycleCnt(list.get(i).getProduceBicycleCnt());
+//                producePlanerDTO.setMaterialId(list.get(i).getId().getMaterialId());
+//                producePlanerDTO.setMaterialName(list.get(i).getMaterial().getMaterialName());
+//                producePlanerDTO.setProduceMaterialCnt(list.get(i).getProduceMaterialCnt());
+//                producePlanerDTO.setProducePlanerDeadline(list.get(i).getProducePlanerDeadline());
+//                producePlanerDTO.setProducePlanerStatus(list.get(i).getProducePlanerStatus());
+//
+//                producePlanerDTOList.add(producePlanerDTO);
+//                cnt++;
+//                System.out.println("producePlanerDTO id : " + producePlanerDTO.getProducePlanerId());
+//                System.out.println("add list["+cnt+"] id : " + producePlanerDTOList.get(cnt).getProducePlanerId());
+//            }
+//        }
+//        return producePlanerDTOList;
+//    }
+    public List<ProducePlaner> findProducePlanerList(int status) {
 
-        List<ProducePlaner> list = producePlanerRepository.findByProducePlanerStatusNot(producePlanerStatus);
-
-        List<ProducePlanerDTO> producePlanerDTOList = new ArrayList<>();
-        ProducePlanerDTO producePlanerDTO;
-        int cnt = -1;
+        List<ProducePlaner> list = producePlanerRepository.findByProducePlanerStatusNot(status);
+        List<ProducePlaner> distinctList = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
 
-            if (i == 0 || !list.get(i).getId().getProducePlanerId().equals(list.get(i - 1).getId().getProducePlanerId())) {
+            list.get(i).getId().getProducePlanerId().
 
-                producePlanerDTO = new ProducePlanerDTO();
-                producePlanerDTO.setProducePlanerId(list.get(i).getId().getProducePlanerId());
-                producePlanerDTO.setBicycleId(list.get(i).getId().getBicycleId());
-                producePlanerDTO.setBicycleName(list.get(i).getBicycle().getBicycleName());
-                producePlanerDTO.setProduceBicycleCnt(list.get(i).getProduceBicycleCnt());
-                producePlanerDTO.setMaterialId(list.get(i).getId().getMaterialId());
-                producePlanerDTO.setMaterialName(list.get(i).getMaterial().getMaterialName());
-                producePlanerDTO.setProduceMaterialCnt(list.get(i).getProduceMaterialCnt());
-                producePlanerDTO.setProducePlanerDeadline(list.get(i).getProducePlanerDeadline());
-                producePlanerDTO.setProducePlanerStatus(list.get(i).getProducePlanerStatus());
-
-                producePlanerDTOList.add(producePlanerDTO);
-                cnt++;
-                System.out.println("producePlanerDTO id : " + producePlanerDTO.getProducePlanerId());
-                System.out.println("add list["+cnt+"] id : " + producePlanerDTOList.get(cnt).getProducePlanerId());
-            }
         }
         return producePlanerDTOList;
     }

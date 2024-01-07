@@ -1,15 +1,16 @@
 package com.ezen.guru.dto.plan;
 
+import com.ezen.guru.domain.Bicycle;
 import com.ezen.guru.domain.ProducePlaner;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ezen.guru.domain.ProducePlanerId;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@Data
 public class ProducePlanerDTO {
 
     private String producePlanerId;
@@ -22,15 +23,29 @@ public class ProducePlanerDTO {
     private LocalDateTime producePlanerDeadline;
     private int producePlanerStatus;
 
-    public ProducePlanerDTO (ProducePlaner producePlaner) {
-        this.producePlanerId = producePlaner.getId().getProducePlanerId();
-        this.bicycleId = producePlaner.getId().getBicycleId();
-        this.bicycleName = producePlaner.getBicycle().getBicycleName();
-        this.produceBicycleCnt = producePlaner.getProduceBicycleCnt();
-        this.materialId = producePlaner.getId().getMaterialId();
-        this.materialName = producePlaner.getMaterial().getMaterialName();
-        this.produceMaterialCnt = producePlaner.getProduceMaterialCnt();
-        this.producePlanerDeadline = producePlaner.getProducePlanerDeadline();
-        this.producePlanerStatus = producePlaner.getProducePlanerStatus();
+    public ProducePlanerDTO (final ProducePlaner entity) {
+        this.producePlanerId = entity.getId().getProducePlanerId();
+        this.bicycleId = entity.getId().getBicycleId();
+        this.bicycleName = entity.getBicycle().getBicycleName();
+        this.produceBicycleCnt = entity.getProduceBicycleCnt();
+        this.materialId = entity.getId().getMaterialId();
+        this.materialName = entity.getMaterial().getMaterialName();
+        this.produceMaterialCnt = entity.getProduceMaterialCnt();
+        this.producePlanerDeadline = entity.getProducePlanerDeadline();
+        this.producePlanerStatus = entity.getProducePlanerStatus();
+    }
+
+    public static ProducePlaner toEntity(final ProducePlanerDTO dto) {
+        return ProducePlaner.builder()
+                .id(ProducePlanerId.builder()
+                        .producePlanerId(dto.getProducePlanerId())
+                        .bicycleId(dto.getBicycleId())
+                        .materialId(dto.getMaterialId())
+                        .build())
+                .produceBicycleCnt(dto.getProduceBicycleCnt())
+                .produceMaterialCnt(dto.getProduceMaterialCnt())
+                .producePlanerDeadline(dto.getProducePlanerDeadline())
+                .producePlanerStatus(dto.getProducePlanerStatus())
+                .build();
     }
 }

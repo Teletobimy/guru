@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Export {
