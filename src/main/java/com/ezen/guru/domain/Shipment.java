@@ -22,6 +22,9 @@ public class Shipment {
     @Column(name = "material_name")
     private String materialName;
 
+    @Column(name = "manager")
+    private String manager;
+
     @Column(name = "shipment_cnt")
     private int shipmentCnt;
 
@@ -34,8 +37,8 @@ public class Shipment {
     @Column(name = "material_category")
     private int materialCategory;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false, referencedColumnName = "company_id")
+    @ManyToOne(targetEntity = Company.class)
+    @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     private Company companyId;
 
     @Column(name = "shipping_date")
@@ -45,7 +48,8 @@ public class Shipment {
     public Shipment(Material materialId, String materialName,
                     int shipmentCnt,int materialPrice,
                     String materialMeasure,int materialCategory,
-                    Company companyId, LocalDateTime shippingDate
+                    Company companyId, LocalDateTime shippingDate,
+                    String manager
                     ){
         this.materialId = materialId;
         this.materialName = materialName;
@@ -54,5 +58,7 @@ public class Shipment {
         this.materialMeasure = materialMeasure;
         this.companyId = companyId;
         this.shippingDate = shippingDate;
+        this.manager = manager;
+
     }
 }
