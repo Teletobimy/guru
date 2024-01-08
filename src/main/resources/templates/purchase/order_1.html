@@ -39,6 +39,14 @@
             color: #fff;
             border-radius: 5px;
         }
+        .d-inline {
+            display: flex;
+            align-items: center;
+        }
+        .searched {
+            margin-top: 20px!important;
+        }
+
     </style>
 </head>
 <body>
@@ -82,23 +90,7 @@
                                             <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
                                                 <h4>발주서 발행</h4>
-                                                <span>계약서 및 조달계획서에 대해 발주하는 화면입니다.</span>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="page-header-breadcrumb">
-                                            <ul class="breadcrumb-title">
-                                                <li class="breadcrumb-item">
-                                                    <a href="index.html">
-                                                        <i class="icofont icofont-home"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="#!">구매</a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="#!">발주서 발행</a>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -111,11 +103,17 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Hover table</h5>
-                                        <span>use class <code>table-hover</code> inside table element</span>
-                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
+                                        <h5>목록을 클릭하여 상세 내역을 확인한 후 발행하시기 바랍니다.</h5>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-filter filter-card"></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                            </ul>
+                                        </div>
                                         <div class="pcoded-search">
-                                            <span class="searchbar-toggle">  </span>
+                                            <span class="searchbar-toggle searched">  </span>
                                             <div class="pcoded-search-box ">
                                                 <input type="text" placeholder="Search">
                                                 <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
@@ -127,19 +125,21 @@
                                             <table class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th><!--번호--></th>
-                                                    <th>회사명</th>
+                                                    <th>주문번호</th>
+                                                    <th>협력사</th>
                                                     <th>품목명</th>
-                                                    <th>날짜</th>
+                                                    <th>총액</th>
+                                                    <th>납기</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                        <tr th:each="item : ${pclist}" th:onclick="#">
-                                                            <th scope="row" th:text="${item.id}"></th>
-                                                            <td th:text="${item.companyName}"></td>
-                                                            <td th:text="${item.materialName}"></td>
-                                                            <td th:text="${item.regdate}"></td>
-                                                        </tr>
+                                                    <tr th:each="item : ${pclist}" th:onclick="|location.href='@{/purchase/order_1_doc?id={id}(id=${item.id})}'|">
+                                                        <th scope="row" th:text="${item.id}"></th>
+                                                        <td th:text="${item.companyName}"></td>
+                                                        <td th:text="|${item.materialName} 외..|"></td>
+                                                        <td th:text="${item.totalprice}"></td>
+                                                        <td th:text="${item.deadline}"></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
