@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 
 @Table(name = "document_detail")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
