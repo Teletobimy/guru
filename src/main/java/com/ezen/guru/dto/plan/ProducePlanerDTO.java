@@ -1,16 +1,18 @@
 package com.ezen.guru.dto.plan;
 
-import com.ezen.guru.domain.Bicycle;
 import com.ezen.guru.domain.ProducePlaner;
 import com.ezen.guru.domain.ProducePlanerId;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@Builder
-@AllArgsConstructor
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProducePlanerDTO {
 
     private String producePlanerId;

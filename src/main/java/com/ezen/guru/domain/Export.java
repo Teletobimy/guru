@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Export {
 
     @EmbeddedId
-    private ProducePlanerId producePlanerId;  // 외래 키로 사용할 복합 기본 키
+    private ProducePlanerId id;  // 외래 키로 사용할 복합 기본 키
 
     @ManyToOne
     @JoinColumns({
@@ -27,8 +27,15 @@ public class Export {
     })
     private ProducePlaner producePlaner;  // 외래 키에 대한 참조
 
+    @Column(name = "bicycle_name")
+    private String bicycleName;
+
+    @Column(name = "material_name")
+    private String materialName;
+
     @Column(name = "export_cnt")
     private int exportCnt;
+
 
     @CreatedDate
     @LastModifiedDate
@@ -36,15 +43,18 @@ public class Export {
     private LocalDateTime exportDate;
 
     @Builder
-    public Export(ProducePlanerId producePlanerId, ProducePlaner producePlaner, int exportCnt, LocalDateTime exportDate) {
-        this.producePlanerId = producePlanerId;
+    public Export(ProducePlanerId id, ProducePlaner producePlaner, String bicycleName, String materialName, int exportCnt, LocalDateTime exportDate) {
+        this.id = id;
         this.producePlaner = producePlaner;
-        this.exportCnt = exportCnt;
+        this.bicycleName = bicycleName;
+        this.materialName = materialName;
         this.exportDate = exportDate;
     }
 
-    public void update(ProducePlaner producePlaner, int exportCnt, LocalDateTime exportDate) {
+    public void update(ProducePlaner producePlaner, String bicycleName, String materialName, int exportCnt, LocalDateTime exportDate) {
         this.producePlaner = producePlaner;
+        this.bicycleName = bicycleName;
+        this.materialName = materialName;
         this.exportCnt = exportCnt;
         this.exportDate = exportDate;
     }

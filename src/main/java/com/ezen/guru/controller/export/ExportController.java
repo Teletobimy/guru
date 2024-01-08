@@ -21,112 +21,71 @@ public class ExportController {
 
     private final ExportService exportService;
 
-//    @GetMapping("/producePlanerList")
-//    public String producePlanerList(Model model) {
-//
-//        List<ProducePlanerDTO> producePlanerList = exportService.findProducePlanerList(99);
-//        List<ProducePlanerDTO> producePlanerIdList;
-//        List<Code> codeList = new ArrayList<>();
-//
-//        for (int i = 0; i < producePlanerList.size(); i++) {
-//
-//            producePlanerIdList = new ArrayList<>();
-//            producePlanerIdList = exportService.findByProducePlanerId(producePlanerList.get(i).getProducePlanerId());
-//            int cnt0 = 0;
-//            int cnt99 = 0;
-//
-//            for (int j = 0; j < producePlanerIdList.size(); j++) {
-//
-//                int status = producePlanerIdList.get(j).getProducePlanerStatus();
-//
-//                if (status == 0) {
-//                    cnt0++;
-//                } else if (status == 99) {
-//                    cnt99++;
-//                }
-//            }
-//
-//            int size = producePlanerIdList.size();
-//            Code code = new Code();
-//
-//            if (size == cnt0) {
-//                code = exportService.findByCode("producePlanerStatus", 0);
-//            } else if (size == cnt99) {
-//                code = exportService.findByCode("producePlanerStatus", 99);
-//            } else {
-//                code = exportService.findByCode("producePlanerStatus", 1);
-//            }
-//            System.out.println(code);
-//            codeList.add(code);
-//        }
-//
-//        for (ProducePlanerDTO producePlanerDTO : producePlanerList) {
-//            System.out.println("controller list id : " + producePlanerDTO.getProducePlanerId());
-//        }
-//        model.addAttribute("producePlanerList", producePlanerList);
-//        model.addAttribute("codeList", codeList);
-//
-//        return "/export/producePlanerList";
-//    }
-
     @GetMapping("/producePlanerList")
     public String producePlanerList(Model model) {
 
-        List<ProducePlaner> producePlanerList = exportService.findProducePlanerList(99);
+        List<ProducePlaner> producePlanerList = exportService.findByStatus(99);
         List<ProducePlanerDTO> producePlanerDTOList = producePlanerList.stream().map(ProducePlanerDTO::new).toList();
         List<Code> codeList = new ArrayList<>();
 
-        for (int i = 0; i < producePlanerList.size(); i++) {
+        for (ProducePlanerDTO planerDTO : producePlanerDTOList) {
+
+            List<ProducePlaner> list = exportService.findByProducePlanerId(planerDTO.getProducePlanerId());
+            List<ProducePlanerDTO> idList = list.stream().map(ProducePlanerDTO::new).toList();
 
             int cnt0 = 0;
-            int cnt99 = 0;
+            int cnt2 = 0;
 
-            for (int j = 0; j < producePlanerDTOList.size(); j++) {
+            for (ProducePlanerDTO producePlanerDTO : idList) {
 
-                int status = producePlanerDTOList.get(j).getProducePlanerStatus();
+                int status = producePlanerDTO.getProducePlanerStatus();
 
                 if (status == 0) {
                     cnt0++;
-                } else if (status == 99) {
-                    cnt99++;
+                } else if (status == 2) {
+                    cnt2++;
                 }
             }
 
-            int size = producePlanerDTOList.size();
-            Code code = new Code();
+            int size = idList.size();
+            System.out.println("idList.size() : " + size + ", cnt0 : " + cnt0 + ", cnt2 : " + cnt2);
+            Code code;
 
             if (size == cnt0) {
-                code = exportService.findByCode("producePlanerStatus", 0);
-            } else if (size == cnt99) {
-                code = exportService.findByCode("producePlanerStatus", 99);
+                code = exportService.findByCode("produce_planer_status", 0);
+            } else if (size == cnt2) {
+                code = exportService.findByCode("produce_planer_status", 2);
             } else {
-                code = exportService.findByCode("producePlanerStatus", 1);
+                code = exportService.findByCode("produce_planer_status", 1);
             }
-            System.out.println(code);
+            System.out.println("code : " + code);
             codeList.add(code);
         }
 
-        for (ProducePlanerDTO producePlanerDTO : producePlanerList) {
+        for (ProducePlanerDTO producePlanerDTO : producePlanerDTOList) {
             System.out.println("controller list id : " + producePlanerDTO.getProducePlanerId());
         }
-        model.addAttribute("producePlanerList", producePlanerList);
+        model.addAttribute("producePlanerList", producePlanerDTOList);
         model.addAttribute("codeList", codeList);
 
-        return "/export/producePlanerList";
+        return "export/producePlanerList";
     }
 
     @GetMapping("/producePlanerDetail")
     public String producePlanerDetail(@RequestParam("producePlanerId") String producePlanerId, Model model) {
 
-        List<ProducePlanerDTO> producePlanerList = exportService.findByProducePlanerId(producePlanerId);
-        List<Code> statusList = exportService.findByCodeList("producePlanerStatus");
+        List<ProducePlaner> producePlanerList = exportService.findByProducePlanerId(producePlanerId);
+        List<ProducePlanerDTO> list = producePlanerList.stream().map(ProducePlanerDTO::new).toList();
+        List<Code> codeList = new ArrayList<>();
 
-        for (ProducePlanerDTO producePlanerDTO : producePlanerList) {
-            System.out.println("controller list id : " + producePlanerDTO.getProducePlanerId());
+        for (ProducePlanerDTO dto : list) {
+
+            Code code = exportService.findByCode("produce_planer_status", dto.getProducePlanerStatus());
+            codeList.add(code);
         }
-        model.addAttribute("producePlanerList", producePlanerList);
-        model.addAttribute("statusList", statusList);
+        model.addAttribute("producePlanerList", list);
+        model.addAttribute("codeList", codeList);
 
-        return "/export/producePlanerDetail";
+        return "export/producePlanerDetail";
     }
 }
