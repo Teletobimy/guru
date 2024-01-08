@@ -36,11 +36,11 @@ public class PurchaseOrderDetail {
     @Column(name = "material_price")
     private int materialPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="purchase_order_id")
     private PurchaseOrder purchaseOrder;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="material_id")
     private Material material;
 

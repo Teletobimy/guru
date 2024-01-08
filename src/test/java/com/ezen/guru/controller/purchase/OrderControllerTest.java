@@ -1,6 +1,6 @@
 package com.ezen.guru.controller.purchase;
 
-import com.ezen.guru.dto.purchase.OrderListViewResponse;
+import com.ezen.guru.dto.purchase.BeforeOrderListViewResponse;
 import com.ezen.guru.service.purchase.OrderServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(OrderController.class)
-class PcorderControllerTest {
+class OrderControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -25,9 +25,9 @@ class PcorderControllerTest {
     @Test
     public void getPcorderListTest() throws Exception {
         // 테스트에 사용할 가상의 데이터 생성
-        List<OrderListViewResponse> mockPclist = List.of(
-                new OrderListViewResponse("Item1"),
-                new OrderListViewResponse("Item2")
+        List<BeforeOrderListViewResponse> mockPclist = List.of(
+                new BeforeOrderListViewResponse("Item1"),
+                new BeforeOrderListViewResponse("Item2")
                 // ... 추가 아이템
         );
 
