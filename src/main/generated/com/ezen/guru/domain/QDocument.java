@@ -18,13 +18,13 @@ public class QDocument extends EntityPathBase<Document> {
 
     private static final long serialVersionUID = 1024213131L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QDocument document = new QDocument("document");
 
-    public final QCompany company;
+    public final StringPath company_id = createString("company_id");
 
     public final DateTimePath<java.time.LocalDateTime> deadline = createDateTime("deadline", java.time.LocalDateTime.class);
+
+    public final ListPath<DocumentDetail, QDocumentDetail> documentDetails = this.<DocumentDetail, QDocumentDetail>createList("documentDetails", DocumentDetail.class, QDocumentDetail.class, PathInits.DIRECT2);
 
     public final StringPath id = createString("id");
 
@@ -39,24 +39,15 @@ public class QDocument extends EntityPathBase<Document> {
     public final NumberPath<Integer> type = createNumber("type", Integer.class);
 
     public QDocument(String variable) {
-        this(Document.class, forVariable(variable), INITS);
+        super(Document.class, forVariable(variable));
     }
 
     public QDocument(Path<? extends Document> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QDocument(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QDocument(PathMetadata metadata, PathInits inits) {
-        this(Document.class, metadata, inits);
-    }
-
-    public QDocument(Class<? extends Document> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.company = inits.isInitialized("company") ? new QCompany(forProperty("company")) : null;
+        super(Document.class, metadata);
     }
 
 }

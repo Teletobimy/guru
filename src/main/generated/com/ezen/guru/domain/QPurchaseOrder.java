@@ -55,7 +55,7 @@ public class QPurchaseOrder extends EntityPathBase<PurchaseOrder> {
     public QPurchaseOrder(Class<? extends PurchaseOrder> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.company = inits.isInitialized("company") ? new QCompany(forProperty("company")) : null;
-        this.document = inits.isInitialized("document") ? new QDocument(forProperty("document"), inits.get("document")) : null;
+        this.document = inits.isInitialized("document") ? new QDocument(forProperty("document")) : null;
     }
 
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class DocumentDTO {
     private String id;
     private int type;
-    private int companyId;
+    private String companyId;
     private int totalprice;
     private LocalDateTime regdate;
     private LocalDateTime deadline;

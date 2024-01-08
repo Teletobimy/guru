@@ -81,8 +81,8 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-blue"></i>
                                             <div class="d-inline">
-                                                <h4>미처리 생산계획서 목록</h4>
-                                                <span>출고처리가 안된 생산계획서들에 대해서 출고처리를 진행하는 페이지입니다.</span>
+                                                <h4>계약서리스트</h4>
+                                                <span>.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -94,9 +94,9 @@
                                                         <i class="icofont icofont-home"></i>
                                                     </a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">출고</a>
+                                                <li class="breadcrumb-item"><a href="#!">계획</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/export/producePlanerList">생산계획서</a>
+                                                <li class="breadcrumb-item"><a href="/plan/document">계약서리스트</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -127,25 +127,78 @@
                                             <table class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>생산번호</th>
-                                                    <th>자전거이름</th>
-                                                    <th>생산계획수량</th>
-                                                    <th>마감일</th>
-                                                    <th>진행상태</th>
+                                                    <th>계약서번호</th>
+                                                    <th>회사명</th>
+                                                    <th>계약금액</th>
+                                                    <th>계약날짜</th>
+                                                    <th>마감일자</th>
+                                                    <th>계약서현황</th>
+                                                    <th>계약서메모</th>
+                                                    <th>상세</th>
+                                                    <th>출력</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <tr th:each="documents, itemStat : ${documents}">
+
+                                                            <td th:text="${documents.id}"></td>
+
+                                                            <td th:text="${documents.companyId}"></td>
+                                                            <td th:text="${documents.totalprice}"></td>
+                                                            <td th:text="${documents.regdate}"></td>
+                                                            <td th:text="${documents.deadline}"></td>
+                                                            <td th:text="${documents.status}"></td>
+                                                            <td>
+                                                                <textarea th:text="${documents.memo}" rows="6" cols="50"></textarea>
+                                                            </td>
+                                                            <td>
+                                                                <a th:href="@{/plan/document/{documentId}(documentId=${documents.id})}" class="btn btn-card btn-primary">상세</a>
+
+                                                            </td>
+                                                            <td><button class="btn btn-card btn-primary">출력</button></td>
+
+
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!--위쪽은 계약서에 관해 밑에는 계약서디테일 리스트-->
+                                    <div class="card-block table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>No.</th>
+
+                                                    <th>원자재ID</th>
+                                                    <th>원자재명</th>
+                                                    <th>원자재수량</th>
+                                                    <th>단위</th>
+                                                    <th>구매가</th>
+
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr th:each="item, index : ${producePlanerList}" th:onclick="|location.href='@{/export/producePlanerDetail(producePlanerId=${item.producePlanerId})}'|">
-                                                    <th scope="row" th:text="${item.producePlanerId}"></th>
-                                                    <td th:text="${item.bicycleName}"></td>
-                                                    <td th:text="${item.produceBicycleCnt}"></td>
-                                                    <td th:text="${item.producePlanerDeadline}"></td>
-                                                    <td th:text="${codeList[index.index].codeName}"></td>
+                                                <tr th:each="documentDetail, itemStat : ${documentDetails}">
+
+                                                    <td th:text="${documentDetail.id}"></td>
+
+
+                                                    <td th:text="${documentDetail.materialId}"></td>
+                                                    <td th:text="${documentDetail.materialName}"></td>
+                                                    <td th:text="${documentDetail.documentCnt}"></td>
+                                                    <td th:text="${documentDetail.documentMeasure}"></td>
+                                                    <td th:text="${documentDetail.documentPrice}"></td>
+
+
+
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
+                                    <!-- 디테일 리스트 끝-->
                                 </div>
                                 <!-- Hover table card end -->
 
