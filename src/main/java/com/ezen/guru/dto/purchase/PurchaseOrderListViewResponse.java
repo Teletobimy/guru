@@ -14,6 +14,7 @@ public class PurchaseOrderListViewResponse {
     LocalDateTime regdate;
     LocalDateTime deadline;
     String companyName;
+    String companyId;
     String materialName;
     int category; //추후 코드테이블 연결, type String이지만 편의상 임시로 int
     int price;
@@ -27,6 +28,7 @@ public class PurchaseOrderListViewResponse {
         this.regdate = detail.getPurchaseOrder().getRegdate();
         this.deadline = detail.getPurchaseOrder().getDeadline();
         this.companyName = detail.getPurchaseOrder().getCompany().getCompanyName();
+        this.companyId = detail.getPurchaseOrder().getCompany().getCompanyId();
         this.materialName = detail.getMaterialName();
         this.category = detail.getMaterialCategory();
         this.price = detail.getMaterialPrice();

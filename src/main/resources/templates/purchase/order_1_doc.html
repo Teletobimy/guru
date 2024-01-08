@@ -36,12 +36,12 @@
          border-spacing: 0
         }
         th{
-            background-color:#303549;
-            color:#fff;
+            background-color: #f6f7fb;
+    	    color: #000;
         }
         th, td{
-            border:1px solid black;
-            padding:10px;
+            border: 1px solid #ccc;
+    	    padding: 10px;
         }
         input{
             border:none;
@@ -92,9 +92,9 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont icofont icofont-file-document bg-c-pink"></i>
+                                            <i class="icofont icofont icofont icofont-file-document bg-c-green"></i>
                                             <div class="d-inline">
-                                                <h5 th:text="${list.type.get(0)}"></h5>
+                                                <h4>상세 내역</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -109,12 +109,13 @@
                                     <div class="col-sm-12">
                                         <div class="card">
                                             <div style="margin: auto; padding: 40px">
-                                                <h1>제목</h1>
+                                                <h4>제목</h4>
                                                 <table width="60%">
                                                     <tbody>
+                                                    <th:block th:with="firstItem=${list[0]}">
                                                         <tr>
                                                             <th colspan="2">주문번호</th>
-                                                            <td colspan="2" ></td>
+                                                            <td colspan="2" th:text="${firstItem.id}"></td>
                                                             <th colspan="2">상호</th>
                                                             <td colspan="2">
                                                                 <input type="text" placeholder="상호를 입력하세요">
@@ -160,20 +161,20 @@
                                                         <tr>
                                                             <th>No</th>
                                                             <th colspan="2">품명</th>
-                                                            <th>규격</th>
-                                                            <th>수량</th>
+                                                            <th>카테고리</th>
                                                             <th>단가</th>
+                                                            <th>수량</th>
                                                             <th colspan="2">금액</th>
 
                                                         </tr>
                                                         <!---------------------------------------------------->
                                                         <tr th:each="item : ${list}">
-                                                            <td>1</td>
-                                                            <td colspan="2"></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td colspan="2"></td>
+                                                            <td th:text="${item.count}"></td>
+                                                            <td colspan="2" th:text="${item.materialName}"></td>
+                                                            <td th:text="${item.category}"></td>
+                                                            <td th:text="${item.price}"></td>
+                                                            <td th:text="${item.cnt}"></td>
+                                                            <td colspan="2" th:text="${item.totalprice}"></td>
                                                         </tr>
                                                         <tr>
                                                             <td> </td>
@@ -211,7 +212,9 @@
                                                                 </ol>
                                                             </td>
                                                         </tr>
-                                                    </tbody></table>
+                                                    </th:block>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

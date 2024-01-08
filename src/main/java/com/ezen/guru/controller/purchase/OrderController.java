@@ -1,5 +1,6 @@
 package com.ezen.guru.controller.purchase;
 
+import com.ezen.guru.domain.PurchaseOrderDetail;
 import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.service.purchase.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,6 @@ public class OrderController {
 //    필요한 발주를 완료한 후 상세 페이지에서 목록 버튼 누르면 화면으로 redirect
     @GetMapping("/order_1")
     public String getBeforeOrderList(Model model) {
-
         List<BeforeOrderListViewResponse> pclist = orderService.getProductBeforeOrderDetailsByStatus().stream()
                 .map(BeforeOrderListViewResponse::new)
                 .toList();
@@ -43,7 +43,6 @@ public class OrderController {
 
     @GetMapping("/order_form")
     public String getDetail() {
-
 
         return "purchase/order_form";
     }
