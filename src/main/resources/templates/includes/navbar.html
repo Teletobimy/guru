@@ -1,4 +1,4 @@
-<div th:fragment="navbar">
+<div th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml">
 
     <div class="pcoded-wrapper">
         <nav class="pcoded-navbar">
@@ -42,21 +42,35 @@
                     <li class="pcoded-hasmenu">
                         <a href="#">
                             <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
-                            <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">계획</span>
+                            <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">관리</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class=" ">
-                                <a href="accordion.html">
+                                <a href="/plan/item">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Accordion</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">자전거리스트</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href="breadcrumb.html">
+                                <a href="/plan/material">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Breadcrumbs</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">원자재리스트</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="/plan/itemRegister">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">품목등록3</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="/plan/itemRegister">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">품목등록4</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
@@ -70,28 +84,28 @@
                         </a>
                         <ul class="pcoded-submenu">
                             <li class=" ">
-                                <a href="purchase/order_1">
+                                <a href="/purchase/order_1">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">발주서 발행</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href="purchase/order_2">
+                                <a href="/purchase/order_2">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">발주 목록 조회</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href="purchase/order_3">
+                                <a href="/purchase/order_3">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">배송 조회</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href="purchase/order_4">
+                                <a href="/purchase/order_4">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">발주서 마감</span>
                                     <span class="pcoded-mcaret"></span>
@@ -107,16 +121,23 @@
                         </a>
                         <ul class="pcoded-submenu">
                             <li class=" ">
-                                <a href="accordion.html">
+                                <a href="/shipment/shipmentList?size=10&page=0&category=-1">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Accordion</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">출하 명세서</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
                                 <a href="breadcrumb.html">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Breadcrumbs</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">자재 검수</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="breadcrumb.html">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">거래 명세서</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

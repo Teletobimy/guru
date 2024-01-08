@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
+<<<<<<< HEAD
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$/../../build/generated/querydsl">
       <sourceFolder url="file://$MODULE_DIR$/../../build/generated/querydsl" isTestSource="false" generated="true" />
     </content>
+=======
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="e535f53a-519e-43a3-b37c-87f73d9f8c2e" />
+>>>>>>> master
   </component>
 </module>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .search-long{
+             width:90%;
+             display:flex;
+             justify-content:center;
+             padding:5px;
+             box-sizing:border-box;
+             margin :15px auto;
+             margin-top:0;
+             align-items:center;
+             border:#ddd 1px solid;
+        }
+        .pageA{
+            color:#FFB64D;
+        }
+        .btn-warning{
+            color:#fff;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Pre-loader start -->
+
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"></div>
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-yellow"></i>
+                                            <div style="display:flex; align-items:center;">
+                                                <h4>출하 명세서 리스트</h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="page-body">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="col-lg-12">
+
+                                            <!-- Nav tabs -->
+                                            <ul class="nav nav-tabs  tabs" role="tablist">
+
+                                                <li th:each="code:${code}" class="nav-item">
+                                                    <a class="nav-link"
+                                                       data-toggle="tab"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
+                                                       role="tab"
+                                                       style="cursor:pointer;"
+                                                       th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
+                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
+                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
+                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
+                                                       th:text="${code.codeNum == 0 ? '전체보기' :
+                                                                  code.codeNum == 1 ? '손잡이' :
+                                                                  code.codeNum == 2 ? '프레임' :
+                                                                  code.codeNum == 3 ? '휠' : ''}">
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                            <!-- Tab panes -->
+                                            <div class="tab-content tabs card-block">
+                                                <div class="tab-pane active" id="home1" role="tabpanel">
+                                                    <div class="pcoded-search-box search-long" >
+
+                                                        <input type="text" placeholder="Search" id="searchInput"
+                                                               style="width:95%; border:none; margin-right:5px; ">
+                                                        <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
+                                                        <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
+                                                            <i class="ti-search" aria-hidden="true"></i>
+                                                        </p>
+                                                    </div>
+                                                    <div class="card-block table-border-style">
+
+                                                        <div class="table-responsive" id="shipment-container">
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>아이디</th>
+                                                                    <th>자재 이름</th>
+                                                                    <th>출하 수량</th>
+                                                                    <th>자재 가격</th>
+                                                                    <th>자재 종류</th>
+                                                                    <th>회사명</th>
+                                                                    <th>출하 날짜</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'" th:each="list : ${list}">
+                                                                    <th th:text="${list.shipmentId}"></th>
+                                                                    <th th:text="${list.materialName}"></th>
+                                                                    <td th:text="${list.shipmentCnt} + ${list.materialMeasure}"></td>
+                                                                    <td th:text="${list.materialPrice} + &#8361;"></td>
+                                                                    <td th:each="code:${code}"
+                                                                        th:if="${code.codeNum} == ${list.materialCategory}"
+                                                                        th:text="${code.codeName}"></td>
+                                                                    <td th:text="${list.companyName}"></td>
+                                                                    <td th:text="${list.shippingDate}"></td>
+                                                                </tr>
+
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                                                        <ul class="pagination" style="justify-content: end;">
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                                    <span aria-hidden="true">&laquo;</span>
+                                                                </a>
+                                                            </li>
+                                                            <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
+                                                                <a class="page-link pageA"
+                                                                   th:classappend="${pageNumber == (list.number + 1) ? 'btn-warning' : ''}"
+                                                                   th:href="@{'/shipment/shipmentList?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                                   th:text="${pageNumber}"></a>
+                                                            </li>
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#" aria-label="Next">
+                                                                    <span aria-hidden="true">&raquo;</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <div id="styleSelector">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+    <!-- Warning Section Starts -->
+    <!-- Older IE warning message -->
+
+    <![endif]-->
+    <!-- Warning Section Ends -->
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- modernizr js -->
+    <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+    <!-- am chart -->
+    <script src="/pages/widget/amchart/amcharts.min.js"></script>
+    <script src="/pages/widget/amchart/serial.min.js"></script>
+    <!-- Todo js -->
+    <script type="text/javascript " src="/pages/todo/todo.js "></script>
+    <!-- Custom js -->
+    <script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+    <script type="text/javascript " src="/js/SmoothScroll.js"></script>
+    <script src="/js/pcoded.min.js"></script>
+    <script src="/js/demo-12.js"></script>
+    <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script>
+        var $window = $(window);
+        var nav = $('.fixed-button');
+            $window.scroll(function(){
+                if ($window.scrollTop() >= 200) {
+                 nav.addClass('active');
+             }
+             else {
+                 nav.removeClass('active');
+             }
+         });
+        function updateLocation(category) {
+            var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
+
+            window.location.href = newUrl;
+        }
+        function performSearch(){
+            var urlParams = new URLSearchParams(window.location.search);
+            var category = urlParams.get('category');
+            var searchValue = document.getElementById('searchInput').value;
+
+            var encodedSearchValue = encodeURIComponent(searchValue);
+
+            console.log(encodedSearchValue);
+            console.log('Category:', category);
+
+            window.location.href = '/shipment/shipmentList?size=10&page=0&category='+ category +'&keyword=' + encodedSearchValue;
+        }
+         document.getElementById('searchInput').addEventListener('keyup', function (event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+        function gotoDetail(shipmentId){
+            var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
+
+            window.location.href = newUrl;
+        }
+
+    </script>
+</body>
+
+</html>

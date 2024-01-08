@@ -20,7 +20,6 @@ public class Code {
     @Column(name = "code_num")
     private int codeNum;
 
-
     @Column(name = "code_name")
     private String codeName;
 
