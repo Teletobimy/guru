@@ -15,28 +15,41 @@ public class Shipment {
     @Column(name = "shipment_id", nullable = false)
     private int shipmentId;
 
-    @Column(name = "material_id")
-    private int materialId;
+    @OneToOne
+    @JoinColumn(name = "material_id",referencedColumnName = "material_id")
+    private Material materialId;
+
     @Column(name = "material_name")
     private String materialName;
+
+    @Column(name = "manager")
+    private String manager;
+
     @Column(name = "shipment_cnt")
     private int shipmentCnt;
+
     @Column(name = "material_price")
     private int materialPrice;
+
     @Column(name = "material_measure")
     private String materialMeasure;
+
     @Column(name = "material_category")
     private int materialCategory;
-    @Column(name = "company_id", nullable = false)
-    private String companyId;
+
+    @ManyToOne(targetEntity = Company.class)
+    @JoinColumn(name = "company_id", referencedColumnName = "company_id")
+    private Company companyId;
+
     @Column(name = "shipping_date")
     private LocalDateTime shippingDate;
 
     @Builder
-    public Shipment(int materialId, String materialName,
+    public Shipment(Material materialId, String materialName,
                     int shipmentCnt,int materialPrice,
                     String materialMeasure,int materialCategory,
-                    String companyId, LocalDateTime shippingDate
+                    Company companyId, LocalDateTime shippingDate,
+                    String manager
                     ){
         this.materialId = materialId;
         this.materialName = materialName;
@@ -45,5 +58,7 @@ public class Shipment {
         this.materialMeasure = materialMeasure;
         this.companyId = companyId;
         this.shippingDate = shippingDate;
+        this.manager = manager;
+
     }
 }
