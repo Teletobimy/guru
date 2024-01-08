@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,32 +18,44 @@ public class QPurchaseOrder extends EntityPathBase<PurchaseOrder> {
 
     private static final long serialVersionUID = -2064498339L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QPurchaseOrder purchaseOrder = new QPurchaseOrder("purchaseOrder");
 
-    public final StringPath companyId = createString("companyId");
+    public final QCompany company;
 
-    public final StringPath documentId = createString("documentId");
+    public final QDocument document;
 
     public final StringPath id = createString("id");
 
     public final StringPath purchaseOrderMemo = createString("purchaseOrderMemo");
 
-    public final DateTimePath<java.time.LocalDateTime> regdate = createDateTime("regdate", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> purchaseOrderRegdate = createDateTime("purchaseOrderRegdate", java.time.LocalDateTime.class);
 
-    public final NumberPath<Integer> status = createNumber("status", Integer.class);
+    public final NumberPath<Integer> purchaseOrderStatus = createNumber("purchaseOrderStatus", Integer.class);
 
-    public final NumberPath<Integer> totalprice = createNumber("totalprice", Integer.class);
+    public final NumberPath<Integer> purchaseOrderTotalprice = createNumber("purchaseOrderTotalprice", Integer.class);
 
     public QPurchaseOrder(String variable) {
-        super(PurchaseOrder.class, forVariable(variable));
+        this(PurchaseOrder.class, forVariable(variable), INITS);
     }
 
     public QPurchaseOrder(Path<? extends PurchaseOrder> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QPurchaseOrder(PathMetadata metadata) {
-        super(PurchaseOrder.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QPurchaseOrder(PathMetadata metadata, PathInits inits) {
+        this(PurchaseOrder.class, metadata, inits);
+    }
+
+    public QPurchaseOrder(Class<? extends PurchaseOrder> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.company = inits.isInitialized("company") ? new QCompany(forProperty("company")) : null;
+        this.document = inits.isInitialized("document") ? new QDocument(forProperty("document"), inits.get("document")) : null;
     }
 
 }
