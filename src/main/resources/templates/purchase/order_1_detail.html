@@ -60,6 +60,7 @@
     </div>
 </div>
 <!-- Pre-loader end -->
+
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
@@ -80,7 +81,7 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
-                                                <h4>발주서 발행</h4>
+                                                <h4>상세 내역</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -124,13 +125,13 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr th:each="item : ${pclist}" th:onclick="|location.href='@{/purchase/order_1_detail?id={id}(id=${item.id})}'|">
-                                                        <th scope="row" th:text="${item.id}"></th>
-                                                        <td th:text="${item.companyName}"></td>
-                                                        <td th:text="|${item.materialName} 외..|"></td>
-                                                        <td th:text="${item.totalprice}"></td>
-                                                        <td th:text="${item.deadline}"></td>
-                                                    </tr>
+                                                <tr th:each="item : ${pclist}" th:onclick="|location.href='@{/purchase/order_1_doc?id={id}(id=${item.id})}'|">
+                                                    <th scope="row" th:text="${item.id}"></th>
+                                                    <td th:text="${item.companyName}"></td>
+                                                    <td th:text="|${item.materialName} 외..|"></td>
+                                                    <td th:text="${item.totalprice}"></td>
+                                                    <td th:text="${item.deadline}"></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>

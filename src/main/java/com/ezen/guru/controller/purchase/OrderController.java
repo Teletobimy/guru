@@ -1,6 +1,5 @@
 package com.ezen.guru.controller.purchase;
 
-import com.ezen.guru.domain.PurchaseOrderDetail;
 import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.service.purchase.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +31,13 @@ public class OrderController {
         model.addAttribute("pclist", pclist);
         return "purchase/order_1";
     }
-    @GetMapping("/order_1_doc")
+    @GetMapping("/order_1_detail")
     public String getDocument(Model model, @RequestParam String id) {
-        List<PurchaseOrderListViewResponse> list = orderService.getPurchaseOrderDocument(id).stream()
-                .map(PurchaseOrderListViewResponse::new)
+        List<PurchaseOrderViewResponse> list = orderService.getPurchaseOrderDocument(id).stream()
+                .map(PurchaseOrderViewResponse::new)
                 .toList();
         model.addAttribute("list", list);
-        return "purchase/order_1_doc";
+        return "purchase/order_1_detail";
     }
 
     @GetMapping("/order_form")

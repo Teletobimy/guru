@@ -1,13 +1,12 @@
 package com.ezen.guru.dto.purchase;
 
-import com.ezen.guru.domain.PurchaseOrder;
 import com.ezen.guru.domain.PurchaseOrderDetail;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class PurchaseOrderListViewResponse {
+public class PurchaseOrderViewResponse {
 
     int type; //추후 코드테이블 연결, type String이지만 편의상 임시로 int
     String id;
@@ -22,7 +21,7 @@ public class PurchaseOrderListViewResponse {
     int totalprice;
     String memo;
 
-    public PurchaseOrderListViewResponse(PurchaseOrderDetail detail) {
+    public PurchaseOrderViewResponse(PurchaseOrderDetail detail) {
         this.type = detail.getPurchaseOrder().getDocument().getType();
         this.id = detail.getPurchaseOrder().getId();
         this.regdate = detail.getPurchaseOrder().getRegdate();
