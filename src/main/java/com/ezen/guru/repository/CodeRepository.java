@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CodeRepository extends JpaRepository<Code,String> {
-    Code findByCodeNumAndCodeCategory(int codeNum, String codeCategory);
+    Code findByCodeCategoryAndCodeNum(String codeCategory, int codeNum);
     List<Code> findByCodeCategory(String codeCategory);
 }

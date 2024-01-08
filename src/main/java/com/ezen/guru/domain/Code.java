@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "code")
 @IdClass(CodeId.class)
 public class Code {
+
     @Id
     @Column(name = "code_category")
     private String codeCategory;

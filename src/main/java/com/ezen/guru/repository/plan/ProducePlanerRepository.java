@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface ProducePlanerRepository extends JpaRepository<ProducePlaner, ProducePlanerId> {
 
-    List<ProducePlaner> findByProducePlanerStatus(int producePlanerStatus);
+    List<ProducePlaner> findByProducePlanerStatusNot(int status);
+
+    List<ProducePlaner> findByIdProducePlanerId(String producePlanerId);
 }
