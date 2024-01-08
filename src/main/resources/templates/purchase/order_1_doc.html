@@ -50,6 +50,14 @@
             display: flex;
             align-items: center;
         }
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -109,10 +117,10 @@
                                     <div class="col-sm-12">
                                         <div class="card">
                                             <div style="margin: auto; padding: 40px">
-                                                <h4>제목</h4>
+                                                <th:block th:with="firstItem=${list[0]}">
+                                                <h4 th:text="|${firstItem.type}서|"></h4>
                                                 <table width="60%">
                                                     <tbody>
-                                                    <th:block th:with="firstItem=${list[0]}">
                                                         <tr>
                                                             <th colspan="2">주문번호</th>
                                                             <td colspan="2" th:text="${firstItem.id}"></td>
@@ -163,18 +171,20 @@
                                                             <th colspan="2">품명</th>
                                                             <th>카테고리</th>
                                                             <th>단가</th>
-                                                            <th>수량</th>
+                                                            <th>수량(단위)</th>
                                                             <th colspan="2">금액</th>
 
                                                         </tr>
                                                         <!---------------------------------------------------->
-                                                        <tr th:each="item : ${list}">
-                                                            <td th:text="${item.count}"></td>
+                                                        <tr th:each="item, stat : ${list}">
+                                                            <td th:text="${stat.count}"></td>
                                                             <td colspan="2" th:text="${item.materialName}"></td>
                                                             <td th:text="${item.category}"></td>
                                                             <td th:text="${item.price}"></td>
                                                             <td th:text="${item.cnt}"></td>
-                                                            <td colspan="2" th:text="${item.totalprice}"></td>
+                                                            <td colspan="2" th:text="${item.totalprice}">
+                                                                <button class="btn btn-card btn-primary">발주</button>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td> </td>
@@ -212,9 +222,9 @@
                                                                 </ol>
                                                             </td>
                                                         </tr>
-                                                    </th:block>
                                                     </tbody>
                                                 </table>
+                                                </th:block>
                                             </div>
                                         </div>
                                     </div>
