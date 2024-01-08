@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,13 +18,17 @@ public class QShipment extends EntityPathBase<Shipment> {
 
     private static final long serialVersionUID = -353836790L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QShipment shipment = new QShipment("shipment");
 
-    public final StringPath companyId = createString("companyId");
+    public final QCompany companyId;
+
+    public final StringPath manager = createString("manager");
 
     public final NumberPath<Integer> materialCategory = createNumber("materialCategory", Integer.class);
 
-    public final NumberPath<Integer> materialId = createNumber("materialId", Integer.class);
+    public final QMaterial materialId;
 
     public final StringPath materialMeasure = createString("materialMeasure");
 
@@ -38,15 +43,25 @@ public class QShipment extends EntityPathBase<Shipment> {
     public final DateTimePath<java.time.LocalDateTime> shippingDate = createDateTime("shippingDate", java.time.LocalDateTime.class);
 
     public QShipment(String variable) {
-        super(Shipment.class, forVariable(variable));
+        this(Shipment.class, forVariable(variable), INITS);
     }
 
     public QShipment(Path<? extends Shipment> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QShipment(PathMetadata metadata) {
-        super(Shipment.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QShipment(PathMetadata metadata, PathInits inits) {
+        this(Shipment.class, metadata, inits);
+    }
+
+    public QShipment(Class<? extends Shipment> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.companyId = inits.isInitialized("companyId") ? new QCompany(forProperty("companyId")) : null;
+        this.materialId = inits.isInitialized("materialId") ? new QMaterial(forProperty("materialId")) : null;
     }
 
 }
