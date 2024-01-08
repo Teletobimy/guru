@@ -1,9 +1,6 @@
 package com.ezen.guru.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +15,13 @@ public class Company {
     @Id
     @Column(name="company_id", updatable = false)
     private String companyId;
+
+    @Column(name="material_id")
+    private int materialId;
+
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @Column(name="material_id")
+//    private Material material;
 
     @Column(name="company_name")
     private String companyName;
@@ -36,12 +40,14 @@ public class Company {
 
     @Builder
     public Company(String companyId,
+                   int materialId,
                    String companyName,
                    String ceo,
                    String tel,
                    String email,
                    String address) {
         this.companyId = companyId;
+        this.materialId = materialId;
         this.companyName = companyName;
         this.ceo = ceo;
         this.tel = tel;
