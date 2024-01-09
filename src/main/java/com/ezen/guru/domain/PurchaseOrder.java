@@ -23,43 +23,48 @@ public class PurchaseOrder {
     //private String documentId;
     //private String companyId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
     private Document document;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
     @Column(name = "purchase_order_totalprice")
-    private int purchaseOrderTotalprice;
+    private int totalprice;
 
     @Column(name = "purchase_order_regdate")
-    private LocalDateTime purchaseOrderRegdate;
+    private LocalDateTime regdate;
 
     @Column(name = "purchase_order_status")
-    private int purchaseOrderStatus;
+    private int status;
 
     @Column(name = "purchase_order_memo")
-    private String purchaseOrderMemo;
+    private String memo;
 
-//    @OneToMany(mappedBy="purchase_order")
-//    private List<PurchaseOrderDetail> purchaseOrderDetail;
+    @Column(name="purchase_order_deadline")
+    private LocalDateTime deadline;
+
+    @OneToMany(mappedBy = "purchaseOrder")
+    private List<PurchaseOrderDetail> purchaseOrderDetails;
 
     @Builder
     public PurchaseOrder(String id,
                          Document document,
                          Company company,
-                         int purchaseOrderTotalprice,
-                         LocalDateTime purchaseOrderRegdate,
-                         int purchaseOrderStatus,
-                         String purchaseOrderMemo) {
+                         int totalprice,
+                         LocalDateTime regdate,
+                         int status,
+                         String memo,
+                         LocalDateTime deadline) {
         this.id = id;
         this.document = document;
         this.company = company;
-        this.purchaseOrderTotalprice = purchaseOrderTotalprice;
-        this.purchaseOrderRegdate = purchaseOrderRegdate;
-        this.purchaseOrderStatus = purchaseOrderStatus;
-        this.purchaseOrderMemo = purchaseOrderMemo;
+        this.totalprice = totalprice;
+        this.regdate = regdate;
+        this.status = status;
+        this.memo = memo;
+        this.deadline = deadline;
     }
 }

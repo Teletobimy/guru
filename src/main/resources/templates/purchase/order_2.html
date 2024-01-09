@@ -30,6 +30,15 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .d-inline {
+            display: flex;
+            align-items: center;
+        }
+        .searched {
+            margin-top: 20px!important;
+        }
+    </style>
 </head>
 <body>
 
@@ -37,16 +46,36 @@
 <div class="theme-loader">
     <div class="ball-scale">
         <div class='contain'>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -56,7 +85,7 @@
     <div class="pcoded-container navbar-wrapper">
         <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
 
-        <div class="pcoded-main-container" >
+        <div class="pcoded-main-container">
             <div th:include="includes/navbar :: navbar"></div>
 
             <div class="pcoded-content">
@@ -69,26 +98,10 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
-                                                <h4>발주 목록 조회</h4>
-                                                <span>발주한 품목에 대해 조회하는 화면입니다.</span>
+                                                <h4>발주 내역 조회</h4>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="page-header-breadcrumb">
-                                            <ul class="breadcrumb-title">
-                                                <li class="breadcrumb-item">
-                                                    <a href="index.html">
-                                                        <i class="icofont icofont-home"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="#!">구매</a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="#!">발주 목록 조회</a>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -102,26 +115,42 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Hover table</h5>
-                                        <span>use class <code>table-hover</code> inside table element</span>
-                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
+                                        <div class="pcoded-search">
+                                            <span class="searchbar-toggle searched">  </span>
+                                            <div class="pcoded-search-box ">
+                                                <input type="text" placeholder="Search">
+                                                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="card-block table-border-style">
                                         <div class="table-responsive">
                                             <table class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>번호</th>
-                                                    <th>회사명</th>
+                                                    <th>주문번호</th>
+                                                    <th>협력사</th>
                                                     <th>품목명</th>
-                                                    <th>날짜</th>
+                                                    <th>총액</th>
+                                                    <th>납기</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <th scope="row"></th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
+                                                <tr th:each="item : ${pclist}" th:onclick="#">
+                                                    <th scope="row" th:text="${item.id}"></th>
+                                                    <td th:text="${item.companyName}"></td>
+                                                    <td th:text="${item.materialName}"></td>
+                                                    <td th:text="${item.totalprice}"></td>
+                                                    <td th:text="${item.deadline}"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

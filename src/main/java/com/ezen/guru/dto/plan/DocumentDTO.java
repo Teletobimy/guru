@@ -3,6 +3,7 @@ package com.ezen.guru.dto.plan;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ public class DocumentDTO {
     private LocalDateTime deadline;
     private int status;
     private String memo;
+    private List<DocumentDetailDTO> DocumentDetails;
 
 }
 
