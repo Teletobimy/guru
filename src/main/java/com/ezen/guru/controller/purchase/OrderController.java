@@ -1,9 +1,11 @@
 package com.ezen.guru.controller.purchase;
 
+import com.ezen.guru.domain.Code;
 import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.service.purchase.OrderService;
 import com.ezen.guru.service.purchase.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +22,17 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/order_1")
-    public String getBeforeOrderList(Model model, @RequestParam(value = "category", defaultValue = "-1") int category) {
-        List<OrderListViewResponse> pclist = orderService.getProductBeforeOrderDetailsByStatus(category).stream()
-                .map(OrderListViewResponse::new)
-                .toList();
-        model.addAttribute("pclist", pclist);
+    public String getOrderList(Model model,
+                               @RequestParam(value = "size", defaultValue = "10") int size,
+                               @RequestParam(value ="page" ,defaultValue = "0") int page,
+                               @RequestParam(value = "keyword", required = false) String keyword,
+                               @RequestParam(value = "category", defaultValue = "-1") int category) {
+        Page<OrderListViewResponse> orderList = orderService.orderList(size, page,keyword,category);
+        List<Code> codeList = orderService.findByCodeCategory("purchase_order_status");
+
+        model.addAttribute("list", orderList);
+        model.addAttribute("code",codeList);
+        model.addAttribute("category",category);
         return "purchase/order_1";
     }
     @GetMapping("/order_1_detail")
