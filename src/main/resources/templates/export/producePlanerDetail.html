@@ -125,30 +125,31 @@
                                     </div>
                                     <div class="card-block table-border-style">
                                         <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>생산번호</th>
-                                                    <th>자전거이름</th>
-                                                    <th>생산계획수량</th>
-                                                    <th>원자재이름</th>
-                                                    <th>필요수량</th>
-                                                    <th>마감일</th>
-                                                    <th>진행상태</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="item, index : ${producePlanerList}" th:onclick="/export/producePlanerDetail">
-                                                    <th scope="row" th:text="${item.producePlanerId}"></th>
-                                                    <td th:text="${item.bicycleName}"></td>
-                                                    <td th:text="${item.produceBicycleCnt}"></td>
-                                                    <td th:text="${item.materialName}"></td>
-                                                    <td th:text="${item.produceMaterialCnt}"></td>
-                                                    <td th:text="${item.producePlanerDeadline}"></td>
-                                                    <td th:text="${codeList[index.index].codeName}"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                            <form action="/export/producePlanerDetail" method="post">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>원자재이름</th>
+                                                        <th>필요수량</th>
+                                                        <th>불출수량</th>
+                                                        <th>마감일</th>
+                                                        <th colspan="2">진행상태</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="item, index : ${producePlanerList}" th:onclick="/export/producePlanerDetail">
+                                                        <th th:text="${item.materialName}"></th>
+                                                        <td th:text="${item.produceMaterialCnt}"></td>
+                                                        <td><input type="text" name="exportCnt" size="5"></td>
+                                                        <td th:text="${item.producePlanerDeadline}"></td>
+                                                        <td th:text="${codeList[index.index].codeName}"></td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-card btn-primary" onclick="submitRowData(this)">불출</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -200,6 +201,5 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
 </body>
 </html>

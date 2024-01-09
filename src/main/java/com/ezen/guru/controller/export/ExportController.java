@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -88,4 +89,23 @@ public class ExportController {
 
         return "export/producePlanerDetail";
     }
+
+    @PostMapping("/producePlanerDetail")
+    public String producePlanerDetail(@RequestParam("producePlanerId") String producePlanerId, @RequestParam("exportCnt") int exportCnt, Model model) {
+
+        List<ProducePlaner> producePlanerList = exportService.findByProducePlanerId(producePlanerId);
+        List<ProducePlanerDTO> list = producePlanerList.stream().map(ProducePlanerDTO::new).toList();
+        List<Code> codeList = new ArrayList<>();
+
+        for (ProducePlanerDTO dto : list) {
+
+            Code code = exportService.findByCode("produce_planer_status", dto.getProducePlanerStatus());
+            codeList.add(code);
+        }
+        model.addAttribute("producePlanerList", list);
+        model.addAttribute("codeList", codeList);
+
+        return "export/producePlanerDetail";
+    }
+
 }
