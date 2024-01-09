@@ -90,6 +90,7 @@ public class PlanController {
        System.out.println(companyName);
 
 
+
             // 검색된 회사 정보를 모델에 추가하여 HTML로 반환
          //   model.addAttribute("company", company);
             return "plan/company_search"; // 회사 정보 템플릿 이름
