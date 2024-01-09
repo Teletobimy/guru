@@ -42,3 +42,4 @@ public class QBicycle extends EntityPathBase<Bicycle> {
     }
 
 }
+

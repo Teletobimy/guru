@@ -61,3 +61,4 @@ public class QPurchaseOrderDetail extends EntityPathBase<PurchaseOrderDetail> {
     }
 
 }
+
