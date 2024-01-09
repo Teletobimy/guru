@@ -1,13 +1,12 @@
 package com.ezen.guru.domain;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
-
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
 
-import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
+
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -55,7 +54,7 @@ public class QPurchaseOrder extends EntityPathBase<PurchaseOrder> {
     public QPurchaseOrder(Class<? extends PurchaseOrder> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.company = inits.isInitialized("company") ? new QCompany(forProperty("company")) : null;
-        this.document = inits.isInitialized("document") ? new QDocument(forProperty("document"), inits.get("document")) : null;
+        this.document = inits.isInitialized("document") ? new QDocument(forProperty("document")) : null;
     }
 
 }
