@@ -39,4 +39,3 @@ public class QRecipe extends EntityPathBase<Recipe> {
 
 }
 
-//

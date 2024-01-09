@@ -51,4 +51,3 @@ public class QMaterial extends EntityPathBase<Material> {
 
 }
 
-//
