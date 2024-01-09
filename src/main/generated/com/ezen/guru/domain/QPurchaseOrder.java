@@ -23,17 +23,21 @@ public class QPurchaseOrder extends EntityPathBase<PurchaseOrder> {
 
     public final QCompany company;
 
+    public final DateTimePath<java.time.LocalDateTime> deadline = createDateTime("deadline", java.time.LocalDateTime.class);
+
     public final QDocument document;
 
     public final StringPath id = createString("id");
 
-    public final StringPath purchaseOrderMemo = createString("purchaseOrderMemo");
+    public final StringPath memo = createString("memo");
 
-    public final DateTimePath<java.time.LocalDateTime> purchaseOrderRegdate = createDateTime("purchaseOrderRegdate", java.time.LocalDateTime.class);
+    public final ListPath<PurchaseOrderDetail, QPurchaseOrderDetail> purchaseOrderDetails = this.<PurchaseOrderDetail, QPurchaseOrderDetail>createList("purchaseOrderDetails", PurchaseOrderDetail.class, QPurchaseOrderDetail.class, PathInits.DIRECT2);
 
-    public final NumberPath<Integer> purchaseOrderStatus = createNumber("purchaseOrderStatus", Integer.class);
+    public final DateTimePath<java.time.LocalDateTime> regdate = createDateTime("regdate", java.time.LocalDateTime.class);
 
-    public final NumberPath<Integer> purchaseOrderTotalprice = createNumber("purchaseOrderTotalprice", Integer.class);
+    public final NumberPath<Integer> status = createNumber("status", Integer.class);
+
+    public final NumberPath<Integer> totalprice = createNumber("totalprice", Integer.class);
 
     public QPurchaseOrder(String variable) {
         this(PurchaseOrder.class, forVariable(variable), INITS);

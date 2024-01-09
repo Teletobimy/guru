@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>회사 정보 검색</title>
+</head>
+<body>
+<h1>회사 정보 검색</h1>
+<input type="text" id="companyName" placeholder="회사명을 입력하세요">
+<button onclick="searchCompany()">검색</button>
+<div id="companyInfo"></div>
+
+<script>
+    function searchCompany() {
+        var companyName = document.getElementById('companyName').value;
+
+        // AJAX를 사용하여 서버에 검색 요청을 보냄
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // 검색 결과를 받아서 companyInfo 영역에 표시
+                    document.getElementById('companyInfo').innerHTML = xhr.responseText;
+                } else {
+                    // 에러 처리
+                    document.getElementById('companyInfo').innerHTML = '검색 실패';
+                }
+            }
+        };
+
+        // 서버의 검색 기능을 사용하는 API 엔드포인트 URL을 설정
+        var url = '/plan/searchCompany?name=' + encodeURIComponent(companyName);
+        xhr.open('GET', url, true);
+        xhr.send();
+    }
+</script>
+</body>
+</html>
