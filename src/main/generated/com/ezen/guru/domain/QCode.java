@@ -38,4 +38,3 @@ public class QCode extends EntityPathBase<Code> {
     }
 
 }
-

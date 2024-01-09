@@ -17,4 +17,5 @@
       <option name="url" value="https://repo.maven.apache.org/maven2/" />
     </remote-repository>
   </component>
+
 </project>
