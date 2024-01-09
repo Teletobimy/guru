@@ -12,9 +12,13 @@ java {
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
 	}
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
 }
 
 repositories {

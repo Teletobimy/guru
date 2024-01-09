@@ -31,20 +31,12 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
     <style>
-        table{
-         border-collapse: collapse;
-         border-spacing: 0
+        .d-inline {
+            display: flex;
+            align-items: center;
         }
-        th{
-            background-color:#303549;
-            color:#fff;
-        }
-        th, td{
-            border:1px solid black;
-            padding:10px;
-        }
-        input{
-            border:none;
+        .searched {
+            margin-top: 20px!important;
         }
     </style>
 </head>
@@ -82,146 +74,73 @@
                     <!-- Main-body start -->
                     <div class="main-body">
                         <div class="page-wrapper">
-                            <!-- Page start -->
-                            <div class="container">
-                                <h1>제목</h1>
-                                <table width="60%">
-                                    <tbody><tr>
-                                        <th colspan="2">주문번호</th>
-                                        <td colspan="2">
-                                            <input type="text" placeholder="주문번호를 입력하세요">
-                                        </td>
-                                        <th colspan="2">상호</th>
-                                        <td colspan="2">
-                                            <input type="text" placeholder="상호를 입력하세요">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th rowspan="2" colspan="2">수신</th>
-                                        <td rowspan="2" colspan="2">
-                                            <input type="text" placeholder="수신을 입력하세요">
-                                        </td>
-                                        <th rowspan="1" colspan="2">사업자번호</th>
-                                        <td colspan="2">
-                                            <input type="text" placeholder="사업자번호를 입력하세요">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th rowspan="1" colspan="2">대표자</th>
-                                        <td colspan="2">
-                                            <input type="text" placeholder="대표자를 입력하세요">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th rowspan="2" colspan="2">참조</th>
-                                        <td colspan="2" rowspan="2">
-                                            <input type="text" placeholder="참조 입력하세요">
-                                        </td>
-                                        <th colspan="2" rowspan="2">담당자</th>
-                                        <th>성명</th>
-                                        <td>
-                                            <input type="text" placeholder="성명">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>연락처</th>
-                                        <td>
-                                            <input type="text" placeholder="연락처">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">제목</th>
-                                        <td colspan="6"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>No</th>
-                                        <th colspan="2">품명</th>
-                                        <th>규격</th>
-                                        <th>수량</th>
-                                        <th>단가</th>
-                                        <th colspan="2">금액</th>
-
-                                    </tr>
-                                    <!---------------------------------------------------->
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="2"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="2"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="2"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="2"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="2"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="2"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td colspan="2"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-
-                                    <!---------------------------------------------------->
-                                    <tr>
-                                        <th colspan="3">합계(VAT 포함)</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">특기사항</th>
-                                        <td colspan="6">
-                                            <ol>
-                                                <li>납기 일자 : <input type="text" placeholder="납기일자"></li>
-                                                <li>납품 장소 :  <input type="text" placeholder="납품장소"></li>
-                                                <li>결제 조건 :  <input type="text" placeholder="결제조건"></li>
-                                                <li>기    타 : <input type="text" placeholder="기타"></li>
-                                            </ol>
-                                        </td>
-                                    </tr>
-                                    </tbody></table>
+                            <!-- Page-header start -->
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-green"></i>
+                                            <div class="d-inline">
+                                                <h4>상세 내역</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- Page end -->
+                            <!-- Page-header end -->
+
+                            <!-- Page-body start -->
+                            <div class="page-body">
+
+                                <!-- Hover table card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>상세 내역을 확인한 후 발행하시기 바랍니다.</h5>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-filter filter-card"></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                            </ul>
+                                        </div>
+                                        <div class="pcoded-search">
+                                            <span class="searchbar-toggle searched">  </span>
+                                            <div class="pcoded-search-box ">
+                                                <input type="text" placeholder="Search">
+                                                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-block table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>주문번호</th>
+                                                    <th>협력사</th>
+                                                    <th>품목명</th>
+                                                    <th>총액</th>
+                                                    <th>납기</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="item : ${pclist}" th:onclick="|location.href='@{/purchase/order_1_doc?id={id}(id=${item.id})}'|">
+                                                    <th scope="row" th:text="${item.id}"></th>
+                                                    <td th:text="${item.companyName}"></td>
+                                                    <td th:text="|${item.materialName} 외..|"></td>
+                                                    <td th:text="${item.totalprice}"></td>
+                                                    <td th:text="${item.deadline}"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hover table card end -->
+
+                            </div>
+                            <!-- Page-body end -->
                         </div>
                     </div>
                     <!-- Main-body end -->
