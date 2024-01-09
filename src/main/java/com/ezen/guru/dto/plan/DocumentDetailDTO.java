@@ -20,6 +20,7 @@ public class DocumentDetailDTO {
     private String documentMeasure;
     private int documentPrice;
 
+
 }
 
 
