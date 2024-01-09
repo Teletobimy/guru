@@ -60,5 +60,3 @@ public class QProducePlaner extends EntityPathBase<ProducePlaner> {
     }
 
 }
-
-//

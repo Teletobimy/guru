@@ -23,6 +23,10 @@ public class Material {
     @Column(name="company_id")
     private String companyId;
 
+//    @ManyToOne
+//    @JoinColumn(name="company_id")
+//    private Company company;
+
     @Column(name="material_name")
     private String materialName;
 
@@ -45,6 +49,7 @@ public class Material {
     public Material(int materialId,
                     String materialCode,
                     String companyId,
+                    Company company,
                     String materialName,
                     String materialDescription,
                     int materialStock,
@@ -54,6 +59,7 @@ public class Material {
         this.materialId = materialId;
         this.materialCode = materialCode;
         this.companyId = companyId;
+//        this.company = company;
         this.materialName = materialName;
         this.materialDescription = materialDescription;
         this.materialStock = materialStock;

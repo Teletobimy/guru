@@ -65,5 +65,3 @@ public class QShipment extends EntityPathBase<Shipment> {
     }
 
 }
-
-//

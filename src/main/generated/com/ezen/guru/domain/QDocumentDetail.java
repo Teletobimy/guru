@@ -58,5 +58,3 @@ public class QDocumentDetail extends EntityPathBase<DocumentDetail> {
     }
 
 }
-
-//
