@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    public List<PurchaseOrder> getProductBeforeOrderDetailsByStatus();
+    public List<PurchaseOrder> getProductBeforeOrderDetailsByStatus(int category);
 
     public List<PurchaseOrder> getProductAfterOrderDetailsByStatus();
 

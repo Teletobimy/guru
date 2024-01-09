@@ -94,6 +94,29 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
+
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs  tabs" role="tablist">
+
+                                            <li th:each="code:${code}" class="nav-item">
+                                                <a class="nav-link"
+                                                   data-toggle="tab"
+                                                   th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
+                                                   role="tab"
+                                                   style="cursor:pointer;"
+                                                   th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
+                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
+                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
+                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
+                                                   th:text="${code.codeNum == 0 ? '전체보기' :
+                                                                  code.codeNum == 1 ? '발주 전' :
+                                                                  code.codeNum == 2 ? '발주 완료' :
+                                                                  code.codeNum == 3 ? '발주 마감' : ''}">
+                                                </a>
+                                            </li>
+
+                                        </ul>
+
                                         <h5>목록을 클릭하여 상세 내역을 확인하세요.</h5>
                                         <div class="card-header-right">
                                             <ul class="list-unstyled card-option">

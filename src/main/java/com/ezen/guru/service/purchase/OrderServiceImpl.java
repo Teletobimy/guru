@@ -16,7 +16,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository detailRepository;
 
-    public List<PurchaseOrder> getProductBeforeOrderDetailsByStatus() {
+    public List<PurchaseOrder> getProductBeforeOrderDetailsByStatus(int category) {
         return orderRepository.findByStatusOrderByDeadline(0);
     }
 

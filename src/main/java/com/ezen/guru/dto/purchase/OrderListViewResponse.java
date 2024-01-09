@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class BeforeOrderListViewResponse {
+public class OrderListViewResponse {
 
     private final String id;
     private final String companyName;
@@ -15,7 +15,7 @@ public class BeforeOrderListViewResponse {
     private final int totalprice;
     private final LocalDateTime deadline;
 
-    public BeforeOrderListViewResponse(PurchaseOrder purchaseOrder) {
+    public OrderListViewResponse(PurchaseOrder purchaseOrder) {
         this.id = purchaseOrder.getId();
         this.companyName = purchaseOrder.getCompany().getCompanyName();
         PurchaseOrderDetail firstDetail = purchaseOrder.getPurchaseOrderDetails().stream().findFirst().orElse(null);
