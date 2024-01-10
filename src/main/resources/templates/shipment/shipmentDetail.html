@@ -53,14 +53,23 @@
             flex-flow: column;
             justify-content: center;
             align-items: center;
+            margin:30px;
         }
         .btn-display{
          display: flex;
          justify-content: center;
          margin-bottom:20px;
         }
-        button{
+        .btn{
             margin:10px;
+            font-weight:bold;
+        }
+        .btn-disabled-y{
+            background-color: rgba(254, 214, 150);
+            border-color: rgb(255, 185, 99);
+            color: #fff;
+            cursor: pointer;
+            transition: all ease-in 0.3s;
         }
     </style>
 </head>
@@ -115,7 +124,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="container">
-                                        <h1>출하 명세서</h1>
+
                                         <table width="60%">
                                             <tr>
                                                 <th colspan="2">출하 번호</th>
@@ -144,9 +153,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th rowspan="2" colspan="2">참조</th>
+                                                <th rowspan="2" colspan="2">납기 일자</th>
                                                 <td colspan="2" rowspan="2">
-                                                    <input type="text" placeholder="참조 입력하세요">
+                                                    <input type="text" readonly th:value="${shipment.shippingDate}" placeholder="참조 입력하세요">
                                                 </td>
                                                 <th colspan="2" rowspan="2">담당자</th>
                                                 <th>성명</th>
@@ -159,10 +168,6 @@
                                                 <td >
                                                     <input type="text" readonly th:value="${shipment.tel}">
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2">제목</th>
-                                                <td colspan="6"></td>
                                             </tr>
                                             <tr>
                                                 <th>No</th>
@@ -183,29 +188,17 @@
                                                 <td colspan="2" th:text="${shipment.materialPrice}"></td>
                                             </tr>
                                             <!---------------------------------------------------->
-                                            <tr>
-                                                <th colspan="3">합계(VAT 포함)</th>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td colspan="2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2">특기사항</th>
-                                                <td colspan="6">
-                                                    <ol>
-                                                        <li>납기 일자 : <input type="text" readonly th:value="${shipment.shippingDate}"></li>
-                                                        <li>기    타 : <input type="text" placeholder="기타"></li>
-                                                    </ol>
-                                                </td>
-                                            </tr>
+
                                         </table>
                                     </div>
                                     </div>
                                     <div class="btn-display">
-                                        <button class="btn btn-warning">수정</button>
                                         <button class="btn btn-warning" th:attr="onclick='gotoList()'">목록</button>
-                                        <button class="btn btn-warning">삭제</button>
+                                        <form th:action="'/shipment/addQcCheck?shipmentId='+${shipment.shipmentId}" method="post">
+                                            <button class="btn btn-warning"  th:style="${qcCheck == null ? '' : 'display:none'}">검수</button>
+                                            <button class="btn btn-disabled-y " th:if="${qcCheck != null}" th:disabled="${qcCheck != null}">검수</button>
+
+                                        </form>
                                     </div>
 
                                 </div>

@@ -15,7 +15,7 @@ public class Shipment {
     @Column(name = "shipment_id", nullable = false)
     private int shipmentId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "material_id",referencedColumnName = "material_id")
     private Material materialId;
 
@@ -45,12 +45,13 @@ public class Shipment {
     private LocalDateTime shippingDate;
 
     @Builder
-    public Shipment(Material materialId, String materialName,
+    public Shipment(int shipmentId,Material materialId, String materialName,
                     int shipmentCnt,int materialPrice,
                     String materialMeasure,int materialCategory,
                     Company companyId, LocalDateTime shippingDate,
                     String manager
                     ){
+        this.shipmentId =shipmentId;
         this.materialId = materialId;
         this.materialName = materialName;
         this.shipmentCnt = shipmentCnt;
