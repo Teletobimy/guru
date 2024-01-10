@@ -131,11 +131,11 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr th:each="item : ${list}">
-                                                        <th th:text="${list.id}"></th>
-                                                        <th th:text="${list.companyName}"></th>
+                                                        <th th:text="${item.id}"></th>
+                                                        <th th:text="${item.companyName}"></th>
                                                         <th th:text="|${item.materialName} 외..|"></th>
-                                                        <td th:text="${list.totalprice} + &#8361;"></td>
-                                                        <td th:text="${#temporals.format(list.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                        <td th:text="${item.totalprice} + &#8361;"></td>
+                                                        <td th:text="${#temporals.format(item.deadline, 'yyyy-MM-dd HH:mm')}"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
