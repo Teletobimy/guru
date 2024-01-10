@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+00<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -149,6 +149,7 @@
                                                                     <th>자재 종류</th>
                                                                     <th>회사명</th>
                                                                     <th>출하 날짜</th>
+                                                                    <th>검수 상태</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -163,6 +164,11 @@
                                                                         th:text="${code.codeName}"></td>
                                                                     <td th:text="${list.companyName}"></td>
                                                                     <td th:text="${list.shippingDate}"></td>
+                                                                    <th th:each="qcCheckList : ${qcCheckList}"
+                                                                        th:if="${qcCheckList.shipmentId == list.shipmentId}"
+                                                                        th:text="${qcCheckList.processStatus == 2 ? '검수중' :
+                                                                                    qcCheckList.processStatus == 3 ? '검수 완료' : ''}"
+                                                                        style="color:009000;"></th>
                                                                 </tr>
 
                                                                 </tbody>
