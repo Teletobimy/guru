@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .d-inline {
+            display: flex;
+            align-items: center;
+        }
+        .searched {
+            margin-top: 20px!important;
+        }
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar"></div>
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- Main-body start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- Page-header start -->
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-green"></i>
+                                            <div class="d-inline">
+                                                <h4>상세 내역</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Page-header end -->
+
+                            <!-- Page-body start -->
+                            <div class="page-body">
+
+                                <!-- Hover table card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>모든 품목을 발주한 후 완료 처리 바랍니다.</h5>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left"></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--발주 설명-->
+                                    <div class="card-block table-border-style">
+                                        <div class="col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>주문번호</th>
+                                                        <th>협력사</th>
+                                                        <th>제목</th>
+                                                        <th>총액</th>
+                                                        <th>계약일자</th>
+                                                        <th>납기일자</th>
+                                                        <th>특기사항</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <th:block th:with="firstItem=${list[0]}">
+                                                        <tr>
+                                                            <th th:text="${firstItem.id}"></th>
+                                                            <th th:text="${firstItem.companyName}"></th>
+                                                            <th th:text="|${firstItem.materialName} 외..|"></th>
+                                                            <td th:text="${firstItem.totalprice} + &#8361;"></td>
+                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${firstItem.memo}"></td>
+                                                        </tr>
+                                                    </th:block>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--발주 상세 내역-->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>발주 상세 내역</h5>
+                                    </div>
+                                    <div class="card-block table-border-style">
+                                        <div class="col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>품목명</th>
+                                                        <th>카테고리</th>
+                                                        <th>가격</th>
+                                                        <th>수량 (단위)</th>
+                                                        <th>발주</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="item,stat : ${list}">
+                                                        <td scope="row" th:text="${stat.count}"></td>
+                                                        <td th:text="${item.materialName}"></td>
+                                                        <td th:each="code:${code}"
+                                                            th:if="${code.codeNum} == ${item.category}"
+                                                            th:text="${code.codeName}"></td>
+                                                        <td th:text="${item.price} + &#8361;"></td>
+                                                        <td th:text="${item.cnt}"></td>
+                                                        <td><button type="button" class="btn btn-card btn-primary" data-toggle="modal" data-target="#exampleModal">발주</button></td>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">발주</h5>
+                                                                        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" th:value="${item.status}">
+                                                                        <p th:text="|품목명 : ${item.materialName}|"></p>
+                                                                        <p th:each="code:${code}"
+                                                                           th:if="${code.codeNum} == ${item.category}"
+                                                                           th:text="|카테고리 : ${code.codeName}|"></p>
+                                                                        <p th:text="|수량 (단위) : ${item.cnt}|"></p>
+                                                                        <p th:text="|총액 : ${item.materialprice}&#8361;|"></p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary order-btn" onclick="confirmOrder()" data-detail-id="${item.detailId}">발주</button>
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Modal End -->
+
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hover table card end -->
+
+                            </div>
+                            <!-- Page-body end -->
+                        </div>
+                    </div>
+                    <!-- Main-body end -->
+
+                    <div id="styleSelector">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+<script type="text/javascript" src="assets/js/classie/classie.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    function confirmOrder() {
+        var orderId = $(this).data('detail-id');
+        var newStatus = 1; // 변경할 상태
+
+        // AJAX를 사용하여 서버에 발주 상태 업데이트 요청을 보냅니다.
+        $.ajax({
+            type: "POST",
+            url: 'purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때 실행할 코드
+                $('#exampleModal').modal('hide'); // 모달 닫기
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

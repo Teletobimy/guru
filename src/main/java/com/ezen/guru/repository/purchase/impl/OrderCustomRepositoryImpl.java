@@ -36,13 +36,14 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
             whereCondition.and(qOrderDetail.materialName.like("%" + keyword + "%"));
         }
         if(category != -1){
-            whereCondition.and(qOrderDetail.materialCategory.eq(category));
+            whereCondition.and(qOrder.status.eq(category));
         }
 
         QueryResults<OrderListViewResponse> results = jpaQueryFactory
                 .selectDistinct(Projections.constructor(
                         OrderListViewResponse.class,
                         qOrder.id,
+                        qOrder.status,
                         qOrder.company.companyName,
                         qOrderDetail.materialName,
                         qOrder.totalprice,
@@ -56,9 +57,9 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                 .limit(size)
                 .fetchResults();
         // 결과를 Page 객체로 변환
-        List<OrderListViewResponse> content = results.getResults();
-        long total = results.getTotal();
-        PageRequest pageRequest = PageRequest.of(page,size);
+         List<OrderListViewResponse> content = results.getResults();
+         long total = results.getTotal();
+         PageRequest pageRequest = PageRequest.of(page,size);
         return new PageImpl<>(content,pageRequest,total);
     }
 }

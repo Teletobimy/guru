@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class OrderListViewResponse {
 
     private final String id;
+    private final int status;
     private final String companyName;
     private final String materialName;
     private final int totalprice;
