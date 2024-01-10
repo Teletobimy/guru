@@ -3,7 +3,6 @@ package com.ezen.guru.controller.purchase;
 import com.ezen.guru.domain.Code;
 import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.service.purchase.OrderService;
-import com.ezen.guru.service.purchase.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/order_1")
+    @GetMapping("/order")
     public String getOrderList(Model model,
                                @RequestParam(value = "size", defaultValue = "10") int size,
                                @RequestParam(value ="page" ,defaultValue = "0") int page,
@@ -33,15 +32,15 @@ public class OrderController {
         model.addAttribute("list", orderList);
         model.addAttribute("code",codeList);
         model.addAttribute("category",category);
-        return "purchase/order_1";
+        return "purchase/order";
     }
-    @GetMapping("/order_1_detail")
+    @GetMapping("/order_detail")
     public String getDocument(Model model, @RequestParam String id) {
-        List<PurchaseOrderViewResponse> list = orderService.getPurchaseOrderDocument(id).stream()
-                .map(PurchaseOrderViewResponse::new)
+        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id).stream()
+                .map(OrderDetailViewResponse::new)
                 .toList();
         model.addAttribute("list", list);
-        return "purchase/order_1_detail";
+        return "purchase/order_detail";
     }
     @GetMapping("/order_form")
     public String getDetail() {
@@ -50,7 +49,7 @@ public class OrderController {
     }
 
 //    미발주 계약 및 조달 건들의 번호, 회사명, 제목, 날짜를 목록으로 보여주고
-//    상세 버튼을 누르면 상세 내역(trade.html 형태) 열람하는 페이지로 이동
+//    상세 버튼을 누르면 상세 내역 열람하는 페이지로 이동
 //    그 후 발주 버튼을 누르면 상세 내역과 비교하며 입력할 수 있는 폼이 있는 모달 창
 //    입력 후 완료 버튼 누르면 유효성 검사 실행, 성공하면 DB에서 발주 상태로 바뀜
 //    필요한 발주를 완료한 후 상세 페이지에서 목록 버튼 누르면 화면으로 redirect

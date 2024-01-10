@@ -14,6 +14,6 @@ public interface OrderService {
 
     public List<Code> findByCodeCategory(String codeCategory);
 
-    public List<PurchaseOrderDetail> getPurchaseOrderDocument(String id);
+    public List<PurchaseOrderDetail> getPurchaseOrderDetail(String id);
 
 }

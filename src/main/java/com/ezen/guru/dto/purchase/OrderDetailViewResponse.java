@@ -6,23 +6,23 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class PurchaseOrderViewResponse {
+public class OrderDetailViewResponse {
 
-    int type; //추후 코드테이블 연결, type String이지만 편의상 임시로 int
+    //int type; //추후 코드테이블 연결, String이지만 편의상 임시로 int
     String id;
     LocalDateTime regdate;
     LocalDateTime deadline;
     String companyName;
     String companyId;
     String materialName;
-    int category; //추후 코드테이블 연결, type String이지만 편의상 임시로 int
+    int category; //추후 코드테이블 연결, String이지만 편의상 임시로 int
     int price;
     String cnt;
     int totalprice;
     String memo;
 
-    public PurchaseOrderViewResponse(PurchaseOrderDetail detail) {
-        this.type = detail.getPurchaseOrder().getDocument().getType();
+    public OrderDetailViewResponse(PurchaseOrderDetail detail) {
+        //this.type = detail.getPurchaseOrder().getDocument().getType();
         this.id = detail.getPurchaseOrder().getId();
         this.regdate = detail.getPurchaseOrder().getRegdate();
         this.deadline = detail.getPurchaseOrder().getDeadline();

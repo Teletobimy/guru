@@ -56,9 +56,9 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                 .limit(size)
                 .fetchResults();
         // 결과를 Page 객체로 변환
-        List<OrderListViewResponse> content = results.getResults();
-        long total = results.getTotal();
-        PageRequest pageRequest = PageRequest.of(page,size);
+         List<OrderListViewResponse> content = results.getResults();
+         long total = results.getTotal();
+         PageRequest pageRequest = PageRequest.of(page,size);
         return new PageImpl<>(content,pageRequest,total);
     }
 }

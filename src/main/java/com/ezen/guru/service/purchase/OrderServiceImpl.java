@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<PurchaseOrderDetail> getPurchaseOrderDocument(String id){
+    public List<PurchaseOrderDetail> getPurchaseOrderDetail(String id){
         return detailRepository.findByPurchaseOrder_id(id);
     }
 }
