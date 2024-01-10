@@ -1,14 +1,11 @@
 package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "purchase_order_detail")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Data
 @Entity
 public class PurchaseOrderDetail {
 
@@ -36,6 +33,9 @@ public class PurchaseOrderDetail {
     @Column(name = "material_price")
     private int materialPrice;
 
+    @Column(name="purchase_order_check")
+    private int check;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="purchase_order_id")
     private PurchaseOrder purchaseOrder;
@@ -51,6 +51,7 @@ public class PurchaseOrderDetail {
                                int materialCategory,
                                String materialMeasure,
                                int materialPrice,
+                               int check,
                                PurchaseOrder purchaseOrder,
                                Material material) {
         this.id = id;
@@ -59,6 +60,7 @@ public class PurchaseOrderDetail {
         this.materialCategory = materialCategory;
         this.materialMeasure = materialMeasure;
         this.materialPrice = materialPrice;
+        this.check = check;
         this.purchaseOrder = purchaseOrder;
         this.material = material;
     }

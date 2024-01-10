@@ -16,4 +16,8 @@ public interface OrderService {
 
     public List<PurchaseOrderDetail> getPurchaseOrderDetail(String id);
 
+    public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id);
+
+    public void updateOrderDetailStatus(int orderId, int newStatus);
+
 }

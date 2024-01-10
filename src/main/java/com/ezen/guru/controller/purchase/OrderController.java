@@ -39,18 +39,28 @@ public class OrderController {
         List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id).stream()
                 .map(OrderDetailViewResponse::new)
                 .toList();
+        List<Code> codeList = orderService.findByCodeCategory("material_category");
+
+        model.addAttribute("code",codeList);
         model.addAttribute("list", list);
         return "purchase/order_detail";
     }
-    @GetMapping("/order_form")
-    public String getForm() {
-
-        return "purchase/order_form";
-    }
     @GetMapping("/order_print")
-    public String getPrint() {
+    public String getPrint(Model model, @RequestParam String id) {
+        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id).stream()
+                .map(OrderPrintViewResponse::new)
+                .toList();
+        List<Code> codeList = orderService.findByCodeCategory("material_category");
+
+        model.addAttribute("code",codeList);
+        model.addAttribute("list", list);
 
         return "purchase/order_print";
+    }
+    @GetMapping("/order_form")
+    public String getForm(Model model) {
+
+        return "purchase/order_form";
     }
 
 //    미발주 계약 및 조달 건들의 번호, 회사명, 제목, 날짜를 목록으로 보여주고

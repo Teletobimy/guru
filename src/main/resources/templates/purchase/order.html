@@ -107,17 +107,17 @@
                                                 <li th:each="code:${code}" class="nav-item">
                                                     <a class="nav-link"
                                                        data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == -1 ? -1 : code.codeNum} + ')'"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${category == -1 and code.codeNum == -1 ? 'active' : ''} +
-                                                                           ${category == 0 and code.codeNum == 0 ? 'active' : ''} +
+                                                       th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
                                                                            ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
-                                                                           ${category == 2 and code.codeNum == 2 ? 'active' : ''}"
-                                                       th:text="${code.codeNum == -1 ? '전체' :
-                                                                      code.codeNum == 0 ? '미발주' :
-                                                                      code.codeNum == 1 ? '발주 완료' :
-                                                                      code.codeNum == 2 ? '발주 마감' : ''}">
+                                                                           ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
+                                                                           ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
+                                                       th:text="${code.codeNum == 0 ? '전체' :
+                                                                      code.codeNum == 1 ? '미발주' :
+                                                                      code.codeNum == 2 ? '발주 완료' :
+                                                                      code.codeNum == 3 ? '발주 마감' : ''}">
                                                     </a>
                                                 </li>
                                             </ul>
@@ -162,7 +162,9 @@
 
                                                             <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.id}+ ')'" th:each="list : ${list}">
                                                                 <th th:text="${list.id}"></th>
-                                                                <th th:if="${code.codeNum == 0}">미발주</th><th th:if="${code.codeNum == 1}">발주완료</th><th th:if="${code.codeNum == 2}">발주마감</th>
+                                                                <th th:each="code:${code}"
+                                                                    th:if="${code.codeNum} == ${list.status}"
+                                                                    th:text="${code.codeName}"></th>
                                                                 <th th:text="${list.companyName}"></th>
                                                                 <th th:text="|${list.materialName} 외..|"></th>
                                                                 <td th:text="${list.totalprice} + &#8361;"></td>

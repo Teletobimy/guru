@@ -1,4 +1,4 @@
-package com.ezen.guru.service.purchase;
+package com.ezen.guru.service.purchase.impl;
 
 import com.ezen.guru.domain.Code;
 import com.ezen.guru.domain.PurchaseOrder;
@@ -8,6 +8,7 @@ import com.ezen.guru.dto.receive.ShipmentResponse;
 import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.purchase.OrderRepository;
+import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
@@ -35,5 +36,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<PurchaseOrderDetail> getPurchaseOrderDetail(String id){
         return detailRepository.findByPurchaseOrder_id(id);
+    }
+
+    @Override
+    public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id){
+        return detailRepository.findByPurchaseOrder_id(id);
+    }
+    @Override
+    public void updateOrderDetailStatus(int orderId, int newStatus) {
+        PurchaseOrderDetail order = detailRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
+        order.setCheck(newStatus);
+        detailRepository.save(order);
     }
 }

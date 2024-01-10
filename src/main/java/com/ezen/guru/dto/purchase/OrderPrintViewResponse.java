@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class OrderDetailViewResponse {
+public class OrderPrintViewResponse {
 
     //int type; //추후 코드테이블 연결, String이지만 편의상 임시로 int
     String id;
@@ -14,31 +14,25 @@ public class OrderDetailViewResponse {
     LocalDateTime deadline;
     String companyName;
     String companyId;
-    int detailId;
     String materialName;
     int category; //추후 코드테이블 연결, String이지만 편의상 임시로 int
     int price;
     String cnt;
     int totalprice;
     String memo;
-    int materialprice;
-    int status;
 
-    public OrderDetailViewResponse(PurchaseOrderDetail detail) {
+    public OrderPrintViewResponse(PurchaseOrderDetail detail) {
         //this.type = detail.getPurchaseOrder().getDocument().getType();
         this.id = detail.getPurchaseOrder().getId();
         this.regdate = detail.getPurchaseOrder().getRegdate();
         this.deadline = detail.getPurchaseOrder().getDeadline();
         this.companyName = detail.getPurchaseOrder().getCompany().getCompanyName();
         this.companyId = detail.getPurchaseOrder().getCompany().getCompanyId();
-        this.detailId = detail.getId();
         this.materialName = detail.getMaterialName();
         this.category = detail.getMaterialCategory();
         this.price = detail.getMaterialPrice();
         this.cnt = detail.getPurchaseOrderCnt() + " (" + detail.getMaterialMeasure() + ")";
         this.totalprice = detail.getPurchaseOrder().getTotalprice();
         this.memo = detail.getPurchaseOrder().getMemo();
-        this.materialprice = detail.getMaterialPrice() * detail.getPurchaseOrderCnt();
-        this.status = detail.getCheck();
     }
 }

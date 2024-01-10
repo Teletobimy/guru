@@ -43,6 +43,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                 .selectDistinct(Projections.constructor(
                         OrderListViewResponse.class,
                         qOrder.id,
+                        qOrder.status,
                         qOrder.company.companyName,
                         qOrderDetail.materialName,
                         qOrder.totalprice,
