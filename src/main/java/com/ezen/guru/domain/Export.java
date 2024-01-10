@@ -36,9 +36,6 @@ public class Export {
     @Column(name = "export_cnt")
     private int exportCnt;
 
-
-    @CreatedDate
-    @LastModifiedDate
     @Column(name = "export_date")
     private LocalDateTime exportDate;
 
@@ -48,6 +45,7 @@ public class Export {
         this.producePlaner = producePlaner;
         this.bicycleName = bicycleName;
         this.materialName = materialName;
+        this.exportCnt = exportCnt;
         this.exportDate = exportDate;
     }
 

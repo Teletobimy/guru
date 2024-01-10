@@ -79,7 +79,7 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table bg-c-brown"></i>
                                             <div class="d-inline">
                                                 <h4>미처리 생산계획서 목록</h4>
                                                 <span>출고처리가 안된 생산계획서들에 대해서 출고처리를 진행하는 페이지입니다.</span>
@@ -131,7 +131,7 @@
                                                     <th>자전거이름</th>
                                                     <th>생산계획수량</th>
                                                     <th>마감일</th>
-                                                    <th>진행상태</th>
+                                                    <th colspan="2">진행상태</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -141,6 +141,7 @@
                                                     <td th:text="${item.produceBicycleCnt}"></td>
                                                     <td th:text="${item.producePlanerDeadline}"></td>
                                                     <td th:text="${codeList[index.index].codeName}"></td>
+                                                    <td><button type="button" class="btn btn-card btn-brown" onclick="" th:if="${codeList[index.index].codeNum == 2}">출고처리</button></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
