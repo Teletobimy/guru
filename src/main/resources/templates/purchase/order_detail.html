@@ -185,10 +185,12 @@
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="exampleModalLabel">발주</h5>
-                                                                        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <input type="hidden" th:value="${item.status}">
+                                                                        <input type="hidden" th:value="${item.id}">
+                                                                        <input type="hidden" th:value="${item.detailId}">
+                                                                        <input type="hidden" th:value="${item.check}">
                                                                         <p th:text="|품목명 : ${item.materialName}|"></p>
                                                                         <p th:each="code:${code}"
                                                                            th:if="${code.codeNum} == ${item.category}"
@@ -197,8 +199,8 @@
                                                                         <p th:text="|총액 : ${item.materialprice}&#8361;|"></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary order-btn" onclick="confirmOrder()" data-detail-id="${item.detailId}">발주</button>
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                        <button type="button" class="btn btn-primary" id="order-btn">발주</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -260,21 +262,27 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    function confirmOrder() {
-        var orderId = $(this).data('detail-id');
-        var newStatus = 1; // 변경할 상태
+    const modifyButton = document.getElementById('order-btn');
 
-        // AJAX를 사용하여 서버에 발주 상태 업데이트 요청을 보냅니다.
-        $.ajax({
-            type: "POST",
-            url: 'purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
-            success: function (response) {
-                console.log(response); // 성공적으로 응답을 받았을 때 실행할 코드
-                $('#exampleModal').modal('hide'); // 모달 닫기
-            },
-            error: function (error) {
-                console.error(error);
-            }
+    if (modifyButton) {
+        modifyButton.addEventListener('click', event => {
+            let params = new URLSearchParams(location.search);
+            let id = params.get('id');
+
+            fetch(`/api/articles/${id}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    check: 1,
+                    detailId: document.getElementById("detailId"),
+                })
+            })
+            .then(() => {
+                alert('수정이 완료되었습니다.');
+                location.replace('/purchase/order_detail?id=' + id);
+            });
         });
     }
 </script>

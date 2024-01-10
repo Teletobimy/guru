@@ -5,7 +5,7 @@ import lombok.*;
 
 @Table(name = "purchase_order_detail")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Data
+@Getter
 @Entity
 public class PurchaseOrderDetail {
 
@@ -43,6 +43,10 @@ public class PurchaseOrderDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="material_id")
     private Material material;
+
+    public void update(int check) {
+        this.check = check;
+    }
 
     @Builder
     public PurchaseOrderDetail(int id,

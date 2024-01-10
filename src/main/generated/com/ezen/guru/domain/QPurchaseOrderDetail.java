@@ -22,6 +22,8 @@ public class QPurchaseOrderDetail extends EntityPathBase<PurchaseOrderDetail> {
 
     public static final QPurchaseOrderDetail purchaseOrderDetail = new QPurchaseOrderDetail("purchaseOrderDetail");
 
+    public final NumberPath<Integer> check = createNumber("check", Integer.class);
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final QMaterial material;

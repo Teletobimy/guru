@@ -14,6 +14,7 @@ public class OrderDetailViewResponse {
     LocalDateTime deadline;
     String companyName;
     String companyId;
+
     int detailId;
     String materialName;
     int category; //추후 코드테이블 연결, String이지만 편의상 임시로 int
@@ -22,7 +23,7 @@ public class OrderDetailViewResponse {
     int totalprice;
     String memo;
     int materialprice;
-    int status;
+    int check;
 
     public OrderDetailViewResponse(PurchaseOrderDetail detail) {
         //this.type = detail.getPurchaseOrder().getDocument().getType();
@@ -39,6 +40,6 @@ public class OrderDetailViewResponse {
         this.totalprice = detail.getPurchaseOrder().getTotalprice();
         this.memo = detail.getPurchaseOrder().getMemo();
         this.materialprice = detail.getMaterialPrice() * detail.getPurchaseOrderCnt();
-        this.status = detail.getCheck();
+        this.check = detail.getCheck();
     }
 }

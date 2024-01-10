@@ -4,6 +4,8 @@ import com.ezen.guru.domain.Code;
 import com.ezen.guru.domain.PurchaseOrder;
 import com.ezen.guru.domain.PurchaseOrderDetail;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
+import com.ezen.guru.dto.purchase.UpdateOrderCheckRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public interface OrderService {
 
     public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id);
 
-    public void updateOrderDetailStatus(int orderId, int newStatus);
+    @Transactional
+    public PurchaseOrderDetail update(int id, UpdateOrderCheckRequest request);
 
 }
