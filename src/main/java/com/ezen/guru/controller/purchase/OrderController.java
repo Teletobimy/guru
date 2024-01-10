@@ -35,7 +35,7 @@ public class OrderController {
         return "purchase/order";
     }
     @GetMapping("/order_detail")
-    public String getDocument(Model model, @RequestParam String id) {
+    public String getDetail(Model model, @RequestParam String id) {
         List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id).stream()
                 .map(OrderDetailViewResponse::new)
                 .toList();
@@ -43,9 +43,14 @@ public class OrderController {
         return "purchase/order_detail";
     }
     @GetMapping("/order_form")
-    public String getDetail() {
+    public String getForm() {
 
         return "purchase/order_form";
+    }
+    @GetMapping("/order_print")
+    public String getPrint() {
+
+        return "purchase/order_print";
     }
 
 //    미발주 계약 및 조달 건들의 번호, 회사명, 제목, 날짜를 목록으로 보여주고

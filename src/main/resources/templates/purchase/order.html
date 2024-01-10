@@ -151,6 +151,7 @@
                                                             <thead>
                                                             <tr>
                                                                 <th>주문번호</th>
+                                                                <th>상태</th>
                                                                 <th>협력사</th>
                                                                 <th>품목명</th>
                                                                 <th>총액</th>
@@ -161,6 +162,7 @@
 
                                                             <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.id}+ ')'" th:each="list : ${list}">
                                                                 <th th:text="${list.id}"></th>
+                                                                <th th:if="${code.codeNum == 0}">미발주</th><th th:if="${code.codeNum == 1}">발주완료</th><th th:if="${code.codeNum == 2}">발주마감</th>
                                                                 <th th:text="${list.companyName}"></th>
                                                                 <th th:text="|${list.materialName} 외..|"></th>
                                                                 <td th:text="${list.totalprice} + &#8361;"></td>

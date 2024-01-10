@@ -38,6 +38,14 @@
         .searched {
             margin-top: 20px!important;
         }
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -124,19 +132,25 @@
                                                     <tr>
                                                         <th>주문번호</th>
                                                         <th>협력사</th>
-                                                        <th>품목명</th>
+                                                        <th>제목</th>
                                                         <th>총액</th>
-                                                        <th>납기</th>
+                                                        <th>계약일자</th>
+                                                        <th>납기일자</th>
+                                                        <th>특기사항</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="item : ${list}">
-                                                        <th th:text="${item.id}"></th>
-                                                        <th th:text="${item.companyName}"></th>
-                                                        <th th:text="|${item.materialName} 외..|"></th>
-                                                        <td th:text="${item.totalprice} + &#8361;"></td>
-                                                        <td th:text="${#temporals.format(item.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                    </tr>
+                                                    <th:block th:with="firstItem=${list[0]}">
+                                                        <tr>
+                                                            <th th:text="${firstItem.id}"></th>
+                                                            <th th:text="${firstItem.companyName}"></th>
+                                                            <th th:text="|${firstItem.materialName} 외..|"></th>
+                                                            <td th:text="${firstItem.totalprice} + &#8361;"></td>
+                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${firstItem.memo}"></td>
+                                                        </tr>
+                                                    </th:block>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -149,20 +163,21 @@
                                                 <table class="table">
                                                     <thead>
                                                     <tr>
-                                                        <th>주문번호</th>
-                                                        <th>협력사</th>
+                                                        <th>No.</th>
                                                         <th>품목명</th>
-                                                        <th>총액</th>
-                                                        <th>납기</th>
+                                                        <th>카테고리</th>
+                                                        <th>가격</th>
+                                                        <th>수량</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="item : ${list}">
-                                                        <th scope="row" th:text="${item.id}"></th>
-                                                        <td th:text="${item.companyName}"></td>
-                                                        <td th:text="|${item.materialName} 외..|"></td>
-                                                        <td th:text="${item.totalprice}"></td>
-                                                        <td th:text="${item.deadline}"></td>
+                                                    <tr th:each="item,stat : ${list}">
+                                                        <td scope="row" th:text="${stat.count}"></td>
+                                                        <td th:text="${item.materialName}"></td>
+                                                        <td th:text="${item.category}"></td>
+                                                        <td th:text="${item.price} + &#8361;"></td>
+                                                        <td th:text="${item.cnt}"></td>
+                                                        <td><a href="/purchase/order_form" class="btn btn-card btn-primary">발주</a></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
