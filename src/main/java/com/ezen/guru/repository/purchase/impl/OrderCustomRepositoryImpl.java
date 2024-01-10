@@ -36,7 +36,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
             whereCondition.and(qOrderDetail.materialName.like("%" + keyword + "%"));
         }
         if(category != -1){
-            whereCondition.and(qOrderDetail.materialCategory.eq(category));
+            whereCondition.and(qOrder.status.eq(category));
         }
 
         QueryResults<OrderListViewResponse> results = jpaQueryFactory
