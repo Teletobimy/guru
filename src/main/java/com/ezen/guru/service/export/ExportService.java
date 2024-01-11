@@ -7,14 +7,18 @@ import com.ezen.guru.dto.export.ExportDTO;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.export.ExportRepository;
+import com.ezen.guru.repository.plan.ProducePlanerPredicate;
 import com.ezen.guru.repository.plan.ProducePlanerRepository;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,16 +42,22 @@ public class ExportService {
         return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    public List<ProducePlanerDTO> findByStatus(int status) {
+    public Page<ProducePlanerDTO> findAll(int page, int size, int category, String keyword) {
 
-        List<ProducePlaner> list = producePlanerRepository.findByProducePlanerStatusNot(status);
-        List<ProducePlaner> distinctList = list.stream()
-                .filter(distinctByKey(producePlaner -> producePlaner.getId().getProducePlanerId()))
-                .toList();
-        System.out.println(list.size());
-        System.out.println(distinctList.size());
+        BooleanExpression predicate = ProducePlanerPredicate.hasCategoryAndProducePlanerId(category, keyword);
 
-        return distinctList.stream().map(ProducePlanerDTO::new).toList();
+        Pageable pageable = (Pageable) PageRequest.of(page, size);
+
+        return producePlanerRepository.findAllByPage(predicate, pageable);
+
+//        List<ProducePlaner> list = producePlanerRepository.findAll();
+//        List<ProducePlaner> distinctList = list.stream()
+//                .filter(distinctByKey(producePlaner -> producePlaner.getId().getProducePlanerId()))
+//                .toList();
+//        System.out.println(list.size());
+//        System.out.println(distinctList.size());
+//
+//        return distinctList.stream().map(ProducePlanerDTO::new).toList();
     }
 
     public List<ProducePlanerDTO> findByProducePlanerId(String producePlanerId) {
@@ -60,6 +70,11 @@ public class ExportService {
     public Code findByCode(String codeCategory, int codeNum) {
 
         return codeRepository.findByCodeCategoryAndCodeNum(codeCategory, codeNum);
+    }
+
+    public List<Code> findByCodeCategory(String category) {
+
+        return codeRepository.findByCodeCategory(category);
     }
 
     public List<Code> findByCodeList(List<ProducePlanerDTO> list) {

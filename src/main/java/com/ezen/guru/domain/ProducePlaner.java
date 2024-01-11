@@ -9,7 +9,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,21 +18,21 @@ public class ProducePlaner {
     private ProducePlanerId id;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "bicycle_id", referencedColumnName = "bicycle_id", insertable = false, updatable = false),
-            @JoinColumn(name = "bicycle_name", referencedColumnName = "bicycle_name", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "bicycle_id", referencedColumnName = "bicycle_id", insertable = false, updatable = false)
     private Bicycle bicycle;
+
+    @Column(name = "bicycle_name")
+    private String bicycleName;
 
     @Column(name = "produce_bicycle_cnt")
     private int produceBicycleCnt;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "material_id", referencedColumnName = "material_id", insertable = false, updatable = false),
-            @JoinColumn(name = "material_name", referencedColumnName = "material_name", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "material_id", referencedColumnName = "material_id", insertable = false, updatable = false)
     private Material material;
+
+    @Column(name = "material_name")
+    private String materialName;
 
     @Column(name = "produce_material_cnt")
     private int produceMaterialCnt;
@@ -48,8 +47,10 @@ public class ProducePlaner {
     public ProducePlaner(ProducePlanerId id, Bicycle bicycle, int produceBicycleCnt, Material material, int produceMaterialCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
         this.id = id;
         this.bicycle = bicycle;
+        this.bicycleName = bicycle.getBicycleName();
         this.produceBicycleCnt = produceBicycleCnt;
         this.material = material;
+        this.materialName = material.getMaterialName();
         this.produceMaterialCnt = produceMaterialCnt;
         this.producePlanerDeadline = producePlanerDeadline;
         this.producePlanerStatus = producePlanerStatus;

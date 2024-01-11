@@ -81,24 +81,8 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-brown"></i>
                                             <div class="d-inline">
-                                                <h4>미처리 생산계획서 목록</h4>
-                                                <span>출고처리가 안된 생산계획서들에 대해서 출고처리를 진행하는 페이지입니다.</span>
+                                                <h4>생산계획서 목록</h4>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="page-header-breadcrumb">
-                                            <ul class="breadcrumb-title">
-                                                <li class="breadcrumb-item">
-                                                    <a href="/">
-                                                        <i class="icofont icofont-home"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="#!">출고</a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="/export/producePlanerList">생산계획서</a>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -111,42 +95,59 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Hover table</h5>
-                                        <span>use class <code>table-hover</code> inside table element</span>
-                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
-                                        <div class="pcoded-search">
-                                            <span class="searchbar-toggle">  </span>
-                                            <div class="pcoded-search-box ">
-                                                <input type="text" placeholder="Search">
-                                                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                        <div class="col-lg-12">
+                                            <!-- Nav tabs -->
+                                            <ul class="nav nav-tabs  tabs" role="tablist">
+
+                                                <li th:each="code, index :${code}" class="nav-item">
+                                                    <a class="nav-link"
+                                                       data-toggle="tab"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
+                                                       role="tab"
+                                                       style="cursor:pointer;"
+                                                       th:classappend="${index == code.codeNum ? 'active' : ''}"
+                                                       th:text="${code.codeName}">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <!-- Tab panes -->
+                                            <div class="tab-content tabs card-block">
+                                                <div class="pcoded-search-box search-long" >
+
+                                                    <input type="text" placeholder="Search" id="searchInput"
+                                                           style="width:95%; border:none; margin-right:5px; ">
+                                                    <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
+                                                        <i class="ti-search" aria-hidden="true"></i>
+                                                    </p>
+                                                </div>
+                                                <div class="card-block table-border-style">
+                                                    <div class="table-responsive" id="shipment-container">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>생산번호</th>
+                                                                <th>자전거이름</th>
+                                                                <th>생산계획수량</th>
+                                                                <th>마감일</th>
+                                                                <th colspan="2">진행상태</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="item, index : ${producePlanerList}" onclick="handleRowClick(this)">
+                                                                <th scope="row" th:text="${item.producePlanerId}"></th>
+                                                                <td th:text="${item.bicycleName}"></td>
+                                                                <td th:text="${item.produceBicycleCnt}"></td>
+                                                                <td th:text="${item.producePlanerDeadline}"></td>
+                                                                <td th:text="${codeList[index.index].codeName}"></td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-card btn-brown" onclick="handleButtonClick(event)" th:if="${codeList[index.index].codeNum == 2}">출고처리</button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-block table-border-style">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>생산번호</th>
-                                                    <th>자전거이름</th>
-                                                    <th>생산계획수량</th>
-                                                    <th>마감일</th>
-                                                    <th colspan="2">진행상태</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="item, index : ${producePlanerList}" onclick="handleRowClick(this)">
-                                                    <th scope="row" th:text="${item.producePlanerId}"></th>
-                                                    <td th:text="${item.bicycleName}"></td>
-                                                    <td th:text="${item.produceBicycleCnt}"></td>
-                                                    <td th:text="${item.producePlanerDeadline}"></td>
-                                                    <td th:text="${codeList[index.index].codeName}"></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-card btn-brown" onclick="handleButtonClick(event)" th:if="${codeList[index.index].codeNum == 2}">출고처리</button>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -237,6 +238,12 @@
                 console.error('Failed to send data to the server.');
             }
         };
+    }
+
+    function updateLocation(category) {
+        var newUrl = '/export/producePlanerDetail?size=10&page=0&category=' + category;
+
+        window.location.href = newUrl;
     }
 </script>
 </body>

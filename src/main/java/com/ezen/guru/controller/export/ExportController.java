@@ -22,16 +22,22 @@ public class ExportController {
     private final ExportService exportService;
 
     @GetMapping("/producePlanerList")
-    public String producePlanerList(Model model) {
+    public String producePlanerList(Model model,
+                                    @RequestParam(value = "size", defaultValue = "10") int size,
+                                    @RequestParam(value ="page" ,defaultValue = "0") int page,
+                                    @RequestParam(value = "keyword", required = false) String keyword,
+                                    @RequestParam(value = "category", defaultValue = "0") int category) {
 
-        List<ProducePlanerDTO> producePlanerDTOList = exportService.findByStatus(99);
+        List<ProducePlanerDTO> producePlanerDTOList = exportService.findAll();
         List<Code> codeList = exportService.setCodeListByProducePlanerStatus(producePlanerDTOList);
+        List<Code> code = exportService.findByCodeCategory("produce_planer_status");
 
         for (ProducePlanerDTO producePlanerDTO : producePlanerDTOList) {
             System.out.println("controller list id : " + producePlanerDTO.getProducePlanerId());
         }
         model.addAttribute("producePlanerList", producePlanerDTOList);
         model.addAttribute("codeList", codeList);
+        model.addAttribute("code", code);
 
         return "export/producePlanerList";
     }

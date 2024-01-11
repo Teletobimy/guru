@@ -24,9 +24,13 @@ public class QProducePlaner extends EntityPathBase<ProducePlaner> {
 
     public final QBicycle bicycle;
 
+    public final StringPath bicycleName = createString("bicycleName");
+
     public final QProducePlanerId id;
 
     public final QMaterial material;
+
+    public final StringPath materialName = createString("materialName");
 
     public final NumberPath<Integer> produceBicycleCnt = createNumber("produceBicycleCnt", Integer.class);
 
