@@ -8,6 +8,7 @@ import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.export.ExportRepository;
 import com.ezen.guru.repository.plan.ProducePlanerRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -144,6 +145,31 @@ public class ExportService {
             producePlaner.setProducePlanerStatus(0);
             producePlanerRepository.save(producePlaner);
         });
+    }
+
+    @Transactional
+    public void listExport(String producePlanerId) {
+
+        List<Export> exportList = exportRepository.findByIdProducePlanerId(producePlanerId);
+        List<ProducePlaner> list = producePlanerRepository.findByIdProducePlanerId(producePlanerId);
+
+        if (exportList.size() == list.size()) {
+
+            int cnt = 0;
+
+            for (ProducePlaner entity : list) {
+
+                if (entity.getProducePlanerStatus() == 2) {
+                    cnt++;
+                }
+            }
+
+            if (list.size() == cnt) {
+
+                System.out.println("id : " + producePlanerId);
+                producePlanerRepository.updateProducePlanerStatusById(producePlanerId);
+            }
+        }
     }
 
     private void validate(final ExportDTO dto) {

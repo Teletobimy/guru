@@ -205,5 +205,94 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    function submitRowData(button) {
+        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
+        // Hidden inputs에서 데이터 가져오기
+        var producePlanerId = row.find('input[name="producePlanerId"]').val();
+        var bicycleId = row.find('input[name="bicycleId"]').val();
+        var materialId = row.find('input[name="materialId"]').val();
+        var bicycleName = row.find('input[name="bicycleName"]').val();
+        var producePlanerStatus = row.find('input[name="producePlanerStatus"]').val();
+        // 나머지 데이터 가져오기
+        var materialName = row.find('th:eq(0)').text();
+        var produceMaterialCnt = row.find('td:eq(0)').text();
+
+        if (producePlanerStatus == 0) {
+            // 현재 시간을 구함
+            var exportDate = new Date().toISOString();
+
+            // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
+            $.ajax({
+                type: 'POST',
+                url: '/export/producePlanerDetail',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    producePlanerId: producePlanerId,
+                    bicycleId: bicycleId,
+                    materialId: materialId,
+                    bicycleName: bicycleName,
+                    materialName: materialName,
+                    exportCnt: produceMaterialCnt,
+                    exportDate: exportDate
+                }),
+                dataType: 'json', // 변경된 부분
+                success: function(response) {
+                    // 서버로부터의 응답 처리
+                    console.log(response);
+                    // 성공 시 페이지 새로고침
+                    location.reload();
+                },
+                error: function(error) {
+                    // 오류 발생 시 처리
+                    console.log(error);
+                    location.reload();
+                }
+            });
+        } else {
+            // 이미 불출 완료된 경우에 대한 처리 추가
+            console.log('이미 불출 완료된 항목입니다.');
+        }
+    }
+
+    function cancelRowData(button) {
+        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
+        // Hidden inputs에서 데이터 가져오기
+        var producePlanerId = row.find('input[name="producePlanerId"]').val();
+        var bicycleId = row.find('input[name="bicycleId"]').val();
+        var materialId = row.find('input[name="materialId"]').val();
+        var bicycleName = row.find('input[name="bicycleName"]').val();
+        // 나머지 데이터 가져오기
+        var materialName = row.find('th:eq(0)').text();
+        var produceMaterialCnt = row.find('td:eq(0)').text();
+
+        // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
+        $.ajax({
+            type: 'POST',
+            url: '/export/cancelExport',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({
+                producePlanerId: producePlanerId,
+                bicycleId: bicycleId,
+                materialId: materialId,
+                bicycleName: bicycleName,
+                materialName: materialName,
+                exportCnt: produceMaterialCnt
+            }),
+            dataType: 'json', // 변경된 부분
+            success: function(response) {
+                // 서버로부터의 응답 처리
+                console.log(response);
+                // 성공 시 페이지 이동
+                location.reload();
+            },
+            error: function(error) {
+                // 오류 발생 시 처리
+                console.log(error);
+                location.reload();
+            }
+        });
+    }
+</script>
 </body>
 </html>

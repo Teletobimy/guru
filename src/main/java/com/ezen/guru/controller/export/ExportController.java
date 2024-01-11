@@ -2,9 +2,11 @@ package com.ezen.guru.controller.export;
 
 import com.ezen.guru.domain.Code;
 import com.ezen.guru.dto.export.ExportDTO;
+import com.ezen.guru.dto.export.IdRequest;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import com.ezen.guru.service.export.ExportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,6 +70,19 @@ public class ExportController {
         }
     }
 
-//    @PostMapping("/listExport")
-//    public ResponseEntity<?> listExport(@RequestBody )
+    @PostMapping("/listExport")
+    public ResponseEntity<String> handleListExport(@RequestBody IdRequest request) {
+        try {
+            // producePlanerId 값으로 수행할 작업 수행
+            System.out.println("Received producePlanerId: " + request.getProducePlanerId());
+
+            // 여기에 추가적인 비즈니스 로직을 수행
+            exportService.listExport(request.getProducePlanerId());
+
+            return new ResponseEntity<>("Data successfully received and processed", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to process data", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
