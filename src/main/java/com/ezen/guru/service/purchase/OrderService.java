@@ -20,4 +20,6 @@ public interface OrderService {
 
     public void updateOrderDetailStatus(int orderId, int newStatus);
 
+    public void updateOrderStatus(String id, int newStatus);
+
 }

@@ -49,4 +49,11 @@ public class OrderServiceImpl implements OrderService {
         order.setCheck(newStatus);
         detailRepository.save(order);
     }
+
+    @Override
+    public void updateOrderStatus(String id, int newStatus) {
+        PurchaseOrder order = orderRepository.findById(id);
+        order.setStatus(newStatus);
+        orderRepository.save(order);
+    }
 }

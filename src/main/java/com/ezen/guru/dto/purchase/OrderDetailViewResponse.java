@@ -12,6 +12,7 @@ public class OrderDetailViewResponse {
     String id;
     LocalDateTime regdate;
     LocalDateTime deadline;
+    int status;
     String companyName;
     String companyId;
     int detailId;
@@ -22,13 +23,14 @@ public class OrderDetailViewResponse {
     int totalprice;
     String memo;
     int materialprice;
-    int status;
+    int check;
 
     public OrderDetailViewResponse(PurchaseOrderDetail detail) {
         //this.type = detail.getPurchaseOrder().getDocument().getType();
         this.id = detail.getPurchaseOrder().getId();
         this.regdate = detail.getPurchaseOrder().getRegdate();
         this.deadline = detail.getPurchaseOrder().getDeadline();
+        this.status = detail.getPurchaseOrder().getStatus();
         this.companyName = detail.getPurchaseOrder().getCompany().getCompanyName();
         this.companyId = detail.getPurchaseOrder().getCompany().getCompanyId();
         this.detailId = detail.getId();
@@ -39,6 +41,6 @@ public class OrderDetailViewResponse {
         this.totalprice = detail.getPurchaseOrder().getTotalprice();
         this.memo = detail.getPurchaseOrder().getMemo();
         this.materialprice = detail.getMaterialPrice() * detail.getPurchaseOrderCnt();
-        this.status = detail.getCheck();
+        this.check = detail.getCheck();
     }
 }

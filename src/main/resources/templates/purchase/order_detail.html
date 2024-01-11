@@ -133,6 +133,7 @@
                                                     <tbody>
                                                     <th:block th:with="firstItem=${list[0]}">
                                                         <tr>
+                                                            <input type="hidden" id="data-status" name="data-status" th:value="${firstItem.status}">
                                                             <th th:text="${firstItem.id}"></th>
                                                             <th th:text="${firstItem.companyName}"></th>
                                                             <th th:text="|${firstItem.materialName} 외..|"></th>
@@ -156,8 +157,8 @@
                                     </div>
                                     <div class="card-block table-border-style">
                                         <div class="col-lg-12">
-                                            <div class="table-responsive">
-                                                <table class="table">
+                                            <div class="table-responsive table-responsive-detail">
+                                                <table class="table table-detail table-hover">
                                                     <thead>
                                                     <tr>
                                                         <th>No.</th>
@@ -169,7 +170,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="item,stat : ${list}">
+                                                    <tr th:each="item,stat : ${list}" th:attr="data-item-check=${item.check}">
                                                         <td scope="row" th:text="${stat.count}"></td>
                                                         <td th:text="${item.materialName}"></td>
                                                         <td th:each="code:${code}"
@@ -177,10 +178,15 @@
                                                             th:text="${code.codeName}"></td>
                                                         <td th:text="${item.price} + &#8361;"></td>
                                                         <td th:text="${item.cnt}"></td>
-                                                        <td><button type="button" class="btn btn-card btn-primary" data-toggle="modal" data-target="#exampleModal">발주</button></td>
+                                                        <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
+                                                        <td th:if="${item.check == 1 && item.status == 1}">
+                                                            <button class="btn btn-card btn-disabled disabled">발주</button>
+                                                            <button type="button" class="btn btn-card btn-primary" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
+                                                        </td>
+                                                        <td th:if="${item.status != 1}"><button class="btn btn-card btn-disabled disabled">발주완료</button></td>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal fade" th:attr="id='exampleModal'+${item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -188,7 +194,7 @@
                                                                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <input type="hidden" th:value="${item.status}">
+                                                                        <input type="hidden" th:value="${item.check}">
                                                                         <p th:text="|품목명 : ${item.materialName}|"></p>
                                                                         <p th:each="code:${code}"
                                                                            th:if="${code.codeNum} == ${item.category}"
@@ -210,6 +216,11 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            <th:block th:with="firstItem=${list[0]}">
+                                                <button type="button" class="btn btn-secondary" th:onclick="location.href='/purchase/order'">목록</button>
+                                                <button th:if="${firstItem.status == 1}" type="button" class="btn btn-primary complete-btn" th:onclick="completeOrder(this)" th:attr="data-id=${firstItem.id}">완료</button>
+                                                <button th:if="${firstItem.status != 1}" class="btn btn-disabled disabled uncompleted-btn" >완료</button>
+                                            </th:block>
                                         </div>
                                     </div>
                                 </div>
@@ -261,6 +272,11 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
+    $(document).ready(function(){
+        validateCompletion();
+    });
+
+    //디테일 체크 1로 바꾸는 함수
     function confirmOrder(id) {
         var orderId = $(id).data('detail-id');
         var newStatus = 1; // 변경할 상태
@@ -270,15 +286,87 @@
             type: "POST",
             url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
             success: function (response) {
-                console.log(response); // 성공적으로 응답을 받았을 때 실행할 코드
+                console.log(response); // 성공적으로 응답을 받았을 때
                 $('#exampleModal').modal('hide'); // 모달 닫기
+
+                location.reload();
             },
             error: function (error) {
                 console.error(error);
             }
         });
     }
-</script>
 
+    //디테일 체크 0으로 바꾸는 함수(발주취소)
+    function revertOrder(id) {
+        var orderId = $(id).data('detail-id');
+        var newStatus = 0; // 변경할 상태
+
+        $.ajax({
+            type: "POST",
+            url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                location.reload();
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    //완료 버튼
+    function completeOrder(id) {
+
+        var id = $(id).data('id');
+        var newStatus = 2;
+
+        $.ajax({
+            type: "POST",
+            url: '/purchase/api/order/' + id + '/complete?newStatus=' + newStatus,
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                location.reload();
+
+                $('.complete-btn').hide();
+                $('.uncompleted-btn').show();
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    //완료 버튼 유효성 검사
+    function validateCompletion() {
+        //true일 때, 완료 버튼이 표시됨
+        var result = false;
+        var statusValue = $('#data-status');
+
+        if (statusValue == 1) {
+            //발주 상태가 1일 때 true, 활성화
+            // 발주상세 각 행의 item.check 값 가져오기
+            var tableRows = document.querySelectorAll('.table-detail tbody tr');
+            Array.from(tableRows).forEach(function (row) {
+                // 각 행의 item.check 값 확인
+                var checkValue = parseInt(row.getAttribute('data-item-check'));
+                // item.check 값이 0인 경우, 완료되지 않았으므로 전체가 완료되지 않은 것으로 처리
+                if (checkValue !== 1) {
+                    result = false;
+                }
+                // 디테일의 모든 항목이 발주 완료되면 true, 즉 완료 버튼 활성화
+            });
+        }
+
+        console.log(result);
+        if (result) {
+            $('.complete-btn').show();
+            $('.uncompleted-btn').hide();
+        } else {
+            $('.complete-btn').hide();
+            $('.uncompleted-btn').show();
+        }
+    }
+</script>
 </body>
 </html>
