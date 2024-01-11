@@ -184,7 +184,7 @@
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">발주</h5>
+                                                                        <h5 class="modal-title" id="exampleModalLabel">확인 창</h5>
                                                                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
@@ -195,10 +195,11 @@
                                                                            th:text="|카테고리 : ${code.codeName}|"></p>
                                                                         <p th:text="|수량 (단위) : ${item.cnt}|"></p>
                                                                         <p th:text="|총액 : ${item.materialprice}&#8361;|"></p>
+                                                                        발주하시겠습니까?
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary order-btn" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">발주</button>
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                                                        <button type="button" class="btn btn-primary order-btn" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">예</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
