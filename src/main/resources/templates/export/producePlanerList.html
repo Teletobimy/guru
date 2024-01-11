@@ -79,7 +79,7 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table bg-c-brown"></i>
                                             <div class="d-inline">
                                                 <h4>미처리 생산계획서 목록</h4>
                                                 <span>출고처리가 안된 생산계획서들에 대해서 출고처리를 진행하는 페이지입니다.</span>
@@ -131,16 +131,19 @@
                                                     <th>자전거이름</th>
                                                     <th>생산계획수량</th>
                                                     <th>마감일</th>
-                                                    <th>진행상태</th>
+                                                    <th colspan="2">진행상태</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr th:each="item, index : ${producePlanerList}" th:onclick="|location.href='@{/export/producePlanerDetail(producePlanerId=${item.producePlanerId})}'|">
+                                                <tr th:each="item, index : ${producePlanerList}" onclick="handleRowClick(this)">
                                                     <th scope="row" th:text="${item.producePlanerId}"></th>
                                                     <td th:text="${item.bicycleName}"></td>
                                                     <td th:text="${item.produceBicycleCnt}"></td>
                                                     <td th:text="${item.producePlanerDeadline}"></td>
                                                     <td th:text="${codeList[index.index].codeName}"></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-card btn-brown" onclick="handleButtonClick(event)" th:if="${codeList[index.index].codeNum == 2}">출고처리</button>
+                                                    </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -195,6 +198,46 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    function handleRowClick(button) {
+        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
+        var producePlanerId = row.find('th:eq(0)').text();
+        location.href = '/export/producePlanerDetail?producePlanerId=' + producePlanerId;
+    }
 
+    function handleButtonClick(event) {
+        // 이벤트 전파(stopPropagation)를 사용하여 상위 요소의 클릭 이벤트를 막음
+        event.stopPropagation();
+
+        // 클릭된 엘리먼트에서 데이터 추출
+        var producePlanerId = $(event.target).closest('tr').find('th:eq(0)').text();
+
+        // 서버로 데이터 전송 (Ajax 사용 예시)
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/export/listExport', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+        // 서버로 전송할 데이터
+        const data = {
+            producePlanerId: producePlanerId
+            // 추가적으로 필요한 데이터가 있다면 여기에 추가
+        };
+
+        xhr.send(JSON.stringify(data));
+
+        // Ajax 요청 완료 후 실행할 코드 (예시: 페이지 리로드)
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // 성공적으로 서버와 통신한 경우, 여기에 추가적으로 처리할 코드 작성
+                // 예: 페이지 리로드
+                location.reload();
+            } else {
+                // 서버와 통신 실패 시, 여기에 추가적으로 처리할 코드 작성
+                console.error('Failed to send data to the server.');
+            }
+        };
+    }
+</script>
 </body>
 </html>
