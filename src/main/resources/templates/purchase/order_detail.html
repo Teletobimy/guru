@@ -185,7 +185,7 @@
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="exampleModalLabel">발주</h5>
-                                                                        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+                                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <input type="hidden" th:value="${item.status}">
@@ -197,8 +197,8 @@
                                                                         <p th:text="|총액 : ${item.materialprice}&#8361;|"></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary order-btn" onclick="confirmOrder()" data-detail-id="${item.detailId}">발주</button>
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                        <button type="button" class="btn btn-primary order-btn" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">발주</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -260,14 +260,14 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    function confirmOrder() {
-        var orderId = $(this).data('detail-id');
+    function confirmOrder(id) {
+        var orderId = $(id).data('detail-id');
         var newStatus = 1; // 변경할 상태
 
         // AJAX를 사용하여 서버에 발주 상태 업데이트 요청을 보냅니다.
         $.ajax({
             type: "POST",
-            url: 'purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
+            url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때 실행할 코드
                 $('#exampleModal').modal('hide'); // 모달 닫기
