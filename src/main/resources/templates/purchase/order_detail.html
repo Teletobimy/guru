@@ -339,32 +339,29 @@
 
     //완료 버튼 유효성 검사
     function validateCompletion() {
-        //true일 때, 완료 버튼이 표시됨
-        var result = false;
-        var statusValue = $('#data-status');
+        //true일 때, 완료 버튼이 비활성화됨
+        var result = true;
 
-        if (statusValue == 1) {
-            //발주 상태가 1일 때 true, 활성화
-            // 발주상세 각 행의 item.check 값 가져오기
-            var tableRows = document.querySelectorAll('.table-detail tbody tr');
-            Array.from(tableRows).forEach(function (row) {
-                // 각 행의 item.check 값 확인
-                var checkValue = parseInt(row.getAttribute('data-item-check'));
-                // item.check 값이 0인 경우, 완료되지 않았으므로 전체가 완료되지 않은 것으로 처리
-                if (checkValue !== 1) {
-                    result = false;
-                }
-                // 디테일의 모든 항목이 발주 완료되면 true, 즉 완료 버튼 활성화
-            });
-        }
+        //발주 상태가 1일 때 true, 활성화
+        // 발주상세 각 행의 item.check 값 가져오기
+        var tableRows = document.querySelectorAll('.table-detail tbody tr');
+        Array.from(tableRows).forEach(function (row) {
+            // 각 행의 item.check 값 확인
+            var checkValue = parseInt(row.getAttribute('data-item-check'));
+            // item.check 값이 0인 경우, 완료되지 않았으므로 전체가 완료되지 않은 것으로 처리
+            if (checkValue !== 1) {
+                result = false;
+            }
+            // 디테일의 모든 항목이 발주 완료되면 false, 즉 완료 버튼 활성화
+        });
 
         console.log(result);
         if (result) {
-            $('.complete-btn').show();
-            $('.uncompleted-btn').hide();
-        } else {
             $('.complete-btn').hide();
             $('.uncompleted-btn').show();
+        } else {
+            $('.complete-btn').show();
+            $('.uncompleted-btn').hide();
         }
     }
 </script>
