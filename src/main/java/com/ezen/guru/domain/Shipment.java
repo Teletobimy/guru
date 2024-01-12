@@ -44,12 +44,15 @@ public class Shipment {
     @Column(name = "shipping_date")
     private LocalDateTime shippingDate;
 
+    @Column(name = "purchase_order_id")
+    private String purchaseOrderId;
+
     @Builder
     public Shipment(int shipmentId,Material materialId, String materialName,
                     int shipmentCnt,int materialPrice,
                     String materialMeasure,int materialCategory,
                     Company companyId, LocalDateTime shippingDate,
-                    String manager
+                    String manager, String purchaseOrderId
                     ){
         this.shipmentId =shipmentId;
         this.materialId = materialId;
@@ -60,6 +63,6 @@ public class Shipment {
         this.companyId = companyId;
         this.shippingDate = shippingDate;
         this.manager = manager;
-
+        this.purchaseOrderId = purchaseOrderId;
     }
 }

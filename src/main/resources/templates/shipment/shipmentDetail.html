@@ -175,7 +175,7 @@
                                                 <th>규격</th>
                                                 <th>수량</th>
                                                 <th>단가</th>
-                                                <th colspan="2">금액</th>
+                                                <th colspan="2">합계</th>
 
                                             </tr>
                                             <!---------------------------------------------------->
@@ -185,7 +185,7 @@
                                                 <td th:text="${shipment.materialMeasure}"></td>
                                                 <td th:text="${shipment.shipmentCnt}"></td>
                                                 <td th:text="${shipment.materialPrice}"></td>
-                                                <td colspan="2" th:text="${shipment.materialPrice}"></td>
+                                                <td colspan="2" th:text="${shipment.materialPrice * shipment.shipmentCnt}"></td>
                                             </tr>
                                             <!---------------------------------------------------->
 

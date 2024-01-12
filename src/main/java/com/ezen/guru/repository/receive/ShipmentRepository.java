@@ -22,7 +22,8 @@ public interface ShipmentRepository extends JpaRepository<Shipment,Integer>,Ship
             "s.companyId.tel, " +
             "s.companyId.email, " +
             "s.companyId.address, " +
-            "s.shippingDate) " +
+            "s.shippingDate," +
+            "s.purchaseOrderId ) " +
             "FROM Shipment s " +
             "JOIN s.companyId c ON s.materialId.materialId = c.materialId " +
             "WHERE s.shipmentId = :shipmentId")

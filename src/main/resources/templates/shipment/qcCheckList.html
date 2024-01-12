@@ -57,16 +57,36 @@
 <div class="theme-loader">
     <div class="ball-scale">
         <div class='contain'>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -88,7 +108,7 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-yellow"></i>
                                             <div style="display:flex; align-items:center;">
-                                                <h4>출하 명세서 리스트</h4>
+                                                <h4>검수 리스트</h4>
 
                                             </div>
                                         </div>
@@ -109,17 +129,16 @@
                                                 <li th:each="code:${code}" class="nav-item">
                                                     <a class="nav-link"
                                                        data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
-                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
-                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
-                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
-                                                       th:text="${code.codeNum == 0 ? '전체보기' :
-                                                                  code.codeNum == 1 ? '손잡이' :
-                                                                  code.codeNum == 2 ? '프레임' :
-                                                                  code.codeNum == 3 ? '휠' : ''}">
+                                                       th:classappend="${processStatus == 0 and code.codeNum == 0 ? 'active' : ''} +
+                                                                       ${processStatus == 2 and code.codeNum == 2 ? 'active' : ''} +
+                                                                       ${processStatus == 3 and code.codeNum == 3 ? 'active' : ''}"
+
+                                                       th:text="${code.codeNum == 0 ? '전체 보기' :
+                                                                  code.codeNum == 2 ? '검수 중' :
+                                                                  code.codeNum == 3 ? '검수 완료' : ''}">
                                                     </a>
                                                 </li>
 
@@ -127,12 +146,13 @@
                                             <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
-                                                    <div class="pcoded-search-box search-long" >
+                                                    <div class="pcoded-search-box search-long">
 
                                                         <input type="text" placeholder="Search" id="searchInput"
                                                                style="width:95%; border:none; margin-right:5px; ">
                                                         <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
-                                                        <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
+                                                        <p class="search-icon" th:attr="onclick='performSearch()'"
+                                                           style="display:inline; margin:0;">
                                                             <i class="ti-search" aria-hidden="true"></i>
                                                         </p>
                                                     </div>
@@ -153,21 +173,17 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-
-                                                                <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'" th:each="list : ${list}">
-                                                                    <th th:text="${list.shipmentId}"></th>
-                                                                    <th th:text="${list.materialName}"></th>
-                                                                    <td th:text="${list.shipmentCnt} + ${list.materialMeasure}"></td>
-                                                                    <td th:text="${list.materialPrice} + &#8361;"></td>
-                                                                    <td th:each="code:${code}"
-                                                                        th:if="${code.codeNum} == ${list.materialCategory}"
-                                                                        th:text="${code.codeName}"></td>
-                                                                    <td th:text="${list.companyName}"></td>
-                                                                    <td th:text="${list.shippingDate}"></td>
-                                                                    <th th:each="qcCheckList : ${qcCheckList}"
-                                                                        th:if="${qcCheckList.shipmentId == list.shipmentId}"
-                                                                        th:text="${qcCheckList.processStatus == 2 ? '검수중' :
-                                                                                    qcCheckList.processStatus == 3 ? '검수 완료' : ''}"
+                                                                <!--th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'"-->
+                                                                <tr style="cursor:pointer;" th:each="page : ${list}">
+                                                                    <th th:text="${page.qcCheckId}"></th>
+                                                                    <th th:text="${page.materialName}"></th>
+                                                                    <td th:text="${page.qcCheckCnt}"></td>
+                                                                    <td th:text="${page.returnStatus}"></td>
+                                                                    <td th:text="${page.manager}"></td>
+                                                                    <td th:text="${page.processStatus}"></td>
+                                                                    <td th:text="${page.purchaseOrderId}"></td>
+                                                                    <th th:text="${page.processStatus == 2 ? '검수중' :
+                                                                                    page.processStatus == 3 ? '검수 완료' : ''}"
                                                                         style="color:009000;"></th>
                                                                 </tr>
 
@@ -178,17 +194,19 @@
 
                                                     </div>
 
-                                                    <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                                                    <nav id="pagination-container" aria-label="Page navigation example"
+                                                         style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
                                                             <li class="page-item">
                                                                 <a class="page-link" href="#" aria-label="Previous">
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
-                                                            <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
+                                                            <li class="page-item"
+                                                                th:each="pageNumber:${#numbers.sequence(startPage,endPage)}">
                                                                 <a class="page-link pageA"
-                                                                   th:classappend="${pageNumber == (list.number + 1) ? 'btn-warning' : ''}"
-                                                                   th:href="@{'/shipment/shipmentList?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                                   th:classappend="${pageNumber == nowPage ? 'btn-warning' : ''}"
+                                                                   th:href="@{'/qcCheck/qcCheckList?page=' + ${pageNumber - 1} + '&size=10'}"
                                                                    th:text="${pageNumber}"></a>
                                                             </li>
 
@@ -231,72 +249,72 @@
 
     </div>
 </div>
-    <!-- Warning Section Starts -->
-    <!-- Older IE warning message -->
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
 
-    <![endif]-->
-    <!-- Warning Section Ends -->
-    <!-- Required Jquery -->
-    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
-    <!-- jquery slimscroll js -->
-    <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
-    <!-- modernizr js -->
-    <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
-    <!-- am chart -->
-    <script src="/pages/widget/amchart/amcharts.min.js"></script>
-    <script src="/pages/widget/amchart/serial.min.js"></script>
-    <!-- Todo js -->
-    <script type="text/javascript " src="/pages/todo/todo.js "></script>
-    <!-- Custom js -->
-    <script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
-    <script type="text/javascript" src="/js/script.js"></script>
-    <script type="text/javascript " src="/js/SmoothScroll.js"></script>
-    <script src="/js/pcoded.min.js"></script>
-    <script src="/js/demo-12.js"></script>
-    <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script>
-        var $window = $(window);
-        var nav = $('.fixed-button');
-            $window.scroll(function(){
-                if ($window.scrollTop() >= 200) {
-                 nav.addClass('active');
-             }
-             else {
-                 nav.removeClass('active');
-             }
-         });
-        function updateLocation(category) {
-            var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    var $window = $(window);
+    var nav = $('.fixed-button');
+        $window.scroll(function(){
+            if ($window.scrollTop() >= 200) {
+             nav.addClass('active');
+         }
+         else {
+             nav.removeClass('active');
+         }
+     });
+    function updateLocation(category) {
+        var newUrl = '/qcCheck/qcCheckList?size=10&page=0&processStatus=' + category;
 
-            window.location.href = newUrl;
+        window.location.href = newUrl;
+    }
+    function performSearch(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var category = urlParams.get('processStatus');
+        var searchValue = document.getElementById('searchInput').value;
+
+        var encodedSearchValue = encodeURIComponent(searchValue);
+
+        console.log(encodedSearchValue);
+        console.log('Category:', category);
+
+        window.location.href = '/qcCheck/qcCheckList?size=10&page=0&processStatus='+ category +'&search=' + encodedSearchValue;
+    }
+     document.getElementById('searchInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            performSearch();
         }
-        function performSearch(){
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('category');
-            var searchValue = document.getElementById('searchInput').value;
+    });
+    function gotoDetail(shipmentId){
+        var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
 
-            var encodedSearchValue = encodeURIComponent(searchValue);
+        window.location.href = newUrl;
+    }
 
-            console.log(encodedSearchValue);
-            console.log('Category:', category);
-
-            window.location.href = '/shipment/shipmentList?size=10&page=0&category='+ category +'&keyword=' + encodedSearchValue;
-        }
-         document.getElementById('searchInput').addEventListener('keyup', function (event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        });
-        function gotoDetail(shipmentId){
-            var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
-
-            window.location.href = newUrl;
-        }
-
-    </script>
+</script>
 </body>
 
 </html>

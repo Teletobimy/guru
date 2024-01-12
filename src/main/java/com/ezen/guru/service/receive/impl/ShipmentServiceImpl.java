@@ -13,9 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class ShipmentServiceImpl implements ShipmentService {
@@ -45,6 +44,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     @Override
     public QcCheck addQcCheck(int shipmentId) {
         ShipmentDetailResponse shipment = shipmentRepository.findByShipmentId(shipmentId);
+        LocalDateTime targetDateTime = LocalDateTime.now();
 
         QcCheck qcCheck = QcCheck.builder()
                 .returnStatus(1)
@@ -53,6 +53,8 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .manager(shipment.getManager())
                 .qcCheckCnt(shipment.getShipmentCnt())
                 .processStatus(2)
+                .purchaseOrderId(shipment.getGetpuchaseOrderId())
+                .qccheckDate(targetDateTime)
                 .build();
 
         return qcCheckRepository.save(qcCheck);
