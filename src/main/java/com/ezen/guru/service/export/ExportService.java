@@ -45,10 +45,10 @@ public class ExportService {
     public Page<ProducePlanerDTO> findAll(int page, int size, int category, String keyword) {
 
         BooleanExpression predicate = ProducePlanerPredicate.hasCategoryAndProducePlanerId(category, keyword);
-
         Pageable pageable = (Pageable) PageRequest.of(page, size);
 
-        return producePlanerRepository.findAllByPage(predicate, pageable);
+        Page<ProducePlaner> result = producePlanerRepository.findAllByPage(predicate, pageable);
+        return result.map(ProducePlanerDTO::new);
 
 //        List<ProducePlaner> list = producePlanerRepository.findAll();
 //        List<ProducePlaner> distinctList = list.stream()
@@ -89,7 +89,7 @@ public class ExportService {
         return codeList;
     }
 
-    public List<Code> setCodeListByProducePlanerStatus(List<ProducePlanerDTO> list) {
+    public List<Code> setCodeListByProducePlanerStatus(Page<ProducePlanerDTO> list) {
 
         List<Code> codeList = new ArrayList<>();
 

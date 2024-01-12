@@ -6,6 +6,7 @@ import com.ezen.guru.dto.export.IdRequest;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import com.ezen.guru.service.export.ExportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class ExportController {
                                     @RequestParam(value = "keyword", required = false) String keyword,
                                     @RequestParam(value = "category", defaultValue = "0") int category) {
 
-        List<ProducePlanerDTO> producePlanerDTOList = exportService.findAll();
+        Page<ProducePlanerDTO> producePlanerDTOList = exportService.findAll(page, size, category, keyword);
         List<Code> codeList = exportService.setCodeListByProducePlanerStatus(producePlanerDTOList);
         List<Code> code = exportService.findByCodeCategory("produce_planer_status");
 
