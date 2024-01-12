@@ -40,8 +40,10 @@ public class OrderController {
                 .map(OrderDetailViewResponse::new)
                 .toList();
         List<Code> codeList = orderService.findByCodeCategory("material_category");
+        List<Code> typeCode = orderService.findByCodeCategory("document_type");
 
         model.addAttribute("code",codeList);
+        model.addAttribute("type", typeCode);
         model.addAttribute("list", list);
         return "purchase/order_detail";
     }

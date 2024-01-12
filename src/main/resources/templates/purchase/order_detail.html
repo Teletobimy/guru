@@ -42,7 +42,7 @@
             text-transform: uppercase;
             font-size: 13px;
             padding: 5px 10px;
-            margin: 0px 10px;
+            margin: 0px 5px;
             color: #fff;
             border-radius: 5px;
         }
@@ -89,8 +89,26 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
-                                                <h4>상세 내역</h4>
+                                                <th:block th:with="firstItem=${list[0]}">
+                                                    <h4 th:if="${firstItem.status == 1}">상세 내역 및 발주</h4>
+                                                    <h4 th:if="${firstItem.status != 1}">상세 내역</h4>
+                                                </th:block>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a th:href="@{http://localhost:8080}">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">구매</a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="/purchase/order">발주</a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +121,17 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>모든 품목을 발주한 후 완료 처리 바랍니다.</h5>
+                                        <th:block th:with="firstItem=${list[0]}">
+                                            <h5 th:if="${firstItem.status == 1}">모든 품목을 발주한 후 완료 처리가 가능합니다.</h5>
+                                            <button class="btn btn-card btn-primary"
+                                                    th:each="type:${type}"
+                                                    th:if="${type.codeNum} == ${firstItem.type}"
+                                                    th:text="|${type.codeName} 조회|"
+                                                    th:onclick="|location.href='@{/plan/document/{documentId}(documentId=${firstItem.documentId})}'|"></button>
+                                            <button class="btn btn-card btn-primary"
+                                                    th:if="${firstItem.status != 1}"
+                                                    th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|">발주서 조회</button>
+                                        </th:block>
                                         <div class="card-header-right">
                                             <ul class="list-unstyled card-option">
                                                 <li><i class="icofont icofont-simple-left"></i></li>
@@ -190,7 +218,7 @@
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">확인 창</h5>
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
                                                                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
@@ -216,11 +244,15 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <th:block th:with="firstItem=${list[0]}">
-                                                <button type="button" class="btn btn-secondary" th:onclick="location.href='/purchase/order'">목록</button>
-                                                <button th:if="${firstItem.status == 1}" type="button" class="btn btn-primary complete-btn" th:onclick="completeOrder(this)" th:attr="data-id=${firstItem.id}">완료</button>
-                                                <button th:if="${firstItem.status != 1}" class="btn btn-disabled disabled uncompleted-btn" >완료</button>
-                                            </th:block>
+                                            <div class="button-area" style="padding: 20px; text-align: center;">
+                                                <th:block th:with="firstItem=${list[0]}">
+                                                    <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
+                                                    <div th:if="${firstItem.status == 1}" style="display: inline-block;">
+                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="completeOrder(this)" th:attr="data-id=${firstItem.id}">완료</button>
+                                                        <button class="btn btn-disabled disabled uncompleted-btn" >완료</button>
+                                                    </div>
+                                                </th:block>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -327,9 +359,6 @@
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
                 location.reload();
-
-                $('.complete-btn').hide();
-                $('.uncompleted-btn').show();
             },
             error: function (error) {
                 console.error(error);
@@ -339,29 +368,33 @@
 
     //완료 버튼 유효성 검사
     function validateCompletion() {
-        //true일 때, 완료 버튼이 비활성화됨
+        //true일 때, 완료 버튼이 활성화됨
         var result = true;
+        var statusValue = $('#data-status').val();
 
         //발주 상태가 1일 때 true, 활성화
-        // 발주상세 각 행의 item.check 값 가져오기
-        var tableRows = document.querySelectorAll('.table-detail tbody tr');
-        Array.from(tableRows).forEach(function (row) {
-            // 각 행의 item.check 값 확인
-            var checkValue = parseInt(row.getAttribute('data-item-check'));
-            // item.check 값이 0인 경우, 완료되지 않았으므로 전체가 완료되지 않은 것으로 처리
-            if (checkValue !== 1) {
-                result = false;
-            }
-            // 디테일의 모든 항목이 발주 완료되면 false, 즉 완료 버튼 활성화
-        });
+        if (statusValue == 1) {
+
+            // 발주상세 각 행의 item.check 값 가져오기
+            var tableRows = document.querySelectorAll('.table-detail tbody tr');
+            Array.from(tableRows).forEach(function (row) {
+                // 각 행의 item.check 값 확인
+                var checkValue = parseInt(row.getAttribute('data-item-check'));
+                // item.check 값이 0인 경우, 완료되지 않았으므로 비활성화
+                if (checkValue !== 1) {
+                    result = false;
+                }
+                // 디테일의 모든 항목이 발주 완료되면 true, 즉 완료 버튼 활성화
+            });
+        }
 
         console.log(result);
         if (result) {
-            $('.complete-btn').hide();
-            $('.uncompleted-btn').show();
-        } else {
             $('.complete-btn').show();
             $('.uncompleted-btn').hide();
+        } else {
+            $('.uncompleted-btn').show();
+            $('.complete-btn').hide();
         }
     }
 </script>

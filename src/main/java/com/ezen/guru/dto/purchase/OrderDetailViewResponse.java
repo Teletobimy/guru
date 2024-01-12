@@ -8,16 +8,16 @@ import java.time.LocalDateTime;
 @Getter
 public class OrderDetailViewResponse {
 
-    //int type; //추후 코드테이블 연결, String이지만 편의상 임시로 int
+    int type;
     String id;
+    String documentId;
     LocalDateTime regdate;
     LocalDateTime deadline;
     int status;
     String companyName;
-    String companyId;
     int detailId;
     String materialName;
-    int category; //추후 코드테이블 연결, String이지만 편의상 임시로 int
+    int category;
     int price;
     String cnt;
     int totalprice;
@@ -26,13 +26,13 @@ public class OrderDetailViewResponse {
     int check;
 
     public OrderDetailViewResponse(PurchaseOrderDetail detail) {
-        //this.type = detail.getPurchaseOrder().getDocument().getType();
+        this.type = detail.getPurchaseOrder().getDocument().getType();
         this.id = detail.getPurchaseOrder().getId();
+        this.documentId = detail.getPurchaseOrder().getDocument().getId();
         this.regdate = detail.getPurchaseOrder().getRegdate();
         this.deadline = detail.getPurchaseOrder().getDeadline();
         this.status = detail.getPurchaseOrder().getStatus();
         this.companyName = detail.getPurchaseOrder().getCompany().getCompanyName();
-        this.companyId = detail.getPurchaseOrder().getCompany().getCompanyId();
         this.detailId = detail.getId();
         this.materialName = detail.getMaterialName();
         this.category = detail.getMaterialCategory();
