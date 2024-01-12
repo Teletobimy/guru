@@ -1,13 +1,13 @@
 package com.ezen.guru.service.purchase.impl;
 
-import com.ezen.guru.domain.Code;
-import com.ezen.guru.domain.PurchaseOrder;
-import com.ezen.guru.domain.PurchaseOrderDetail;
+import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
 import com.ezen.guru.dto.receive.ShipmentResponse;
 import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.purchase.OrderRepository;
+import com.ezen.guru.repository.receive.QcCheckRepository;
+import com.ezen.guru.repository.receive.ShipmentRepository;
 import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
@@ -23,6 +23,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository detailRepository;
     private final CodeRepository codeRepository;
+    private final ShipmentRepository shipmentRepository;
+    private final QcCheckRepository qcCheckRepository;
 
     @Override
     public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category) {
@@ -55,5 +57,15 @@ public class OrderServiceImpl implements OrderService {
         PurchaseOrder order = orderRepository.findById(id);
         order.setStatus(newStatus);
         orderRepository.save(order);
+    }
+
+    @Override
+    public Shipment saveToShipment(Shipment shipment) {
+        return shipmentRepository.save(shipment);
+    }
+
+    @Override
+    public QcCheck saveToQcCheck(QcCheck qcCheck) {
+        return qcCheckRepository.save(qcCheck);
     }
 }

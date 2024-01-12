@@ -1,8 +1,6 @@
 package com.ezen.guru.service.purchase;
 
-import com.ezen.guru.domain.Code;
-import com.ezen.guru.domain.PurchaseOrder;
-import com.ezen.guru.domain.PurchaseOrderDetail;
+import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
 import org.springframework.data.domain.Page;
 
@@ -21,5 +19,9 @@ public interface OrderService {
     public void updateOrderDetailStatus(int orderId, int newStatus);
 
     public void updateOrderStatus(String id, int newStatus);
+
+    public Shipment saveToShipment(Shipment shipment);
+
+    public QcCheck saveToQcCheck(QcCheck qcCheck);
 
 }

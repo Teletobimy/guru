@@ -199,6 +199,7 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr th:each="item,stat : ${list}" th:attr="data-item-check=${item.check}">
+                                                        <input type="hidden" th:value="${item.materialId}">
                                                         <td scope="row" th:text="${stat.count}"></td>
                                                         <td th:text="${item.materialName}"></td>
                                                         <td th:each="code:${code}"
@@ -212,6 +213,18 @@
                                                             <button type="button" class="btn btn-card btn-primary" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
                                                         </td>
                                                         <td th:if="${item.status != 1}"><button class="btn btn-card btn-disabled disabled">발주완료</button></td>
+
+
+                                                        var item = {};
+                                                        item.materialId = $(this).find('[th\\:text="${item.materialId}"]').text();
+                                                        item.materialName = $(this).find('[th\\:text="${item.materialName}"]').text();
+                                                        item.shipmentCnt = $(this).find('[th\\:text="${item.materialName}"]').text();
+                                                        item.materialPrice = $(this).find('[th\\:text="${item.materialName}"]').text();
+                                                        item.materialMeasue = $(this).find('[th\\:text="${item.materialName}"]').text();
+                                                        item.materialCategory = $(this).find('[th\\:text="${item.materialName}"]').text();
+                                                        item.companyId = $(this).find('[th\\:text="${item.materialName}"]').text();
+                                                        item.shippingDate = now();
+                                                        item.purchaseOrderId = $(this).find('[th\\:text="${item.materialName}"]').text();
 
                                                         <!-- Modal -->
                                                         <div class="modal fade" th:attr="id='exampleModal'+${item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -350,6 +363,9 @@
     //완료 버튼
     function completeOrder(id) {
 
+        toShipment();
+        toQcCheck();
+
         var id = $(id).data('id');
         var newStatus = 2;
 
@@ -364,6 +380,41 @@
                 console.error(error);
             }
         });
+
+    }
+
+    function toShipment() {
+
+        var items = [];  // 데이터 배열 초기화
+        // 각 행(tr)에 대해 반복
+        $('tbody tr').each(function() {
+
+            var item = {};
+            item.id = $(this).find('[data-item-check]').data('item-check');  // 예시로 'data-item-check' 속성을 사용
+            item.materialName = $(this).find('[th\\:text="${item.materialName}"]').text();  // 예시로 Thymeleaf 표현식을 사용
+            item.category = $(this).find('[th\\:each="code:${code}"]').text();  // 예시로 Thymeleaf 표현식을 사용
+            // ... 나머지 필요한 데이터 추가
+
+            // 배열에 현재 행의 데이터 추가
+            items.push(item);
+        });
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/purchase/order/shipment",
+            data: JSON.stringify(items),
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function toQcCheck() {
+
     }
 
     //완료 버튼 유효성 검사
