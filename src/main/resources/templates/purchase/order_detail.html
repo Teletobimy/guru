@@ -166,8 +166,8 @@
                                                             <th th:text="${firstItem.companyName}"></th>
                                                             <th th:text="|${firstItem.materialName} 외..|"></th>
                                                             <td th:text="${firstItem.totalprice} + &#8361;"></td>
-                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
-                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd')}"></td>
                                                             <td th:text="${firstItem.memo}"></td>
                                                         </tr>
                                                     </th:block>
@@ -199,13 +199,17 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr th:each="item,stat : ${list}" th:attr="data-item-check=${item.check}">
-                                                        <input type="hidden" th:value="${item.materialId}">
+                                                        <input type="hidden" id="orderId" th:value="${item.id}" th:attr="data-order-id=${item.id}">
+                                                        <input type="hidden" id="materialId" th:value="${item.materialId}" th:attr="data-mat-id=${item.materialId}">
+                                                        <input type="hidden" id="companyId" th:value="${item.companyId}" th:attr="data-com-id=${item.companyId}">
+                                                        <input type="hidden" id="orderCnt" th:value="${item.orderCnt}" th:attr="data-order-cnt=${item.orderCnt}">
+                                                        <input type="hidden" id="measure" th:value="${item.measure}" th:attr="data-mat-measure=${item.measure}">
                                                         <td scope="row" th:text="${stat.count}"></td>
-                                                        <td th:text="${item.materialName}"></td>
+                                                        <td th:text="${item.materialName}" id="materialName" th:attr="data-mat-name=${item.materialName}"></td>
                                                         <td th:each="code:${code}"
-                                                            th:if="${code.codeNum} == ${item.category}"
+                                                            th:if="${code.codeNum} == ${item.category}" id="category" th:attr="data-mat-category=${item.category}"
                                                             th:text="${code.codeName}"></td>
-                                                        <td th:text="${item.price} + &#8361;"></td>
+                                                        <td th:text="${item.price} + &#8361;" id="price" th:attr="data-mat-price=${item.price}"></td>
                                                         <td th:text="${item.cnt}"></td>
                                                         <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
                                                         <td th:if="${item.check == 1 && item.status == 1}">
@@ -213,18 +217,6 @@
                                                             <button type="button" class="btn btn-card btn-primary" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
                                                         </td>
                                                         <td th:if="${item.status != 1}"><button class="btn btn-card btn-disabled disabled">발주완료</button></td>
-
-
-                                                        var item = {};
-                                                        item.materialId = $(this).find('[th\\:text="${item.materialId}"]').text();
-                                                        item.materialName = $(this).find('[th\\:text="${item.materialName}"]').text();
-                                                        item.shipmentCnt = $(this).find('[th\\:text="${item.materialName}"]').text();
-                                                        item.materialPrice = $(this).find('[th\\:text="${item.materialName}"]').text();
-                                                        item.materialMeasue = $(this).find('[th\\:text="${item.materialName}"]').text();
-                                                        item.materialCategory = $(this).find('[th\\:text="${item.materialName}"]').text();
-                                                        item.companyId = $(this).find('[th\\:text="${item.materialName}"]').text();
-                                                        item.shippingDate = now();
-                                                        item.purchaseOrderId = $(this).find('[th\\:text="${item.materialName}"]').text();
 
                                                         <!-- Modal -->
                                                         <div class="modal fade" th:attr="id='exampleModal'+${item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -261,7 +253,7 @@
                                                 <th:block th:with="firstItem=${list[0]}">
                                                     <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
                                                     <div th:if="${firstItem.status == 1}" style="display: inline-block;">
-                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="completeOrder(this)" th:attr="data-id=${firstItem.id}">완료</button>
+                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="toShipment(this)" th:attr="data-id=${firstItem.id}">완료</button>
                                                         <button class="btn btn-disabled disabled uncompleted-btn" >완료</button>
                                                     </div>
                                                 </th:block>
@@ -326,7 +318,7 @@
         var orderId = $(id).data('detail-id');
         var newStatus = 1; // 변경할 상태
 
-        // AJAX를 사용하여 서버에 발주 상태 업데이트 요청을 보냅니다.
+        // AJAX를 사용하여 서버에 발주 상태 업데이트 요청
         $.ajax({
             type: "POST",
             url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
@@ -363,9 +355,6 @@
     //완료 버튼
     function completeOrder(id) {
 
-        toShipment();
-        toQcCheck();
-
         var id = $(id).data('id');
         var newStatus = 2;
 
@@ -388,17 +377,20 @@
         var items = [];  // 데이터 배열 초기화
         // 각 행(tr)에 대해 반복
         $('tbody tr').each(function() {
-
             var item = {};
-            item.id = $(this).find('[data-item-check]').data('item-check');  // 예시로 'data-item-check' 속성을 사용
-            item.materialName = $(this).find('[th\\:text="${item.materialName}"]').text();  // 예시로 Thymeleaf 표현식을 사용
-            item.category = $(this).find('[th\\:each="code:${code}"]').text();  // 예시로 Thymeleaf 표현식을 사용
-            // ... 나머지 필요한 데이터 추가
-
+            item.materialId = document.getElementById('materialId').getAttribute('data-mat-id');
+            item.materialName = document.getElementById('materialName').getAttribute('data-mat-name');
+            item.shipmentCnt = document.getElementById('orderCnt').getAttribute('data-order-cnt');
+            item.materialPrice = document.getElementById('price').getAttribute('data-mat-price');
+            item.materialMeasure = document.getElementById('measure').getAttribute('data-mat-measure');
+            item.materialCategory = document.getElementById('category').getAttribute('data-mat-category');
+            item.companyId = document.getElementById('companyId').getAttribute('data-com-id');
+            item.shippingDate = new Date();
+            item.purchaseOrderId = document.getElementById('orderId').getAttribute('data-order-id');
+            console.log(item);
             // 배열에 현재 행의 데이터 추가
             items.push(item);
         });
-
         $.ajax({
             type: "POST",
             contentType: "application/json",

@@ -22,6 +22,8 @@ public class OrderDetailViewResponse {
     int category;
     int price;
     String cnt;
+    int orderCnt;
+    String measure;
     int totalprice;
     String memo;
     int materialprice;
@@ -42,6 +44,8 @@ public class OrderDetailViewResponse {
         this.category = detail.getMaterialCategory();
         this.price = detail.getMaterialPrice();
         this.cnt = detail.getPurchaseOrderCnt() + " (" + detail.getMaterialMeasure() + ")";
+        this.orderCnt = detail.getPurchaseOrderCnt();
+        this.measure = detail.getMaterialMeasure();
         this.totalprice = detail.getPurchaseOrder().getTotalprice();
         this.memo = detail.getPurchaseOrder().getMemo();
         this.materialprice = detail.getMaterialPrice() * detail.getPurchaseOrderCnt();
