@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class ShipmentDetailResponse {
     private final int shipmentId;
     private final Material materialId;
+    private final int materialNumber;
     private final String materialName;
     private final int shipmentCnt;
     private final String materialMeasure;
@@ -24,6 +25,6 @@ public class ShipmentDetailResponse {
     private final String email;
     private final String address;
     private final LocalDateTime shippingDate;
-    public final String getpuchaseOrderId;
+    public final String purchaseOrderId;
 
 }

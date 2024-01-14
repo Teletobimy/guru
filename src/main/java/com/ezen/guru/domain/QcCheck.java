@@ -24,7 +24,7 @@ public class QcCheck {
     @Column(name = "shipment_id")
     private int shipmentId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "material_id")
     private Material materialId;
 

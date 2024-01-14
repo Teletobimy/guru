@@ -44,6 +44,9 @@ public class PurchaseOrderDetail {
     @JoinColumn(name="material_id")
     private Material material;
 
+    @Column(name = "qccheck_cnt")
+    private int qcCheckCnt;
+
     @Builder
     public PurchaseOrderDetail(int id,
                                int purchaseOrderCnt,
@@ -52,7 +55,8 @@ public class PurchaseOrderDetail {
                                String materialMeasure,
                                int materialPrice,
                                PurchaseOrder purchaseOrder,
-                               Material material) {
+                               Material material,
+                               int qcCheckCnt) {
         this.id = id;
         this.purchaseOrderCnt = purchaseOrderCnt;
         this.materialName = materialName;
@@ -61,5 +65,6 @@ public class PurchaseOrderDetail {
         this.materialPrice = materialPrice;
         this.purchaseOrder = purchaseOrder;
         this.material = material;
+        this.qcCheckCnt = qcCheckCnt;
     }
 }

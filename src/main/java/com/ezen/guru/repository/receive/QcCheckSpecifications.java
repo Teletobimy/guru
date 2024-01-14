@@ -5,11 +5,14 @@ import com.ezen.guru.domain.QcCheck;
 import com.ezen.guru.dto.receive.QcCheckResponse;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.time.LocalDateTime;
 
 public class QcCheckSpecifications {
     // where 절 => 진행 상태
-    public static Specification<QcCheck> processStatusEquals(int processStatus) {
+    public static Specification<QcCheck> processStatusEquals(int processStatus ) {
         return (root, query, criteriaBuilder) -> {
             Join<QcCheck, Material> join = root.join("materialId", JoinType.INNER);
 
@@ -34,5 +37,14 @@ public class QcCheckSpecifications {
                 );
                 return query.getRestriction();
         };
+    }
+
+    // where 절 => 기간 조회
+    public static Specification<QcCheck> dateRangeFilter(LocalDateTime startDate,LocalDateTime endDate){
+        return ((root, query, criteriaBuilder) -> {
+            Predicate datePredicate = criteriaBuilder.between(root.get("qccheckDate"),startDate,endDate);
+            Predicate finalPredicate = criteriaBuilder.and(datePredicate);
+            return finalPredicate;
+        });
     }
 }

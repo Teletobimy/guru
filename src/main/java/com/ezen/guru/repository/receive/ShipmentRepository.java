@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 public interface ShipmentRepository extends JpaRepository<Shipment,Integer>,ShipmentCustomRepository {
     @Query("SELECT NEW com.ezen.guru.dto.receive.ShipmentDetailResponse(" +
             "s.shipmentId, " +
-            "s.materialId.materialId, " +
+            "s.materialId, " +
+            "s.materialNumber, " +
             "s.materialName, " +
             "s.shipmentCnt, " +
             "s.materialMeasure, " +

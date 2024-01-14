@@ -19,6 +19,9 @@ public class Shipment {
     @JoinColumn(name = "material_id",referencedColumnName = "material_id")
     private Material materialId;
 
+    @Column(name = "material_id", insertable = false, updatable = false)
+    private int materialNumber;
+
     @Column(name = "material_name")
     private String materialName;
 
@@ -48,14 +51,14 @@ public class Shipment {
     private String purchaseOrderId;
 
     @Builder
-    public Shipment(int shipmentId,Material materialId, String materialName,
+    public Shipment(int shipmentId,int materialNumber, String materialName,
                     int shipmentCnt,int materialPrice,
                     String materialMeasure,int materialCategory,
                     Company companyId, LocalDateTime shippingDate,
                     String manager, String purchaseOrderId
                     ){
         this.shipmentId =shipmentId;
-        this.materialId = materialId;
+        this.materialNumber = materialNumber;
         this.materialName = materialName;
         this.shipmentCnt = shipmentCnt;
         this.materialPrice = materialPrice;

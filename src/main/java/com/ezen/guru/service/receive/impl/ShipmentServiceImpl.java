@@ -47,13 +47,13 @@ public class ShipmentServiceImpl implements ShipmentService {
         LocalDateTime targetDateTime = LocalDateTime.now();
 
         QcCheck qcCheck = QcCheck.builder()
-                .returnStatus(1)
+                .returnStatus(0)
                 .shipmentId(shipment.getShipmentId())
                 .materialId(shipment.getMaterialId())
                 .manager(shipment.getManager())
                 .qcCheckCnt(shipment.getShipmentCnt())
                 .processStatus(2)
-                .purchaseOrderId(shipment.getGetpuchaseOrderId())
+                .purchaseOrderId(shipment.getPurchaseOrderId())
                 .qccheckDate(targetDateTime)
                 .build();
 
