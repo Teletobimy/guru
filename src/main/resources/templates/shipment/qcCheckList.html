@@ -356,10 +356,18 @@
 
         var encodedSearchValue = encodeURIComponent(searchValue);
 
+        if (!startDate || startDate === 'null') {
+            startDate = null;
+        }
+
+        if (!endDate || endDate === 'null') {
+            endDate = null;
+        }
+
         window.location.href = '/qcCheck/qcCheckList?size=10&page=0&processStatus='+ category
                                 +'&search=' + encodedSearchValue
-                                + '&startDate=' + startDate
-                                + '&endDate=' + endDate;
+                                + (startDate ? '&startDate=' + startDate : '')
+                                + (endDate ? '&endDate=' + endDate : '');
     }
      document.getElementById('searchInput').addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
