@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <style>
+        .input-box{
+             width:100%;
+             display:flex;
+             justify-content:end;
+             padding:5px;
+             box-sizing:border-box;
+             margin :15px auto;
+             margin-top:0;
+             align-items:center;
+        }
+        .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+            width:23%;
+        }
+        .pageA{
+            color:#FFB64D;
+        }
+        .btn-warning{
+            color:#fff;
+        }
+        input{
+            padding:5px 10px;
+        }
+        p{
+            padding:5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"></div>
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-yellow"></i>
+                                            <div style="display:flex; align-items:center;">
+                                                <h4>검수 리스트</h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="page-body">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="col-lg-12">
+
+                                            <!-- Nav tabs -->
+                                            <ul class="nav nav-tabs  tabs" role="tablist">
+
+                                                <li th:each="code:${code}" class="nav-item">
+                                                    <a class="nav-link"
+                                                       data-toggle="tab"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
+                                                       role="tab"
+                                                       style="cursor:pointer;"
+                                                       th:classappend="${processStatus == 0 and code.codeNum == 0 ? 'active' : ''} +
+                                                                       ${processStatus == 2 and code.codeNum == 2 ? 'active' : ''} +
+                                                                       ${processStatus == 3 and code.codeNum == 3 ? 'active' : ''}"
+
+                                                       th:text="${code.codeNum == 0 ? '전체 보기' :
+                                                                  code.codeNum == 2 ? '검수 중' :
+                                                                  code.codeNum == 3 ? '검수 완료' : ''}">
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                            <!-- Tab panes -->
+                                            <div class="tab-content tabs card-block">
+                                                <div class="tab-pane active" id="home1" role="tabpanel">
+                                                    <div class="pcoded-search-box input-box" >
+                                                        <div class="search-long">
+                                                            <input type="text" placeholder="search" id="searchInput" style="border:none;">
+                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
+                                                            <p class="search-icon" th:attr="onclick='performSearch()'"
+                                                               style="display:inline; margin:0;">
+                                                                <i class="ti-search" aria-hidden="true"></i>
+                                                            </p>
+                                                        </div>
+
+                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
+                                                    </div>
+                                                    <div class="card-block table-border-style">
+
+                                                        <div class="table-responsive" id="shipment-container">
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>검수 번호</th>
+                                                                    <th>자재 이름</th>
+                                                                    <th>자재 수량</th>
+                                                                    <th>반품/정품</th>
+                                                                    <th>발주서 번호</th>
+                                                                    <th>검수 상태</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <!--th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'"-->
+                                                                <tr style="cursor:pointer;"  th:each="page : ${list}" >
+                                                                    <th th:text="${page.qcCheckId}"></th>
+                                                                    <th th:text="${page.materialName}"></th>
+                                                                    <td th:text="${page.qcCheckCnt}"></td>
+                                                                    <td th:text="${page.returnStatus == 0 ? '정품/반품' :
+                                                                                    page.returnStatus == 1 ? '반품' :
+                                                                                    page.returnStatus == 2 ? '정품' : ''}">${page.returnStatus}</td>
+                                                                    <td th:text="${page.purchaseOrderId}"></td>
+                                                                    <th th:text="${page.processStatus == 2 ? '검수중' :
+                                                                                    page.processStatus == 3 ? '검수 완료' : ''}"
+                                                                        style="color:009000;"></th>
+                                                                    <th>
+                                                                        <button class=" btn-warning qcCheckModal"
+                                                                                style="font-size:12px;border: none;padding: 5px 10px; border-radius: 5px; outline:none;"
+                                                                                th:value="${page.shipmentId}"
+                                                                                th:attr="data-target='#exampleModal' + ${page.qcCheckId}"
+                                                                                data-toggle="modal"
+                                                                        >
+                                                                            검수
+                                                                        </button>
+                                                                    </th>
+
+                                                                    <th class="modal fade " th:attr="id='exampleModal' + ${page.qcCheckId}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="exampleModalLabel">검수 자재</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form>
+                                                                                        <div class="form-group">
+                                                                                            <table class="table modalList">
+                                                                                                <tr>
+                                                                                                    <th scope="row">검수 개수 :</th>
+                                                                                                    <td> <input type="text" name="qcCheckCnt" ></td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-danger return" >반품</button>
+                                                                                    <button type="button" class="btn btn-primary purchase" >정품</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                </tr>
+
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <nav id="pagination-container" aria-label="Page navigation example"
+                                                         style="padding:20px;">
+                                                        <ul class="pagination" style="justify-content: end;">
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                                    <span aria-hidden="true">&laquo;</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="page-item"
+                                                                th:each="pageNumber:${#numbers.sequence(startPage,endPage)}">
+                                                                <a class="page-link pageA"
+                                                                   th:classappend="${pageNumber == nowPage ? 'btn-warning' : ''}"
+                                                                   th:href="@{'/qcCheck/qcCheckList?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                                   th:text="${pageNumber}"></a>
+                                                            </li>
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#" aria-label="Next">
+                                                                    <span aria-hidden="true">&raquo;</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <div id="styleSelector">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    var $window = $(window);
+    var nav = $('.fixed-button');
+        $window.scroll(function(){
+            if ($window.scrollTop() >= 200) {
+             nav.addClass('active');
+         }
+         else {
+             nav.removeClass('active');
+         }
+     });
+    function updateLocation(category) {
+        var newUrl = '/qcCheck/qcCheckList?size=10&page=0&processStatus=' + category;
+
+        window.location.href = newUrl;
+    }
+    function performSearch(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var category = urlParams.get('processStatus');
+        var startDate = urlParams.get('startDate');
+        var endDate = urlParams.get('endDate');
+        var searchValue = document.getElementById('searchInput').value;
+
+        var encodedSearchValue = encodeURIComponent(searchValue);
+
+        if (!startDate || startDate === 'null') {
+            startDate = null;
+        }
+
+        if (!endDate || endDate === 'null') {
+            endDate = null;
+        }
+
+        window.location.href = '/qcCheck/qcCheckList?size=10&page=0&processStatus='+ category
+                                +'&search=' + encodedSearchValue
+                                + (startDate ? '&startDate=' + startDate : '')
+                                + (endDate ? '&endDate=' + endDate : '');
+    }
+     document.getElementById('searchInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
+    function gotoDetail(shipmentId){
+        var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
+
+        window.location.href = newUrl;
+    }
+
+    $(document).ready(function() {
+
+      $('input[name="daterange"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().endOf('hour'),
+            locale: {
+                format: 'YYYY-MM-DD HH:mm:ss'
+            }
+       })
+       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
+            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
+            var urlParams = new URLSearchParams(window.location.search);
+            var category = urlParams.get('processStatus');
+            var search = $('#searchInput').val();
+
+            var newUrl =  '/qcCheck/qcCheckList?processStatus=' + category +
+                            "&search=" + encodeURIComponent(search) +
+                            "&startDate=" + startDate +
+                            "&endDate=" + endDate;
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+          window.location.href = newUrl;
+      });
+
+      $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+          $(this).val('');
+      });
+
+        var modalList = $('.modalList');
+        $(".qcCheckModal").on('click', function(){
+            var shipmentId = $(this).val();
+            console.log(shipmentId)
+             $.ajax({
+            url: "/api/qcCheckModal?shipmentId=" +  shipmentId,
+            type: "GET",
+            dataType:"json",
+            success: function(data){
+                console.log(data);
+                var html = "";
+                html += '<tr><th>검수 번호</th><td><input class="modalInput" name="qcCheckId" value='+ data.qcCheckId +' type="text" readOnly></input></td></tr>';
+                html += '<tr><th>자재 이름</th><td><input class="modalInput" value='+ data.materialId.materialName +' type="text" readOnly></input></td></tr>';
+                html += '<tr><th>발주서 번호</th><td><input class="modalInput" value='+ data.purchaseOrderId  +' type="text" readOnly></input></td></tr>';
+                html += '<tr><th>검수 날짜</th><td><input class="modalInput" value='+ data.qccheckDate +' type="text" readOnly></input></td></tr>';
+                html += '<tr><th>자재 수량</th><td><input class="modalInput qcCheckCnt" data-shipment-id="'+ shipmentId +'" name="qcCheckCnt" type="text"></input></td></tr>';
+                modalList.html(html);
+
+
+            }
+        })
+         $(".purchase").on("click",function(e){
+                    e.preventDefault();
+                     var modal = $(this).closest('.modal');
+
+                    var qcCheckCnt = modal.find('.qcCheckCnt').val();
+                    var qcCheckId = $('input[name=qcCheckId]').val();
+
+                    console.log(qcCheckCnt)
+                    console.log(qcCheckId)
+
+                    $.ajax({
+                        url: "/api/updateQcCheckCnt?qcCheckId=" + qcCheckId + "&qcCheckCnt=" + qcCheckCnt,
+                        type: "PUT",
+                        contentType: 'application/json',
+                        success: function(response){
+                            window.location.href="/qcCheck/qcCheckList?size=10&page=0&processStatus=0"
+                            }
+                        })
+
+               })
+      })
+
+
+
+ });
+
+
+</script>
+</body>
+
+</html>
