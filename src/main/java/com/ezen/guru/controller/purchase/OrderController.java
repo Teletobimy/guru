@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.status;
+
 @RequiredArgsConstructor
 @RequestMapping("/purchase")
 @Controller
@@ -51,11 +53,13 @@ public class OrderController {
         return "purchase/order_detail";
     }
     @PostMapping("/order/shipment")
-    public ResponseEntity<String> addToShipment(@RequestBody List<Shipment> shipments) {
-        List<Shipment> savedEntities = new ArrayList<>();
-        for (Shipment shipment : shipments) {
-            savedEntities.add(orderService.saveToShipment(shipment));
-        }
+    public ResponseEntity<String> addToShipment(@RequestBody List<AddShipmentRequest> shipments) {
+//        List<AddShipmentRequest> savedEntities = new ArrayList<>();
+//        for (Shipment shipment : shipments) {
+//            savedEntities.add(orderService.saveToShipment(shipment));
+//        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
+//        }
+        List<Shipment> savedEntities = orderService.saveToShipment(shipments);
         return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
     }
     @PostMapping("/order/qccheck")

@@ -1,6 +1,7 @@
 package com.ezen.guru.service.purchase;
 
 import com.ezen.guru.domain.*;
+import com.ezen.guru.dto.purchase.AddShipmentRequest;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
 import org.springframework.data.domain.Page;
 
@@ -20,7 +21,7 @@ public interface OrderService {
 
     public void updateOrderStatus(String id, int newStatus);
 
-    public Shipment saveToShipment(Shipment shipment);
+    public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments);
 
     public QcCheck saveToQcCheck(QcCheck qcCheck);
 

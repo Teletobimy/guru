@@ -393,9 +393,11 @@
         });
         $.ajax({
             type: "POST",
-            contentType: "application/json",
+            contentType: "application/json;charset=UTF-8",
             url: "/purchase/order/shipment",
             data: JSON.stringify(items),
+            dataType:'json',
+            traditional: true,
             success: function (response) {
                 console.log(response);
             },

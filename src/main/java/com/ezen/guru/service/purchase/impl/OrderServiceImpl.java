@@ -1,8 +1,8 @@
 package com.ezen.guru.service.purchase.impl;
 
 import com.ezen.guru.domain.*;
+import com.ezen.guru.dto.purchase.AddShipmentRequest;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
-import com.ezen.guru.dto.receive.ShipmentResponse;
 import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.purchase.OrderRepository;
@@ -10,7 +10,6 @@ import com.ezen.guru.repository.receive.QcCheckRepository;
 import com.ezen.guru.repository.receive.ShipmentRepository;
 import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -60,8 +59,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Shipment saveToShipment(Shipment shipment) {
-        return shipmentRepository.save(shipment);
+    public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments) {
+
+        List<Shipment> shipmentEntities = new AddShipmentRequest();
+        return shipmentRepository.saveAll(shipmentEntities);
     }
 
     @Override
