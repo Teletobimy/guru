@@ -19,5 +19,5 @@ public class ShipmentResponse {
     private final int materialCategory;
     private final String companyName;
     private final LocalDateTime shippingDate;
-
+    public final String getpuchaseOrderId;
 }

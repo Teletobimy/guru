@@ -49,7 +49,8 @@ public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
                         qShipment.materialPrice,
                         qShipment.materialCategory,
                         qShipment.companyId.companyName,
-                        qShipment.shippingDate
+                        qShipment.shippingDate,
+                        qShipment.purchaseOrderId
                 ))
                 .from(qShipment)
                 .leftJoin(qCompany)

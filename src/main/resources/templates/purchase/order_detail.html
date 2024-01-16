@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .d-inline {
+            display: flex;
+            align-items: center;
+        }
+        .searched {
+            margin-top: 20px!important;
+        }
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 5px;
+            color: #fff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar"></div>
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- Main-body start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- Page-header start -->
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-green"></i>
+                                            <div class="d-inline">
+                                                <th:block th:with="firstItem=${list[0]}">
+                                                    <h4 th:if="${firstItem.status == 1}">상세 내역 및 발주</h4>
+                                                    <h4 th:if="${firstItem.status != 1}">상세 내역</h4>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a th:href="@{http://localhost:8080}">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">구매</a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="/purchase/order">발주</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Page-header end -->
+
+                            <!-- Page-body start -->
+                            <div class="page-body">
+
+                                <!-- Hover table card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <th:block th:with="firstItem=${list[0]}">
+                                            <h5 th:if="${firstItem.status == 1}">모든 품목을 발주한 후 완료 처리가 가능합니다.</h5>
+                                            <button class="btn btn-card btn-primary"
+                                                    th:each="type:${type}"
+                                                    th:if="${type.codeNum} == ${firstItem.type}"
+                                                    th:text="|${type.codeName} 조회|"
+                                                    th:onclick="|location.href='@{/plan/document/{documentId}(documentId=${firstItem.documentId})}'|"></button>
+                                            <button class="btn btn-card btn-primary"
+                                                    th:if="${firstItem.status != 1}"
+                                                    th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|">발주서 조회</button>
+                                        </th:block>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left"></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--발주 설명-->
+                                    <div class="card-block table-border-style">
+                                        <div class="col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>주문번호</th>
+                                                        <th>협력사</th>
+                                                        <th>제목</th>
+                                                        <th>총액</th>
+                                                        <th>계약일자</th>
+                                                        <th>납기일자</th>
+                                                        <th>특기사항</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <th:block th:with="firstItem=${list[0]}">
+                                                        <tr>
+                                                            <input type="hidden" id="data-status" name="data-status" th:value="${firstItem.status}">
+                                                            <th th:text="${firstItem.id}"></th>
+                                                            <th th:text="${firstItem.companyName}"></th>
+                                                            <th th:text="|${firstItem.materialName} 외..|"></th>
+                                                            <td th:text="${firstItem.totalprice} + &#8361;"></td>
+                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd')}"></td>
+                                                            <td th:text="${firstItem.memo}"></td>
+                                                        </tr>
+                                                    </th:block>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--발주 상세 내역-->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>발주 상세 내역</h5>
+                                    </div>
+                                    <div class="card-block table-border-style">
+                                        <div class="col-lg-12">
+                                            <div class="table-responsive table-responsive-detail">
+                                                <table class="table table-detail table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>품목명</th>
+                                                        <th>카테고리</th>
+                                                        <th>가격</th>
+                                                        <th>수량 (단위)</th>
+                                                        <th>발주</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="item,stat : ${list}" th:attr="data-item-check=${item.check}">
+                                                        <input type="hidden" id="orderId" th:value="${item.id}" th:attr="data-order-id=${item.id}">
+                                                        <input type="hidden" id="materialId" th:value="${item.materialId}" th:attr="data-mat-id=${item.materialId}">
+                                                        <input type="hidden" id="companyId" th:value="${item.companyId}" th:attr="data-com-id=${item.companyId}">
+                                                        <input type="hidden" id="orderCnt" th:value="${item.orderCnt}" th:attr="data-order-cnt=${item.orderCnt}">
+                                                        <input type="hidden" id="measure" th:value="${item.measure}" th:attr="data-mat-measure=${item.measure}">
+                                                        <td scope="row" th:text="${stat.count}"></td>
+                                                        <td th:text="${item.materialName}" id="materialName" th:attr="data-mat-name=${item.materialName}"></td>
+                                                        <td th:each="code:${code}"
+                                                            th:if="${code.codeNum} == ${item.category}" id="category" th:attr="data-mat-category=${item.category}"
+                                                            th:text="${code.codeName}"></td>
+                                                        <td th:text="${item.price} + &#8361;" id="price" th:attr="data-mat-price=${item.price}"></td>
+                                                        <td th:text="${item.cnt}"></td>
+                                                        <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
+                                                        <td th:if="${item.check == 1 && item.status == 1}">
+                                                            <button class="btn btn-card btn-disabled disabled">발주</button>
+                                                            <button type="button" class="btn btn-card btn-primary" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
+                                                        </td>
+                                                        <td th:if="${item.status != 1}"><button class="btn btn-card btn-disabled disabled">발주완료</button></td>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" th:attr="id='exampleModal'+${item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" th:value="${item.check}">
+                                                                        <p th:text="|품목명 : ${item.materialName}|"></p>
+                                                                        <p th:each="code:${code}"
+                                                                           th:if="${code.codeNum} == ${item.category}"
+                                                                           th:text="|카테고리 : ${code.codeName}|"></p>
+                                                                        <p th:text="|수량 (단위) : ${item.cnt}|"></p>
+                                                                        <p th:text="|총액 : ${item.materialprice}&#8361;|"></p>
+                                                                        발주하시겠습니까?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary order-btn" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">예</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Modal End -->
+
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="button-area" style="padding: 20px; text-align: center;">
+                                                <th:block th:with="firstItem=${list[0]}">
+                                                    <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
+                                                    <div th:if="${firstItem.status == 1}" style="display: inline-block;">
+                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="toShipment(this); completeOrder(this);" th:attr="data-id=${firstItem.id}">완료</button>
+                                                        <button class="btn btn-disabled disabled uncompleted-btn" >완료</button>
+                                                    </div>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hover table card end -->
+
+                            </div>
+                            <!-- Page-body end -->
+                        </div>
+                    </div>
+                    <!-- Main-body end -->
+
+                    <div id="styleSelector">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+<script type="text/javascript" src="assets/js/classie/classie.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    $(document).ready(function(){
+        validateCompletion();
+    });
+
+    //디테일 체크 1로 바꾸는 함수
+    function confirmOrder(id) {
+        var orderId = $(id).data('detail-id');
+        var newStatus = 1; // 변경할 상태
+
+        // AJAX를 사용하여 서버에 발주 상태 업데이트 요청
+        $.ajax({
+            type: "POST",
+            url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                $('#exampleModal').modal('hide'); // 모달 닫기
+
+                location.reload();
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    //디테일 체크 0으로 바꾸는 함수(발주취소)
+    function revertOrder(id) {
+        var orderId = $(id).data('detail-id');
+        var newStatus = 0; // 변경할 상태
+
+        $.ajax({
+            type: "POST",
+            url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                location.reload();
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    //완료 버튼
+    function completeOrder(id) {
+
+        var id = $(id).data('id');
+        var newStatus = 2;
+
+        $.ajax({
+            type: "POST",
+            url: '/purchase/api/order/' + id + '/complete?newStatus=' + newStatus,
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                location.reload();
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+
+    }
+
+    function toShipment() {
+
+        var items = [];  // 데이터 배열 초기화
+        // 각 행(tr)에 대해 반복
+        $('tbody tr').each(function() {
+            var item = {};
+            var row = $(this);
+
+            // 각 행의 데이터 추가
+            item.materialNumber = row.find('#materialId').data('mat-id');
+            item.materialName = row.find('#materialName').data('mat-name');
+            item.shipmentCnt = row.find('#orderCnt').data('order-cnt');
+            item.materialPrice = row.find('#price').data('mat-price');
+            item.materialMeasure = row.find('#measure').data('mat-measure');
+            item.materialCategory = row.find('#category').data('mat-category');
+            item.companyid = row.find('#companyId').data('com-id');
+            item.shippingDate = new Date();
+            item.purchaseOrderId = row.find('#orderId').data('order-id');
+            console.log(item);
+
+            // 배열에 현재 행의 데이터 추가
+            items.push(item);
+        });
+        let first = items.shift();
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            url: "/purchase/order/shipment",
+            data: JSON.stringify(items),
+            dataType:'json',
+            traditional: true,
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function toQcCheck() {
+
+    }
+
+    //완료 버튼 유효성 검사
+    function validateCompletion() {
+        //true일 때, 완료 버튼이 활성화됨
+        var result = true;
+        var statusValue = $('#data-status').val();
+
+        //발주 상태가 1일 때 true, 활성화
+        if (statusValue == 1) {
+
+            // 발주상세 각 행의 item.check 값 가져오기
+            var tableRows = document.querySelectorAll('.table-detail tbody tr');
+            Array.from(tableRows).forEach(function (row) {
+                // 각 행의 item.check 값 확인
+                var checkValue = parseInt(row.getAttribute('data-item-check'));
+                // item.check 값이 0인 경우, 완료되지 않았으므로 비활성화
+                if (checkValue !== 1) {
+                    result = false;
+                }
+                // 디테일의 모든 항목이 발주 완료되면 true, 즉 완료 버튼 활성화
+            });
+        }
+
+        console.log(result);
+        if (result) {
+            $('.complete-btn').show();
+            $('.uncompleted-btn').hide();
+        } else {
+            $('.uncompleted-btn').show();
+            $('.complete-btn').hide();
+        }
+    }
+</script>
+</body>
+</html>

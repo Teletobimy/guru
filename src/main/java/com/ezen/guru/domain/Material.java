@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "material")
+
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+
 @Getter
 @Setter
 @Entity

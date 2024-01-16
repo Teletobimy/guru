@@ -100,8 +100,23 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
-                                                <h4>발주 내역 조회</h4>
+                                                <h4>협력사</h4>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a th:href="@{http://localhost:8080}">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">구매<!--(이동 필요)--></a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="/company/list">협력사</a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -137,20 +152,24 @@
                                             <table class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>주문번호</th>
-                                                    <th>협력사</th>
-                                                    <th>품목명</th>
-                                                    <th>총액</th>
-                                                    <th>납기</th>
+                                                    <th>No.</th>
+                                                    <th>회사명</th>
+                                                    <th>사업자번호</th>
+                                                    <th>대표자</th>
+                                                    <th>전화번호</th>
+                                                    <th>이메일</th>
+                                                    <th>주소</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr th:each="item : ${pclist}" th:onclick="#">
-                                                    <th scope="row" th:text="${item.id}"></th>
+                                                <tr th:each="item,stat : ${list}" th:onclick="#">
+                                                    <th scope="row" th:text="${stat.count}"></th>
                                                     <td th:text="${item.companyName}"></td>
-                                                    <td th:text="${item.materialName}"></td>
-                                                    <td th:text="${item.totalprice}"></td>
-                                                    <td th:text="${item.deadline}"></td>
+                                                    <td th:text="${item.companyId}"></td>
+                                                    <td th:text="${item.ceo}"></td>
+                                                    <td th:text="${item.tel}"></td>
+                                                    <td th:text="${item.email}"></td>
+                                                    <td th:text="${item.address}"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

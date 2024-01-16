@@ -1,18 +1,22 @@
 package com.ezen.guru.controller.purchase;
 
 import com.ezen.guru.domain.Code;
+import com.ezen.guru.domain.QcCheck;
+import com.ezen.guru.domain.Shipment;
 import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.service.purchase.OrderService;
-import com.ezen.guru.service.purchase.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.http.ResponseEntity.status;
 
 @RequiredArgsConstructor
 @RequestMapping("/purchase")
@@ -21,7 +25,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/order_1")
+    @GetMapping("/order")
     public String getOrderList(Model model,
                                @RequestParam(value = "size", defaultValue = "10") int size,
                                @RequestParam(value ="page" ,defaultValue = "0") int page,
@@ -33,25 +37,56 @@ public class OrderController {
         model.addAttribute("list", orderList);
         model.addAttribute("code",codeList);
         model.addAttribute("category",category);
-        return "purchase/order_1";
+        return "purchase/order";
     }
-    @GetMapping("/order_1_detail")
-    public String getDocument(Model model, @RequestParam String id) {
-        List<PurchaseOrderViewResponse> list = orderService.getPurchaseOrderDocument(id).stream()
-                .map(PurchaseOrderViewResponse::new)
+    @GetMapping("/order_detail")
+    public String getDetail(Model model, @RequestParam String id) {
+        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id).stream()
+                .map(OrderDetailViewResponse::new)
                 .toList();
-        model.addAttribute("list", list);
-        return "purchase/order_1_detail";
-    }
-    @GetMapping("/order_form")
-    public String getDetail() {
+        List<Code> codeList = orderService.findByCodeCategory("material_category");
+        List<Code> typeCode = orderService.findByCodeCategory("document_type");
 
-        return "purchase/order_form";
+        model.addAttribute("code",codeList);
+        model.addAttribute("type", typeCode);
+        model.addAttribute("list", list);
+        return "purchase/order_detail";
     }
+    @PostMapping("/order/shipment")
+    public ResponseEntity<String> addToShipment(@RequestBody List<AddShipmentRequest> shipments) {
+//        List<AddShipmentRequest> savedEntities = new ArrayList<>();
+//        for (Shipment shipment : shipments) {
+//            savedEntities.add(orderService.saveToShipment(shipment));
+//        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
+//        }
+        List<Shipment> savedEntities = orderService.saveToShipment(shipments);
+        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
+    }
+    @PostMapping("/order/qccheck")
+    public ResponseEntity<String> addToQcCheck(@RequestBody List<QcCheck> qcChecks) {
+        List<QcCheck> savedEntities = new ArrayList<>();
+        for (QcCheck qcCheck : qcChecks) {
+            savedEntities.add(orderService.saveToQcCheck(qcCheck));
+        }
+        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
+    }
+    @GetMapping("/order_print")
+    public String getPrint(Model model, @RequestParam String id) {
+        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id).stream()
+                .map(OrderPrintViewResponse::new)
+                .toList();
+        List<Code> codeList = orderService.findByCodeCategory("material_category");
+
+        model.addAttribute("code",codeList);
+        model.addAttribute("list", list);
+
+        return "purchase/order_print";
+    }
+
 
 //    미발주 계약 및 조달 건들의 번호, 회사명, 제목, 날짜를 목록으로 보여주고
-//    상세 버튼을 누르면 상세 내역(trade.html 형태) 열람하는 페이지로 이동
-//    그 후 발주 버튼을 누르면 상세 내역과 비교하며 입력할 수 있는 폼이 있는 모달 창
+//    상세 버튼을 누르면 상세 내역 열람하는 페이지로 이동
+//    그 후 발주 버튼을 누르면 상세 내역(과 비교하며 입력할 수 있는)을 확인할 수 있는 (폼이 있는) 모달 창
 //    입력 후 완료 버튼 누르면 유효성 검사 실행, 성공하면 DB에서 발주 상태로 바뀜
 //    필요한 발주를 완료한 후 상세 페이지에서 목록 버튼 누르면 화면으로 redirect
 

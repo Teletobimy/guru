@@ -6807,6 +6807,28 @@ body.menu-bottom #collapse-menu {
     background-color: rgba(70, 128, 255, 0.5);
     border-color: rgba(70, 128, 255, 0.5); }
 
+.btn-brown, .sweet-alert button.confirm, .wizard > .actions a {
+  background-color: #ab7967;
+  border-color: #ab7967;
+  color: #fff;
+  cursor: pointer;
+  transition: all ease-in 0.3s; }
+  .btn-brown:hover, .sweet-alert button.confirm:hover, .wizard > .actions a:hover {
+    background-color: #c4a194;
+    border-color: #c4a194; }
+  .btn-brown:active, .sweet-alert button.confirm:active, .wizard > .actions a:active {
+    background-color: #7f5546 !important;
+    border-color: #7f5546;
+    box-shadow: none;
+    color: #fff; }
+  .btn-brown:focus, .sweet-alert button.confirm:focus, .wizard > .actions a:focus {
+    box-shadow: none;
+    color: #fff;
+    background-color: #c4a194; }
+  .btn-brown.disabled, .sweet-alert button.disabled.confirm, .wizard > .actions a.disabled {
+    background-color: rgba(70, 128, 255, 0.5);
+    border-color: rgba(70, 128, 255, 0.5); }
+
 .btn-warning {
   background-color: #FFB64D;
   border-color: #FFB64D;
@@ -8930,6 +8952,9 @@ table.footable-paging-center > tfoot > tr.footable-paging > td {
 
 .bg-c-blue {
   background-color: #4680ff; }
+
+.bg-c-brown {
+  background-color: #ab7967; }
 
 .text-c-blue {
   color: #4680ff; }
