@@ -28,8 +28,47 @@ public class ProducePlanerCustomRepositoryImpl implements ProducePlanerCustomRep
         BooleanBuilder whereCondition = new BooleanBuilder();
 
         // 카테고리 조건 추가
-        if (category >= 0) {
-            whereCondition.and(qProducePlaner.producePlanerStatus.eq(category));
+        if (category == -1) {
+        } else if (category == 0) {
+            whereCondition.and(
+                    qProducePlaner.id.producePlanerId.in(
+                            jpaQueryFactory
+                                    .select(qProducePlaner.id.producePlanerId)
+                                    .from(qProducePlaner)
+                                    .groupBy(qProducePlaner.id.producePlanerId)
+                                    .having(qProducePlaner.producePlanerStatus.avg().eq(0.00))
+                    )
+            );
+        } else if (category == 2) {
+            whereCondition.and(
+                    qProducePlaner.id.producePlanerId.in(
+                            jpaQueryFactory
+                                    .select(qProducePlaner.id.producePlanerId)
+                                    .from(qProducePlaner)
+                                    .groupBy(qProducePlaner.id.producePlanerId)
+                                    .having(qProducePlaner.producePlanerStatus.avg().eq(2.00))
+                    )
+            );
+        } else if (category == 99) {
+            whereCondition.and(
+                    qProducePlaner.id.producePlanerId.in(
+                            jpaQueryFactory
+                                    .select(qProducePlaner.id.producePlanerId)
+                                    .from(qProducePlaner)
+                                    .groupBy(qProducePlaner.id.producePlanerId)
+                                    .having(qProducePlaner.producePlanerStatus.avg().eq(99.00))
+                    )
+            );
+        } else {
+            whereCondition.and(
+                    qProducePlaner.id.producePlanerId.in(
+                            jpaQueryFactory
+                                    .select(qProducePlaner.id.producePlanerId)
+                                    .from(qProducePlaner)
+                                    .groupBy(qProducePlaner.id.producePlanerId)
+                                    .having(qProducePlaner.producePlanerStatus.avg().notIn(0.00, 2.00, 99.00))
+                    )
+            );
         }
 
         // 키워드 검색 조건 추가 (키워드가 null이 아니고 비어있지 않을 때)

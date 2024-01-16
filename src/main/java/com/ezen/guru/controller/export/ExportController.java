@@ -27,8 +27,9 @@ public class ExportController {
                                     @RequestParam(value = "size", defaultValue = "10") int size,
                                     @RequestParam(value ="page" ,defaultValue = "0") int page,
                                     @RequestParam(value = "keyword", required = false) String keyword,
-                                    @RequestParam(value = "category", defaultValue = "0") int category) {
+                                    @RequestParam(value = "category", defaultValue = "-1", required = false) Integer category) {
 
+        System.out.println("category : " + category);
         Page<ProducePlanerDTO> producePlanerDTOList = exportService.findAll(page, size, category, keyword);
         List<Code> codeList = exportService.setCodeListByProducePlanerStatus(producePlanerDTOList);
         List<Code> code = exportService.findByCodeCategory("produce_planer_status");
@@ -37,6 +38,7 @@ public class ExportController {
             System.out.println("controller list id : " + producePlanerDTO.getProducePlanerId());
         }
         model.addAttribute("producePlanerList", producePlanerDTOList);
+        model.addAttribute("category", category);
         model.addAttribute("codeList", codeList);
         model.addAttribute("code", code);
 
