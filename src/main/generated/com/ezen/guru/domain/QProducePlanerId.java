@@ -38,3 +38,4 @@ public class QProducePlanerId extends BeanPath<ProducePlanerId> {
     }
 
 }
+

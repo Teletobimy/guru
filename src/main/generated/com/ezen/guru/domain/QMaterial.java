@@ -21,6 +21,8 @@ public class QMaterial extends EntityPathBase<Material> {
 
     public final StringPath companyId = createString("companyId");
 
+    public final StringPath companyName = createString("companyName");
+
     public final NumberPath<Integer> materialCategory = createNumber("materialCategory", Integer.class);
 
     public final StringPath materialCode = createString("materialCode");
@@ -50,3 +52,4 @@ public class QMaterial extends EntityPathBase<Material> {
     }
 
 }
+

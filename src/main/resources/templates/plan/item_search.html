@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<html>
+<head>
+    <title>원자재 정보 검색</title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>원자재 정보 검색</h1>
+<input type="text" id="materialID" placeholder="원자재ID를 입력하세요">
+<button onclick="searchMaterial()">검색</button>
+<div id="companyInfo"></div>
+<div class="card">
+    <div class="card-header">
+
+        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
+        <div class="pcoded-search">
+
+            <div class="pcoded-search-box ">
+
+            </div>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>품목번호</th>
+                    <th>원자재코드</th>
+                    <th>판매회사</th>
+                    <th>원자재명</th>
+                    <th>스펙</th>
+                    <th>재고</th>
+                    <th>구매가</th>
+                    <th>단위</th>
+                    <th>카테고리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material, itemStat : ${materials}"
+                    style="cursor:pointer;"
+                    onclick="outPutRow(this)"
+                >
+
+                    <td th:text="${material.materialId}"></td>
+                    <td th:text="${material.materialCode}"></td>
+                    <td th:text="${material.companyId}"></td>
+                    <td th:text="${material.materialName}"></td>
+                    <td th:text="${material.materialDescription}"></td>
+                    <td th:text="${material.materialStock}"></td>
+                    <td th:text="${material.materialPrice}"></td>
+                    <td th:text="${material.materialMeasure}"></td>
+                    <td th:text="${material.materialCategory}"></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function outPutRow(row) {
+        var materialId = row.querySelector("td:nth-child(1)").innerText; // 첫 번째 td의 값 가져오기
+
+          window.opener.check(materialId);
+    }
+
+    function searchMaterial() {
+        var companyName = document.getElementById('materialID').value;
+
+        // AJAX를 사용하여 서버에 검색 요청을 보냄
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // 검색 결과를 받아서 companyInfo 영역에 표시
+                    document.getElementById('companyInfo').innerHTML = xhr.responseText;
+                } else {
+                    // 에러 처리
+                    document.getElementById('companyInfo').innerHTML = '검색 실패';
+                }
+            }
+        };
+
+        // 서버의 검색 기능을 사용하는 API 엔드포인트 URL을 설정
+        var url = '/plan/searchCompany?name=' + encodeURIComponent(companyName);
+        xhr.open('GET', url, true);
+        xhr.send();
+    }
+</script>
+</body>
+</html>
