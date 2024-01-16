@@ -16,6 +16,8 @@ public class QcCheckResponse {
     private int materialId;
     private String manager;
     private int qcCheckCnt;
+    private int passCnt;
+    private int returnCnt;
     private int processStatus;
     private String purchaseOrderId;
     private LocalDateTime qccheckDate;
@@ -23,7 +25,9 @@ public class QcCheckResponse {
     public QcCheckResponse(String materialName, int qcCheckId,
                            int returnStatus, int shipmentId,
                            int materialId, String manager,
-                           int qcCheckCnt, int processStatus, String purchaseOrderId, LocalDateTime qccheckDate) {
+                           int qcCheckCnt, int passCnt,
+                           int returnCnt, int processStatus,
+                           String purchaseOrderId, LocalDateTime qccheckDate) {
         this.materialName = materialName;
         this.qcCheckId = qcCheckId;
         this.returnStatus = returnStatus;
@@ -31,8 +35,12 @@ public class QcCheckResponse {
         this.materialId = materialId;
         this.manager = manager;
         this.qcCheckCnt = qcCheckCnt;
+        this.passCnt = passCnt;
+        this.returnCnt = returnCnt;
         this.processStatus = processStatus;
         this.purchaseOrderId = purchaseOrderId;
         this.qccheckDate = qccheckDate;
     }
+
+
 }

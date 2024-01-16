@@ -1,8 +1,10 @@
 package com.ezen.guru.controller.receive;
 
 import com.ezen.guru.domain.Code;
+import com.ezen.guru.domain.QcCheck;
 import com.ezen.guru.dto.receive.QcCheckResponse;
 import com.ezen.guru.service.receive.QcCheckService;
+import com.ezen.guru.service.receive.ShipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QcCheckViewController {
     private final QcCheckService qcCheckService;
+    private final ShipmentService shipmentService;
 
     @GetMapping("/qcCheckList")
     public String qcCheckList(Model model,
