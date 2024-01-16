@@ -35,7 +35,7 @@
             text-transform: uppercase;
             font-size: 13px;
             padding: 5px 10px;
-            margin: 0px 10px;
+            margin: 0px 5px;
             color: #fff;
             border-radius: 5px;
         }
@@ -90,6 +90,21 @@
                                             <div class="d-inline">
                                                 <h4>발주</h4>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a th:href="@{http://localhost:8080}">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">구매</a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="/purchase/order">발주</a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +166,7 @@
                                                             <thead>
                                                             <tr>
                                                                 <th>주문번호</th>
-                                                                <th>상태</th>
+                                                                <th th:if="${category == -1}">상태</th>
                                                                 <th>협력사</th>
                                                                 <th>품목명</th>
                                                                 <th>총액</th>
@@ -163,7 +178,7 @@
                                                             <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.id}+ ')'" th:each="list : ${list}">
                                                                 <th th:text="${list.id}"></th>
                                                                 <th th:each="code:${code}"
-                                                                    th:if="${code.codeNum} == ${list.status}"
+                                                                    th:if="${code.codeNum eq list.status and category eq -1}"
                                                                     th:text="${code.codeName}"></th>
                                                                 <th th:text="${list.companyName}"></th>
                                                                 <th th:text="|${list.materialName} 외..|"></th>

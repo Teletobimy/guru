@@ -16,8 +16,15 @@ public class OrderApiController {
     public ResponseEntity<String> updateOrderStatus(
             @PathVariable int orderId,
             @RequestParam int newStatus) {
-
         orderService.updateOrderDetailStatus(orderId, newStatus);
+        return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
+    }
+
+    @PostMapping("order/{id}/complete")
+    public ResponseEntity<String> updateOrder(
+            @PathVariable String id,
+            @RequestParam int newStatus) {
+        orderService.updateOrderStatus(id, newStatus);
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
 }
