@@ -2,6 +2,7 @@ package com.ezen.guru.service.purchase.impl;
 
 import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.AddShipmentRequest;
+import com.ezen.guru.dto.purchase.OrderCompleteRequest;
 import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
 import com.ezen.guru.repository.CodeRepository;
@@ -19,6 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.ezen.guru.dto.purchase.OrderCompleteRequest.toEntity;
 
 @RequiredArgsConstructor
 @Service
@@ -63,9 +66,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrderStatus(String id, int newStatus) {
-        PurchaseOrder order = orderRepository.findById(id);
+        OrderCompleteRequest order = orderRepository.findById(id);
         order.setStatus(newStatus);
-        orderRepository.save(order);
+        PurchaseOrder orderEntity = toEntity(order);
+        orderRepository.save(orderEntity);
     }
 
     @Override
