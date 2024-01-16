@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +43,9 @@ public class ExportService {
         return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    public Page<ProducePlanerDTO> findAll(int page, int size, int category, String keyword) {
+    public Page<ProducePlanerDTO> findAll(int size, int page, int category, String keyword, LocalDateTime startDate, LocalDateTime endDate) {
 
-        Page<ProducePlaner> result = producePlanerCustomRepository.producePlanerList(page, size, category, keyword);
+        Page<ProducePlaner> result = producePlanerCustomRepository.producePlanerList(size, page, category, keyword, startDate, endDate);
         return result.map(ProducePlanerDTO::new);
     }
 
@@ -87,6 +88,7 @@ public class ExportService {
 
             int cnt0 = 0;
             int cnt2 = 0;
+            int cnt99 = 0;
 
             for (ProducePlanerDTO idDTO : idList) {
 
@@ -96,17 +98,21 @@ public class ExportService {
                     cnt0++;
                 } else if (status == 2) {
                     cnt2++;
+                } else if (status == 99) {
+                    cnt99++;
                 }
             }
 
             int size = idList.size();
-            System.out.println("idList.size() : " + size + ", cnt0 : " + cnt0 + ", cnt2 : " + cnt2);
+            System.out.println("idList.size() : " + size + ", cnt0 : " + cnt0 + ", cnt2 : " + cnt2 + ", cnt99 : " + cnt99);
             Code code;
 
             if (size == cnt0) {
                 code = findByCode("produce_planer_status", 0);
             } else if (size == cnt2) {
                 code = findByCode("produce_planer_status", 2);
+            } else if (size == cnt99) {
+                code = findByCode("produce_planer_status", 99);
             } else {
                 code = findByCode("produce_planer_status", 1);
             }

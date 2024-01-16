@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,32 +18,51 @@ public class QQcCheck extends EntityPathBase<QcCheck> {
 
     private static final long serialVersionUID = 2052965542L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QQcCheck qcCheck = new QQcCheck("qcCheck");
 
     public final StringPath manager = createString("manager");
 
-    public final NumberPath<Integer> materialId = createNumber("materialId", Integer.class);
+    public final QMaterial materialId;
+
+    public final NumberPath<Integer> passCnt = createNumber("passCnt", Integer.class);
 
     public final NumberPath<Integer> processStatus = createNumber("processStatus", Integer.class);
 
+    public final StringPath purchaseOrderId = createString("purchaseOrderId");
+
     public final NumberPath<Integer> qcCheckCnt = createNumber("qcCheckCnt", Integer.class);
 
+    public final DateTimePath<java.time.LocalDateTime> qccheckDate = createDateTime("qccheckDate", java.time.LocalDateTime.class);
+
     public final NumberPath<Integer> qcCheckId = createNumber("qcCheckId", Integer.class);
+
+    public final NumberPath<Integer> returnCnt = createNumber("returnCnt", Integer.class);
 
     public final NumberPath<Integer> returnStatus = createNumber("returnStatus", Integer.class);
 
     public final NumberPath<Integer> shipmentId = createNumber("shipmentId", Integer.class);
 
     public QQcCheck(String variable) {
-        super(QcCheck.class, forVariable(variable));
+        this(QcCheck.class, forVariable(variable), INITS);
     }
 
     public QQcCheck(Path<? extends QcCheck> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QQcCheck(PathMetadata metadata) {
-        super(QcCheck.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QQcCheck(PathMetadata metadata, PathInits inits) {
+        this(QcCheck.class, metadata, inits);
+    }
+
+    public QQcCheck(Class<? extends QcCheck> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.materialId = inits.isInitialized("materialId") ? new QMaterial(forProperty("materialId")) : null;
     }
 
 }

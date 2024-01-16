@@ -5,8 +5,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
+
 public interface ProducePlanerCustomRepository {
 
-    Page<ProducePlaner> producePlanerList(int page, int size, int category, String keyword);
+    Page<ProducePlaner> producePlanerList(int size, int page, int category, String keyword, LocalDateTime startDate, LocalDateTime endDate);
 
 }

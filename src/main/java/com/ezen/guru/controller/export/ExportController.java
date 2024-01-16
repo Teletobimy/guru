@@ -3,16 +3,24 @@ package com.ezen.guru.controller.export;
 import com.ezen.guru.domain.Code;
 import com.ezen.guru.dto.export.ExportDTO;
 import com.ezen.guru.dto.export.IdRequest;
+import com.ezen.guru.dto.plan.BicycleDTO;
+import com.ezen.guru.dto.plan.MaterialDTO;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import com.ezen.guru.service.export.ExportService;
+import com.ezen.guru.service.plan.BicycleService;
+import com.ezen.guru.service.plan.MaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -21,16 +29,20 @@ import java.util.List;
 public class ExportController {
 
     private final ExportService exportService;
+    private final MaterialService materialService;
+    private final BicycleService bicycleService;
 
     @GetMapping("/producePlanerList")
     public String producePlanerList(Model model,
                                     @RequestParam(value = "size", defaultValue = "10") int size,
                                     @RequestParam(value ="page" ,defaultValue = "0") int page,
                                     @RequestParam(value = "keyword", required = false) String keyword,
-                                    @RequestParam(value = "category", defaultValue = "-1", required = false) Integer category) {
+                                    @RequestParam(value = "category", defaultValue = "-1", required = false) int category,
+                                    @RequestParam(name = "startDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                    @RequestParam(name = "endDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
 
         System.out.println("category : " + category);
-        Page<ProducePlanerDTO> producePlanerDTOList = exportService.findAll(page, size, category, keyword);
+        Page<ProducePlanerDTO> producePlanerDTOList = exportService.findAll(size, page, category, keyword, startDate, endDate);
         List<Code> codeList = exportService.setCodeListByProducePlanerStatus(producePlanerDTOList);
         List<Code> code = exportService.findByCodeCategory("produce_planer_status");
 
@@ -55,6 +67,27 @@ public class ExportController {
         model.addAttribute("codeList", codeList);
 
         return "export/producePlanerDetail";
+    }
+
+    @GetMapping("/materialStock")
+    public String materialList(Model model) {
+
+        List<MaterialDTO> materials = materialService.getAllMaterials();
+        List<Code> codeList = exportService.findByCodeCategory("material_category");
+
+        model.addAttribute("materials", materials);
+        model.addAttribute("codeList", codeList);
+
+        return "export/materialStock";
+    }
+
+    @GetMapping("/productStock")
+    public String productList(Model model) {
+
+        List<BicycleDTO> bicycles = bicycleService.getAllBicycles();
+        model.addAttribute("bicycles", bicycles);
+
+        return "export/productStock";
     }
 
     @PostMapping("/producePlanerDetail")
