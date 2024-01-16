@@ -21,9 +21,9 @@ public class OrderApiController {
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
 
-    @PutMapping("/update-status")
-    public ResponseEntity<String> updateOrderStatus(@RequestBody OrderCompleteRequest request) {
-        orderService.updateOrderStatus(request);
+    @PutMapping("/order/{id}/update-status")
+    public ResponseEntity<String> updateOrderStatus(@PathVariable String id, @RequestBody OrderCompleteRequest request) {
+        orderService.updateOrderStatus(id, request);
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
 }

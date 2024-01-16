@@ -47,30 +47,22 @@ public class PurchaseOrder {
     @OneToMany(mappedBy = "purchaseOrder")
     private List<PurchaseOrderDetail> purchaseOrderDetails;
 
-    public void loadCompany(EntityManager entityManager) {
-        if (company != null && !Hibernate.isInitialized(company)) {
-            // company가 초기화되지 않았다면 초기화
-            Hibernate.initialize(company);
-        }
-    }
-
     @Builder
     public PurchaseOrder(String id,
-                         Document document,
-                         Company company,
-                         String companyId,
                          int totalprice,
                          LocalDateTime regdate,
                          int status,
                          String memo,
                          LocalDateTime deadline) {
         this.id = id;
-        this.document = document;
-        this.company = company;
         this.totalprice = totalprice;
         this.regdate = regdate;
         this.status = status;
         this.memo = memo;
         this.deadline = deadline;
+    }
+
+    public void update(int status) {
+        this.status = status;
     }
 }

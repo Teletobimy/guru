@@ -21,7 +21,7 @@ public interface OrderService {
 
     public void updateOrderDetailStatus(int orderId, int newStatus);
 
-    public void updateOrderStatus(OrderCompleteRequest request);
+    public void updateOrderStatus(String id, OrderCompleteRequest request);
 
     public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments);
 

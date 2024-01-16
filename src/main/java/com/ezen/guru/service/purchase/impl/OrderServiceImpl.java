@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.ezen.guru.dto.purchase.OrderCompleteRequest.toEntity;
 
 @RequiredArgsConstructor
 @Service
@@ -64,18 +63,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void updateOrderStatus(OrderCompleteRequest request) {
-        // DTO에서 필요한 정보를 얻어온 후
-        String orderId = request.getId();
-        int newStatus = request.getNewStatus();
-
+    public void updateOrderStatus(String id, OrderCompleteRequest request) {
         // OrderCompleteRequest에서 PurchaseOrder로 변환
-        Optional<PurchaseOrder> optionalOrder = orderRepository.findById(orderId);
-        PurchaseOrder orderEntity = optionalOrder.get();
-        orderEntity.setStatus(newStatus);
-
+        PurchaseOrder purchaseOrder = orderRepository.findById(id);
+        purchaseOrder.update(request.getNewStatus());
         // PurchaseOrder 업데이트
-        orderRepository.save(orderEntity);
+        orderRepository.save(purchaseOrder);
     }
 
     @Override

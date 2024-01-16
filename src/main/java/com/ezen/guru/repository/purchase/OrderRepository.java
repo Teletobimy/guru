@@ -14,6 +14,6 @@ public interface OrderRepository extends JpaRepository<PurchaseOrder, Integer>,O
     public List<PurchaseOrder> findByStatusOrderByDeadline(int status); // where purchase_order_status = ? order by purchase_order_deadline asc;
 
     @Query("SELECT p FROM PurchaseOrder p WHERE p.id = :id")
-    public Optional<PurchaseOrder> findById(@Param("id") String id);
+    public PurchaseOrder findById(@Param("id") String id);
 
 }

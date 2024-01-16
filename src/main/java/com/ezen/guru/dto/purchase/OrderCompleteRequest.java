@@ -25,17 +25,9 @@ public class OrderCompleteRequest {
                 .build();
     }
 
-    public static PurchaseOrder toEntity(OrderCompleteRequest dto, DocumentRepository documentRepository, CompanyRepository companyRepository) {
-        String documentId = "document_id";
-        String companyId = "company_id";
-
-        Document document = documentRepository.findById(documentId).orElse(null);
-        Company company = Company.builder().companyId(companyId).build();
-
+    public static PurchaseOrder toEntity(OrderCompleteRequest dto) {
         return PurchaseOrder.builder()
                 .id(dto.getId())
-                .document(document)
-                .company(company)
                 .status(dto.getNewStatus())
                 .build();
     }

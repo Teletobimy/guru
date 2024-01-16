@@ -403,7 +403,7 @@
 
          $.ajax({
             type: "PUT",
-            url: '/purchase/api/update-status',
+            url: '/purchase/api/order/' + id + '/update-status',
             contentType: "application/json",
             data: JSON.stringify(requestData),
             success: function (response) {
