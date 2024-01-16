@@ -23,10 +23,6 @@ public class Material {
     @Column(name="company_id")
     private String companyId;
 
-//    @ManyToOne
-//    @JoinColumn(name="company_id")
-//    private Company company;
-
     @Column(name="material_name")
     private String materialName;
 

@@ -16,7 +16,7 @@ public class Shipment {
     private int shipmentId;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "material_id",referencedColumnName = "material_id", insertable = false, updatable = false)
+    @JoinColumn(name = "material_id",referencedColumnName = "material_id",insertable = false, updatable = false)
     private Material materialId;
 
     @Column(name = "material_id")
@@ -56,14 +56,16 @@ public class Shipment {
     @Builder
     public Shipment(int shipmentId,int materialNumber, String materialName,
                     int shipmentCnt,int materialPrice,
+                    Material materialId,
                     String materialMeasure,int materialCategory,
-                    Company companyId, String companyid, LocalDateTime shippingDate,
+                    Company companyId,String companyid ,LocalDateTime shippingDate,
                     String manager, String purchaseOrderId
                     ){
         this.shipmentId =shipmentId;
         this.materialNumber = materialNumber;
         this.materialName = materialName;
         this.shipmentCnt = shipmentCnt;
+        this.materialId = materialId;
         this.materialPrice = materialPrice;
         this.materialMeasure = materialMeasure;
         this.materialCategory = materialCategory;
@@ -72,5 +74,8 @@ public class Shipment {
         this.shippingDate = shippingDate;
         this.manager = manager;
         this.purchaseOrderId = purchaseOrderId;
+    }
+    public Company getCompanyId() {
+        return companyId;
     }
 }

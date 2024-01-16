@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "company")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 @Entity
 public class Company {
@@ -18,10 +18,6 @@ public class Company {
 
     @Column(name="material_id")
     private int materialId;
-
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @Column(name="material_id")
-//    private Material material;
 
     @Column(name="company_name")
     private String companyName;

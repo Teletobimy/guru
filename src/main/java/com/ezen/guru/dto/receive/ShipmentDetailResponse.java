@@ -1,5 +1,6 @@
 package com.ezen.guru.dto.receive;
 
+import com.ezen.guru.domain.Company;
 import com.ezen.guru.domain.Material;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
