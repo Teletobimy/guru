@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<PurchaseOrder, Integer>,OrderCustomRepository {
     public List<PurchaseOrder> findByStatusOrderByDeadline(int status); // where purchase_order_status = ? order by purchase_order_deadline asc;
 
-    @Query("SELECT distinct p FROM PurchaseOrder p WHERE p.id = :id")
-    public OrderCompleteRequest findById(@Param("id") String id);
+    @Query("SELECT p FROM PurchaseOrder p WHERE p.id = :id")
+    public Optional<PurchaseOrder> findById(@Param("id") String id);
 
 }

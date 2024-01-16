@@ -1,5 +1,6 @@
 package com.ezen.guru.controller.purchase;
 
+import com.ezen.guru.dto.purchase.OrderCompleteRequest;
 import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,9 @@ public class OrderApiController {
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
 
-    @PostMapping("order/{id}/complete")
-    public ResponseEntity<String> updateOrder(
-            @PathVariable String id,
-            @RequestParam int newStatus) {
-        orderService.updateOrderStatus(id, newStatus);
+    @PutMapping("/update-status")
+    public ResponseEntity<String> updateOrderStatus(@RequestBody OrderCompleteRequest request) {
+        orderService.updateOrderStatus(request);
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
 }

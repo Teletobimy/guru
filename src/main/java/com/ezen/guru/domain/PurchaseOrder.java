@@ -3,6 +3,7 @@ package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,10 +47,18 @@ public class PurchaseOrder {
     @OneToMany(mappedBy = "purchaseOrder")
     private List<PurchaseOrderDetail> purchaseOrderDetails;
 
+    public void loadCompany(EntityManager entityManager) {
+        if (company != null && !Hibernate.isInitialized(company)) {
+            // company가 초기화되지 않았다면 초기화
+            Hibernate.initialize(company);
+        }
+    }
+
     @Builder
     public PurchaseOrder(String id,
                          Document document,
                          Company company,
+                         String companyId,
                          int totalprice,
                          LocalDateTime regdate,
                          int status,

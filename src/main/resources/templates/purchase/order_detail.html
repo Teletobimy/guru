@@ -352,11 +352,15 @@
         });
     }
 
-    function toShipment(id) {
+    function toShipment(button) {
 
-        var id = $(id).data('id');
+        var id = $(button).data('id');
         var newStatus = 2;
-        console.log(id);
+        var requestData = {
+            id: id,
+            newStatus: newStatus
+        };
+        console.log(requestData);
 
         var items = [];  // 데이터 배열 초기화
         // 각 행(tr)에 대해 반복
@@ -398,8 +402,10 @@
         });
 
          $.ajax({
-            type: "POST",
-            url: '/purchase/api/order/' + id + '/complete?newStatus=' + newStatus,
+            type: "PUT",
+            url: '/purchase/api/update-status',
+            contentType: "application/json",
+            data: JSON.stringify(requestData),
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
                 location.reload();

@@ -11,14 +11,12 @@ import com.ezen.guru.repository.purchase.OrderRepository;
 import com.ezen.guru.repository.receive.QcCheckRepository;
 import com.ezen.guru.repository.receive.ShipmentRepository;
 import com.ezen.guru.service.purchase.OrderService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ezen.guru.dto.purchase.OrderCompleteRequest.toEntity;
@@ -65,10 +63,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrderStatus(String id, int newStatus) {
-        OrderCompleteRequest order = orderRepository.findById(id);
-        order.setStatus(newStatus);
-        PurchaseOrder orderEntity = toEntity(order);
+    @Transactional
+    public void updateOrderStatus(OrderCompleteRequest request) {
+        // DTO에서 필요한 정보를 얻어온 후
+        String orderId = request.getId();
+        int newStatus = request.getNewStatus();
+
+        // OrderCompleteRequest에서 PurchaseOrder로 변환
+        Optional<PurchaseOrder> optionalOrder = orderRepository.findById(orderId);
+        PurchaseOrder orderEntity = optionalOrder.get();
+        orderEntity.setStatus(newStatus);
+
+        // PurchaseOrder 업데이트
         orderRepository.save(orderEntity);
     }
 
