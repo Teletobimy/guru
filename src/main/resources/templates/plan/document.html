@@ -40,6 +40,14 @@
             color: #fff;
             border-radius: 5px;
         }
+        .ellipsis {
+    max-width: 200px; /* 최대 너비 설정 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block; /* 텍스트 줄임 처리를 위한 설정 */
+}
+
     </style>
 </head>
 <body>
@@ -80,10 +88,10 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
                                             <div class="d-inline">
-                                                <h4>계약서리스트</h4>
-                                                <span>.</span>
+                                                <h4>계약서</h4>
+                                                <span>체결 완료된 계약서</span>
                                             </div>
                                         </div>
                                     </div>
@@ -95,9 +103,9 @@
                                                         <i class="icofont icofont-home"></i>
                                                     </a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">계획</a>
+                                                <li class="breadcrumb-item"><a href="#!">관리</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/plan/document">계약서리스트</a>
+                                                <li class="breadcrumb-item"><a href="/plan/document">계약서</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -124,10 +132,7 @@
                                         </div>
                                     </div>
                                     <div class="card-block table-border-style">
-                                        <td>
-                                            <a href="/plan/document_insert" class="btn btn-card btn-primary">계약서생성</a>
 
-                                        </td>
                                         <div class="table-responsive">
                                             <table class="table table-hover">
                                                 <thead>
@@ -153,15 +158,24 @@
                                                     <td th:text="${documents.regdate}"></td>
                                                     <td th:text="${documents.deadline}"></td>
                                                     <td th:text="${documents.status}"></td>
+                                                    <!--
                                                     <td>
                                                         <textarea th:text="${documents.memo}" rows="6" cols="50"></textarea>
                                                     </td>
+                                                    -->
+                                                    <td th:class="${documents.memo.length() > 50} ? 'ellipsis' : ''">
+    <span th:utext="${documents.memo.length() > 50} ? ${#strings.substring(documents.memo, 0, 50)} + '...' : ${documents.memo}">
+    </span>
+                                                    </td>
+
+
+
                                                     <td>
-                                                        <a th:href="@{/plan/document/{documentId}(documentId=${documents.id})}" class="btn btn-card btn-primary">상세</a>
+                                                        <a th:href="@{/plan/document/{documentId}(documentId=${documents.id})}" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">상세</a>
 
                                                     </td>
 
-                                                    <td><button class="btn btn-card btn-primary">출력</button></td>
+                                                    <td><button class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">출력</button></td>
 
 
                                                 </tr>

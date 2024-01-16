@@ -81,28 +81,14 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
                                             <div class="d-inline">
-                                                <h4>계약서리스트</h4>
+                                                <h4>상세페이지</h4>
                                                 <span>.</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <div class="page-header-breadcrumb">
-                                            <ul class="breadcrumb-title">
-                                                <li class="breadcrumb-item">
-                                                    <a href="/">
-                                                        <i class="icofont icofont-home"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="#!">계획</a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="/plan/document">계약서리스트</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <!-- Page-header end -->
@@ -154,10 +140,13 @@
                                                                 <textarea th:text="${documents.memo}" rows="6" cols="50"></textarea>
                                                             </td>
                                                             <td>
-                                                                <a th:href="@{/plan/document/{documentId}(documentId=${documents.id})}" class="btn btn-card btn-primary">상세</a>
+                                                                <a th:href="@{/plan/document/{documentId}(documentId=${documents.id})}"
+                                                                   class="btn btn-card btn-primary"
+                                                                   style="background-color: #FC6180; border-color: #FC6180;">상세</a>
 
                                                             </td>
-                                                            <td><button class="btn btn-card btn-primary">출력</button></td>
+                                                            <td><button class="btn btn-card btn-primary"
+                                                                        style="background-color: #FC6180; border-color: #FC6180;">출력</button></td>
 
 
                                                         </tr>

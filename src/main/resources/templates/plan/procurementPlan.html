@@ -2,9 +2,7 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
-
     <title>GURU Able - Free Lite Admin Template </title>
     <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,6 +31,8 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+
+
     <style>
         .btn-card {
             text-transform: uppercase;
@@ -42,30 +42,13 @@
             color: #fff;
             border-radius: 5px;
         }
-        .search-long{
-             width:90%;
-             display:flex;
-             justify-content:center;
-             padding:5px;
-             box-sizing:border-box;
-             margin :15px auto;
-             margin-top:0;
-             align-items:center;
-             border:#ddd 1px solid;
+        .ellipsis {
+            max-width: 200px; /* 최대 너비 설정 */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block; /* 텍스트 줄임 처리를 위한 설정 */
         }
-        .pageA{
-           background-color:#fff;
-           color:#FC6180;
-        }
-        .btn-warning{
-        background-color:#fff;
-            color:#FC6180;
-        }
-        .current-page {
-    background-color: #FC6180; /* 배경색을 원하는 색상으로 설정하세요 */
-    color: #fff; /* 텍스트 색상을 원하는 색상으로 설정하세요 */
-    /* 기타 스타일 속성들을 추가하세요 */
-}
 
     </style>
 </head>
@@ -75,16 +58,36 @@
 <div class="theme-loader">
     <div class="ball-scale">
         <div class='contain'>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -94,7 +97,7 @@
     <div class="pcoded-container navbar-wrapper">
         <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
 
-        <div class="pcoded-main-container" >
+        <div class="pcoded-main-container">
             <div th:include="includes/navbar :: navbar"></div>
 
             <div class="pcoded-content">
@@ -109,8 +112,8 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
                                             <div class="d-inline">
-                                                <h4>GURU자전거</h4>
-                                                <span>GURU에서 판매하는 MTB 자전거 리스트</span>
+                                                <h4>조달계획서</h4>
+                                                <span>생산, 재고 등을 고려하여 발행한 회사내부문서</span>
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +127,7 @@
                                                 </li>
                                                 <li class="breadcrumb-item"><a href="#!">관리</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/plan/item">GURU자전거</a>
+                                                <li class="breadcrumb-item"><a href="/plan/procurementPlan">조달계획서리스트</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -139,71 +142,89 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <!-- 호버테이블 & 옆에서 기능 더 나오도록
                                         <h5>Hover table</h5>
                                         <span>use class <code>table-hover</code> inside table element</span>
-                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
-                                        -->
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
                                         <div class="pcoded-search">
                                             <span class="searchbar-toggle">  </span>
                                             <div class="pcoded-search-box ">
-                                                <input type="text" placeholder="자전거명 검색" id="searchbicycle" th:value="${bicycleName}" />
-
-
+                                                <input type="text" placeholder="Search">
                                                 <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
                                             </div>
+
                                         </div>
+                                        <input type="text" name="datetimes"/>
                                     </div>
                                     <div class="card-block table-border-style">
+
+                                        <a href="/plan/document_insert" class="btn btn-card btn-primary"
+                                           style="background-color: #FC6180; border-color: #FC6180;">조달계획서생성</a>
+
+
                                         <div class="table-responsive">
                                             <table class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>번호</th>
-                                                    <th>자전거명</th>
-                                                    <th>설명</th>
-                                                    <th>재고</th>
-                                                    <th>판매가</th>
+                                                    <th>문서번호</th>
+                                                    <th>회사명</th>
+                                                    <th>계약금액</th>
+                                                    <th>계약날짜</th>
+                                                    <th>마감일자</th>
+                                                    <th>계약서현황</th>
+                                                    <th>계약서메모</th>
+                                                    <th>상세</th>
+                                                    <th>출력</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr th:each="bicycle, itemStat : ${bicycles}" style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${bicycle.bicycleId}+ ')'">
-                                                    <td th:text="${bicycle.bicycleId}"></td>
-                                                    <td th:text="${bicycle.bicycleName}"></td>
-                                                    <td th:text="${bicycle.bicycleDescription}"></td>
-                                                    <td th:text="${bicycle.bicycleStock}"></td>
-                                                    <td th:text="${bicycle.bicyclePrice}"></td>
+                                                <tr th:each="documents, itemStat : ${documents}">
+
+                                                    <td th:text="${documents.id}"></td>
+
+                                                    <td th:text="${documents.companyId}"></td>
+                                                    <td th:text="${documents.totalprice}"></td>
+                                                    <td th:text="${documents.regdate}"></td>
+                                                    <td th:text="${documents.deadline}"></td>
+                                                    <td th:text="${documents.status}"></td>
+                                                    <!--
+                                                    <td>
+                                                        <textarea th:text="${documents.memo}" rows="6" cols="50"></textarea>
+                                                    </td>
+                                                    -->
+                                                    <td th:class="${documents.memo.length() > 50} ? 'ellipsis' : ''">
+                                                    <span th:utext="${documents.memo.length() > 50} ? ${#strings.substring(documents.memo, 0, 50)} + '...' : ${documents.memo}">
+                                                    </span>
+                                                    </td>
+
+
+                                                    <td>
+                                                        <a th:href="@{/plan/document/{documentId}(documentId=${documents.id})}"
+                                                           class="btn btn-card btn-primary"
+                                                           style="background-color: #FC6180; border-color: #FC6180;">상세</a>
+
+                                                    </td>
+
+                                                    <td>
+                                                        <button class="btn btn-card btn-primary"
+                                                                style="background-color: #FC6180; border-color: #FC6180;">
+                                                            출력
+                                                        </button>
+                                                    </td>
+
+
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-
-                                    <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
-                                        <ul class="pagination" style="justify-content: end;">
-                                            <li th:class="${page.hasPrevious() ? 'page-item' : 'page-item disabled'}">
-                                                    <a class="page-link" th:if="${page.number > 0}" th:href="@{'/plan/item?page=' + (${page.number} - 1) + '&size=' + 10 + '&bicycleName='+${bicycleName}}" aria-label="Previous">
-
-                                                <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
-                                            <li th:each="pageNumber : ${#numbers.sequence(1, page.totalPages)}" class="page-item"
-                                                >
-                                                <a th:classappend="${pageNumber == (page.number + 1) ? 'page-link current-page' : 'page-link pageA'}"
-                                                   th:href="@{'/plan/item?page=' + (${pageNumber} - 1) + '&size=' + 10 + '&bicycleName='+${bicycleName}}"
-                                                   th:text="${pageNumber}"></a>
-
-                                            </li>
-                                            <li th:class="${page.hasNext() ? 'page-item' : 'page-item disabled'}"
-                                                 th:style="${page.hasNext() ? '' : 'display: none;'}">
-                                                <a class="page-link" th:if="${page.number != page.totalPages}" th:href="@{'/plan/item?page=' + (${page.number} + 1) + '&size=' + 10 + '&bicycleName='+${bicycleName}}" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-
-
                                 </div>
                                 <!-- Hover table card end -->
 
@@ -230,10 +251,7 @@
 <![endif]-->
 <!-- Warning Section Ends -->
 <!-- Required Jquery -->
-
-
-
-<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -257,32 +275,21 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
 <script>
-    $(document).ready(function () {
-        // 검색 아이콘 클릭 시
-        $('.search-icon').on('click', function () {
-            // 검색어 입력란의 값을 가져옴
-
-            var bicycleName = $('#searchbicycle').val();
-             console.log(bicycleName);
-
-
-                var url = '/plan/item?page=' + 0 + '&size=' + 10 + '&bicycleName=' + encodeURIComponent(bicycleName);
-
-                // 페이지 이동
-                window.location.href = url;
-
-        });
-
-
-    });
-
-      function gotoDetail(shipmentId){
-            var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
-            console.log(newUrl);
-           // window.location.href = newUrl;
-        }
+$(function() {
+  $('input[name="datetimes"]').daterangepicker({
+    timePicker: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(32, 'hour'),
+    locale: {
+      format: 'M/DD hh:mm A'
+    }
+  });
+});
 </script>
 
 </body>
