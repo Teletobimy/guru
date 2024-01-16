@@ -1,25 +1,39 @@
 package com.ezen.guru.service.plan;
+import com.ezen.guru.domain.Code;
 import com.ezen.guru.domain.Material;
 import com.ezen.guru.dto.plan.MaterialDTO;
+import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.plan.MaterialRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepository materialRepository;
+    private final CodeRepository codeRepository;
 
-    public MaterialServiceImpl(MaterialRepository materialRepository) {
-        this.materialRepository = materialRepository;
+
+    public List<Code> findByCodeCategory(String codeCategory) {
+
+        return codeRepository.findByCodeCategory(codeCategory);
     }
+
 
     private MaterialDTO convertToDTO(Material material) {
         MaterialDTO materialDTO = new MaterialDTO();
         materialDTO.setMaterialId(material.getMaterialId());
         materialDTO.setMaterialCode(material.getMaterialCode());
         materialDTO.setCompanyId(material.getCompanyId());
+        materialDTO.setCompanyName(material.getCompanyName());
         materialDTO.setMaterialName(material.getMaterialName());
         materialDTO.setMaterialDescription(material.getMaterialDescription());
         materialDTO.setMaterialStock(material.getMaterialStock());
@@ -34,6 +48,7 @@ public class MaterialServiceImpl implements MaterialService {
                 .materialId(materialDTO.getMaterialId())
                 .materialCode(materialDTO.getMaterialCode())
                 .companyId(materialDTO.getCompanyId())
+                .companyName(materialDTO.getCompanyName())
                 .materialName(materialDTO.getMaterialName())
                 .materialDescription(materialDTO.getMaterialDescription())
                 .materialStock(materialDTO.getMaterialStock())
@@ -45,17 +60,45 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public MaterialDTO getMaterialById(int materialId) {
-      return  null;
+    public MaterialDTO getMaterialById(int materialId){
+        try {
+            Optional<Material> materialOptional = materialRepository.findById(materialId);
+
+            if (materialOptional.isPresent()) {
+                Material material = materialOptional.get();
+                return convertToDTO(material);
+            } else {
+                return null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
 
     @Override
-    public List<MaterialDTO> getAllMaterials() {
-        List<Material> materials = materialRepository.findAll();
-        return materials.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<MaterialDTO> getAllMaterials(String materialName, Integer materialCategory, Pageable pageable) {
+        if ((materialName == null || materialName.isEmpty()) && (materialCategory == null || materialCategory == -1)) {
+            return materialRepository.findAll(pageable).map(this::convertToDTO);
+        } else if (materialName == null || materialName.isEmpty()) {
+            return materialRepository.findBymaterialCategory(materialCategory, pageable).map(this::convertToDTO);
+        } else if (materialCategory == null || materialCategory == -1) {
+            return materialRepository.findByMaterialName(materialName, pageable).map(this::convertToDTO);
+        } else {
+            return materialRepository.findAllWithkeywordWithcategory(materialName, materialCategory, pageable).map(this::convertToDTO);
+        }
+
     }
+
+//    @Override
+//    public List<MaterialDTO> getAllMaterials() {
+//        List<Material> materials = materialRepository.findAll();
+//        return materials.stream()
+//                .map(this::convertToDTO)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public void saveMaterial(MaterialDTO materialDTO) {

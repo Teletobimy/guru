@@ -54,6 +54,12 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public List<DocumentDTO> getAllProcurementPlan() {
+        List<Document> documents = documentRepository.findByType(0);
+        return documents.stream().map(this::convertToDocumentDTO).collect(Collectors.toList());
+    }
+
+    @Override
     public DocumentDTO findDocumentById(String documentId) {
         // documentRepository를 사용하여 documentId에 해당하는 Document 엔티티를 찾습니다.
         Optional<Document> documentOptional = documentRepository.findById(documentId);

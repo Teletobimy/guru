@@ -70,6 +70,7 @@
         }
         p{
             padding:5px 10px;
+            cursor: pointer;
         }
         .disabled{
             background-color: rgba(254, 214, 150);
@@ -98,7 +99,6 @@
 </div>
 <!-- Pre-loader end -->
 <div id="pcoded" class="pcoded">
-    <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
         <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
 
@@ -115,10 +115,9 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table bg-c-brown"></i>
                                             <div class="d-inline">
                                                 <h4>재고:[원자재]</h4>
-                                                <span>.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -172,7 +171,6 @@
                                                                 <i class="ti-search" aria-hidden="true"></i>
                                                             </p>
                                                         </div>
-                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
@@ -199,8 +197,8 @@
                                                                         <td th:text="${material.materialPrice}"></td>
                                                                         <td th:text="${material.materialMeasure}"></td>
 
-                                                                        <td th:each="code : ${codeList}">
-                                                                            <td th:if="${code.codeNum == material.materialCategory}" th:text="${code.codeName}"></td>
+                                                                        <td th:each="code : ${codeList}"
+                                                                            th:if="${code.codeNum == material.materialCategory}" th:text="${code.codeName}">
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -231,18 +229,21 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- Hover table card end -->
-
                             </div>
                             <!-- Page-body end -->
                         </div>
-                    </div>
-                    <!-- Main-body end -->
-
-                    <div id="styleSelector">
-
                     </div>
                 </div>
             </div>
@@ -258,7 +259,6 @@
 <![endif]-->
 <!-- Warning Section Ends -->
 <!-- Required Jquery -->
-<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -266,12 +266,9 @@
 <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
 <!-- modernizr js -->
 <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
-<!-- classie js -->
-<script type="text/javascript" src="assets/js/classie/classie.js"></script>
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
@@ -281,6 +278,67 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    function handleRowClick(button) {
+        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
+        var producePlanerId = row.find('th:eq(0)').text();
+        location.href = '/export/producePlanerDetail?producePlanerId=' + producePlanerId;
+    }
 
+    function handleButtonClick(event) {
+        // 이벤트 전파(stopPropagation)를 사용하여 상위 요소의 클릭 이벤트를 막음
+        event.stopPropagation();
+
+        // 클릭된 엘리먼트에서 데이터 추출
+        var producePlanerId = $(event.target).closest('tr').find('th:eq(0)').text();
+
+        // 서버로 데이터 전송 (Ajax 사용 예시)
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/export/listExport', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+        // 서버로 전송할 데이터
+        const data = {
+            producePlanerId: producePlanerId
+            // 추가적으로 필요한 데이터가 있다면 여기에 추가
+        };
+
+        xhr.send(JSON.stringify(data));
+
+        // Ajax 요청 완료 후 실행할 코드 (예시: 페이지 리로드)
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // 성공적으로 서버와 통신한 경우, 여기에 추가적으로 처리할 코드 작성
+                // 예: 페이지 리로드
+                location.reload();
+            } else {
+                // 서버와 통신 실패 시, 여기에 추가적으로 처리할 코드 작성
+                console.error('Failed to send data to the server.');
+            }
+        };
+    }
+
+    function updateLocation(codeNum) {
+        var newUrl = '/export/materialStock?size=10&page=0&category=' + codeNum;
+
+        window.location.href = newUrl;
+    }
+
+    function performSearch(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var category = urlParams.get('category');
+        var searchValue = document.getElementById('searchInput').value;
+
+        var encodedSearchValue = encodeURIComponent(searchValue);
+
+        if (!category || category === 'null') {
+            category = -1;
+        }
+
+        window.location.href = '/export/materialStock?size=10&page=0&category='+ category
+                                +'&keyword=' + encodedSearchValue
+    }
+</script>
 </body>
 </html>

@@ -11,6 +11,7 @@ import com.ezen.guru.service.plan.BicycleService;
 import com.ezen.guru.service.plan.MaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -70,21 +71,31 @@ public class ExportController {
     }
 
     @GetMapping("/materialStock")
-    public String materialList(Model model) {
-
-        List<MaterialDTO> materials = materialService.getAllMaterials();
-        List<Code> codeList = exportService.findByCodeCategory("material_category");
+    public String materialList(Model model,
+                               @RequestParam(value="size", defaultValue = "10") int size,
+                               @RequestParam(value="page", defaultValue = "0") int page,
+                               @RequestParam(value = "keyword", required = false, defaultValue = "") String materialName,
+                               @RequestParam(value = "category", required = false, defaultValue = "-1") Integer  category) {
+        System.out.println("--------------------");
+        System.out.println("category : " + category);
+        System.out.println("keyword : " + materialName);
+        Page<MaterialDTO> materials = materialService.getAllMaterials(materialName, category, PageRequest.of(page, size));
+        List<Code> code = exportService.findByCodeCategory("material_category");
 
         model.addAttribute("materials", materials);
-        model.addAttribute("codeList", codeList);
+        model.addAttribute("category", category);
+        model.addAttribute("code", code);
 
         return "export/materialStock";
     }
 
     @GetMapping("/productStock")
-    public String productList(Model model) {
+    public String productList(Model model,
+                              @RequestParam(value="size", defaultValue = "10") int size,
+                              @RequestParam(value="page", defaultValue = "0") int page,
+                              @RequestParam(value = "bicycleName", required = false) String bicycleName) {
 
-        List<BicycleDTO> bicycles = bicycleService.getAllBicycles();
+        Page<BicycleDTO> bicycles = bicycleService.getAllBicycles(bicycleName, PageRequest.of(page, size));
         model.addAttribute("bicycles", bicycles);
 
         return "export/productStock";
