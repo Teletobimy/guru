@@ -24,6 +24,8 @@ public class QShipment extends EntityPathBase<Shipment> {
 
     public final QCompany companyId;
 
+    public final StringPath companyid = createString("companyid");
+
     public final StringPath manager = createString("manager");
 
     public final NumberPath<Integer> materialCategory = createNumber("materialCategory", Integer.class);
@@ -34,7 +36,11 @@ public class QShipment extends EntityPathBase<Shipment> {
 
     public final StringPath materialName = createString("materialName");
 
+    public final NumberPath<Integer> materialNumber = createNumber("materialNumber", Integer.class);
+
     public final NumberPath<Integer> materialPrice = createNumber("materialPrice", Integer.class);
+
+    public final StringPath purchaseOrderId = createString("purchaseOrderId");
 
     public final NumberPath<Integer> shipmentCnt = createNumber("shipmentCnt", Integer.class);
 

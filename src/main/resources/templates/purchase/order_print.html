@@ -58,6 +58,10 @@
             color: #fff;
             border-radius: 5px;
         }
+        .document-title {
+            text-align: center;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -116,56 +120,45 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="card">
+
                                             <div style="margin: auto; padding: 40px">
                                                 <th:block th:with="firstItem=${list[0]}">
-                                                    <h4 th:text="발주서"></h4>
-                                                    <table width="60%">
+                                                    <h4 class="document-title" th:text="발주서"></h4>
+                                                    <table style="table-layout:auto;">
                                                         <tbody>
                                                         <tr>
                                                             <th colspan="2">주문번호</th>
                                                             <td colspan="2" th:text="${firstItem.id}"></td>
-                                                            <th colspan="2">상호</th>
-                                                            <td colspan="2">
-                                                                <input type="text" placeholder="상호를 입력하세요">
-                                                            </td>
+                                                            <th colspan="2">회사명</th>
+                                                            <td colspan="2" th:text="${firstItem.companyName}"></td>
                                                         </tr>
                                                         <tr>
-                                                            <th rowspan="2" colspan="2">수신</th>
-                                                            <td rowspan="2" colspan="2">
-                                                                <input type="text" placeholder="수신을 입력하세요">
-                                                            </td>
+                                                            <th rowspan="2" colspan="2">계약일자</th>
+                                                            <td rowspan="2" colspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
                                                             <th rowspan="1" colspan="2">사업자번호</th>
-                                                            <td colspan="2">
-                                                                <input type="text" placeholder="사업자번호를 입력하세요">
-                                                            </td>
+                                                            <td colspan="2" th:text="${firstItem.companyId}"></td>
                                                         </tr>
                                                         <tr>
                                                             <th rowspan="1" colspan="2">대표자</th>
-                                                            <td colspan="2">
-                                                                <input type="text" placeholder="대표자를 입력하세요">
-                                                            </td>
+                                                            <td colspan="2" th:text="${firstItem.ceo}"></td>
                                                         </tr>
                                                         <tr>
-                                                            <th rowspan="2" colspan="2">참조</th>
-                                                            <td colspan="2" rowspan="2">
-                                                                <input type="text" placeholder="참조 입력하세요">
-                                                            </td>
+                                                            <th rowspan="2" colspan="2">납기일자</th>
+                                                            <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
                                                             <th colspan="2" rowspan="2">담당자</th>
                                                             <th>성명</th>
-                                                            <td>
-                                                                <input type="text" placeholder="성명">
-                                                            </td>
+                                                            <td>박주영</td>
                                                         </tr>
                                                         <tr>
                                                             <th>연락처</th>
-                                                            <td>
-                                                                <input type="text" placeholder="연락처">
-                                                            </td>
+                                                            <td>010-3539-0819</td>
                                                         </tr>
+                                                        <!---------------------------------------------------->
                                                         <tr>
                                                             <th colspan="2">제목</th>
-                                                            <td colspan="6"></td>
+                                                            <td colspan="6" th:text="|${firstItem.materialName} 외..|"></td>
                                                         </tr>
+                                                        <!---------------------------------------------------->
                                                         <tr>
                                                             <th>No</th>
                                                             <th colspan="2">품명</th>
@@ -175,7 +168,6 @@
                                                             <th colspan="2">금액</th>
 
                                                         </tr>
-                                                        <!---------------------------------------------------->
                                                         <tr th:each="item, stat : ${list}">
                                                             <td th:text="${stat.count}"></td>
                                                             <td colspan="2" th:text="${item.materialName}"></td>
@@ -186,23 +178,6 @@
                                                                 <button class="btn btn-card btn-primary">발주</button>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td> </td>
-                                                            <td colspan="2"></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td colspan="2">0</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> </td>
-                                                            <td colspan="2"></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td colspan="2">0</td>
-                                                        </tr>
-
                                                         <!---------------------------------------------------->
                                                         <tr>
                                                             <th colspan="3">합계(VAT 포함)</th>
@@ -213,14 +188,7 @@
                                                         </tr>
                                                         <tr>
                                                             <th colspan="2">특기사항</th>
-                                                            <td colspan="6">
-                                                                <ol>
-                                                                    <li>납기 일자 : <input type="text" placeholder="납기일자"></li>
-                                                                    <li>납품 장소 :  <input type="text" placeholder="납품장소"></li>
-                                                                    <li>결제 조건 :  <input type="text" placeholder="결제조건"></li>
-                                                                    <li>기    타 : <input type="text" placeholder="기타"></li>
-                                                                </ol>
-                                                            </td>
+                                                            <td colspan="6" th:text="${firstItem.memo}"></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

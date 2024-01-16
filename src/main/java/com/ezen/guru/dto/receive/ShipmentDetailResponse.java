@@ -1,5 +1,7 @@
 package com.ezen.guru.dto.receive;
 
+import com.ezen.guru.domain.Company;
+import com.ezen.guru.domain.Material;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +11,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ShipmentDetailResponse {
     private final int shipmentId;
-    private final int materialId;
+    private final Material materialId;
+    private final int materialNumber;
     private final String materialName;
     private final int shipmentCnt;
     private final String materialMeasure;
@@ -23,4 +26,6 @@ public class ShipmentDetailResponse {
     private final String email;
     private final String address;
     private final LocalDateTime shippingDate;
+    public final String purchaseOrderId;
+
 }
