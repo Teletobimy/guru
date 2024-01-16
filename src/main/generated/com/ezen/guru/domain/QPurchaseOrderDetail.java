@@ -40,6 +40,8 @@ public class QPurchaseOrderDetail extends EntityPathBase<PurchaseOrderDetail> {
 
     public final NumberPath<Integer> purchaseOrderCnt = createNumber("purchaseOrderCnt", Integer.class);
 
+    public final NumberPath<Integer> qcCheckCnt = createNumber("qcCheckCnt", Integer.class);
+
     public QPurchaseOrderDetail(String variable) {
         this(PurchaseOrderDetail.class, forVariable(variable), INITS);
     }

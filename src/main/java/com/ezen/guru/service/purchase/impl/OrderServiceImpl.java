@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -60,8 +61,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments) {
+        List<Shipment> shipmentEntities = shipments.stream()
+                .map(AddShipmentRequest::toEntity) // toEntity 메서드 사용
+                .collect(Collectors.toList());
 
-        List<Shipment> shipmentEntities = new AddShipmentRequest();
         return shipmentRepository.saveAll(shipmentEntities);
     }
 

@@ -253,7 +253,7 @@
                                                 <th:block th:with="firstItem=${list[0]}">
                                                     <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
                                                     <div th:if="${firstItem.status == 1}" style="display: inline-block;">
-                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="toShipment(this)" th:attr="data-id=${firstItem.id}">완료</button>
+                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="toShipment(this); completeOrder(this);" th:attr="data-id=${firstItem.id}">완료</button>
                                                         <button class="btn btn-disabled disabled uncompleted-btn" >완료</button>
                                                     </div>
                                                 </th:block>
@@ -378,19 +378,25 @@
         // 각 행(tr)에 대해 반복
         $('tbody tr').each(function() {
             var item = {};
-            item.materialId = document.getElementById('materialId').getAttribute('data-mat-id');
-            item.materialName = document.getElementById('materialName').getAttribute('data-mat-name');
-            item.shipmentCnt = document.getElementById('orderCnt').getAttribute('data-order-cnt');
-            item.materialPrice = document.getElementById('price').getAttribute('data-mat-price');
-            item.materialMeasure = document.getElementById('measure').getAttribute('data-mat-measure');
-            item.materialCategory = document.getElementById('category').getAttribute('data-mat-category');
-            item.companyId = document.getElementById('companyId').getAttribute('data-com-id');
+            var row = $(this);
+
+            // 각 행의 데이터 추가
+            item.materialNumber = row.find('#materialId').data('mat-id');
+            item.materialName = row.find('#materialName').data('mat-name');
+            item.shipmentCnt = row.find('#orderCnt').data('order-cnt');
+            item.materialPrice = row.find('#price').data('mat-price');
+            item.materialMeasure = row.find('#measure').data('mat-measure');
+            item.materialCategory = row.find('#category').data('mat-category');
+            item.companyid = row.find('#companyId').data('com-id');
             item.shippingDate = new Date();
-            item.purchaseOrderId = document.getElementById('orderId').getAttribute('data-order-id');
+            item.purchaseOrderId = row.find('#orderId').data('order-id');
             console.log(item);
+
             // 배열에 현재 행의 데이터 추가
             items.push(item);
         });
+        let first = items.shift();
+
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=UTF-8",

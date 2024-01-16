@@ -13,25 +13,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddShipmentRequest {
-    Material materialId;
+    int materialNumber;
     String materialName;
     int shipmentCnt;
     int materialPrice;
     String materialMeasure;
     int materialCategory;
-    Company companyId;
+    String companyid;
     LocalDateTime shippingDate;
     String purchaseOrderId;
 
-    public static Shipment toEntity(final AddShipmentRequest dto) {
+    public static Shipment toEntity(AddShipmentRequest dto) {
         return Shipment.builder()
-                .materialId(dto.getMaterialId())
+                .materialNumber(dto.getMaterialNumber())
                 .materialName(dto.getMaterialName())
                 .shipmentCnt(dto.getShipmentCnt())
                 .materialPrice(dto.getMaterialPrice())
                 .materialMeasure(dto.getMaterialMeasure())
                 .materialCategory(dto.getMaterialCategory())
-                .companyId(dto.getCompanyId())
+                .companyid(dto.getCompanyid())
                 .shippingDate(dto.getShippingDate())
                 .purchaseOrderId(dto.getPurchaseOrderId())
                 .build();
