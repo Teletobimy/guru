@@ -25,7 +25,7 @@ public class PurchaseOrder {
     private Document document;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     private Company company;
 
     @Column(name = "purchase_order_totalprice")

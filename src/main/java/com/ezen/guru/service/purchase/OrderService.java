@@ -2,6 +2,7 @@ package com.ezen.guru.service.purchase;
 
 import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.AddShipmentRequest;
+import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
 import org.springframework.data.domain.Page;
 
@@ -13,7 +14,7 @@ public interface OrderService {
 
     public List<Code> findByCodeCategory(String codeCategory);
 
-    public List<PurchaseOrderDetail> getPurchaseOrderDetail(String id);
+    public List<OrderDetailViewResponse> getPurchaseOrderDetail(String id);
 
     public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id);
 

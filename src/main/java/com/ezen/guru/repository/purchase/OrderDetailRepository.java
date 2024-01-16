@@ -1,6 +1,7 @@
 package com.ezen.guru.repository.purchase;
 
 import com.ezen.guru.domain.PurchaseOrderDetail;
+import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,8 +10,34 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail, Integer> {
-    public List<PurchaseOrderDetail> findByPurchaseOrder_id(String id); // where purchase_order_id = ?;
 
+    @Query("SELECT distinct new com.ezen.guru.dto.purchase.OrderDetailViewResponse(" +
+            "d.purchaseOrder.document.type, " +
+            "d.purchaseOrder.id, " +
+            "d.purchaseOrder.document.id, " +
+            "d.purchaseOrder.regdate, " +
+            "d.purchaseOrder.deadline, " +
+            "d.purchaseOrder.status, " +
+            "d.purchaseOrder.company.companyId, " +
+            "d.purchaseOrder.company.companyName, " +
+            "d.id, " +
+            "d.material.materialId, " +
+            "d.materialName, " +
+            "d.materialCategory, " +
+            "d.materialPrice, " +
+            "concat(d.purchaseOrderCnt, ' (', d.materialMeasure, ')'), " +
+            "d.purchaseOrderCnt, " +
+            "d.materialMeasure, " +
+            "d.purchaseOrder.totalprice, " +
+            "d.purchaseOrder.memo, " +
+            "(d.materialPrice * d.purchaseOrderCnt), " +
+            "d.check) " +
+            "FROM PurchaseOrderDetail d " +
+            "JOIN d.purchaseOrder p " +
+            "JOIN d.material m " +
+            "JOIN d.purchaseOrder.document t " +
+            "WHERE d.purchaseOrder.id = :id")
+    List<OrderDetailViewResponse> findByPurchaseOrder(@Param("id") String id); // where purchase_order_id = ?;
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE PurchaseOrderDetail pod " +

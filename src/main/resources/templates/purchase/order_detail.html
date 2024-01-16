@@ -253,7 +253,7 @@
                                                 <th:block th:with="firstItem=${list[0]}">
                                                     <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
                                                     <div th:if="${firstItem.status == 1}" style="display: inline-block;">
-                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="toShipment(this); completeOrder(this);" th:attr="data-id=${firstItem.id}">완료</button>
+                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="toShipment(this);" th:attr="data-id=${firstItem.id}">완료</button>
                                                         <button class="btn btn-disabled disabled uncompleted-btn" >완료</button>
                                                     </div>
                                                 </th:block>
@@ -352,27 +352,10 @@
         });
     }
 
-    //완료 버튼
-    function completeOrder(id) {
+    function toShipment() {
 
         var id = $(id).data('id');
         var newStatus = 2;
-
-        $.ajax({
-            type: "POST",
-            url: '/purchase/api/order/' + id + '/complete?newStatus=' + newStatus,
-            success: function (response) {
-                console.log(response); // 성공적으로 응답을 받았을 때
-                location.reload();
-            },
-            error: function (error) {
-                console.error(error);
-            }
-        });
-
-    }
-
-    function toShipment() {
 
         var items = [];  // 데이터 배열 초기화
         // 각 행(tr)에 대해 반복
@@ -395,7 +378,8 @@
             // 배열에 현재 행의 데이터 추가
             items.push(item);
         });
-        let first = items.shift();
+        items.shift();
+        console.log(items);
 
         $.ajax({
             type: "POST",
@@ -406,6 +390,18 @@
             traditional: true,
             success: function (response) {
                 console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+
+         $.ajax({
+            type: "POST",
+            url: '/purchase/api/order/' + id + '/complete?newStatus=' + newStatus,
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                location.reload();
             },
             error: function (error) {
                 console.error(error);

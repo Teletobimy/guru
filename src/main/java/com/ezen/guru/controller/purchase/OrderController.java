@@ -1,6 +1,7 @@
 package com.ezen.guru.controller.purchase;
 
 import com.ezen.guru.domain.Code;
+import com.ezen.guru.domain.PurchaseOrderDetail;
 import com.ezen.guru.domain.QcCheck;
 import com.ezen.guru.domain.Shipment;
 import com.ezen.guru.dto.purchase.*;
@@ -41,9 +42,7 @@ public class OrderController {
     }
     @GetMapping("/order_detail")
     public String getDetail(Model model, @RequestParam String id) {
-        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id).stream()
-                .map(OrderDetailViewResponse::new)
-                .toList();
+        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id);
         List<Code> codeList = orderService.findByCodeCategory("material_category");
         List<Code> typeCode = orderService.findByCodeCategory("document_type");
 

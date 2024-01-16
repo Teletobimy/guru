@@ -183,7 +183,7 @@
                                                                 <th th:text="${list.companyName}"></th>
                                                                 <th th:text="|${list.materialName} 외..|"></th>
                                                                 <td th:text="${list.totalprice} + &#8361;"></td>
-                                                                <td th:text="${#temporals.format(list.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                <td th:text="${#temporals.format(list.deadline, 'yyyy-MM-dd')}"></td>
                                                             </tr>
 
                                                             </tbody>

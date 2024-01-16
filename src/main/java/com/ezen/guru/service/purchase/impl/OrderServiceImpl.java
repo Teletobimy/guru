@@ -2,6 +2,7 @@ package com.ezen.guru.service.purchase.impl;
 
 import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.AddShipmentRequest;
+import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
 import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
@@ -13,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,13 +40,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<PurchaseOrderDetail> getPurchaseOrderDetail(String id){
-        return detailRepository.findByPurchaseOrder_id(id);
+    public List<OrderDetailViewResponse> getPurchaseOrderDetail(String id){
+        List<OrderDetailViewResponse> resultList = detailRepository.findByPurchaseOrder(id);
+        Set<OrderDetailViewResponse> resultSet = new HashSet<>(resultList);
+        List<OrderDetailViewResponse> uniqueResultList = new ArrayList<>(resultSet);
+
+        return uniqueResultList;
     }
 
     @Override
     public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id){
-        return detailRepository.findByPurchaseOrder_id(id);
+        return null;
+                //detailRepository.findByPurchaseOrder_id(id);
     }
     @Override
     public void updateOrderDetailStatus(int orderId, int newStatus) {

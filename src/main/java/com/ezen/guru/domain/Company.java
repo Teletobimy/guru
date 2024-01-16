@@ -1,7 +1,6 @@
 package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
+@IdClass(CompanyId.class)
 public class Company {
 
     @Id
     @Column(name="company_id", updatable = false)
     private String companyId;
 
+    @Id
     @Column(name="material_id")
     private int materialId;
 
