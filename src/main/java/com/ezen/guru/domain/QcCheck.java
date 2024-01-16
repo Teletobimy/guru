@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.ToOne;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -21,8 +24,9 @@ public class QcCheck {
     @Column(name = "shipment_id")
     private int shipmentId;
 
-    @Column(name = "material_id")
-    private int materialId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "material_id")
+    private Material materialId;
 
     @Column(name = "manager")
     private String manager;
@@ -33,10 +37,17 @@ public class QcCheck {
     @Column(name = "process_status")
     private int processStatus;
 
+    @Column(name = "purchase_order_id")
+    private String purchaseOrderId;
+
+    @Column(name = "qccheck_date")
+    private LocalDateTime qccheckDate;
+
     @Builder
     public QcCheck(int qcCheckId,int returnStatus, int shipmentId,
-                   int materialId, String manager,
-                   int qcCheckCnt, int processStatus){
+                   Material materialId, String manager,
+                   int qcCheckCnt, int processStatus,
+                   String purchaseOrderId, LocalDateTime qccheckDate){
         this.qcCheckId = qcCheckId;
         this.returnStatus = returnStatus;
         this.materialId = materialId;
@@ -44,5 +55,7 @@ public class QcCheck {
         this.manager = manager;
         this.qcCheckCnt = qcCheckCnt;
         this.processStatus = processStatus;
+        this.purchaseOrderId = purchaseOrderId;
+        this.qccheckDate = qccheckDate;
     }
 }

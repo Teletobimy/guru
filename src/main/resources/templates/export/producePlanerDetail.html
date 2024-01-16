@@ -80,10 +80,10 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-blue"></i>
+                                            <i class="icofont icofont-table bg-c-brown"></i>
                                             <div class="d-inline">
-                                                <h4>생산계획서 목록</h4>
-                                                <span>출고처리가 안된 생산계획서들에 대해서 출고처리를 진행하는 페이지입니다.</span>
+                                                <h4 th:text="'Production No.' + ${producePlanerList[0].producePlanerId}"></h4>
+                                                <h4 th:text="'생산계획 : [' + ${producePlanerList[0].bicycleName} + '] ' + ${producePlanerList[0].produceBicycleCnt} + '대'"></h4>
                                             </div>
                                         </div>
                                     </div>
@@ -125,30 +125,35 @@
                                     </div>
                                     <div class="card-block table-border-style">
                                         <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>생산번호</th>
-                                                    <th>자전거이름</th>
-                                                    <th>생산계획수량</th>
-                                                    <th>원자재이름</th>
-                                                    <th>필요수량</th>
-                                                    <th>마감일</th>
-                                                    <th>진행상태</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="item, index : ${producePlanerList}" th:onclick="/export/producePlanerDetail">
-                                                    <th scope="row" th:text="${item.producePlanerId}"></th>
-                                                    <td th:text="${item.bicycleName}"></td>
-                                                    <td th:text="${item.produceBicycleCnt}"></td>
-                                                    <td th:text="${item.materialName}"></td>
-                                                    <td th:text="${item.produceMaterialCnt}"></td>
-                                                    <td th:text="${item.producePlanerDeadline}"></td>
-                                                    <td th:text="${codeList[index.index].codeName}"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                            <form action="/export/producePlanerDetail" method="post">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>원자재이름</th>
+                                                        <th>필요수량</th>
+                                                        <th>마감일</th>
+                                                        <th colspan="2">진행상태</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="item, index : ${producePlanerList}">
+                                                        <input type="hidden" name="producePlanerId" th:value="${producePlanerList[index.index].producePlanerId}">
+                                                        <input type="hidden" name="bicycleId" th:value="${producePlanerList[index.index].bicycleId}">
+                                                        <input type="hidden" name="materialId" th:value="${producePlanerList[index.index].materialId}">
+                                                        <input type="hidden" name="bicycleName" th:value="${producePlanerList[index.index].bicycleName}">
+                                                        <input type="hidden" name="producePlanerStatus" th:value="${producePlanerList[index.index].producePlanerStatus}">
+                                                        <th th:text="${item.materialName}"></th>
+                                                        <td th:text="${item.produceMaterialCnt}"></td>
+                                                        <td th:text="${item.producePlanerDeadline}"></td>
+                                                        <td th:text="${codeList[index.index].codeName}"></td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-card btn-brown" onclick="submitRowData(this)" th:if="${producePlanerList[index.index].producePlanerStatus == 0}">불출</button>
+                                                            <button type="button" class="btn btn-card btn-danger" onclick="cancelRowData(this)" th:if="${producePlanerList[index.index].producePlanerStatus != 0}">불출 취소</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -200,6 +205,94 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    function submitRowData(button) {
+        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
+        // Hidden inputs에서 데이터 가져오기
+        var producePlanerId = row.find('input[name="producePlanerId"]').val();
+        var bicycleId = row.find('input[name="bicycleId"]').val();
+        var materialId = row.find('input[name="materialId"]').val();
+        var bicycleName = row.find('input[name="bicycleName"]').val();
+        var producePlanerStatus = row.find('input[name="producePlanerStatus"]').val();
+        // 나머지 데이터 가져오기
+        var materialName = row.find('th:eq(0)').text();
+        var produceMaterialCnt = row.find('td:eq(0)').text();
 
+        if (producePlanerStatus == 0) {
+            // 현재 시간을 구함
+            var exportDate = new Date().toISOString();
+
+            // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
+            $.ajax({
+                type: 'POST',
+                url: '/export/producePlanerDetail',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    producePlanerId: producePlanerId,
+                    bicycleId: bicycleId,
+                    materialId: materialId,
+                    bicycleName: bicycleName,
+                    materialName: materialName,
+                    exportCnt: produceMaterialCnt,
+                    exportDate: exportDate
+                }),
+                dataType: 'json', // 변경된 부분
+                success: function(response) {
+                    // 서버로부터의 응답 처리
+                    console.log(response);
+                    // 성공 시 페이지 새로고침
+                    location.reload();
+                },
+                error: function(error) {
+                    // 오류 발생 시 처리
+                    console.log(error);
+                    location.reload();
+                }
+            });
+        } else {
+            // 이미 불출 완료된 경우에 대한 처리 추가
+            console.log('이미 불출 완료된 항목입니다.');
+        }
+    }
+
+    function cancelRowData(button) {
+        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
+        // Hidden inputs에서 데이터 가져오기
+        var producePlanerId = row.find('input[name="producePlanerId"]').val();
+        var bicycleId = row.find('input[name="bicycleId"]').val();
+        var materialId = row.find('input[name="materialId"]').val();
+        var bicycleName = row.find('input[name="bicycleName"]').val();
+        // 나머지 데이터 가져오기
+        var materialName = row.find('th:eq(0)').text();
+        var produceMaterialCnt = row.find('td:eq(0)').text();
+
+        // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
+        $.ajax({
+            type: 'POST',
+            url: '/export/cancelExport',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({
+                producePlanerId: producePlanerId,
+                bicycleId: bicycleId,
+                materialId: materialId,
+                bicycleName: bicycleName,
+                materialName: materialName,
+                exportCnt: produceMaterialCnt
+            }),
+            dataType: 'json', // 변경된 부분
+            success: function(response) {
+                // 서버로부터의 응답 처리
+                console.log(response);
+                // 성공 시 페이지 이동
+                location.reload();
+            },
+            error: function(error) {
+                // 오류 발생 시 처리
+                console.log(error);
+                location.reload();
+            }
+        });
+    }
+</script>
 </body>
 </html>
