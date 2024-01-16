@@ -1,12 +1,13 @@
 package com.ezen.guru.controller.receive;
 
 import com.ezen.guru.domain.QcCheck;
+import com.ezen.guru.dto.receive.QcCheckRequest;
+import com.ezen.guru.dto.receive.ShipmentDetailResponse;
 import com.ezen.guru.service.receive.QcCheckService;
 import com.ezen.guru.service.receive.ShipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -31,5 +32,21 @@ public class QcCheckApiController {
     public ResponseEntity<QcCheck> qcCheckModal(@RequestParam int shipmentId){
         QcCheck qcCheck = shipmentService.qcCheck(shipmentId);
         return new ResponseEntity<>(qcCheck,HttpStatus.OK);
+    }
+
+    @PostMapping("/fromQcCheckToShipment")
+    public ResponseEntity<String> addShipment(@RequestParam int cnt, @RequestBody QcCheckRequest shipment){
+        qcCheckService.addShipment(shipment,cnt);
+        return ResponseEntity.ok("Seccessful insert shipment! : " + shipment);
+    }
+    @PutMapping("/updateReturnStatus")
+    public ResponseEntity<String> updateReturnStatus(@RequestParam int qcCheckId,@RequestParam int qcCheckCnt){
+        try {
+            qcCheckService.updateReturnStatus(qcCheckId,qcCheckCnt);
+            return ResponseEntity.ok("Update successful for qcCheckId: " + qcCheckId + "qcCheckCnt: " + qcCheckCnt);
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Update fail" + e.getMessage());
+        }
     }
 }
