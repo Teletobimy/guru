@@ -31,23 +31,34 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
-        .search-long{
-             width:90%;
-             display:flex;
-             justify-content:center;
-             padding:5px;
-             box-sizing:border-box;
-             margin :15px auto;
-             margin-top:0;
-             align-items:center;
-             border:#ddd 1px solid;
+        .input-box{
+         width:100%;
+         display:flex;
+         justify-content:end;
+         padding:5px;
+         box-sizing:border-box;
+         margin :15px auto;
+         margin-top:0;
+         align-items:center;
         }
         .pageA{
             color:#FFB64D;
         }
         .btn-warning{
             color:#fff;
+        }
+         input{
+            padding:5px 10px;
+        }
+         .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+            padding-right: 5px;
         }
     </style>
 </head>
@@ -109,17 +120,11 @@
                                                 <li th:each="code:${code}" class="nav-item">
                                                     <a class="nav-link"
                                                        data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
-                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
-                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
-                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
-                                                       th:text="${code.codeNum == 0 ? '전체보기' :
-                                                                  code.codeNum == 1 ? '손잡이' :
-                                                                  code.codeNum == 2 ? '프레임' :
-                                                                  code.codeNum == 3 ? '휠' : ''}">
+                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
+                                                       th:text="${code.codeName}">
                                                     </a>
                                                 </li>
 
@@ -127,15 +132,18 @@
                                             <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
-                                                    <div class="pcoded-search-box search-long" >
-
-                                                        <input type="text" placeholder="Search" id="searchInput"
-                                                               style="width:95%; border:none; margin-right:5px; ">
-                                                        <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
-                                                        <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
-                                                            <i class="ti-search" aria-hidden="true"></i>
-                                                        </p>
+                                                    <div class="pcoded-search-box input-box" >
+                                                        <div class="search-long">
+                                                            <input type="text" placeholder="search" id="searchInput" style="border:none;">
+                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
+                                                            <p class="search-icon" th:attr="onclick='performSearch()'"
+                                                               style="display:inline; margin:0;">
+                                                                <i class="ti-search" aria-hidden="true"></i>
+                                                            </p>
+                                                        </div>
+                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
                                                     </div>
+
                                                     <div class="card-block table-border-style">
 
                                                         <div class="table-responsive" id="shipment-container">
@@ -168,7 +176,7 @@
                                                                         th:if="${qcCheckList.shipmentId == list.shipmentId}"
                                                                         th:text="${qcCheckList.processStatus == 2 ? '검수중' :
                                                                                     qcCheckList.processStatus == 3 ? '검수 완료' : ''}"
-                                                                        style="color:009000;"></th>
+                                                                        style="color:#009000;"></th>
                                                                 </tr>
 
                                                                 </tbody>
@@ -237,7 +245,7 @@
     <![endif]-->
     <!-- Warning Section Ends -->
     <!-- Required Jquery -->
-    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+
     <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -295,6 +303,40 @@
 
             window.location.href = newUrl;
         }
+        $(document).ready(function(){
+            $('input[name="daterange"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().endOf('hour'),
+            locale: {
+                format: 'YYYY-MM-DD HH:mm:ss'
+            }
+       })
+       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
+            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
+            var urlParams = new URLSearchParams(window.location.search);
+            var category = urlParams.get('processStatus');
+            var page = urlParams.get('page');
+            var size = urlParams.get('size');
+            var search = $('#searchInput').val();
+            if(category === null){
+                category = -1;
+            }
+            var newUrl =  "/shipment/shipmentList?page=" + page +
+                            "&size=" + size +
+                            "&category=" + category +
+                            "&keyword=" + encodeURIComponent(search) +
+                            "&startDate=" + startDate +
+                            "&endDate=" + endDate;
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+          window.location.href = newUrl;
+          });
+
+          $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+              $(this).val('');
+          });
+        })
 
     </script>
 </body>
