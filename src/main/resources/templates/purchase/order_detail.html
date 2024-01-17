@@ -189,12 +189,15 @@
                                                 <table class="table table-detail table-hover">
                                                     <thead>
                                                     <tr>
+                                                        <th:block th:with="firstItem=${list[0]}">
                                                         <th>No.</th>
                                                         <th>품목명</th>
                                                         <th>카테고리</th>
                                                         <th>가격</th>
                                                         <th>수량 (단위)</th>
+                                                        <th th:if="${firstItem.status == 3}">검수완료수량</th>
                                                         <th>발주</th>
+                                                        </th:block>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -211,12 +214,14 @@
                                                             th:text="${code.codeName}"></td>
                                                         <td th:text="${item.price} + &#8361;" id="price" th:attr="data-mat-price=${item.price}"></td>
                                                         <td th:text="${item.cnt}"></td>
+                                                        <td th:if="${item.status == 3}" th:text="|${item.qccheckCnt + ' (' + item.measure + ')'}|"></td>
                                                         <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
                                                         <td th:if="${item.check == 1 && item.status == 1}">
                                                             <button class="btn btn-card btn-disabled disabled">발주</button>
                                                             <button type="button" class="btn btn-card btn-primary" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
                                                         </td>
-                                                        <td th:if="${item.status != 1}"><button class="btn btn-card btn-disabled disabled">발주완료</button></td>
+                                                        <td th:if="${item.status == 2}"><button class="btn btn-card btn-disabled disabled">발주완료</button></td>
+                                                        <td th:if="${item.status == 3}"><button class="btn btn-card btn-disabled disabled">발주마감</button></td>
 
                                                         <!-- Modal -->
                                                         <div class="modal fade" th:attr="id='exampleModal'+${item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

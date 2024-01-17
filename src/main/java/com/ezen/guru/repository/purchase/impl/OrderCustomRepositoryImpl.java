@@ -1,5 +1,6 @@
 package com.ezen.guru.repository.purchase.impl;
 
+import com.ezen.guru.domain.QCompany;
 import com.ezen.guru.domain.QPurchaseOrder;
 import com.ezen.guru.domain.QPurchaseOrderDetail;
 import com.ezen.guru.dto.purchase.OrderListViewResponse;
@@ -29,6 +30,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 
         QPurchaseOrder qOrder = QPurchaseOrder.purchaseOrder;
         QPurchaseOrderDetail qOrderDetail = QPurchaseOrderDetail.purchaseOrderDetail;
+        QCompany qCompany = QCompany.company;
 
         BooleanBuilder whereCondition = new BooleanBuilder();
 
@@ -52,7 +54,11 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                 .from(qOrder)
                 .leftJoin(qOrderDetail)
                 .on(qOrder.id.eq(qOrderDetail.purchaseOrder.id))
+                .join(qCompany)
+                .on(qOrderDetail.material.materialId.eq(qCompany.materialId)
+                        .and(qOrder.company.companyId.eq(qCompany.companyId)))
                 .where(whereCondition)
+                .orderBy(qOrder.deadline.asc())
                 .offset(size * page)
                 .limit(size)
                 .fetchResults();
