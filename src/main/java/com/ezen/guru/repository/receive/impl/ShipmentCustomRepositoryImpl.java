@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,19 +24,21 @@ public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<ShipmentResponse> shipmentList(int size, int page, String keyword, int category) {
+    public Page<ShipmentResponse> shipmentList(int size, int page, String keyword, int category, LocalDateTime startDate, LocalDateTime endDate) {
 
         QShipment qShipment = QShipment.shipment;
         QCompany qCompany = QCompany.company;
 
         BooleanBuilder whereCondition = new BooleanBuilder();
 
-
         if(keyword != null && !keyword.isEmpty()){
             whereCondition.and(qShipment.materialId.materialName.like("%" + keyword + "%"));
         }
         if(category != -1){
             whereCondition.and(qShipment.materialCategory.eq(category));
+        }
+        if(startDate != null && endDate != null){
+            whereCondition.and(qShipment.shippingDate.between(startDate, endDate));
         }
 
        QueryResults<ShipmentResponse> results = jpaQueryFactory
@@ -63,7 +66,7 @@ public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
         List<ShipmentResponse> content = results.getResults();
         long total = results.getTotal();
         PageRequest pageRequest = PageRequest.of(page,size);
-       return new PageImpl<>(content,pageRequest,total);
+        return new PageImpl<>(content,pageRequest,total);
 
     }
 }

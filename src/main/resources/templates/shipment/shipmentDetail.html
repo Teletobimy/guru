@@ -32,17 +32,23 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
     <style>
-        table{
-         border-collapse: collapse;
-         border-spacing: 0
+        .shadowTable{
+            box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -webkit-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -moz-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            border-radius:10px;
+
         }
-        th{
-            background-color: #f6f7fb;
-    	color: #000;
+        tr{
+            padding :20px;
         }
         th, td{
-            border: 1px solid #ccc;
-    	padding: 10px;
+            color: #000;
+            padding: 20px 40px;
+            font-size: 15px;
+        }
+        th{
+            padding-left:100px;
         }
         input{
             border:none;
@@ -53,7 +59,7 @@
             flex-flow: column;
             justify-content: center;
             align-items: center;
-            margin:30px;
+            margin:30px auto;
         }
         .btn-display{
          display: flex;
@@ -70,6 +76,14 @@
             color: #fff;
             cursor: pointer;
             transition: all ease-in 0.3s;
+        }
+        h2{
+            text-align:center;
+            color:black;
+            font-weight:bold;
+            padding-top:50px;
+            padding-bottom:50px;
+            border-bottom:2px dashed #ccc;
         }
     </style>
 </head>
@@ -124,72 +138,81 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="container">
+                                            <table width="70%" class="shadowTable" >
+                                                <tbody>
+                                                <tr>
+                                                    <td colspan="2">
+                                                    <h2 >출하 명세서</h2>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>출하 번호</th>
+                                                    <td><input type="text" readonly th:value="${shipment.shipmentId}"></td>
 
-                                        <table width="60%">
-                                            <tr>
-                                                <th colspan="2">출하 번호</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.shipmentId}">
-                                                </td>
-                                                <th colspan="2">회사명</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.companyName}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2" colspan="2">주소</th>
-                                                <td rowspan="2" colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.address}">
-                                                </td>
-                                                <th rowspan="1" colspan="2">사업자번호</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.companyId}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="1" colspan="2">대표자</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.ceo}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2" colspan="2">납기 일자</th>
-                                                <td colspan="2" rowspan="2">
-                                                    <input type="text" readonly th:value="${shipment.shippingDate}" placeholder="참조 입력하세요">
-                                                </td>
-                                                <th colspan="2" rowspan="2">담당자</th>
-                                                <th>성명</th>
-                                                <td>
-                                                    <input type="text" readonly th:value="${shipment.manager}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>연락처</th>
-                                                <td >
-                                                    <input type="text" readonly th:value="${shipment.tel}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>No</th>
-                                                <th colspan="2">품명</th>
-                                                <th>규격</th>
-                                                <th>수량</th>
-                                                <th>단가</th>
-                                                <th colspan="2">합계</th>
+                                                </tr>
 
-                                            </tr>
-                                            <!---------------------------------------------------->
-                                            <tr>
-                                                <td th:text="${shipment.materialNumber}"></td>
-                                                <td colspan="2" th:text="${shipment.materialName}"></td>
-                                                <td th:text="${shipment.materialMeasure}"></td>
-                                                <td th:text="${shipment.shipmentCnt}"></td>
-                                                <td th:text="${shipment.materialPrice}"></td>
-                                                <td colspan="2" th:text="${shipment.materialPrice * shipment.shipmentCnt}"></td>
-                                            </tr>
-                                            <!---------------------------------------------------->
+                                                <tr>
+                                                    <th>회사명</th>
+                                                    <td><input type="text" readonly th:value="${shipment.companyName}"></td>
 
-                                        </table>
+                                                </tr>
+                                                <tr>
+                                                    <th>회사 주소</th>
+                                                    <td><input type="text" readonly th:value="${shipment.address}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>사업자 번호</th>
+                                                    <td><input type="text" readonly th:value="${shipment.companyId}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>대표자</th>
+                                                    <td><input type="text" readonly th:value="${shipment.ceo}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>납기 일자</th>
+                                                    <td><input type="text" readonly th:value="${shipment.shippingDate}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>담당자</th>
+                                                    <td><input type="text" readonly th:value="${shipment.manager}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>담당자 연락처</th>
+                                                    <td><input type="text" readonly th:value="${shipment.tel}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>자재 품명</th>
+                                                    <td><input type="text" readonly th:value="${shipment.materialName}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>규격</th>
+                                                    <td><input type="text" readonly th:value="${shipment.materialMeasure}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>자재 수량</th>
+                                                    <td><input type="text" readonly th:value="${shipment.shipmentCnt}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>단가</th>
+                                                    <td><input type="text" readonly th:value="${shipment.materialPrice}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th style="padding-bottom: 70px">합계</th>
+                                                    <td style="padding-bottom: 70px"><input type="text" readonly th:value="${shipment.materialPrice * shipment.shipmentCnt}"></td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                     </div>
                                     </div>
                                     <div class="btn-display">

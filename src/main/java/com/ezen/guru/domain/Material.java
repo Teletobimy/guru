@@ -1,14 +1,14 @@
 package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "material")
-@NoArgsConstructor
+
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+
 @Getter
+@Setter
 @Entity
 public class Material {
 
@@ -22,6 +22,9 @@ public class Material {
 
     @Column(name="company_id")
     private String companyId;
+
+    @Column(name="company_name")
+    private String companyName;
 
     @Column(name="material_name")
     private String materialName;
@@ -45,6 +48,7 @@ public class Material {
     public Material(int materialId,
                     String materialCode,
                     String companyId,
+                    String companyName,
                     String materialName,
                     String materialDescription,
                     int materialStock,
@@ -54,6 +58,7 @@ public class Material {
         this.materialId = materialId;
         this.materialCode = materialCode;
         this.companyId = companyId;
+        this.companyName = companyName;
         this.materialName = materialName;
         this.materialDescription = materialDescription;
         this.materialStock = materialStock;

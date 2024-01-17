@@ -12,10 +12,12 @@ public class MaterialDTO {
     private int materialId;
     private String materialCode;
     private String companyId;
+    private String companyName;
     private String materialName;
     private String materialDescription;
     private int materialStock;
     private int materialPrice;
     private String materialMeasure;
     private int materialCategory;
+
 }

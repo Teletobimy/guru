@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface DocumentService {
     List<DocumentDTO> getAllDocuments();
+
+    List<DocumentDTO> getAllProcurementPlan();
+
     DocumentDTO findDocumentById(String documentId);
     List<DocumentDetail> findDocumentDetailsByDocumentId(String documentId);
 }

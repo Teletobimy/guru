@@ -31,20 +31,17 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
-        .input-box{
-         width:100%;
-         display:flex;
-         justify-content:end;
-         padding:5px;
-         box-sizing:border-box;
-         margin :15px auto;
-         margin-top:0;
-         align-items:center;
+        .search-long{
+             width:90%;
+             display:flex;
+             justify-content:center;
+             padding:5px;
+             box-sizing:border-box;
+             margin :15px auto;
+             margin-top:0;
+             align-items:center;
+             border:#ddd 1px solid;
         }
         .pageA{
             color:#FFB64D;
@@ -52,14 +49,23 @@
         .btn-warning{
             color:#fff;
         }
-         input{
-            padding:5px 10px;
+
+
+          .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
         }
-         .search-long{
-            border:1px solid #ccc;
-            margin-right:10px;
-            padding-right: 5px;
-        }
+        .ellipsis {
+    max-width: 200px; /* 최대 너비 설정 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block; /* 텍스트 줄임 처리를 위한 설정 */
+}
     </style>
 </head>
 
@@ -97,17 +103,36 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-yellow"></i>
-                                            <div style="display:flex; align-items:center;">
-                                                <h4>출하 명세서 리스트</h4>
+                                            <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
 
-                                            </div>
+                                                <div class="d-inline">
+                                                <h4>견적서</h4>
+                                                <span>협력사로부터 받은 견적서</span>
+                                                </div>
+
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a href="/">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">관리</a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="/plan/quotation">견적서</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
                                 </div>
-
-
                             </div>
+
                             <div class="page-body">
 
                                 <div class="card">
@@ -115,36 +140,42 @@
                                         <div class="col-lg-12">
 
                                             <!-- Nav tabs -->
+                                            <!-- 위에 상태 버튼
                                             <ul class="nav nav-tabs  tabs" role="tablist">
 
                                                 <li th:each="code:${code}" class="nav-item">
                                                     <a class="nav-link"
                                                        data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
-                                                       th:text="${code.codeName}">
+                                                       th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
+                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
+                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
+                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
+                                                       th:text="${code.codeNum == 0 ? '전체보기' :
+                                                                  code.codeNum == 1 ? '손잡이' :
+                                                                  code.codeNum == 2 ? '프레임' :
+                                                                  code.codeNum == 3 ? '휠' : ''}">
                                                     </a>
                                                 </li>
 
                                             </ul>
+                                            -->
                                             <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
-                                                    <div class="pcoded-search-box input-box" >
-                                                        <div class="search-long">
-                                                            <input type="text" placeholder="search" id="searchInput" style="border:none;">
-                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
-                                                            <p class="search-icon" th:attr="onclick='performSearch()'"
-                                                               style="display:inline; margin:0;">
-                                                                <i class="ti-search" aria-hidden="true"></i>
-                                                            </p>
-                                                        </div>
-                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
-                                                    </div>
+                                                    <div class="pcoded-search-box search-long" >
 
+                                                        <input type="text" placeholder="Search" id="searchInput"
+                                                               style="width:95%; border:none; margin-right:5px; ">
+                                                        <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
+                                                        <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
+                                                            <i class="ti-search" aria-hidden="true"></i>
+                                                        </p>
+                                                    </div>
                                                     <div class="card-block table-border-style">
+                                                        <a href="/plan/document_insert" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">견적서생성</a>
 
                                                         <div class="table-responsive" id="shipment-container">
                                                             <table class="table table-hover">
@@ -157,27 +188,11 @@
                                                                     <th>자재 종류</th>
                                                                     <th>회사명</th>
                                                                     <th>출하 날짜</th>
-                                                                    <th>검수 상태</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
 
-                                                                <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'" th:each="list : ${list}">
-                                                                    <th th:text="${list.shipmentId}"></th>
-                                                                    <th th:text="${list.materialName}"></th>
-                                                                    <td th:text="${list.shipmentCnt} + ${list.materialMeasure}"></td>
-                                                                    <td th:text="${list.materialPrice} + &#8361;"></td>
-                                                                    <td th:each="code:${code}"
-                                                                        th:if="${code.codeNum} == ${list.materialCategory}"
-                                                                        th:text="${code.codeName}"></td>
-                                                                    <td th:text="${list.companyName}"></td>
-                                                                    <td th:text="${list.shippingDate}"></td>
-                                                                    <th th:each="qcCheckList : ${qcCheckList}"
-                                                                        th:if="${qcCheckList.shipmentId == list.shipmentId}"
-                                                                        th:text="${qcCheckList.processStatus == 2 ? '검수중' :
-                                                                                    qcCheckList.processStatus == 3 ? '검수 완료' : ''}"
-                                                                        style="color:#009000;"></th>
-                                                                </tr>
+
 
                                                                 </tbody>
                                                             </table>
@@ -185,6 +200,7 @@
                                                         </div>
 
                                                     </div>
+                                                    <!-- 페이지네이션
 
                                                     <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
@@ -193,7 +209,9 @@
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
-                                                            <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
+                                                            <li  class="page-item"
+                                                                 th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}"
+                                                            >
                                                                 <a class="page-link pageA"
                                                                    th:classappend="${pageNumber == (list.number + 1) ? 'btn-warning' : ''}"
                                                                    th:href="@{'/shipment/shipmentList?page=' + ${pageNumber - 1} + '&size=10'}"
@@ -207,6 +225,7 @@
                                                             </li>
                                                         </ul>
                                                     </nav>
+                                                    -->
                                                 </div>
 
                                             </div>
@@ -245,7 +264,7 @@
     <![endif]-->
     <!-- Warning Section Ends -->
     <!-- Required Jquery -->
-
+    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -276,6 +295,7 @@
                  nav.removeClass('active');
              }
          });
+
         function updateLocation(category) {
             var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
 
@@ -303,40 +323,6 @@
 
             window.location.href = newUrl;
         }
-        $(document).ready(function(){
-            $('input[name="daterange"]').daterangepicker({
-            timePicker: true,
-            startDate: moment().startOf('hour'),
-            endDate: moment().endOf('hour'),
-            locale: {
-                format: 'YYYY-MM-DD HH:mm:ss'
-            }
-       })
-       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
-            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
-            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('processStatus');
-            var page = urlParams.get('page');
-            var size = urlParams.get('size');
-            var search = $('#searchInput').val();
-            if(category === null){
-                category = -1;
-            }
-            var newUrl =  "/shipment/shipmentList?page=" + page +
-                            "&size=" + size +
-                            "&category=" + category +
-                            "&keyword=" + encodeURIComponent(search) +
-                            "&startDate=" + startDate +
-                            "&endDate=" + endDate;
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-          window.location.href = newUrl;
-          });
-
-          $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
-              $(this).val('');
-          });
-        })
 
     </script>
 </body>
