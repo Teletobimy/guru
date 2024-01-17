@@ -93,7 +93,7 @@ public class ExportController {
     public String productList(Model model,
                               @RequestParam(value="size", defaultValue = "10") int size,
                               @RequestParam(value="page", defaultValue = "0") int page,
-                              @RequestParam(value = "bicycleName", required = false) String bicycleName) {
+                              @RequestParam(value = "keyword", defaultValue = "", required = false) String bicycleName) {
 
         Page<BicycleDTO> bicycles = bicycleService.getAllBicycles(bicycleName, PageRequest.of(page, size));
         model.addAttribute("bicycles", bicycles);

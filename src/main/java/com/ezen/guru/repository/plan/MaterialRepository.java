@@ -27,4 +27,5 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
     @Query("SELECT b FROM Material b WHERE (:materialName IS NULL OR LOWER(b.materialName) LIKE LOWER(CONCAT('%', :materialName, '%'))) AND (:materialCategory IS NULL OR b.materialCategory = :materialCategory) ORDER BY b.materialId ASC")
     Page<Material> findAllWithkeywordWithcategory(@Param("materialName") String materialName, @Param("materialCategory") Integer materialCategory, Pageable pageable);
 
+    Material findByMaterialId(int materialId);
 }

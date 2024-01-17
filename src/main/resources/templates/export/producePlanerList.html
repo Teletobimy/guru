@@ -59,10 +59,13 @@
 
         }
         .pageA{
-            color:#FFB64D;
+            color:#fff;
         }
         .btn-warning{
             color:#fff;
+        }
+        .current-page {
+            color: #ab7967;
         }
         input{
             padding:5px 10px;
@@ -203,20 +206,20 @@
                                                     </div>
                                                     <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                            <li th:class="${producePlanerList.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                                                                <a class="page-link" th:if="${producePlanerList.number > 0}" th:href="@{'/export/producePlanerList?page=' + ${producePlanerList.number - 1} + '&size=10'}" aria-label="Previous">
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
                                                             <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, producePlanerList.totalPages)}">
                                                                 <a class="page-link pageA"
-                                                                   th:classappend="${pageNumber == (producePlanerList.number + 1) ? 'btn-brown' : ''}"
+                                                                   th:classappend="${pageNumber == (producePlanerList.number + 1) ? 'btn-brown' : 'current-page'}"
                                                                    th:href="@{'/export/producePlanerList?page=' + ${pageNumber - 1} + '&size=10'}"
                                                                    th:text="${pageNumber}"></a>
                                                             </li>
-
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Next">
+                                                            <li th:class="${producePlanerList.hasNext() ? 'page-item' : 'page-item disabled'}"
+                                                                th:style="${producePlanerList.hasNext() ? '' : 'display: none;'}">
+                                                                <a class="page-link" th:if="${producePlanerList.number != producePlanerList.totalPages}" th:href="@{'/export/producePlanerList?page=' + ${producePlanerList.number + 1} + '&size=10'}" aria-label="Next">
                                                                     <span aria-hidden="true">&raquo;</span>
                                                                 </a>
                                                             </li>

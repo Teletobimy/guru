@@ -60,10 +60,13 @@
 
         }
         .pageA{
-            color:#FFB64D;
+            color:#fff;
         }
         .btn-warning{
             color:#fff;
+        }
+        .current-page {
+            color: #ab7967;
         }
         input{
             padding:5px 10px;
@@ -183,7 +186,6 @@
                                                                     <th>자재스펙</th>
                                                                     <th>현재고</th>
                                                                     <th>구매가</th>
-                                                                    <th>단위</th>
                                                                     <th>종류</th>
                                                                 </tr>
                                                                 </thead>
@@ -193,11 +195,9 @@
                                                                         <td th:text="${material.companyName}"></td>
                                                                         <td th:text="${material.materialName}"></td>
                                                                         <td th:text="${material.materialDescription}"></td>
-                                                                        <td th:text="${material.materialStock}"></td>
-                                                                        <td th:text="${material.materialPrice}"></td>
-                                                                        <td th:text="${material.materialMeasure}"></td>
-
-                                                                        <td th:each="code : ${codeList}"
+                                                                        <td th:text="${material.materialStock} + ' ' + ${material.materialMeasure}"></td>
+                                                                        <td th:text="'&#8361; ' + ${#numbers.formatInteger(material.materialPrice, 1, 'COMMA')}"></td>
+                                                                        <td th:each="code : ${code}"
                                                                             th:if="${code.codeNum == material.materialCategory}" th:text="${code.codeName}">
                                                                         </td>
                                                                     </tr>
@@ -207,20 +207,20 @@
                                                     </div>
                                                     <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                            <li th:class="${materials.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                                                                <a class="page-link" th:if="${materials.number > 0}" th:href="@{'/export/materialStock?page=' + ${materials.number - 1} + '&size=10'}" aria-label="Previous">
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
-                                                            <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, materials.totalPages)}">
+                                                            <li th:each="pageNumber:${#numbers.sequence(1, materials.totalPages)}" class="page-item">
                                                                 <a class="page-link pageA"
-                                                                   th:classappend="${pageNumber == (materials.number + 1) ? 'btn-brown' : ''}"
+                                                                   th:classappend="${pageNumber == (materials.number + 1) ? 'btn-brown' : 'current-page'}"
                                                                    th:href="@{'/export/materialStock?page=' + ${pageNumber - 1} + '&size=10'}"
                                                                    th:text="${pageNumber}"></a>
                                                             </li>
-
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Next">
+                                                            <li th:class="${materials.hasNext() ? 'page-item' : 'page-item disabled'}"
+                                                                th:style="${materials.hasNext() ? '' : 'display: none;'}">
+                                                                <a class="page-link" th:if="${materials.number != materials.totalPages}" th:href="@{'/export/materialStock?page=' + ${materials.number + 1} + '&size=10'}" aria-label="Next">
                                                                     <span aria-hidden="true">&raquo;</span>
                                                                 </a>
                                                             </li>
@@ -279,46 +279,6 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    function handleRowClick(button) {
-        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
-        var producePlanerId = row.find('th:eq(0)').text();
-        location.href = '/export/producePlanerDetail?producePlanerId=' + producePlanerId;
-    }
-
-    function handleButtonClick(event) {
-        // 이벤트 전파(stopPropagation)를 사용하여 상위 요소의 클릭 이벤트를 막음
-        event.stopPropagation();
-
-        // 클릭된 엘리먼트에서 데이터 추출
-        var producePlanerId = $(event.target).closest('tr').find('th:eq(0)').text();
-
-        // 서버로 데이터 전송 (Ajax 사용 예시)
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/export/listExport', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-
-        // 서버로 전송할 데이터
-        const data = {
-            producePlanerId: producePlanerId
-            // 추가적으로 필요한 데이터가 있다면 여기에 추가
-        };
-
-        xhr.send(JSON.stringify(data));
-
-        // Ajax 요청 완료 후 실행할 코드 (예시: 페이지 리로드)
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                // 성공적으로 서버와 통신한 경우, 여기에 추가적으로 처리할 코드 작성
-                // 예: 페이지 리로드
-                location.reload();
-            } else {
-                // 서버와 통신 실패 시, 여기에 추가적으로 처리할 코드 작성
-                console.error('Failed to send data to the server.');
-            }
-        };
-    }
-
     function updateLocation(codeNum) {
         var newUrl = '/export/materialStock?size=10&page=0&category=' + codeNum;
 
