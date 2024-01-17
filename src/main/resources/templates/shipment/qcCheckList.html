@@ -151,13 +151,8 @@
                                                        th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${processStatus == 0 and code.codeNum == 0 ? 'active' : ''} +
-                                                                       ${processStatus == 2 and code.codeNum == 2 ? 'active' : ''} +
-                                                                       ${processStatus == 3 and code.codeNum == 3 ? 'active' : ''}"
-
-                                                       th:text="${code.codeNum == 0 ? '전체 보기' :
-                                                                  code.codeNum == 2 ? '검수 중' :
-                                                                  code.codeNum == 3 ? '검수 완료' : ''}">
+                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
+                                                       th:text="${code.codeName}">
                                                     </a>
                                                 </li>
 
@@ -208,7 +203,7 @@
                                                                     <td th:text="${page.purchaseOrderId}"></td>
                                                                     <th th:text="${page.processStatus == 2 ? '검수중' :
                                                                                     page.processStatus == 3 ? '검수 완료' : ''}"
-                                                                        style="color:009000;"></th>
+                                                                        style="color:#009000;"></th>
                                                                     <th>
                                                                         <button class=" btn-warning qcCheckModal"
                                                                                 style="font-size:12px;border: none;padding: 5px 10px; border-radius: 5px; outline:none;"
@@ -405,9 +400,13 @@
             var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
             var urlParams = new URLSearchParams(window.location.search);
             var category = urlParams.get('processStatus');
+            var page = urlParams.get('page');
+            var size = urlParams.get('size');
             var search = $('#searchInput').val();
 
-            var newUrl =  '/qcCheck/qcCheckList?processStatus=' + category +
+            var newUrl =  "/qcCheck/qcCheckList?"+ page +
+                            "&size=" + size +
+                            "&processStatus=" + category +
                             "&search=" + encodeURIComponent(search) +
                             "&startDate=" + startDate +
                             "&endDate=" + endDate;
