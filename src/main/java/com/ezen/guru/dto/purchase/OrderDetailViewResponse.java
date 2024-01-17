@@ -25,6 +25,7 @@ public class OrderDetailViewResponse {
     private final int price;
     private final String cnt;
     private final int orderCnt;
+    private final int qccheckCnt;
     private final String measure;
     private final int totalprice;
     private final String memo;
@@ -47,6 +48,7 @@ public class OrderDetailViewResponse {
         this.price = detail.getMaterialPrice();
         this.cnt = detail.getPurchaseOrderCnt() + " (" + detail.getMaterialMeasure() + ")";
         this.orderCnt = detail.getPurchaseOrderCnt();
+        this.qccheckCnt = detail.getQcCheckCnt();
         this.measure = detail.getMaterialMeasure();
         this.totalprice = detail.getPurchaseOrder().getTotalprice();
         this.memo = detail.getPurchaseOrder().getMemo();

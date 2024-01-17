@@ -166,8 +166,8 @@
                                                             <th th:text="${firstItem.companyName}"></th>
                                                             <th th:text="|${firstItem.materialName} 외..|"></th>
                                                             <td th:text="${firstItem.totalprice} + &#8361;"></td>
-                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd')}"></td>
-                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm:ss', 'Asia/Seoul')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm:ss', 'Asia/Seoul')}"></td>
                                                             <td th:text="${firstItem.memo}"></td>
                                                         </tr>
                                                     </th:block>
@@ -253,8 +253,37 @@
                                                 <th:block th:with="firstItem=${list[0]}">
                                                     <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
                                                     <div th:if="${firstItem.status == 1}" style="display: inline-block;">
-                                                        <button type="button" class="btn btn-primary complete-btn" th:onclick="toShipment(this);" th:attr="data-id=${firstItem.id}">완료</button>
+                                                        <button type="button" class="btn btn-primary complete-btn" style="margin-right: 5px;" th:onclick="toShipment(this);" th:attr="data-id=${firstItem.id}">완료</button>
                                                         <button class="btn btn-disabled disabled uncompleted-btn" >완료</button>
+                                                    </div>
+                                                    <div th:if="${firstItem.status == 2}" style="display: inline-block;">
+                                                        <button type="button" class="btn btn-primary complete-btn" style="margin-right: 5px;" th:onclick="#" th:attr="data-id=${firstItem.id}">일정등록</button>
+                                                        <button type="button" class="btn btn-primary complete-btn" style="margin-right: 5px;" data-toggle="modal" th:attr="data-target=${'#closeModal'+ firstItem.id}">발주마감</button>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" th:attr="id='closeModal'+${firstItem.id}" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="closeModalLabel">Confirm</h5>
+                                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p th:text="|발주번호: ${firstItem.id}|"></p>
+                                                                        <p th:text="|발주수량 : ${firstItem.cnt}|"></p>
+                                                                        <p th:text="|검수수량 : ${firstItem.qccheckCnt}|"></p>
+                                                                        <p th:text="|총액 : ${firstItem.totalprice}&#8361;|"></p>
+                                                                        마감하시겠습니까?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary order-btn" th:onclick="validateOrderClose(this)" th:attr="data-id=${firstItem.id}">예</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Modal End -->
+
                                                     </div>
                                                 </th:block>
                                             </div>
@@ -355,12 +384,7 @@
     function toShipment(button) {
 
         var id = $(button).data('id');
-        var newStatus = 2;
-        var requestData = {
-            id: id,
-            newStatus: newStatus
-        };
-        console.log(requestData);
+        console.log(id);
 
         var items = [];  // 데이터 배열 초기화
         // 각 행(tr)에 대해 반복
@@ -405,10 +429,9 @@
             type: "PUT",
             url: '/purchase/api/order/' + id + '/update-status',
             contentType: "application/json",
-            data: JSON.stringify(requestData),
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
-                location.reload();
+                location.replace('/purchase/order');
             },
             error: function (error) {
                 console.error(error);
@@ -447,6 +470,26 @@
             $('.complete-btn').hide();
         }
     }
+
+    // 발주 마감
+    function validateOrderClose(button) {
+        var id = $(button).data('id');
+        console.log(id);
+
+        $.ajax({
+            type: "PUT",
+            url: '/purchase/api/order/' + id + '/force-close',
+            contentType: "application/json",
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                location.replace('/purchase/order');
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
 </script>
 </body>
 </html>

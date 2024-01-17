@@ -27,6 +27,7 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "d.materialPrice, " +
             "concat(d.purchaseOrderCnt, ' (', d.materialMeasure, ')'), " +
             "d.purchaseOrderCnt, " +
+            "d.qcCheckCnt, " +
             "d.materialMeasure, " +
             "d.purchaseOrder.totalprice, " +
             "d.purchaseOrder.memo, " +
@@ -42,6 +43,8 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
     @Modifying(clearAutomatically = true)
     @Query("UPDATE PurchaseOrderDetail pod " +
             "SET pod.qcCheckCnt = pod.qcCheckCnt + :qcCheckCnt " +
-            "WHERE pod.purchaseOrder.id = (SELECT qc.purchaseOrderId FROM QcCheck qc WHERE qc.qcCheckId = :qcCheckId AND qc.qcCheckCnt >= :qcCheckCnt)")
+            "WHERE pod.purchaseOrder.id = (SELECT qc.purchaseOrderId FROM QcCheck qc WHERE qc.qcCheckId = :qcCheckId)")
     int updateQcCheckCnt(@Param("qcCheckId") int qcCheckId, @Param("qcCheckCnt") int qcCheckCnt);
+
+    List<PurchaseOrderDetail> findByPurchaseOrder_id(String id);
 }

@@ -21,7 +21,11 @@ public interface OrderService {
 
     public void updateOrderDetailStatus(int orderId, int newStatus);
 
-    public void updateOrderStatus(String id, OrderCompleteRequest request);
+    public void updateOrderStatus(String id);
+
+    public void closeOrder(String id);
+
+    public void forceClose(String id);
 
     public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments);
 

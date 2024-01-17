@@ -58,7 +58,7 @@ public class OrderController {
 //            savedEntities.add(orderService.saveToShipment(shipment));
 //        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
 //        }
-        List<Shipment> savedEntities = orderService.saveToShipment(shipments);
+        orderService.saveToShipment(shipments);
         return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
     }
     @PostMapping("/order/qccheck")

@@ -50,8 +50,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id){
-        return null;
-                //detailRepository.findByPurchaseOrder_id(id);
+        return detailRepository.findByPurchaseOrder_id(id);
     }
     @Override
     public void updateOrderDetailStatus(int orderId, int newStatus) {
@@ -63,12 +62,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void updateOrderStatus(String id, OrderCompleteRequest request) {
+    public void updateOrderStatus(String id) {
         // OrderCompleteRequest에서 PurchaseOrder로 변환
-        PurchaseOrder purchaseOrder = orderRepository.findById(id);
-        purchaseOrder.update(request.getNewStatus());
+        orderRepository.changeStatus(id);
+//        purchaseOrder.update(request.getNewStatus());
         // PurchaseOrder 업데이트
-        orderRepository.save(purchaseOrder);
+//        orderRepository.save(purchaseOrder);
+    }
+
+    @Override
+    @Transactional
+    public void closeOrder(String id) {
+        orderRepository.closeOrder(id);
+    }
+
+    @Override
+    @Transactional
+    public void forceClose(String id) {
+        orderRepository.forceClose(id);
     }
 
     @Override

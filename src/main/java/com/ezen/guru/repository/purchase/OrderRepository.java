@@ -3,7 +3,9 @@ package com.ezen.guru.repository.purchase;
 import com.ezen.guru.domain.PurchaseOrder;
 import com.ezen.guru.domain.PurchaseOrderDetail;
 import com.ezen.guru.dto.purchase.OrderCompleteRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -13,7 +15,20 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<PurchaseOrder, Integer>,OrderCustomRepository {
     public List<PurchaseOrder> findByStatusOrderByDeadline(int status); // where purchase_order_status = ? order by purchase_order_deadline asc;
 
-    @Query("SELECT p FROM PurchaseOrder p WHERE p.id = :id")
-    public PurchaseOrder findById(@Param("id") String id);
+    @Transactional
+    @Modifying
+    @Query("UPDATE PurchaseOrder p SET p.status=2 WHERE p.id = :id")
+    public Integer changeStatus(@Param("id") String id);
+
+    @Modifying
+    @Query("UPDATE PurchaseOrder p " +
+            "SET p.status = CASE WHEN p.id IN (" +
+            "SELECT d.purchaseOrder.id FROM PurchaseOrderDetail d WHERE d.purchaseOrderCnt = d.qcCheckCnt" +
+            ") AND p.status = 2 THEN 3 ELSE p.status END")
+    public int closeOrder(@Param("id") String id);
+
+    @Modifying
+    @Query("UPDATE PurchaseOrder p SET p.status = 3 WHERE p.id = :id")
+    public int forceClose(@Param("id") String id);
 
 }

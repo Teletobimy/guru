@@ -3,6 +3,7 @@ package com.ezen.guru.controller.purchase;
 import com.ezen.guru.dto.purchase.OrderCompleteRequest;
 import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,30 @@ public class OrderApiController {
     }
 
     @PutMapping("/order/{id}/update-status")
-    public ResponseEntity<String> updateOrderStatus(@PathVariable String id, @RequestBody OrderCompleteRequest request) {
-        orderService.updateOrderStatus(id, request);
+    public ResponseEntity<String> updateOrderStatus(@PathVariable String id) {
+        orderService.updateOrderStatus(id);
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
+    }
+
+    @PutMapping("/order/{id}/order-close")
+    public ResponseEntity<String> closeOrder(@PathVariable String id) {
+        try {
+            orderService.closeOrder(id);
+            return ResponseEntity.ok("발주 마감 검사 완료");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("발주 마감 검사 중 오류 발생");
+        }
+    }
+
+    @PutMapping("/order/{id}/force-close")
+    public ResponseEntity<String> forceOrderClose(@PathVariable String id) {
+        try {
+            orderService.forceClose(id);
+            return ResponseEntity.ok("발주 마감 검사 완료");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("발주 마감 검사 중 오류 발생");
+        }
     }
 }
