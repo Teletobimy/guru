@@ -8,11 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -80,23 +78,21 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Page<MaterialDTO> getAllMaterials(String materialName, Integer materialCategory, Pageable pageable) {
-        if ((materialName == null || materialName.isEmpty()) && materialCategory == null) {
+
+
+        if ((materialName == null || materialName.isEmpty()) && materialCategory == -1 || materialCategory== null) {
             return materialRepository.findAll(pageable).map(this::convertToDTO);
         } else if (materialName == null || materialName.isEmpty()) {
             return materialRepository.findBymaterialCategory(materialCategory, pageable).map(this::convertToDTO);
+        }else if (!materialName.isEmpty() && materialCategory == -1 ){
+                return materialRepository.findAllWithKeyword(materialName, materialCategory, pageable).map(this::convertToDTO);
+
+
         } else {
-            return materialRepository.findAllWithkeywordWithcategory(materialName, materialCategory, pageable).map(this::convertToDTO);
+            return materialRepository.findAllWithkeywordWithcategory(materialName, materialCategory,-1, pageable).map(this::convertToDTO);
         }
 
     }
-
-//    @Override
-//    public List<MaterialDTO> getAllMaterials() {
-//        List<Material> materials = materialRepository.findAll();
-//        return materials.stream()
-//                .map(this::convertToDTO)
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     public void saveMaterial(MaterialDTO materialDTO) {

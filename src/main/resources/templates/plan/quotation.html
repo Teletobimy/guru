@@ -167,15 +167,16 @@
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
                                                     <div class="pcoded-search-box search-long" >
 
-                                                        <input type="text" placeholder="Search" id="searchInput"
+                                                        <input type="text" placeholder="견적서 검색" id="searchInput"
                                                                style="width:95%; border:none; margin-right:5px; ">
                                                         <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
                                                         <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
                                                             <i class="ti-search" aria-hidden="true"></i>
                                                         </p>
                                                     </div>
+                                                    <a href="/plan/document_insert" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">견적서생성</a>
                                                     <div class="card-block table-border-style">
-                                                        <a href="/plan/document_insert" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">견적서생성</a>
+
 
                                                         <div class="table-responsive" id="shipment-container">
                                                             <table class="table table-hover">

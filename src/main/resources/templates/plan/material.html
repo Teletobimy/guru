@@ -133,6 +133,31 @@
                             <!-- Page-body start -->
                             <div class="card">
                                 <div class="card-header">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs  tabs" role="tablist">
+
+                                        <li th:each="code:${code}" class="nav-item">
+                                            <a class="nav-link"
+                                               data-toggle="tab"
+                                               th:attr="onclick='updateLocation(' + ${code.codeNum == -1 ? -1 : code.codeNum} + ')'"
+                                               role="tab"
+                                               style="cursor:pointer;"
+                                               th:classappend="        ${category == -1 and code.codeNum == -1 ? 'active' : ''} +
+                                                                       ${category == 0 and code.codeNum == 0 ? 'active' : ''} +
+                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
+                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
+                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
+                                               th:text="${        code.codeNum == -1 ? 'ALL' :
+                                                                  code.codeNum == 0 ? '원자재' :
+                                                                  code.codeNum == 1 ? '손잡이' :
+                                                                  code.codeNum == 2 ? '프레임' :
+                                                                  code.codeNum == 3 ? '휠' : ''}">
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+
                                     <!-- 호버테이블 & 옆에서 기능 더 나오도록
                                     <h5>Hover table</h5>
                                     <span>use class <code>table-hover</code> inside table element</span>
@@ -149,6 +174,8 @@
                                     </div>
                                 </div>
                                     <div class="card-block table-border-style">
+                                        <a href="/plan/material_insert" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">원자재품목생성</a>
+
                                         <div class="table-responsive">
                                             <table class="table table-hover">
                                                 <thead>
@@ -189,7 +216,7 @@
                                 <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
                                     <ul class="pagination" style="justify-content: end;">
                                         <li th:class="${page.hasPrevious() ? 'page-item' : 'page-item disabled'}">
-                                            <a class="page-link" th:if="${page.number > 0}" th:href="@{'/plan/material?page=' + (${page.number} - 1) + '&size=' + 10 + '&materialName='+${materialName}}" aria-label="Previous">
+                                            <a class="page-link" th:if="${page.number > 0}" th:href="@{'/plan/material?page=' + (${page.number} - 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}" aria-label="Previous">
 
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
@@ -197,13 +224,13 @@
                                         <li th:each="pageNumber : ${#numbers.sequence(1, page.totalPages)}" class="page-item"
                                         >
                                             <a th:classappend="${pageNumber == (page.number + 1) ? 'page-link current-page' : 'page-link pageA'}"
-                                               th:href="@{'/plan/material?page=' + (${pageNumber} - 1) + '&size=' + 10 + '&materialName='+${materialName}}"
+                                               th:href="@{'/plan/material?page=' + (${pageNumber} - 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}"
                                                th:text="${pageNumber}"></a>
 
                                         </li>
                                         <li th:class="${page.hasNext() ? 'page-item' : 'page-item disabled'}"
                                             th:style="${page.hasNext() ? '' : 'display: none;'}">
-                                            <a class="page-link" th:if="${page.number != page.totalPages}" th:href="@{'/plan/material?page=' + (${page.number} + 1) + '&size=' + 10 + '&materialName='+${materialName}}" aria-label="Next">
+                                            <a class="page-link" th:if="${page.number != page.totalPages}" th:href="@{'/plan/material?page=' + (${page.number} + 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
@@ -243,12 +270,12 @@
 <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
 <!-- modernizr js -->
 <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
+
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
 <!-- classie js -->
-<script type="text/javascript" src="assets/js/classie/classie.js"></script>
+
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
@@ -266,17 +293,24 @@
 
             var materialName = $('#searchmaterialName').val();
 
-
-
-                var url = '/plan/material?page=' + 0 + '&size=' + 10 + '&materialName=' + encodeURIComponent(materialName);
+                var urlParams = new URLSearchParams(window.location.search);
+                var category = urlParams.get('materialCategory');
+                var url = '/plan/material?page=' + 0 + '&size=' + 10 + '&materialName=' + encodeURIComponent(materialName)+'&materialCategory=' + category;
 
                 // 페이지 이동
                 window.location.href = url;
 
         });
-
-
     });
+
+    function updateLocation(category) {
+            var newUrl = '/plan/material?size=10&page=0&materialCategory=' + category;
+
+            window.location.href = newUrl;
+        }
+
+
+
 </script>
 </body>
 </html>

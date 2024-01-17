@@ -18,6 +18,6 @@ public class MaterialDTO {
     private int materialStock;
     private int materialPrice;
     private String materialMeasure;
-    private int materialCategory;
+    private Integer materialCategory;
 
 }

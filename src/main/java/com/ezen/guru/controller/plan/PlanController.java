@@ -48,13 +48,33 @@ public class PlanController {
         return "plan/item";
     }
 
+    @GetMapping("/bicycle_detail")
+    public String bicycle_detail(Model model,
+                                 @RequestParam(value = "bicycleId") Integer bicycleId
+    ){
+        System.out.println("선택된 자전거 아이디는 : "+bicycleId);
+
+
+        return "plan/bicycle_detail";
+    }
+
+    @GetMapping("/bicycle_insert")
+    public String bicycle_insert(Model model){
+        System.out.println("아이템생성");
+
+        return "plan/bicycle_insert";
+    }
+
     @GetMapping("/material")
     public String material(Model model,
                            @RequestParam(value="size", defaultValue = "10") int size,
                            @RequestParam(value="page", defaultValue = "0") int page,
                            @RequestParam(value = "materialName", required = false) String materialName,
-                           @RequestParam(value = "materialCategory", required = false) Integer  materialCategory){
-        Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size));
+                           @RequestParam(value = "materialCategory", defaultValue = "-1") Integer  materialCategory
+                          ){
+
+            Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size));
+
         List<MaterialDTO> materials = materialPage.getContent();
         if(materialName==null||materialName==""||materialName.length()<1){materialName = "";}
         List<Code> codeList = materialService.findByCodeCategory("material_category");
@@ -62,9 +82,17 @@ public class PlanController {
         model.addAttribute("materials", materials);
         model.addAttribute("page", materialPage);
         model.addAttribute("code",codeList);
+
+        model.addAttribute("category",materialCategory);
         System.out.println("codeList!!! : "+ codeList);
 
         return "plan/material";
+    }
+    @GetMapping("/material_insert")
+    public String material_insert(Model model){
+        System.out.println("원자재생성");
+
+        return "plan/material_insert";
     }
 
     @GetMapping("/item_search")
