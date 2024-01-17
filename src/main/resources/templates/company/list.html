@@ -129,52 +129,83 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Hover table</h5>
-                                        <div class="card-header-right">
-                                            <ul class="list-unstyled card-option">
-                                                <li><i class="icofont icofont-simple-left "></i></li>
-                                                <li><i class="icofont icofont-maximize full-card"></i></li>
-                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
-                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
-                                                <li><i class="icofont icofont-error close-card"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="pcoded-search">
-                                            <span class="searchbar-toggle searched">  </span>
-                                            <div class="pcoded-search-box ">
-                                                <input type="text" placeholder="Search">
-                                                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                        <div class="col-lg-12">
+                                            <h5>Hover table</h5>
+                                            <div class="card-header-right">
+                                                <ul class="list-unstyled card-option">
+                                                    <li><i class="icofont icofont-simple-left "></i></li>
+                                                    <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                    <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                    <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                    <li><i class="icofont icofont-error close-card"></i></li>
+                                                </ul>
+                                            </div>
+                                            <div class="pcoded-search">
+                                                <span class="searchbar-toggle searched">  </span>
+                                                <div class="pcoded-search-box ">
+                                                    <input type="text" placeholder="Search">
+                                                    <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-block table-border-style">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>회사명</th>
-                                                    <th>사업자번호</th>
-                                                    <th>대표자</th>
-                                                    <th>전화번호</th>
-                                                    <th>이메일</th>
-                                                    <th>주소</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="item,stat : ${list}" th:onclick="#">
-                                                    <th scope="row" th:text="${stat.count}"></th>
-                                                    <td th:text="${item.companyName}"></td>
-                                                    <td th:text="${item.companyId}"></td>
-                                                    <td th:text="${item.ceo}"></td>
-                                                    <td th:text="${item.tel}"></td>
-                                                    <td th:text="${item.email}"></td>
-                                                    <td th:text="${item.address}"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="tab-content tabs card-block">
+                                        <div class="col-lg-12">
+
+                                            <div class="card-block table-border-style">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>회사명</th>
+                                                            <th>사업자번호</th>
+                                                            <th>대표자</th>
+                                                            <th>전화번호</th>
+                                                            <th>이메일</th>
+                                                            <th>주소</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.companyId}+ ')'" th:each="item,stat : ${list}" th:onclick="#">
+                                                            <th scope="row" th:text="${stat.count}"></th>
+                                                            <td th:text="${item.companyName}"></td>
+                                                            <td th:text="${item.companyId}"></td>
+                                                            <td th:text="${item.ceo}"></td>
+                                                            <td th:text="${item.tel}"></td>
+                                                            <td th:text="${item.email}"></td>
+                                                            <td th:text="${item.address}"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                                                <ul class="pagination" style="justify-content: end;">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
+                                                        <a class="page-link pageA"
+                                                           th:classappend="${pageNumber == (list.number + 1) ? 'btn-success' : ''}"
+                                                           th:href="@{'/company/list?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                           th:text="${pageNumber}"></a>
+                                                    </li>
+
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+
                                         </div>
                                     </div>
+
                                 </div>
                                 <!-- Hover table card end -->
 
@@ -224,6 +255,38 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    var $window = $(window);
+    var nav = $('.fixed-button');
+        $window.scroll(function(){
+            if ($window.scrollTop() >= 200) {
+             nav.addClass('active');
+         }
+         else {
+             nav.removeClass('active');
+         }
+     });
+    function performSearch(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var searchValue = document.getElementById('searchInput').value;
+
+        var encodedSearchValue = encodeURIComponent(searchValue);
+
+        console.log(encodedSearchValue);
+
+        window.location.href = '/company/list?size=10&page=0&keyword=' + encodedSearchValue;
+    }
+     document.getElementById('searchInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
+    function gotoDetail(id){
+        var newUrl = '/company/detail?companyId=' + companyId;
+
+        window.location.href = newUrl;
+    }
+</script>
 
 </body>
 </html>
