@@ -8,6 +8,8 @@ import com.ezen.guru.repository.purchase.OrderCustomRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,8 +52,8 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                         qOrder.totalprice,
                         qOrder.deadline
                 ))
-                .from(qOrderDetail)
-                .leftJoin(qOrder)
+                .from(qOrder)
+                .leftJoin(qOrderDetail)
                 .on(qOrder.id.eq(qOrderDetail.purchaseOrder.id))
                 .where(whereCondition)
                 .orderBy(qOrder.deadline.asc())
