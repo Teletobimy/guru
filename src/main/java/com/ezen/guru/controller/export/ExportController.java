@@ -12,8 +12,6 @@ import com.ezen.guru.service.plan.MaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -63,11 +62,52 @@ public class ExportController {
 
         List<ProducePlanerDTO> list = exportService.findByProducePlanerId(producePlanerId);
         List<Code> codeList = exportService.findByCodeList(list);
+        List<MaterialDTO> mList = new ArrayList<>();
+
+        for (ProducePlanerDTO dto : list) {
+            mList.add(materialService.getMaterialById(dto.getMaterialId()));
+        }
+
+        model.addAttribute("producePlanerList", list);
+        model.addAttribute("materialList", mList);
+        model.addAttribute("codeList", codeList);
+
+        return "export/producePlanerDetail";
+    }
+
+    @GetMapping("/exportList")
+    public String exportList(Model model,
+                                    @RequestParam(value = "size", defaultValue = "10") int size,
+                                    @RequestParam(value ="page" ,defaultValue = "0") int page,
+                                    @RequestParam(value = "keyword", required = false) String keyword,
+                                    @RequestParam(name = "startDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                    @RequestParam(name = "endDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+
+        Page<ExportDTO> exportList = exportService.findExportList(size, page, keyword, startDate, endDate);
+        List<ProducePlanerDTO> producePlanerList = new ArrayList<>();
+
+        for (ExportDTO dto : exportList) {
+            producePlanerList.add(exportService.findById(dto.getProducePlanerId(), dto.getBicycleId(), dto.getMaterialId()));
+        }
+        List<Code> code = exportService.findByCodeCategory("produce_planer_status");
+
+        model.addAttribute("exportList", exportList);
+        model.addAttribute("producePlanerList", producePlanerList);
+        model.addAttribute("code", code);
+
+        return "export/exportList";
+    }
+
+    @GetMapping("/exportDetail")
+    public String exportDetail(@RequestParam("producePlanerId") String producePlanerId, Model model) {
+
+        List<ProducePlanerDTO> list = exportService.findByProducePlanerId(producePlanerId);
+        List<Code> codeList = exportService.findByCodeList(list);
 
         model.addAttribute("producePlanerList", list);
         model.addAttribute("codeList", codeList);
 
-        return "export/producePlanerDetail";
+        return "export/exportDetail";
     }
 
     @GetMapping("/materialStock")
@@ -102,21 +142,26 @@ public class ExportController {
     }
 
     @PostMapping("/producePlanerDetail")
-    public ResponseEntity<?> producePlanerDetail(@RequestBody ExportDTO request) {
+    public ResponseEntity<?> producePlanerDetail(@RequestBody ProducePlanerDTO request) {
 
+        System.out.println("----------------detail controller");
         try {
-            exportService.addExport(request);
+            System.out.println("----------------try");
+            exportService.updateStatus(request);
+            System.out.println("----------------success update");
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @PostMapping("/cancelExport")
-    public ResponseEntity<?> cancelExport(@RequestBody ExportDTO request) {
+    @PostMapping("/deleteExport")
+    public ResponseEntity<?> cancelExport(@RequestBody IdRequest request) {
 
+        System.out.println("deleteExport---------------------------");
         try {
-            exportService.deleteExport(request);
+            exportService.deleteExport(request.getProducePlanerId());
+            System.out.println("deleteOk---------------------------");
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

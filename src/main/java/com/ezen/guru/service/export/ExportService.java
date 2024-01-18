@@ -4,26 +4,22 @@ import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.export.ExportDTO;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import com.ezen.guru.repository.CodeRepository;
+import com.ezen.guru.repository.export.ExportCustomRepository;
 import com.ezen.guru.repository.export.ExportRepository;
 import com.ezen.guru.repository.plan.BicycleRepository;
 import com.ezen.guru.repository.plan.MaterialRepository;
 import com.ezen.guru.repository.plan.ProducePlanerCustomRepositoryImpl;
 import com.ezen.guru.repository.plan.ProducePlanerRepository;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -34,6 +30,7 @@ import java.util.function.Predicate;
 public class ExportService {
 
     private final ExportRepository exportRepository;
+    private final ExportCustomRepository exportCustomRepository;
     private final ProducePlanerRepository producePlanerRepository;
     private final ProducePlanerCustomRepositoryImpl producePlanerCustomRepository;
     private final CodeRepository codeRepository;
@@ -51,9 +48,22 @@ public class ExportService {
         return result.map(ProducePlanerDTO::new);
     }
 
+    public Page<ExportDTO> findExportList(int size, int page, String keyword, LocalDateTime startDate, LocalDateTime endDate) {
+
+        Page<Export> result = exportCustomRepository.exportList(size, page, keyword, startDate, endDate);
+        return result.map(ExportDTO::new);
+    }
+
+    public ProducePlanerDTO findById(String producePlanerId, int bicycleId, int materialId) {
+
+        ProducePlanerId id = new ProducePlanerId(producePlanerId, bicycleId, materialId);
+        ProducePlaner producePlaner = producePlanerRepository.findByEmbeddedId(id);
+        return new ProducePlanerDTO(producePlaner);
+    }
+
     public List<ProducePlanerDTO> findByProducePlanerId(String producePlanerId) {
 
-        List<ProducePlaner> list = producePlanerRepository.findByIdProducePlanerId(producePlanerId);
+        List<ProducePlaner> list = producePlanerRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
 
         return list.stream().map(ProducePlanerDTO::new).toList();
     }
@@ -124,121 +134,99 @@ public class ExportService {
         return codeList;
     }
 
-    public void addExport(ExportDTO dto) {
+    public void updateStatus(ProducePlanerDTO dto) {
 
-        validate(dto);
+        System.out.println("service dto---------------------- : " + dto);
+        ProducePlaner entity = ProducePlanerDTO.toEntity(dto);
+        System.out.println("service entity---------------------- : " + entity);
 
-        Export entity = ExportDTO.toEntity(dto);
-        Export export = exportRepository.save(entity);
+        if (entity.getProducePlanerStatus() == 0) {
 
-        // 저장된 Export 엔티티의 id로 ProducePlaner를 찾음
-        Optional<ProducePlaner> producePlaner = producePlanerRepository.findById(export.getId());
+            entity.setProducePlanerStatus(2);
+            System.out.println("update status 222222");
+        } else {
 
-        // ProducePlaner의 producePlanerStatus를 2로 변경
-        producePlaner.ifPresent(p -> {
+            entity.setProducePlanerStatus(0);
+            System.out.println("update status 000000");
+        }
+        producePlanerRepository.save(entity);
+        System.out.println("entity save----------------");
 
-            p.setProducePlanerStatus(2);
-            producePlanerRepository.save(p);
-        });
+        ProducePlaner producePlaner = producePlanerRepository.findByEmbeddedId(entity.getEmbeddedId());
+        Material material = materialRepository.findByMaterialId(producePlaner.getEmbeddedId().getMaterialId());
+
+        if (dto.getProducePlanerStatus() == 0 && producePlaner.getProducePlanerStatus() == 2) {
+
+            material.setMaterialStock(material.getMaterialStock() - producePlaner.getProduceMaterialCnt());
+
+        } else if (dto.getProducePlanerStatus() != 0 && producePlaner.getProducePlanerStatus() == 0){
+
+            material.setMaterialStock(material.getMaterialStock() + producePlaner.getProduceMaterialCnt());
+
+        }
+        materialRepository.save(material);
     }
 
-    public void deleteExport(ExportDTO dto) {
+    public void deleteExport(String producePlanerId) {
 
-        validate(dto);
+        System.out.println("service delete-------------------------------");
+        exportRepository.deleteByEmbeddedIdProducePlanerId(producePlanerId);
+        System.out.println("delete success-------------------------------");
+        List<Export> exportList = exportRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
+        System.out.println("exportList : " + exportList);
 
-        Export entity = ExportDTO.toEntity(dto);
-        // 저장된 Export 엔티티의 id로 ProducePlaner를 찾음
-        ProducePlanerId id = entity.getId();
-        List<ProducePlaner> list = producePlanerRepository.findByIdProducePlanerId(id.getProducePlanerId());
+        if (exportList.isEmpty()) {
 
-        exportRepository.deleteById(id);
+            List<ProducePlaner> list = producePlanerRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
 
-        // ProducePlanerId의 list에 있는 모든 행의 producePlanerStatus를 0또는 2로 변경
-        for (ProducePlaner p : list) {
+            int bicycleId = list.get(0).getEmbeddedId().getBicycleId();
+            int bStock = list.get(0).getProduceBicycleCnt();
 
-            switch (p.getProducePlanerStatus()) {
-                //생산계획서의 품목들이 출고처리 됐을 경우 불출 취소된 행은 status:0(미불출), 나머지는 2(불출완료) 처리
-                case 99:
-                    if (p.getId().getMaterialId() == id.getMaterialId()) {
-                        p.setProducePlanerStatus(0);
+            Bicycle bicycle = bicycleRepository.findByBicycleId(bicycleId);
+            bicycle.setBicycleStock(bicycle.getBicycleStock()-bStock);
 
-                        //상품재고가 출고취소됐으므로 해당 생산계획수량만큼 상품재고에서 차감
-                        int bStock = p.getProduceBicycleCnt();
-                        int bicycleId = p.getId().getBicycleId();
+            bicycleRepository.save(bicycle);
 
-                        Bicycle bicycle = bicycleRepository.findByBicycleId(bicycleId);
-                        bicycle.setBicycleStock(bicycle.getBicycleStock()-bStock);
-
-                        bicycleRepository.save(bicycle);
-                    } else {
-                        p.setProducePlanerStatus(2);
-                    }
-                    producePlanerRepository.save(p);
-
-                    //출고취소 시 원자재의 재고 수량 변경
-                    int mStock = p.getProduceMaterialCnt();
-                    int materialId = p.getId().getMaterialId();
-
-                    Material material = materialRepository.findByMaterialId(materialId);
-                    material.setMaterialStock(material.getMaterialStock()+mStock);
-
-                    materialRepository.save(material);
-                    break;
-
-                //출고처리되지 않은 경우 삭제된 행만 status0으로 변경
-                case 2:
-                    if (p.getId().equals(id)) {
-                        p.setProducePlanerStatus(0);
-                    }
-                    producePlanerRepository.save(p);
-                    break;
-            }
+            System.out.println("producePlanerUpdate----------------------");
+            producePlanerRepository.updateProducePlanerStatusById(producePlanerId, 2);
+            System.out.println("status update success---------------------- ");
         }
     }
 
     @Transactional
     public void listExport(String producePlanerId) {
 
-        List<Export> exportList = exportRepository.findByIdProducePlanerId(producePlanerId);
-        List<ProducePlaner> list = producePlanerRepository.findByIdProducePlanerId(producePlanerId);
+        List<ProducePlaner> list = producePlanerRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
+
+        //생산계획서 품목들의 불출완료처리된 품목 개수 측정
+        for (ProducePlaner p : list) {
+            if (p.getProducePlanerStatus() == 2) {
+                Export export = Export.builder()
+                        .embeddedId(p.getEmbeddedId())
+                        .bicycleName(p.getBicycleName())
+                        .materialName(p.getMaterialName())
+                        .exportCnt(p.getProduceMaterialCnt())
+                        .exportDate(LocalDateTime.now())
+                        .build();
+                exportRepository.save(export);
+            }
+        }
+
+        List<Export> exportList = exportRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
 
         //생산계획서id의 행과 불출처리된 행의 개수가 동일한지 검사
         if (exportList.size() == list.size()) {
 
-            int cnt = 0;
+            //일치하다면 해당 생산계획서의 모든 품목 출고완료처리(status = 99)
+            producePlanerRepository.updateProducePlanerStatusById(producePlanerId, 99);
 
-            //생산계획서 품목들의 불출완료처리된 품목 개수 측정
-            for (ProducePlaner entity : list) {
-                if (entity.getProducePlanerStatus() == 2) {
-                    cnt++;
-                }
-            }
+            int bicycleId = list.get(0).getEmbeddedId().getBicycleId();
+            int bStock = list.get(0).getProduceBicycleCnt();
 
-            //생산계획서의 불출완료처리된 품목 개수와 생산계획서 품목 수량이 일치한지 검사
-            if (list.size() == cnt) {
+            Bicycle bicycle = bicycleRepository.findByBicycleId(bicycleId);
+            bicycle.setBicycleStock(bicycle.getBicycleStock()+bStock);
 
-                System.out.println("id : " + producePlanerId);
-                //일치하다면 해당 생산계획서의 모든 품목 출고완료처리
-                producePlanerRepository.updateProducePlanerStatusById(producePlanerId);
-
-                //생산계획서의 원자재들 재고를 출고수량만큼 차감
-                for (ProducePlaner entity : list) {
-
-                    int materialId = entity.getId().getMaterialId();
-                    int mStock = entity.getProduceMaterialCnt();
-
-                    Material material = materialRepository.findByMaterialId(materialId);
-                    material.setMaterialStock(material.getMaterialStock()-mStock);
-
-                    materialRepository.save(material);
-                }
-
-                int bicycleId = list.get(0).getId().getBicycleId();
-                int bStock = list.get(0).getProduceBicycleCnt();
-
-                Bicycle bicycle = bicycleRepository.findByBicycleId(bicycleId);
-                bicycle.setBicycleStock(bicycle.getBicycleStock()+bStock);
-            }
+            bicycleRepository.save(bicycle);
         }
     }
 

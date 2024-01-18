@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class ProducePlaner {
 
     @EmbeddedId
-    private ProducePlanerId id;
+    private ProducePlanerId embeddedId;
 
     @ManyToOne
     @JoinColumn(name = "bicycle_id", referencedColumnName = "bicycle_id", insertable = false, updatable = false)
@@ -44,13 +44,11 @@ public class ProducePlaner {
     private int producePlanerStatus;
 
     @Builder
-    public ProducePlaner(ProducePlanerId id, Bicycle bicycle, int produceBicycleCnt, Material material, int produceMaterialCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
-        this.id = id;
-        this.bicycle = bicycle;
-        this.bicycleName = bicycle.getBicycleName();
+    public ProducePlaner(ProducePlanerId embeddedId, String bicycleName, int produceBicycleCnt, String materialName, int produceMaterialCnt, LocalDateTime producePlanerDeadline, int producePlanerStatus) {
+        this.embeddedId = embeddedId;
+        this.bicycleName = bicycleName;
         this.produceBicycleCnt = produceBicycleCnt;
-        this.material = material;
-        this.materialName = material.getMaterialName();
+        this.materialName = materialName;
         this.produceMaterialCnt = produceMaterialCnt;
         this.producePlanerDeadline = producePlanerDeadline;
         this.producePlanerStatus = producePlanerStatus;
