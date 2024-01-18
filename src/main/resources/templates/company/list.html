@@ -130,16 +130,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="col-lg-12">
-                                            <h5>Hover table</h5>
-                                            <div class="card-header-right">
-                                                <ul class="list-unstyled card-option">
-                                                    <li><i class="icofont icofont-simple-left "></i></li>
-                                                    <li><i class="icofont icofont-maximize full-card"></i></li>
-                                                    <li><i class="icofont icofont-minus minimize-card"></i></li>
-                                                    <li><i class="icofont icofont-refresh reload-card"></i></li>
-                                                    <li><i class="icofont icofont-error close-card"></i></li>
-                                                </ul>
-                                            </div>
+                                            <h5>협력사 List</h5>
                                             <div class="pcoded-search">
                                                 <span class="searchbar-toggle searched">  </span>
                                                 <div class="pcoded-search-box ">
@@ -147,6 +138,15 @@
                                                     <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
                                         </div>
                                     </div>
                                     <div class="tab-content tabs card-block">
@@ -167,7 +167,7 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.companyId}+ ')'" th:each="item,stat : ${list}" th:onclick="#">
+                                                        <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${item.companyId}+ ')'" th:each="item,stat : ${list}" th:onclick="#">
                                                             <th scope="row" th:text="${stat.count}"></th>
                                                             <td th:text="${item.companyName}"></td>
                                                             <td th:text="${item.companyId}"></td>

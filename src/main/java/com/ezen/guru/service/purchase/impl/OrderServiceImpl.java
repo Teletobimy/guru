@@ -1,10 +1,7 @@
 package com.ezen.guru.service.purchase.impl;
 
 import com.ezen.guru.domain.*;
-import com.ezen.guru.dto.purchase.AddShipmentRequest;
-import com.ezen.guru.dto.purchase.OrderCompleteRequest;
-import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
-import com.ezen.guru.dto.purchase.OrderListViewResponse;
+import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.purchase.OrderRepository;
@@ -49,8 +46,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id){
-        return detailRepository.findByPurchaseOrder_id(id);
+    public List<OrderPrintViewResponse> getPurchaseOrderPrint(String id){
+        List<OrderPrintViewResponse> resultList = detailRepository.getPrint(id);
+        Set<OrderPrintViewResponse> resultSet = new HashSet<>(resultList);
+        List<OrderPrintViewResponse> uniqueResultList = new ArrayList<>(resultSet);
+
+        return uniqueResultList;
     }
     @Override
     public void updateOrderDetailStatus(int orderId, int newStatus) {

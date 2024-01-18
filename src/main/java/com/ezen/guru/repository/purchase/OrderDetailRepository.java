@@ -2,6 +2,7 @@ package com.ezen.guru.repository.purchase;
 
 import com.ezen.guru.domain.PurchaseOrderDetail;
 import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
+import com.ezen.guru.dto.purchase.OrderPrintViewResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,11 +41,30 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "WHERE d.purchaseOrder.id = :id")
     List<OrderDetailViewResponse> findByPurchaseOrder(@Param("id") String id); // where purchase_order_id = ?;
 
+    @Query("SELECT distinct new com.ezen.guru.dto.purchase.OrderPrintViewResponse(" +
+            "d.purchaseOrder.id, " +
+            "d.purchaseOrder.regdate, " +
+            "d.purchaseOrder.deadline, " +
+            "d.purchaseOrder.company.companyName, " +
+            "d.purchaseOrder.company.companyId, " +
+            "d.purchaseOrder.company.ceo, " +
+            "d.materialName, " +
+            "d.materialCategory, " +
+            "d.materialPrice, " +
+            "concat(d.purchaseOrderCnt, ' (', d.materialMeasure, ')'), " +
+            "(d.materialPrice * d.purchaseOrderCnt), " +
+            "d.purchaseOrder.totalprice, " +
+            "d.purchaseOrder.memo) " +
+            "FROM PurchaseOrderDetail d " +
+            "JOIN d.purchaseOrder p " +
+            "WHERE d.purchaseOrder.id = :id")
+    List<OrderPrintViewResponse> getPrint(@Param("id") String id); // where purchase_order_id = ?;
+
     @Modifying(clearAutomatically = true)
     @Query("UPDATE PurchaseOrderDetail pod " +
             "SET pod.qcCheckCnt = pod.qcCheckCnt + :qcCheckCnt " +
             "WHERE pod.purchaseOrder.id = (SELECT qc.purchaseOrderId FROM QcCheck qc WHERE qc.qcCheckId = :qcCheckId)")
     int updateQcCheckCnt(@Param("qcCheckId") int qcCheckId, @Param("qcCheckCnt") int qcCheckCnt);
 
-    List<PurchaseOrderDetail> findByPurchaseOrder_id(String id);
+
 }

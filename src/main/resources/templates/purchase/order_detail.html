@@ -130,7 +130,7 @@
                                                     th:onclick="|location.href='@{/plan/document/{documentId}(documentId=${firstItem.documentId})}'|"></button>
                                             <button class="btn btn-card btn-primary"
                                                     th:if="${firstItem.status != 1}"
-                                                    th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|">발주서 조회</button>
+                                                    th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|">발주서 출력</button>
                                         </th:block>
                                         <div class="card-header-right">
                                             <ul class="list-unstyled card-option">
@@ -195,7 +195,7 @@
                                                         <th>카테고리</th>
                                                         <th>가격</th>
                                                         <th>수량 (단위)</th>
-                                                        <th th:if="${firstItem.status == 3}">검수완료수량</th>
+                                                        <th th:if="${firstItem.status != 1}">검수완료수량</th>
                                                         <th>발주</th>
                                                         </th:block>
                                                     </tr>
@@ -214,7 +214,7 @@
                                                             th:text="${code.codeName}"></td>
                                                         <td th:text="${item.price} + &#8361;" id="price" th:attr="data-mat-price=${item.price}"></td>
                                                         <td th:text="${item.cnt}"></td>
-                                                        <td th:if="${item.status == 3}" th:text="|${item.qccheckCnt + ' (' + item.measure + ')'}|"></td>
+                                                        <td th:if="${item.status != 1}" th:text="|${item.qccheckCnt + ' (' + item.measure + ')'}|"></td>
                                                         <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
                                                         <td th:if="${item.check == 1 && item.status == 1}">
                                                             <button class="btn btn-card btn-disabled disabled">발주</button>
@@ -266,19 +266,17 @@
                                                         <button type="button" class="btn btn-primary complete-btn" style="margin-right: 5px;" data-toggle="modal" th:attr="data-target=${'#closeModal'+ firstItem.id}">발주마감</button>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" th:attr="id='closeModal'+${firstItem.id}" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true">
+                                                        <div class="modal fade" th:attr="id='closeModal'+${firstItem.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="closeModalLabel">Confirm</h5>
+                                                                        <h5 class="modal-title" id="exampleModalLabel">발주 마감</h5>
                                                                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
-                                                                    <div class="modal-body">
-                                                                        <p th:text="|발주번호: ${firstItem.id}|"></p>
-                                                                        <p th:text="|발주수량 : ${firstItem.cnt}|"></p>
-                                                                        <p th:text="|검수수량 : ${firstItem.qccheckCnt}|"></p>
-                                                                        <p th:text="|총액 : ${firstItem.totalprice}&#8361;|"></p>
-                                                                        마감하시겠습니까?
+                                                                    <div class="modal-body text-start">
+                                                                        검수완료수량을 반드시 확인해주세요.
+                                                                        <p th:text="|[${firstItem.id}]|"></p>
+                                                                        다음의 발주를 정말 마감하시겠습니까?
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-primary order-btn" th:onclick="validateOrderClose(this)" th:attr="data-id=${firstItem.id}">예</button>

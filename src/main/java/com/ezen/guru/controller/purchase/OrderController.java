@@ -71,9 +71,10 @@ public class OrderController {
     }
     @GetMapping("/order_print")
     public String getPrint(Model model, @RequestParam String id) {
-        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id).stream()
+        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id);
+                /*orderService.getPurchaseOrderPrint(id).stream()
                 .map(OrderPrintViewResponse::new)
-                .toList();
+                .toList();*/
         List<Code> codeList = orderService.findByCodeCategory("material_category");
 
         model.addAttribute("code",codeList);

@@ -1,10 +1,7 @@
 package com.ezen.guru.service.purchase;
 
 import com.ezen.guru.domain.*;
-import com.ezen.guru.dto.purchase.AddShipmentRequest;
-import com.ezen.guru.dto.purchase.OrderCompleteRequest;
-import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
-import com.ezen.guru.dto.purchase.OrderListViewResponse;
+import com.ezen.guru.dto.purchase.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -17,7 +14,7 @@ public interface OrderService {
 
     public List<OrderDetailViewResponse> getPurchaseOrderDetail(String id);
 
-    public List<PurchaseOrderDetail> getPurchaseOrderPrint(String id);
+    public List<OrderPrintViewResponse> getPurchaseOrderPrint(String id);
 
     public void updateOrderDetailStatus(int orderId, int newStatus);
 
