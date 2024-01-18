@@ -88,7 +88,6 @@ public class OrderServiceImpl implements OrderService {
         List<Shipment> shipmentEntities = shipments.stream()
                 .map(AddShipmentRequest::toEntity) // toEntity 메서드 사용
                 .collect(Collectors.toList());
-
         return shipmentRepository.saveAll(shipmentEntities);
     }
 

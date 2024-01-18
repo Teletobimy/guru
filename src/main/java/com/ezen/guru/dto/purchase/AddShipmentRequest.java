@@ -22,6 +22,7 @@ public class AddShipmentRequest {
     String companyid;
     LocalDateTime shippingDate;
     String purchaseOrderId;
+    int purchaseOrderDetailId;
 
     public static Shipment toEntity(AddShipmentRequest dto) {
         return Shipment.builder()
@@ -34,6 +35,7 @@ public class AddShipmentRequest {
                 .companyid(dto.getCompanyid())
                 .shippingDate(dto.getShippingDate())
                 .purchaseOrderId(dto.getPurchaseOrderId())
+                .purchaseOrderDetailId(dto.getPurchaseOrderDetailId())
                 .build();
     }
 }

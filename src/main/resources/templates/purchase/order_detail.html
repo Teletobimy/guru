@@ -30,6 +30,7 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <style>
         .d-inline {
             display: flex;
@@ -207,6 +208,7 @@
                                                         <input type="hidden" id="companyId" th:value="${item.companyId}" th:attr="data-com-id=${item.companyId}">
                                                         <input type="hidden" id="orderCnt" th:value="${item.orderCnt}" th:attr="data-order-cnt=${item.orderCnt}">
                                                         <input type="hidden" id="measure" th:value="${item.measure}" th:attr="data-mat-measure=${item.measure}">
+                                                        <input type="hidden" id="detailId" th:value="${item.detailId}" th:attr="data-detail-id=${item.detailId}">
                                                         <td scope="row" th:text="${stat.count}"></td>
                                                         <td th:text="${item.materialName}" id="materialName" th:attr="data-mat-name=${item.materialName}"></td>
                                                         <td th:each="code:${code}"
@@ -270,7 +272,7 @@
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">발주 마감</h5>
+                                                                        <h5 class="modal-title" id="closeModalLabel">발주 마감</h5>
                                                                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body text-start">
@@ -340,6 +342,7 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script>
     $(document).ready(function(){
         validateCompletion();
@@ -368,19 +371,39 @@
 
     //디테일 체크 0으로 바꾸는 함수(발주취소)
     function revertOrder(id) {
-        var orderId = $(id).data('detail-id');
-        var newStatus = 0; // 변경할 상태
+        Swal.fire({
+          title: "정말 취소하시겠습니까?",
+          text: "",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes"
+        }).then((result) => {
 
-        $.ajax({
-            type: "POST",
-            url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
-            success: function (response) {
-                console.log(response); // 성공적으로 응답을 받았을 때
-                location.reload();
-            },
-            error: function (error) {
-                console.error(error);
-            }
+            var orderId = $(id).data('detail-id');
+            var newStatus = 0; // 변경할 상태
+
+            $.ajax({
+                type: "POST",
+                url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
+                success: function (response) {
+                    console.log(response); // 성공적으로 응답을 받았을 때
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Success!",
+              text: "성공적으로 취소되었습니다.",
+              icon: "success",
+              showConfirmButton: false
+            });
+          }
+          setTimeout (function() {location.reload();}, 1500);
         });
     }
 
@@ -405,6 +428,7 @@
             item.companyid = row.find('#companyId').data('com-id');
             item.shippingDate = new Date();
             item.purchaseOrderId = row.find('#orderId').data('order-id');
+            item.purchaseOrderDetailId = row.find('#detailId').data('detail-id');
             console.log(item);
 
             // 배열에 현재 행의 데이터 추가
@@ -434,7 +458,13 @@
             contentType: "application/json",
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
-                location.replace('/purchase/order');
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "발주 완료",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.replace('/purchase/order');}, 1500);
             },
             error: function (error) {
                 console.error(error);

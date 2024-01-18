@@ -30,7 +30,6 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 
         QPurchaseOrder qOrder = QPurchaseOrder.purchaseOrder;
         QPurchaseOrderDetail qOrderDetail = QPurchaseOrderDetail.purchaseOrderDetail;
-        QCompany qCompany = QCompany.company;
 
         BooleanBuilder whereCondition = new BooleanBuilder();
 
@@ -44,19 +43,16 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         QueryResults<OrderListViewResponse> results = jpaQueryFactory
                 .selectDistinct(Projections.constructor(
                         OrderListViewResponse.class,
-                        qOrder.id,
+                        qOrderDetail.purchaseOrder.id,
                         qOrder.status,
                         qOrder.company.companyName,
                         qOrderDetail.materialName,
                         qOrder.totalprice,
                         qOrder.deadline
                 ))
-                .from(qOrder)
-                .leftJoin(qOrderDetail)
+                .from(qOrderDetail)
+                .leftJoin(qOrder)
                 .on(qOrder.id.eq(qOrderDetail.purchaseOrder.id))
-                .join(qCompany)
-                .on(qOrderDetail.material.materialId.eq(qCompany.materialId)
-                        .and(qOrder.company.companyId.eq(qCompany.companyId)))
                 .where(whereCondition)
                 .orderBy(qOrder.deadline.asc())
                 .offset(size * page)
