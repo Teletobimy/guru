@@ -32,6 +32,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 
         QPurchaseOrder qOrder = QPurchaseOrder.purchaseOrder;
         QPurchaseOrderDetail qOrderDetail = QPurchaseOrderDetail.purchaseOrderDetail;
+        QCompany qCompany = QCompany.company;
 
         BooleanBuilder whereCondition = new BooleanBuilder();
 
@@ -47,15 +48,18 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                         OrderListViewResponse.class,
                         qOrderDetail.purchaseOrder.id,
                         qOrder.status,
-                        qOrder.company.companyName,
-                        qOrderDetail.materialName,
+                        qCompany.companyName,
+                        Expressions.stringTemplate("MIN({0})", qOrderDetail.materialName),
                         qOrder.totalprice,
                         qOrder.deadline
                 ))
                 .from(qOrder)
                 .leftJoin(qOrderDetail)
                 .on(qOrder.id.eq(qOrderDetail.purchaseOrder.id))
+                .join(qCompany)
+                .on(qOrder.company.companyId.eq(qCompany.companyId))
                 .where(whereCondition)
+                .groupBy(qOrder.id, qOrder.status, qCompany.companyName, qOrder.totalprice, qOrder.deadline)
                 .orderBy(qOrder.deadline.asc())
                 .offset(size * page)
                 .limit(size)
