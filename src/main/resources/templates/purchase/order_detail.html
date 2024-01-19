@@ -225,12 +225,14 @@
                                                         <td th:if="${item.status == 3}"><button class="btn btn-card btn-disabled disabled">발주마감</button></td>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" th:attr="id='exampleModal'+${item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
+                                                        <div class="modal fade" th:attr="id=${'exampleModal'+ item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
-                                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                                                                        </button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <input type="hidden" th:value="${item.check}">
@@ -240,7 +242,7 @@
                                                                            th:text="|카테고리 : ${code.codeName}|"></p>
                                                                         <p th:text="|수량 (단위) : ${item.cnt}|"></p>
                                                                         <p th:text="|총액 : ${item.materialprice}&#8361;|"></p>
-                                                                        발주하시겠습니까?
+                                                                        <p>발주하시겠습니까?</p>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-primary order-btn" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">예</button>
@@ -272,12 +274,14 @@
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="closeModalLabel">발주 마감</h5>
-                                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true" style="font-size:40px;">&times;</span>
+                                                                        </button>
                                                                     </div>
                                                                     <div class="modal-body text-start">
-                                                                        검수완료수량을 반드시 확인해주세요.
-                                                                        <p th:text="|[${firstItem.id}]|"></p>
-                                                                        다음의 발주를 정말 마감하시겠습니까?
+                                                                        <p th:text="|주문번호: [${firstItem.id}]|"></p>
+                                                                        <p>검수완료수량을 반드시 확인해주세요.</p>
+                                                                        <p>발주를 정말 마감하시겠습니까?</p>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-primary order-btn" th:onclick="validateOrderClose(this)" th:attr="data-id=${firstItem.id}">예</button>
@@ -395,7 +399,7 @@
 
           if (result.isConfirmed) {
             Swal.fire({
-              title: "Success!",
+              title: "Success",
               text: "성공적으로 취소되었습니다.",
               icon: "success",
               showConfirmButton: false
@@ -457,7 +461,6 @@
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
                 Swal.fire({
-                  position: "top-end",
                   icon: "success",
                   title: "발주 완료",
                   showConfirmButton: false
@@ -502,7 +505,7 @@
         }
     }
 
-    // 발주 마감
+    // 발주 마감 (상태 변경)
     function validateOrderClose(button) {
         var id = $(button).data('id');
         console.log(id);
@@ -513,7 +516,13 @@
             contentType: "application/json",
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
-                location.replace('/purchase/order');
+                $('#closeModal' + id).modal('hide'); // 모달 닫기
+                Swal.fire({
+                  icon: "info",
+                  title: "마감되었습니다.",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.replace('/purchase/order');}, 1500);
             },
             error: function (error) {
                 console.error(error);

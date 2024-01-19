@@ -1,6 +1,7 @@
 package com.ezen.guru.service.purchase.impl;
 
 import com.ezen.guru.domain.Company;
+import com.ezen.guru.dto.purchase.AddCompanyRequest;
 import com.ezen.guru.dto.purchase.CompanyListViewResponse;
 import com.ezen.guru.repository.purchase.CompanyRepository;
 import com.ezen.guru.service.purchase.CompanyService;
@@ -24,6 +25,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Page<CompanyListViewResponse> companyList(int size, int page, String keyword) {
         return companyRepository.companyList(size, page, keyword);
+    }
+    @Override
+    public Company newCompany(AddCompanyRequest company) {
+        return companyRepository.save(company.toEntity());
     }
 
 }
