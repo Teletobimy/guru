@@ -5,19 +5,16 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Export {
 
     @EmbeddedId
-    private ProducePlanerId id;  // 외래 키로 사용할 복합 기본 키
+    private ProducePlanerId embeddedId;  // 외래 키로 사용할 복합 기본 키
 
     @ManyToOne
     @JoinColumns({
@@ -40,17 +37,16 @@ public class Export {
     private LocalDateTime exportDate;
 
     @Builder
-    public Export(ProducePlanerId id, ProducePlaner producePlaner, String bicycleName, String materialName, int exportCnt, LocalDateTime exportDate) {
-        this.id = id;
-        this.producePlaner = producePlaner;
+    public Export(ProducePlanerId embeddedId, String bicycleName, String materialName, int exportCnt, LocalDateTime exportDate) {
+        this.embeddedId = embeddedId;
         this.bicycleName = bicycleName;
         this.materialName = materialName;
         this.exportCnt = exportCnt;
         this.exportDate = exportDate;
     }
 
-    public void update(ProducePlaner producePlaner, String bicycleName, String materialName, int exportCnt, LocalDateTime exportDate) {
-        this.producePlaner = producePlaner;
+    public void update(ProducePlanerId embeddedId, String bicycleName, String materialName, int exportCnt, LocalDateTime exportDate) {
+        this.embeddedId = embeddedId;
         this.bicycleName = bicycleName;
         this.materialName = materialName;
         this.exportCnt = exportCnt;

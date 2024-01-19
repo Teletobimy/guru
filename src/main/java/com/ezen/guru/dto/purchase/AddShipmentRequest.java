@@ -1,7 +1,6 @@
 package com.ezen.guru.dto.purchase;
 
 import com.ezen.guru.domain.*;
-import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
