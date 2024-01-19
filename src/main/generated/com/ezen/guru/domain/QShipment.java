@@ -40,6 +40,8 @@ public class QShipment extends EntityPathBase<Shipment> {
 
     public final NumberPath<Integer> materialPrice = createNumber("materialPrice", Integer.class);
 
+    public final NumberPath<Integer> purchaseOrderDetailId = createNumber("purchaseOrderDetailId", Integer.class);
+
     public final StringPath purchaseOrderId = createString("purchaseOrderId");
 
     public final NumberPath<Integer> shipmentCnt = createNumber("shipmentCnt", Integer.class);

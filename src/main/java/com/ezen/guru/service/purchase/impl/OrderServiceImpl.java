@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderPrintViewResponse> getPurchaseOrderPrint(String id){
-        List<OrderPrintViewResponse> resultList = detailRepository.getPrint(id);
+        List<OrderPrintViewResponse> resultList = detailRepository.getPrintPage(id);
         Set<OrderPrintViewResponse> resultSet = new HashSet<>(resultList);
         List<OrderPrintViewResponse> uniqueResultList = new ArrayList<>(resultSet);
 
@@ -88,7 +88,6 @@ public class OrderServiceImpl implements OrderService {
         List<Shipment> shipmentEntities = shipments.stream()
                 .map(AddShipmentRequest::toEntity) // toEntity 메서드 사용
                 .collect(Collectors.toList());
-
         return shipmentRepository.saveAll(shipmentEntities);
     }
 
