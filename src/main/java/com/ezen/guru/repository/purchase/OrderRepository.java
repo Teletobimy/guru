@@ -22,9 +22,11 @@ public interface OrderRepository extends JpaRepository<PurchaseOrder, Integer>,O
 
     @Modifying
     @Query("UPDATE PurchaseOrder p " +
-            "SET p.status = CASE WHEN p.id IN (" +
-            "SELECT d.purchaseOrder.id FROM PurchaseOrderDetail d WHERE d.purchaseOrderCnt = d.qcCheckCnt" +
-            ") AND p.status = 2 THEN 3 ELSE p.status END")
+            "SET p.status = 3 " +
+            "WHERE p.id IN (" +
+            "SELECT d.purchaseOrder.id FROM PurchaseOrderDetail d " +
+            "GROUP BY d.purchaseOrder.id " +
+            "HAVING SUM(d.purchaseOrderCnt) = SUM(d.qcCheckCnt))")
     public int closeOrder(@Param("id") String id);
 
     @Modifying

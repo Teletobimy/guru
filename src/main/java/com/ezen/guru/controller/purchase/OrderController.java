@@ -31,9 +31,11 @@ public class OrderController {
                                @RequestParam(value = "size", defaultValue = "10") int size,
                                @RequestParam(value ="page" ,defaultValue = "0") int page,
                                @RequestParam(value = "keyword", required = false) String keyword,
-                               @RequestParam(value = "category", defaultValue = "-1") int category) {
+                               @RequestParam(value = "category", defaultValue = "-1") int category,
+                               String id) {
         Page<OrderListViewResponse> orderList = orderService.orderList(size, page,keyword,category);
         List<Code> codeList = orderService.findByCodeCategory("purchase_order_status");
+        orderService.closeOrder(id);
 
         model.addAttribute("list", orderList);
         model.addAttribute("code",codeList);
