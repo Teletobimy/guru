@@ -80,10 +80,12 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Page<MaterialDTO> getAllMaterials(String materialName, Integer materialCategory, Pageable pageable) {
-        if ((materialName == null || materialName.isEmpty()) && materialCategory == null) {
+        if ((materialName == null || materialName.isEmpty()) && (materialCategory == null || materialCategory == -1)) {
             return materialRepository.findAll(pageable).map(this::convertToDTO);
         } else if (materialName == null || materialName.isEmpty()) {
             return materialRepository.findBymaterialCategory(materialCategory, pageable).map(this::convertToDTO);
+        } else if (materialCategory == null || materialCategory == -1) {
+            return materialRepository.findByMaterialName(materialName, pageable).map(this::convertToDTO);
         } else {
             return materialRepository.findAllWithkeywordWithcategory(materialName, materialCategory, pageable).map(this::convertToDTO);
         }

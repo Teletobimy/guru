@@ -24,9 +24,13 @@ public class QProducePlaner extends EntityPathBase<ProducePlaner> {
 
     public final QBicycle bicycle;
 
-    public final QProducePlanerId id;
+    public final StringPath bicycleName = createString("bicycleName");
+
+    public final QProducePlanerId embeddedId;
 
     public final QMaterial material;
+
+    public final StringPath materialName = createString("materialName");
 
     public final NumberPath<Integer> produceBicycleCnt = createNumber("produceBicycleCnt", Integer.class);
 
@@ -55,7 +59,7 @@ public class QProducePlaner extends EntityPathBase<ProducePlaner> {
     public QProducePlaner(Class<? extends ProducePlaner> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.bicycle = inits.isInitialized("bicycle") ? new QBicycle(forProperty("bicycle")) : null;
-        this.id = inits.isInitialized("id") ? new QProducePlanerId(forProperty("id")) : null;
+        this.embeddedId = inits.isInitialized("embeddedId") ? new QProducePlanerId(forProperty("embeddedId")) : null;
         this.material = inits.isInitialized("material") ? new QMaterial(forProperty("material")) : null;
     }
 

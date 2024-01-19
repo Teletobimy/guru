@@ -24,11 +24,11 @@ public class QExport extends EntityPathBase<Export> {
 
     public final StringPath bicycleName = createString("bicycleName");
 
+    public final QProducePlanerId embeddedId;
+
     public final NumberPath<Integer> exportCnt = createNumber("exportCnt", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> exportDate = createDateTime("exportDate", java.time.LocalDateTime.class);
-
-    public final QProducePlanerId id;
 
     public final StringPath materialName = createString("materialName");
 
@@ -52,7 +52,7 @@ public class QExport extends EntityPathBase<Export> {
 
     public QExport(Class<? extends Export> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.id = inits.isInitialized("id") ? new QProducePlanerId(forProperty("id")) : null;
+        this.embeddedId = inits.isInitialized("embeddedId") ? new QProducePlanerId(forProperty("embeddedId")) : null;
         this.producePlaner = inits.isInitialized("producePlaner") ? new QProducePlaner(forProperty("producePlaner"), inits.get("producePlaner")) : null;
     }
 

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -64,9 +65,6 @@
         .btn-warning{
             color:#fff;
         }
-        .current-page {
-            color: #ab7967;
-        }
         input{
             padding:5px 10px;
         }
@@ -75,8 +73,8 @@
             cursor: pointer;
         }
         .disabled{
-            color: rgba(170, 170, 170);
-            pointer-events: none; /* 마우스 이벤트 비활성화 */
+            background-color: rgba(254, 214, 150);
+            border-color: rgb(255, 185, 99);
         }
     </style>
 </head>
@@ -120,7 +118,8 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-brown"></i>
                                             <div class="d-inline">
-                                                <h4>생산계획서:[미출고]</h4>
+                                                <h4>재고:[상품]</h4>
+                                                <span>GURU에서 판매하는 MTB 자전거 리스트</span>
                                             </div>
                                         </div>
                                     </div>
@@ -134,7 +133,7 @@
                                                 </li>
                                                 <li class="breadcrumb-item"><a href="#!">출고</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/export/producePlanerList">생산계획서:[미출고]</a>
+                                                <li class="breadcrumb-item"><a href="/export/productStock">재고:[상품]</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -150,24 +149,9 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="col-lg-12">
-                                            <!-- Nav tabs -->
-                                            <ul class="nav nav-tabs  tabs" role="tablist">
-
-                                                <li th:each="code:${code}" class="nav-item">
-                                                    <a class="nav-link"
-                                                       data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
-                                                       role="tab"
-                                                       style="cursor:pointer;"
-                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
-                                                       th:text="${code.codeName}">
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
-                                                    <div class="pcoded-search-box input-box">
+                                                    <div class="pcoded-search-box input-box" >
                                                         <div class="search-long">
                                                             <input type="text" placeholder="search" id="searchInput" style="border:none;">
                                                             <p class="search-icon" th:attr="onclick='performSearch()'"
@@ -175,56 +159,31 @@
                                                                 <i class="ti-search" aria-hidden="true"></i>
                                                             </p>
                                                         </div>
-                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
                                                     </div>
                                                     <div class="card-block table-border-style">
-                                                        <div class="table-responsive" id="shipment-container">
+                                                        <div class="table-responsive">
                                                             <table class="table table-hover">
                                                                 <thead>
-                                                                    <tr>
-                                                                        <th>생산번호</th>
-                                                                        <th>자전거이름</th>
-                                                                        <th>생산계획수량</th>
-                                                                        <th>마감일</th>
-                                                                        <th colspan="2">진행상태</th>
-                                                                    </tr>
+                                                                <tr>
+                                                                    <th>번호</th>
+                                                                    <th>상품명</th>
+                                                                    <th>상품스펙</th>
+                                                                    <th>현재고</th>
+                                                                    <th>판매가</th>
+                                                                </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr th:each="item, index : ${producePlanerList}" onclick="handleRowClick(this)" th:class="${item.producePlanerStatus == 99 ? 'disabled' : ''}">
-                                                                        <th scope="row" th:text="${item.producePlanerId}"></th>
-                                                                        <td th:text="${item.bicycleName}"></td>
-                                                                        <td th:text="${item.produceBicycleCnt}"></td>
-                                                                        <td th:text="${item.producePlanerDeadline}"></td>
-                                                                        <td th:text="${codeList[index.index].codeName}"></td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-card btn-brown" onclick="handleButtonClick(event)" th:if="${codeList[index.index].codeNum == 2}">출고처리</button>
-                                                                        </td>
-                                                                    </tr>
+                                                                <tr th:each="bicycle, itemStat : ${bicycles}">
+                                                                    <td th:text="${bicycle.bicycleId}"></td>
+                                                                    <td th:text="${bicycle.bicycleName}"></td>
+                                                                    <td th:text="${bicycle.bicycleDescription}"></td>
+                                                                    <td th:text="${bicycle.bicycleStock}"></td>
+                                                                    <td th:text="'&#8361; ' + ${#numbers.formatInteger(bicycle.bicyclePrice, 1, 'COMMA')}"></td>
+                                                                </tr>
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
-                                                        <ul class="pagination" style="justify-content: end;">
-                                                            <li th:class="${producePlanerList.hasPrevious() ? 'page-item' : 'page-item disabled'}">
-                                                                <a class="page-link" th:if="${producePlanerList.number > 0}" th:href="@{'/export/producePlanerList?page=' + ${producePlanerList.number - 1} + '&size=10'}" aria-label="Previous">
-                                                                    <span aria-hidden="true">&laquo;</span>
-                                                                </a>
-                                                            </li>
-                                                            <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, producePlanerList.totalPages)}">
-                                                                <a class="page-link pageA"
-                                                                   th:classappend="${pageNumber == (producePlanerList.number + 1) ? 'btn-brown' : 'current-page'}"
-                                                                   th:href="@{'/export/producePlanerList?page=' + ${pageNumber - 1} + '&size=10'}"
-                                                                   th:text="${pageNumber}"></a>
-                                                            </li>
-                                                            <li th:class="${producePlanerList.hasNext() ? 'page-item' : 'page-item disabled'}"
-                                                                th:style="${producePlanerList.hasNext() ? '' : 'display: none;'}">
-                                                                <a class="page-link" th:if="${producePlanerList.number != producePlanerList.totalPages}" th:href="@{'/export/producePlanerList?page=' + ${producePlanerList.number + 1} + '&size=10'}" aria-label="Next">
-                                                                    <span aria-hidden="true">&raquo;</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </nav>
                                                 </div>
                                             </div>
                                         </div>
@@ -259,6 +218,7 @@
 <![endif]-->
 <!-- Warning Section Ends -->
 <!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -266,9 +226,12 @@
 <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
 <!-- modernizr js -->
 <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+<script type="text/javascript" src="assets/js/classie/classie.js"></script>
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
@@ -279,116 +242,14 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    function handleRowClick(button) {
-        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
-        var producePlanerId = row.find('th:eq(0)').text();
-        var status = row.find('td:eq(3)').text();
-        if (status !== '출고완료') {
-            location.href = '/export/producePlanerDetail?producePlanerId=' + producePlanerId;
-        }
-    }
-
-    function handleButtonClick(event) {
-        // 이벤트 전파(stopPropagation)를 사용하여 상위 요소의 클릭 이벤트를 막음
-        event.stopPropagation();
-
-        // 클릭된 엘리먼트에서 데이터 추출
-        var producePlanerId = $(event.target).closest('tr').find('th:eq(0)').text();
-
-        // 서버로 데이터 전송 (Ajax 사용 예시)
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/export/listExport', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-
-        // 서버로 전송할 데이터
-        const data = {
-            producePlanerId: producePlanerId
-            // 추가적으로 필요한 데이터가 있다면 여기에 추가
-        };
-
-        xhr.send(JSON.stringify(data));
-
-        // Ajax 요청 완료 후 실행할 코드 (예시: 페이지 리로드)
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                // 성공적으로 서버와 통신한 경우, 여기에 추가적으로 처리할 코드 작성
-                // 예: 페이지 리로드
-                location.reload();
-            } else {
-                // 서버와 통신 실패 시, 여기에 추가적으로 처리할 코드 작성
-                console.error('Failed to send data to the server.');
-            }
-        };
-    }
-
-    function updateLocation(codeNum) {
-        var newUrl = '/export/producePlanerList?size=10&page=0&category=' + codeNum;
-
-        window.location.href = newUrl;
-    }
-
     function performSearch(){
         var urlParams = new URLSearchParams(window.location.search);
-        var category = urlParams.get('category');
-        var startDate = urlParams.get('startDate');
-        var endDate = urlParams.get('endDate');
         var searchValue = document.getElementById('searchInput').value;
 
         var encodedSearchValue = encodeURIComponent(searchValue);
 
-        if (!category || category === 'null') {
-            category = -1;
-        }
-
-        if (!startDate || startDate === 'null') {
-            startDate = null;
-        }
-
-        if (!endDate || endDate === 'null') {
-            endDate = null;
-        }
-
-        window.location.href = '/export/producePlanerList?size=10&page=0&category='+ category
-                                +'&keyword=' + encodedSearchValue
-                                + (startDate ? '&startDate=' + startDate : '')
-                                + (endDate ? '&endDate=' + endDate : '');
+        window.location.href = '/export/productStock?size=10&page=0&keyword='+ encodedSearchValue
     }
-
-    $(document).ready(function() {
-
-      $('input[name="daterange"]').daterangepicker({
-            timePicker: true,
-            startDate: moment().startOf('hour'),
-            endDate: moment().endOf('hour'),
-            locale: {
-                format: 'YYYY-MM-DD HH:mm:ss'
-            }
-       })
-
-       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
-            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
-            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('category');
-            var keyword = $('#searchInput').val();
-
-            if (!category || category === 'null') {
-                category = -1;
-            }
-
-            var newUrl =  '/export/producePlanerList?category=' + category +
-                            "&keyword=" + encodeURIComponent(keyword) +
-                            "&startDate=" + startDate +
-                            "&endDate=" + endDate;
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-          window.location.href = newUrl;
-      });
-
-      $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
-          $(this).val('');
-      });
-    });
 </script>
 </body>
 </html>

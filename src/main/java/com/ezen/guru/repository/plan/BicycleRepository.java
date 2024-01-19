@@ -18,4 +18,6 @@ public interface BicycleRepository extends CrudRepository<Bicycle, Integer> {
     Page<Bicycle> findAllByBicycleNameContainingIgnoreCaseOrderByBicyclePriceAsc(@Param("bicycleName") String bicycleName, Pageable pageable);
 
     Page<Bicycle> findAll(Pageable pageable);
+
+    Bicycle findByBicycleId(int bicycleId);
 }

@@ -24,9 +24,9 @@ public class ExportDTO {
     private LocalDateTime exportDate;
 
     public ExportDTO(final Export entity) {
-        this.producePlanerId = entity.getId().getProducePlanerId();
-        this.bicycleId = entity.getId().getBicycleId();
-        this.materialId = entity.getId().getMaterialId();
+        this.producePlanerId = entity.getEmbeddedId().getProducePlanerId();
+        this.bicycleId = entity.getEmbeddedId().getBicycleId();
+        this.materialId = entity.getEmbeddedId().getMaterialId();
         this.bicycleName = entity.getBicycleName();
         this.materialName = entity.getMaterialName();
         this.exportCnt = entity.getExportCnt();
@@ -35,7 +35,7 @@ public class ExportDTO {
 
     public static Export toEntity(final ExportDTO dto) {
         return Export.builder()
-                .id(ProducePlanerId.builder()
+                .embeddedId(ProducePlanerId.builder()
                         .producePlanerId(dto.getProducePlanerId())
                         .bicycleId(dto.getBicycleId())
                         .materialId(dto.getMaterialId())
