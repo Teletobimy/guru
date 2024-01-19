@@ -36,18 +36,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
-        .input-box{
-         width:100%;
-         display:flex;
-         justify-content:end;
-         padding:5px;
-         box-sizing:border-box;
-         margin :15px auto;
-         margin-top:0;
-         align-items:center;
-        }
-        .pageA{
-            color:#FFB64D;
+        .btn-primary{
+            color:#fff;
         }
         .btn-warning{
             color:#fff;
@@ -59,6 +49,15 @@
             border:1px solid #ccc;
             margin-right:10px;
             padding-right: 5px;
+        }
+        .btn-custom{
+            text-transform: capitalize;
+            padding: 5px 10px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
         }
     </style>
 </head>
@@ -103,9 +102,9 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-yellow"></i>
+                                            <i class="icofont icofont-table bg-c-blue"></i>
                                             <div style="display:flex; align-items:center;">
-                                                <h4>출하 명세서 리스트</h4>
+                                                <h4>사원 리스트</h4>
 
                                             </div>
                                         </div>
@@ -123,13 +122,13 @@
                                             <!-- Nav tabs -->
                                             <ul class="nav nav-tabs  tabs" role="tablist">
 
-                                                <li th:each="code:${code}" class="nav-item">
+                                                <li th:each="code:${code}" class="nav-item" th:style="${code.codeName == 'ADMIN'} ? 'display:none;' : ''">
                                                     <a class="nav-link"
                                                        data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
+                                                       th:attr="onclick='updateLocation(\'' + ${code.codeName} + '\')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
+                                                       th:classappend="${part == code.codeName ? 'active' : ''}"
                                                        th:text="${code.codeName}">
                                                     </a>
                                                 </li>
@@ -138,17 +137,6 @@
                                             <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
-                                                    <div class="pcoded-search-box input-box" >
-                                                        <div class="search-long">
-                                                            <input type="text" placeholder="search" id="searchInput" style="border:none;">
-                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
-                                                            <p class="search-icon" th:attr="onclick='performSearch()'"
-                                                               style="display:inline; margin:0;">
-                                                                <i class="ti-search" aria-hidden="true"></i>
-                                                            </p>
-                                                        </div>
-                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
-                                                    </div>
 
                                                     <div class="card-block table-border-style">
 
@@ -156,33 +144,47 @@
                                                             <table class="table table-hover">
                                                                 <thead>
                                                                 <tr>
-                                                                    <th>아이디</th>
-                                                                    <th>자재 이름</th>
-                                                                    <th>출하 수량</th>
-                                                                    <th>자재 가격</th>
-                                                                    <th>자재 종류</th>
-                                                                    <th>회사명</th>
-                                                                    <th>출하 날짜</th>
-                                                                    <th>검수 상태</th>
+                                                                    <th>ID</th>
+                                                                    <th>NAME</th>
+                                                                    <th>EMAIL</th>
+                                                                    <th>PART</th>
+                                                                    <th>ROLE</th>
+                                                                    <th></th>
+                                                                    <th></th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
 
-                                                                <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'" th:each="list : ${list}">
-                                                                    <th th:text="${list.shipmentId}"></th>
-                                                                    <th th:text="${list.materialName}"></th>
-                                                                    <td th:text="${list.shipmentCnt} + ${list.materialMeasure}"></td>
-                                                                    <td th:text="${list.materialPrice} + &#8361;"></td>
-                                                                    <td th:each="code:${code}"
-                                                                        th:if="${code.codeNum} == ${list.materialCategory}"
-                                                                        th:text="${code.codeName}"></td>
-                                                                    <td th:text="${list.companyName}"></td>
-                                                                    <td th:text="${list.shippingDate}"></td>
-                                                                    <th th:each="qcCheckList : ${qcCheckList}"
-                                                                        th:if="${qcCheckList.shipmentId == list.shipmentId}"
-                                                                        th:text="${qcCheckList.processStatus == 2 ? '검수중' :
-                                                                                    qcCheckList.processStatus == 3 ? '검수 완료' : ''}"
-                                                                        style="color:#009000;"></th>
+                                                                <tr style="cursor:pointer;"
+                                                                    th:style="${list.part == 'ADMIN'} ? 'display:none;' : ''"
+                                                                    th:each="list : ${userPage}">
+                                                                    <input type="hidden" name="userId" th:value="${list.userId}">
+                                                                    <th th:text="${list.userName}"></th>
+                                                                    <th th:text="${list.name}"></th>
+                                                                    <td th:text="${list.email}"></td>
+                                                                    <td th:text="${list.part}"></td>
+                                                                    <td>
+                                                                        <select name="roles"
+                                                                                th:id="'select' + ${list.userId}"
+                                                                                th:style="${#strings.contains(list.roles.toString(), 'USER')? '' : 'display:none;'}">
+                                                                            <option  value="">Choose Part</option>
+                                                                            <option  value="A">PLAN PART</option>
+                                                                            <option  value="B">PURCHASE PART</option>
+                                                                            <option  value="C">RECEIVE PART</option>
+                                                                            <option  value="D">EXPORT PART</option>
+                                                                        </select>
+                                                                        <div th:text="${#strings.contains(list.roles.toString(), 'A') ? '관리 부서':
+                                                                                        #strings.contains(list.roles.toString(), 'B') ? '구매 부서' :
+                                                                                        #strings.contains(list.roles.toString(), 'C') ? '입고 부서' :
+                                                                                        #strings.contains(list.roles.toString(), 'D') ? '출고 부서' : ''}"
+                                                                             th:style="${#strings.contains(list.roles.toString(), 'USER')? 'display:none;' : ''}"></div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button th:id="'modifyBtn' + ${list.userId}" type="button" th:style="${#strings.contains(list.roles.toString(), 'USER') == 'USER'} ? 'display:none;' : ''" class="btn-primary btn-custom modifyB">수정</button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button th:id="'deleteBtn' + ${list.userId}" type="button" class="btn-danger btn-custom deleteB">삭제</button>
+                                                                    </td>
                                                                 </tr>
 
                                                                 </tbody>
@@ -192,17 +194,19 @@
 
                                                     </div>
 
-                                                    <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                                                    <nav id="pagination-container" aria-label="Page navigation example"
+                                                         style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
                                                             <li class="page-item">
                                                                 <a class="page-link" href="#" aria-label="Previous">
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
-                                                            <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
+                                                            <li class="page-item"
+                                                                th:each="pageNumber:${#numbers.sequence(startPage,endPage)}">
                                                                 <a class="page-link pageA"
-                                                                   th:classappend="${pageNumber == (list.number + 1) ? 'btn-warning' : ''}"
-                                                                   th:href="@{'/shipment/shipmentList?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                                   th:classappend="${pageNumber == nowPage ? 'btn-primary' : ''}"
+                                                                   th:href="@{'/qcCheck/qcCheckList?page=' + ${pageNumber - 1} + '&size=10'}"
                                                                    th:text="${pageNumber}"></a>
                                                             </li>
 
@@ -245,106 +249,75 @@
 
     </div>
 </div>
-    <!-- Warning Section Starts -->
-    <!-- Older IE warning message -->
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
 
-    <![endif]-->
-    <!-- Warning Section Ends -->
-    <!-- Required Jquery -->
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
 
-    <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
-    <!-- jquery slimscroll js -->
-    <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
-    <!-- modernizr js -->
-    <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
-    <!-- am chart -->
-    <script src="/pages/widget/amchart/amcharts.min.js"></script>
-    <script src="/pages/widget/amchart/serial.min.js"></script>
-    <!-- Todo js -->
-    <script type="text/javascript " src="/pages/todo/todo.js "></script>
-    <!-- Custom js -->
-    <script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
-    <script type="text/javascript" src="/js/script.js"></script>
-    <script type="text/javascript " src="/js/SmoothScroll.js"></script>
-    <script src="/js/pcoded.min.js"></script>
-    <script src="/js/demo-12.js"></script>
-    <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script>
-        var $window = $(window);
-        var nav = $('.fixed-button');
-            $window.scroll(function(){
-                if ($window.scrollTop() >= 200) {
-                 nav.addClass('active');
-             }
-             else {
-                 nav.removeClass('active');
-             }
-         });
-        function updateLocation(category) {
-            var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    var $window = $(window);
+    var nav = $('.fixed-button');
+        $window.scroll(function(){
+            if ($window.scrollTop() >= 200) {
+             nav.addClass('active');
+         }
+         else {
+             nav.removeClass('active');
+         }
+     });
+     function updateLocation(category) {
+        var newUrl = "/admin/userList?size=10&page=0&part=" + category;
 
-            window.location.href = newUrl;
-        }
-        function performSearch(){
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('category');
-            var searchValue = document.getElementById('searchInput').value;
-
-            var encodedSearchValue = encodeURIComponent(searchValue);
-
-            console.log(encodedSearchValue);
-            console.log('Category:', category);
-
-            window.location.href = '/shipment/shipmentList?size=10&page=0&category='+ category +'&keyword=' + encodedSearchValue;
-        }
-         document.getElementById('searchInput').addEventListener('keyup', function (event) {
-            if (event.key === 'Enter') {
-                performSearch();
+        window.location.href = newUrl;
+    }
+    var id = $("input[name='userId']").val();
+    console.log("아이디는?????????" + id)
+    $('.modifyB').on('click',function(){
+        var userId = $("input[name='userId']").val();
+        var roles = $('#select' + userId + ' option:selected').val();
+        console.log($('#select'+userId).find(":selected").val() + "userId=" + userId )
+        $.ajax({
+            url: "/admin/updateRoles?userId=" + userId + "&roles=" + roles,
+            type : "PUT",
+            contentType:'application/json',
+            success:function(response){
+                window.location.href="/admin/userList";
             }
-        });
-        function gotoDetail(shipmentId){
-            var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
-
-            window.location.href = newUrl;
-        }
-        $(document).ready(function(){
-            $('input[name="daterange"]').daterangepicker({
-            timePicker: true,
-            startDate: moment().startOf('hour'),
-            endDate: moment().endOf('hour'),
-            locale: {
-                format: 'YYYY-MM-DD HH:mm:ss'
-            }
-       })
-       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
-            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
-            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('processStatus');
-            var page = urlParams.get('page');
-            var size = urlParams.get('size');
-            var search = $('#searchInput').val();
-            if(category === null){
-                category = -1;
-            }
-            var newUrl =  "/shipment/shipmentList?page=" + page +
-                            "&size=" + size +
-                            "&category=" + category +
-                            "&keyword=" + encodeURIComponent(search) +
-                            "&startDate=" + startDate +
-                            "&endDate=" + endDate;
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-          window.location.href = newUrl;
-          });
-
-          $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
-              $(this).val('');
-          });
         })
-
-    </script>
+    })
+    $('.deleteB').on('click',function(){
+        var userId = $("input[name='userId']").val();
+        $.ajax({
+            url: "/admin/updateRoles?userId=" + userId,
+            type : "DELETE",
+            contentType:'application/json',
+            success:function(response){
+                window.location.href="/admin/userList";
+            }
+        })
+    })
+</script>
 </body>
 
 </html>

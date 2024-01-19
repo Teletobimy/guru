@@ -2,14 +2,18 @@ package com.ezen.guru.controller.receive;
 
 import com.ezen.guru.domain.Code;
 import com.ezen.guru.domain.QcCheck;
+import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.receive.ShipmentDetailResponse;
 import com.ezen.guru.dto.receive.ShipmentResponse;
+import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.receive.ShipmentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/shipment")
@@ -27,6 +33,7 @@ public class ShipmentViewController {
 
     @GetMapping("/shipmentList")
     public String shipmentList(Model model,
+                               HttpServletRequest request,
                                @RequestParam(name = "size", defaultValue = "10") int size,
                                @RequestParam(name ="page" ,defaultValue = "0") int page,
                                @RequestParam(name = "keyword", required = false) String keyword,
@@ -42,6 +49,14 @@ public class ShipmentViewController {
         model.addAttribute("category",category);
         model.addAttribute("qcCheckList",qcCheckList);
 
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(), userDetails.getUsername(),userDetails.getName(), userDetails.getEmail(), userDetails.getPart(),roles);
+
+        model.addAttribute("user",user);
         return "/shipment/shipmentList";
 
     }

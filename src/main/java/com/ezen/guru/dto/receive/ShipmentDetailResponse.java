@@ -2,6 +2,7 @@ package com.ezen.guru.dto.receive;
 
 import com.ezen.guru.domain.Company;
 import com.ezen.guru.domain.Material;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -27,5 +28,5 @@ public class ShipmentDetailResponse {
     private final String address;
     private final LocalDateTime shippingDate;
     public final String purchaseOrderId;
-
+    public  final int purchaseOrderDetailId;
 }

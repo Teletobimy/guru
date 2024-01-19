@@ -53,13 +53,17 @@ public class Shipment {
     @Column(name = "purchase_order_id")
     private String purchaseOrderId;
 
+    @Column(name = "purchase_order_detail_id")
+    private int purchaseOrderDetailId;
+
     @Builder
     public Shipment(int shipmentId,int materialNumber, String materialName,
                     int shipmentCnt,int materialPrice,
                     Material materialId,
                     String materialMeasure,int materialCategory,
                     Company companyId,String companyid ,LocalDateTime shippingDate,
-                    String manager, String purchaseOrderId
+                    String manager, String purchaseOrderId,
+                    int purchaseOrderDetailId
                     ){
         this.shipmentId =shipmentId;
         this.materialNumber = materialNumber;
@@ -74,6 +78,7 @@ public class Shipment {
         this.shippingDate = shippingDate;
         this.manager = manager;
         this.purchaseOrderId = purchaseOrderId;
+        this.purchaseOrderDetailId = purchaseOrderDetailId;
     }
     public Company getCompanyId() {
         return companyId;

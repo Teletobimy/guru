@@ -9,16 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
-@IdClass(CompanyId.class)
 public class Company {
 
     @Id
     @Column(name="company_id", updatable = false)
     private String companyId;
-
-    @Id
-    @Column(name="material_id")
-    private int materialId;
 
     @Column(name="company_name")
     private String companyName;
@@ -37,14 +32,12 @@ public class Company {
 
     @Builder
     public Company(String companyId,
-                   int materialId,
                    String companyName,
                    String ceo,
                    String tel,
                    String email,
                    String address) {
         this.companyId = companyId;
-        this.materialId = materialId;
         this.companyName = companyName;
         this.ceo = ceo;
         this.tel = tel;

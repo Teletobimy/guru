@@ -113,10 +113,16 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header"
+             th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}"
+        >
+        </nav>
 
-        <div class="pcoded-main-container">
-            <div th:include="includes/navbar :: navbar"></div>
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}"
+            ></div>
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
                     <div class="main-body">
@@ -163,7 +169,6 @@
                                                     <div class="pcoded-search-box input-box" >
                                                         <div class="search-long">
                                                             <input type="text" placeholder="search" id="searchInput" style="border:none;">
-                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
                                                             <p class="search-icon" th:attr="onclick='performSearch()'"
                                                                style="display:inline; margin:0;">
                                                                 <i class="ti-search" aria-hidden="true"></i>
