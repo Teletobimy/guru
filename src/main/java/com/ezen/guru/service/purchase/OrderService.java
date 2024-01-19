@@ -26,6 +26,5 @@ public interface OrderService {
 
     public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments);
 
-    public QcCheck saveToQcCheck(QcCheck qcCheck);
 
 }

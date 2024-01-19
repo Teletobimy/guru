@@ -1,10 +1,8 @@
 package com.ezen.guru.controller.purchase;
 
-import com.ezen.guru.domain.Code;
-import com.ezen.guru.domain.PurchaseOrderDetail;
-import com.ezen.guru.domain.QcCheck;
-import com.ezen.guru.domain.Shipment;
+import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.*;
+import com.ezen.guru.service.purchase.CompanyService;
 import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +23,7 @@ import static org.springframework.http.ResponseEntity.status;
 public class OrderController {
 
     private final OrderService orderService;
+    private final CompanyService companyService;
 
     @GetMapping("/order")
     public String getOrderList(Model model,
@@ -63,14 +62,6 @@ public class OrderController {
         orderService.saveToShipment(shipments);
         return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
     }
-    @PostMapping("/order/qccheck")
-    public ResponseEntity<String> addToQcCheck(@RequestBody List<QcCheck> qcChecks) {
-        List<QcCheck> savedEntities = new ArrayList<>();
-        for (QcCheck qcCheck : qcChecks) {
-            savedEntities.add(orderService.saveToQcCheck(qcCheck));
-        }
-        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
-    }
     @GetMapping("/order_print")
     public String getPrint(Model model, @RequestParam String id) {
         List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id);
@@ -83,6 +74,23 @@ public class OrderController {
         model.addAttribute("list", list);
 
         return "purchase/order_print";
+    }
+    @GetMapping("/company_list")
+    public String getOrderList(Model model,
+                               @RequestParam(value = "size", defaultValue = "10") int size,
+                               @RequestParam(value ="page" ,defaultValue = "0") int page,
+                               @RequestParam(value = "keyword", required = false) String keyword) {
+        Page<CompanyListViewResponse> companyList = companyService.companyList(size, page,keyword);
+//        List<CompanyListViewResponse> list = companyService.getCompanyList().stream()
+//                .map(CompanyListViewResponse::new)
+//                .toList();
+        model.addAttribute("list", companyList);
+        return "purchase/company_list";
+    }
+    @PostMapping("/company/add")
+    public ResponseEntity<String> addToCompany(@RequestBody CompanyRequest company) {
+        Company newCompany = companyService.newCompany(company);
+        return new ResponseEntity<>("협력사가 등록되었습니다.", HttpStatus.OK);
     }
 
 

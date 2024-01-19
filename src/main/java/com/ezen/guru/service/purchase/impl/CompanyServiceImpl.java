@@ -1,10 +1,11 @@
 package com.ezen.guru.service.purchase.impl;
 
 import com.ezen.guru.domain.Company;
-import com.ezen.guru.dto.purchase.AddCompanyRequest;
+import com.ezen.guru.dto.purchase.CompanyRequest;
 import com.ezen.guru.dto.purchase.CompanyListViewResponse;
 import com.ezen.guru.repository.purchase.CompanyRepository;
 import com.ezen.guru.service.purchase.CompanyService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,14 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.companyList(size, page, keyword);
     }
     @Override
-    public Company newCompany(AddCompanyRequest company) {
+    public Company newCompany(CompanyRequest company) {
         return companyRepository.save(company.toEntity());
+    }
+
+    @Transactional
+    @Override
+    public void updateCompany(CompanyRequest company) {
+        companyRepository.update(company.toEntity());
     }
 
 }

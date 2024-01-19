@@ -1,6 +1,8 @@
 package com.ezen.guru.controller.purchase;
 
+import com.ezen.guru.dto.purchase.CompanyRequest;
 import com.ezen.guru.dto.purchase.OrderCompleteRequest;
+import com.ezen.guru.service.purchase.CompanyService;
 import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderApiController {
 
     private final OrderService orderService;
+    private final CompanyService companyService;
 
     @PostMapping("orders/{orderId}/update-status")
     public ResponseEntity<String> updateOrderStatus(
@@ -48,5 +51,11 @@ public class OrderApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("발주 마감 검사 중 오류 발생");
         }
+    }
+
+    @PutMapping("/company/{companyId}/update")
+    public ResponseEntity<String> updateCompany(@PathVariable String companyId, @RequestBody CompanyRequest company) {
+        companyService.updateCompany(company);
+        return ResponseEntity.ok("협력사 정보가 업데이트되었습니다.");
     }
 }

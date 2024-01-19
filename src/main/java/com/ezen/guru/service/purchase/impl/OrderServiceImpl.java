@@ -3,6 +3,7 @@ package com.ezen.guru.service.purchase.impl;
 import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.repository.CodeRepository;
+import com.ezen.guru.repository.purchase.CompanyRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.purchase.OrderRepository;
 import com.ezen.guru.repository.receive.QcCheckRepository;
@@ -25,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDetailRepository detailRepository;
     private final CodeRepository codeRepository;
     private final ShipmentRepository shipmentRepository;
-    private final QcCheckRepository qcCheckRepository;
+    private final CompanyRepository companyRepository;
 
     @Override
     public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category) {
@@ -91,8 +92,5 @@ public class OrderServiceImpl implements OrderService {
         return shipmentRepository.saveAll(shipmentEntities);
     }
 
-    @Override
-    public QcCheck saveToQcCheck(QcCheck qcCheck) {
-        return qcCheckRepository.save(qcCheck);
-    }
+
 }

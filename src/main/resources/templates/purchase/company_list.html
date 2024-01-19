@@ -195,8 +195,9 @@
                                             <div class="pcoded-search">
                                                 <span class="searchbar-toggle searched">  </span>
                                                 <div class="pcoded-search-box ">
-                                                    <input type="text" placeholder="Search">
-                                                    <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                                    <input type="text" placeholder="Search" id="searchInput">
+                                                    <p class="search-icon" th:attr="onclick='performSearch()'">
+                                                    <i class="ti-search" aria-hidden="true"></i></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -285,7 +286,7 @@
                                                                             </form>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-primary" th:onclick="insertCompany()">등록</button>
+                                                                            <button type="button" class="btn btn-primary" th:onclick="updateCompany()">등록</button>
                                                                             <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
                                                                         </div>
                                                                     </div>
@@ -392,7 +393,7 @@
 
         console.log(encodedSearchValue);
 
-        window.location.href = '/company/list?size=10&page=0&keyword=' + encodedSearchValue;
+        window.location.href = '/purchase/company_list?size=10&page=0&keyword=' + encodedSearchValue;
     }
      document.getElementById('searchInput').addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
@@ -465,14 +466,14 @@
         $.ajax({
             type: "PUT",
             contentType: "application/json",
-            url: '/purchase/api/company/' + id + '/update',
+            url: '/purchase/api/company/' + companyId + '/update',
             data: JSON.stringify(changeCompany),
             success: function (response) {
                 console.log(response);
                 $('#modifyModal').modal('hide'); // 모달 닫기
                 Swal.fire({
                   icon: "success",
-                  title: "등록 완료",
+                  title: "수정 완료",
                   showConfirmButton: false
                 });
                 setTimeout (function() {location.reload();}, 1500);
