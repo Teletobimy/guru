@@ -38,7 +38,8 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "JOIN d.purchaseOrder p " +
             "JOIN d.material m " +
             "JOIN d.purchaseOrder.document t " +
-            "WHERE d.purchaseOrder.id = :id")
+            "WHERE d.purchaseOrder.id = :id " +
+            "ORDER BY d.materialName ASC")
     List<OrderDetailViewResponse> findByPurchaseOrder(@Param("id") String id); // where purchase_order_id = ?;
 
     @Query("SELECT distinct new com.ezen.guru.dto.purchase.OrderPrintViewResponse(" +
@@ -57,8 +58,9 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "d.purchaseOrder.memo) " +
             "FROM PurchaseOrderDetail d " +
             "JOIN d.purchaseOrder p " +
-            "WHERE d.purchaseOrder.id = :id")
-    List<OrderPrintViewResponse> getPrint(@Param("id") String id); // where purchase_order_id = ?;
+            "WHERE d.purchaseOrder.id = :id " +
+            "ORDER BY d.materialName ASC")
+    List<OrderPrintViewResponse> getPrintPage(@Param("id") String id); // where purchase_order_id = ?;
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE PurchaseOrderDetail pod " +

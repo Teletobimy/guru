@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderPrintViewResponse> getPurchaseOrderPrint(String id){
-        List<OrderPrintViewResponse> resultList = detailRepository.getPrint(id);
+        List<OrderPrintViewResponse> resultList = detailRepository.getPrintPage(id);
         Set<OrderPrintViewResponse> resultSet = new HashSet<>(resultList);
         List<OrderPrintViewResponse> uniqueResultList = new ArrayList<>(resultSet);
 
