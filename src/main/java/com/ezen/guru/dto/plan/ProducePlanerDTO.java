@@ -25,12 +25,12 @@ public class ProducePlanerDTO {
     private LocalDateTime producePlanerDeadline;
     private int producePlanerStatus;
 
-    public ProducePlanerDTO (final ProducePlaner entity) {
-        this.producePlanerId = entity.getId().getProducePlanerId();
-        this.bicycleId = entity.getId().getBicycleId();
+    public ProducePlanerDTO(final ProducePlaner entity) {
+        this.producePlanerId = entity.getEmbeddedId().getProducePlanerId();
+        this.bicycleId = entity.getEmbeddedId().getBicycleId();
         this.bicycleName = entity.getBicycle().getBicycleName();
         this.produceBicycleCnt = entity.getProduceBicycleCnt();
-        this.materialId = entity.getId().getMaterialId();
+        this.materialId = entity.getEmbeddedId().getMaterialId();
         this.materialName = entity.getMaterial().getMaterialName();
         this.produceMaterialCnt = entity.getProduceMaterialCnt();
         this.producePlanerDeadline = entity.getProducePlanerDeadline();
@@ -38,16 +38,29 @@ public class ProducePlanerDTO {
     }
 
     public static ProducePlaner toEntity(final ProducePlanerDTO dto) {
-        return ProducePlaner.builder()
-                .id(ProducePlanerId.builder()
-                        .producePlanerId(dto.getProducePlanerId())
-                        .bicycleId(dto.getBicycleId())
-                        .materialId(dto.getMaterialId())
-                        .build())
-                .produceBicycleCnt(dto.getProduceBicycleCnt())
-                .produceMaterialCnt(dto.getProduceMaterialCnt())
-                .producePlanerDeadline(dto.getProducePlanerDeadline())
-                .producePlanerStatus(dto.getProducePlanerStatus())
-                .build();
+        try {
+            ProducePlanerId producePlanerId = ProducePlanerId.builder()
+                    .producePlanerId(dto.getProducePlanerId())
+                    .bicycleId(dto.getBicycleId())
+                    .materialId(dto.getMaterialId())
+                    .build();
+
+            if (producePlanerId == null) {
+                throw new IllegalArgumentException("ProducePlanerId cannot be null");
+            }
+
+            return ProducePlaner.builder()
+                    .embeddedId(producePlanerId)
+                    .bicycleName(dto.getBicycleName())
+                    .produceBicycleCnt(dto.getProduceBicycleCnt())
+                    .materialName(dto.getMaterialName())
+                    .produceMaterialCnt(dto.getProduceMaterialCnt())
+                    .producePlanerDeadline(dto.getProducePlanerDeadline())
+                    .producePlanerStatus(dto.getProducePlanerStatus())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e; // 예외를 다시 던져서 상위 메서드에서 처리할 수 있도록 함
+        }
     }
 }
