@@ -15,7 +15,7 @@ public class AdminAPIController {
     @PutMapping("/updateRoles")
     public ResponseEntity<String> updateRoles(@RequestParam Long userId, @RequestParam String roles){
         try {
-            adminService.updateRolse(userId,roles);
+            adminService.updateAll(userId,roles);
             return ResponseEntity.ok("Update Success" + userId);
         }catch (Exception e){
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Update Fail" +  e.getMessage());

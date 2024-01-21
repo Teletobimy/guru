@@ -129,7 +129,11 @@
                                                        role="tab"
                                                        style="cursor:pointer;"
                                                        th:classappend="${part == code.codeName ? 'active' : ''}"
-                                                       th:text="${code.codeName}">
+                                                       th:text="${code.codeNum == 0 ? '전체 보기' :
+                                                                   code.codeName == 'A' ? 'PLAN' :
+                                                                   code.codeName == 'B' ? 'PURCHASE' :
+                                                                   code.codeName == 'C' ? 'RECEIVE' :
+                                                                   code.codeName == 'D' ? 'EXPORT' : ''}">
                                                     </a>
                                                 </li>
 
@@ -162,22 +166,21 @@
                                                                     <th th:text="${list.userName}"></th>
                                                                     <th th:text="${list.name}"></th>
                                                                     <td th:text="${list.email}"></td>
-                                                                    <td th:text="${list.part}"></td>
+                                                                    <td th:text="${#strings.contains(list.roles.toString(), 'A') ? '관리 부서':
+                                                                                        #strings.contains(list.roles.toString(), 'B') ? '구매 부서' :
+                                                                                        #strings.contains(list.roles.toString(), 'C') ? '입고 부서' :
+                                                                                        #strings.contains(list.roles.toString(), 'D') ? '출고 부서' : '부서를 선택해 주세요'}">
+                                                                    </td>
                                                                     <td>
                                                                         <select name="roles"
                                                                                 th:id="'select' + ${list.userId}"
-                                                                                th:style="${#strings.contains(list.roles.toString(), 'USER')? '' : 'display:none;'}">
+                                                                               >
                                                                             <option  value="">Choose Part</option>
                                                                             <option  value="A">PLAN PART</option>
                                                                             <option  value="B">PURCHASE PART</option>
                                                                             <option  value="C">RECEIVE PART</option>
                                                                             <option  value="D">EXPORT PART</option>
                                                                         </select>
-                                                                        <div th:text="${#strings.contains(list.roles.toString(), 'A') ? '관리 부서':
-                                                                                        #strings.contains(list.roles.toString(), 'B') ? '구매 부서' :
-                                                                                        #strings.contains(list.roles.toString(), 'C') ? '입고 부서' :
-                                                                                        #strings.contains(list.roles.toString(), 'D') ? '출고 부서' : ''}"
-                                                                             th:style="${#strings.contains(list.roles.toString(), 'USER')? 'display:none;' : ''}"></div>
                                                                     </td>
                                                                     <td>
                                                                         <button th:id="'modifyBtn' + ${list.userId}" type="button" th:style="${#strings.contains(list.roles.toString(), 'USER') == 'USER'} ? 'display:none;' : ''" class="btn-primary btn-custom modifyB">수정</button>
@@ -291,12 +294,12 @@
 
         window.location.href = newUrl;
     }
-    var id = $("input[name='userId']").val();
-    console.log("아이디는?????????" + id)
     $('.modifyB').on('click',function(){
-        var userId = $("input[name='userId']").val();
-        var roles = $('#select' + userId + ' option:selected').val();
-        console.log($('#select'+userId).find(":selected").val() + "userId=" + userId )
+        var parent = $(this).closest('tr');
+
+        var userId = parent.find("input[name='userId']").val();
+        var roles = parent.find("select[name='roles'] option:selected").val();
+        console.log(roles)
         $.ajax({
             url: "/admin/updateRoles?userId=" + userId + "&roles=" + roles,
             type : "PUT",
@@ -307,9 +310,11 @@
         })
     })
     $('.deleteB').on('click',function(){
-        var userId = $("input[name='userId']").val();
+        var parent = $(this).closest('tr');
+
+        var userId = parent.find("input[name='userId']").val();
         $.ajax({
-            url: "/admin/updateRoles?userId=" + userId,
+            url: "/admin/deleteUser?userId=" + userId,
             type : "DELETE",
             contentType:'application/json',
             success:function(response){

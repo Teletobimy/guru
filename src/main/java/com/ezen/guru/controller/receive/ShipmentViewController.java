@@ -13,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,21 +65,32 @@ public class ShipmentViewController {
 
     @GetMapping("/shipmentDetail")
     public String shipmentDetail(Model model,
+                                 HttpServletRequest request,
                                  @RequestParam(value = "shipmentId") int shipmentId) {
         ShipmentDetailResponse shipmentDetail = shipmentService.findByShimentId(shipmentId);
         QcCheck qcCheck = shipmentService.qcCheck(shipmentId);
         model.addAttribute("shipment", shipmentDetail);
         model.addAttribute("qcCheck", qcCheck);
 
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(), userDetails.getUsername(),userDetails.getName(), userDetails.getEmail(), userDetails.getPart(),roles);
+
+        model.addAttribute("user",user);
+
         return "/shipment/shipmentDetail";
     }
 
     @PostMapping("/addQcCheck")
-    public ResponseEntity<String> addQcCheck(@RequestParam int shipmentId){
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
+    public ResponseEntity<String> addQcCheck(@RequestParam int shipmentId, Authentication authentication){
         try {
             shipmentService.addQcCheck(shipmentId);
             return ResponseEntity.status(HttpStatus.FOUND).header("Location","/shipment/shipmentList").build();
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(500).body(e.getMessage());
         }

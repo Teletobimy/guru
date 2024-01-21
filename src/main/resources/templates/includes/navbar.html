@@ -8,7 +8,15 @@
                     <div class="main-menu-header">
                         <div class="user-details">
                             <span th:text="${name}"></span>
-                            <span id="more-details" th:text="${part} + 팀"><i class="ti-angle-down"></i></span>
+                            <span id="more-details"  th:text="${#strings.contains(roles.toString(), 'A') ? '관리 부서':
+                                                                #strings.contains(roles.toString(), 'B') ? '구매 부서' :
+                                                                #strings.contains(roles.toString(), 'C') ? '입고 부서' :
+                                                                #strings.contains(roles.toString(), 'D') ? '출고 부서' :
+                                                                #strings.contains(roles.toString(), 'USER') ? '부서가 할당되지 않았습니다.' :
+                                                                #strings.contains(roles.toString(), 'ADMIN') ? '관리자' :
+                                                                '로그인을 해주세요.'}">
+                                <i class="ti-angle-down"></i>
+                            </span>
                         </div>
                     </div>
 

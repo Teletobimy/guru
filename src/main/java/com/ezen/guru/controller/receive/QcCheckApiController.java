@@ -2,15 +2,13 @@ package com.ezen.guru.controller.receive;
 
 import com.ezen.guru.domain.QcCheck;
 import com.ezen.guru.dto.receive.QcCheckRequest;
-import com.ezen.guru.dto.receive.ShipmentDetailResponse;
 import com.ezen.guru.service.receive.QcCheckService;
 import com.ezen.guru.service.receive.ShipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/api")
@@ -19,6 +17,7 @@ public class QcCheckApiController {
     private final QcCheckService qcCheckService;
     private final ShipmentService shipmentService;
     @PutMapping("/updateQcCheckCnt")
+    @PreAuthorize("hasAnyRole('ADMIN','C')")
     public ResponseEntity<String> updatepurchase(@RequestParam int qcCheckId, @RequestParam int qcCheckCnt){
         try {
             qcCheckService.updateAllStatus(qcCheckId,qcCheckCnt);
@@ -35,11 +34,13 @@ public class QcCheckApiController {
     }
 
     @PostMapping("/fromQcCheckToShipment")
+    @PreAuthorize("hasAnyRole('ADMIN','C')")
     public ResponseEntity<String> addShipment(@RequestParam int cnt, @RequestBody QcCheckRequest shipment){
         qcCheckService.addShipment(shipment,cnt);
         return ResponseEntity.ok("Seccessful insert shipment! : " + shipment);
     }
     @PutMapping("/updateReturnStatus")
+    @PreAuthorize("hasAnyRole('ADMIN','C')")
     public ResponseEntity<String> updateReturnStatus(@RequestParam int qcCheckId,@RequestParam int qcCheckCnt){
         try {
             qcCheckService.updateReturnStatus(qcCheckId,qcCheckCnt);

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +26,12 @@ public class AdminServiceImpl implements AdminService {
         return user;
     }
 
+
     @Override
-    public void updateRolse(Long userId, String roles) {
+    @Transactional
+    public void updateAll(Long userId, String roles) {
         userRepository.updateRoles(userId,roles);
+        userRepository.updatePart(userId, roles);
     }
 
     @Override

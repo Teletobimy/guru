@@ -9,6 +9,6 @@ import java.util.Set;
 
 public interface AdminService {
     public Page<User> findAll(String part, Pageable pageable);
-    public void updateRolse(Long userId, String roles);
     public void deleteUser(Long userId);
+    public void updateAll(Long userId, String roles);
 }
