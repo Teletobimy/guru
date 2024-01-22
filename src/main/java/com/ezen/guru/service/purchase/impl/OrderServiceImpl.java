@@ -74,8 +74,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void closeOrder(String id) {
-        orderRepository.closeOrder(id);
+    public void closeOrder() {
+        orderRepository.closeOrder();
     }
 
     @Override

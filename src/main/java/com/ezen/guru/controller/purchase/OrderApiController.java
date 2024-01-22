@@ -32,17 +32,6 @@ public class OrderApiController {
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
 
-    @PutMapping("/order/{id}/order-close")
-    public ResponseEntity<String> closeOrder(@PathVariable String id) {
-        try {
-            orderService.closeOrder(id);
-            return ResponseEntity.ok("발주 마감 검사 완료");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("발주 마감 검사 중 오류 발생");
-        }
-    }
-
     @PutMapping("/order/{id}/force-close")
     public ResponseEntity<String> forceOrderClose(@PathVariable String id) {
         try {

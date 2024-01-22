@@ -27,7 +27,7 @@ public interface OrderRepository extends JpaRepository<PurchaseOrder, Integer>,O
             "SELECT d.purchaseOrder.id FROM PurchaseOrderDetail d " +
             "GROUP BY d.purchaseOrder.id " +
             "HAVING SUM(d.purchaseOrderCnt) = SUM(d.qcCheckCnt))")
-    public int closeOrder(@Param("id") String id);
+    public int closeOrder();
 
     @Modifying
     @Query("UPDATE PurchaseOrder p SET p.status = 3 WHERE p.id = :id")

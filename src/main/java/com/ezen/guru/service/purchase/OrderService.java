@@ -20,7 +20,7 @@ public interface OrderService {
 
     public void updateOrderStatus(String id);
 
-    public void closeOrder(String id);
+    public void closeOrder();
 
     public void forceClose(String id);
 
