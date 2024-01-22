@@ -64,8 +64,8 @@ public class Shipment {
                     Company companyId,String companyid ,LocalDateTime shippingDate,
                     String manager, String purchaseOrderId,
                     int purchaseOrderDetailId
-                    ){
-        this.shipmentId =shipmentId;
+
+    ){  this.shipmentId =shipmentId;
         this.materialNumber = materialNumber;
         this.materialName = materialName;
         this.shipmentCnt = shipmentCnt;

@@ -3,6 +3,7 @@ package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,20 +49,20 @@ public class PurchaseOrder {
 
     @Builder
     public PurchaseOrder(String id,
-                         Document document,
-                         Company company,
                          int totalprice,
                          LocalDateTime regdate,
                          int status,
                          String memo,
                          LocalDateTime deadline) {
         this.id = id;
-        this.document = document;
-        this.company = company;
         this.totalprice = totalprice;
         this.regdate = regdate;
         this.status = status;
         this.memo = memo;
         this.deadline = deadline;
+    }
+
+    public void update(int status) {
+        this.status = status;
     }
 }

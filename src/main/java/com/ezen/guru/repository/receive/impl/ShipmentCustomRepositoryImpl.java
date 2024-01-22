@@ -58,6 +58,7 @@ public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
                 .from(qShipment)
                 .leftJoin(qCompany)
                 .on(qShipment.companyId.companyId.eq(qCompany.companyId))
+
                .where(whereCondition)
                .offset(size * page)
                .limit(size)

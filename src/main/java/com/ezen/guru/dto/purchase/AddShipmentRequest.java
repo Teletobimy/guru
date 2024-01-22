@@ -1,7 +1,6 @@
 package com.ezen.guru.dto.purchase;
 
 import com.ezen.guru.domain.*;
-import com.ezen.guru.dto.plan.ProducePlanerDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +21,7 @@ public class AddShipmentRequest {
     String companyid;
     LocalDateTime shippingDate;
     String purchaseOrderId;
+    int purchaseOrderDetailId;
 
     public static Shipment toEntity(AddShipmentRequest dto) {
         return Shipment.builder()
@@ -34,6 +34,7 @@ public class AddShipmentRequest {
                 .companyid(dto.getCompanyid())
                 .shippingDate(dto.getShippingDate())
                 .purchaseOrderId(dto.getPurchaseOrderId())
+                .purchaseOrderDetailId(dto.getPurchaseOrderDetailId())
                 .build();
     }
 }
