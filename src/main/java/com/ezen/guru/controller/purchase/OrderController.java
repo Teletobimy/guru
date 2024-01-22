@@ -1,10 +1,11 @@
 package com.ezen.guru.controller.purchase;
 
-import com.ezen.guru.domain.Code;
-import com.ezen.guru.domain.QcCheck;
-import com.ezen.guru.domain.Shipment;
+import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.*;
+import com.ezen.guru.service.purchase.CompanyService;
 import com.ezen.guru.service.purchase.OrderService;
+import io.micrometer.common.util.StringUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
@@ -24,15 +24,18 @@ import static org.springframework.http.ResponseEntity.status;
 public class OrderController {
 
     private final OrderService orderService;
+    private final CompanyService companyService;
 
     @GetMapping("/order")
     public String getOrderList(Model model,
                                @RequestParam(value = "size", defaultValue = "10") int size,
                                @RequestParam(value ="page" ,defaultValue = "0") int page,
                                @RequestParam(value = "keyword", required = false) String keyword,
-                               @RequestParam(value = "category", defaultValue = "-1") int category) {
+                               @RequestParam(value = "category", defaultValue = "-1") int category,
+                               String id) {
         Page<OrderListViewResponse> orderList = orderService.orderList(size, page,keyword,category);
         List<Code> codeList = orderService.findByCodeCategory("purchase_order_status");
+        orderService.closeOrder(id);
 
         model.addAttribute("list", orderList);
         model.addAttribute("code",codeList);
@@ -41,9 +44,7 @@ public class OrderController {
     }
     @GetMapping("/order_detail")
     public String getDetail(Model model, @RequestParam String id) {
-        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id).stream()
-                .map(OrderDetailViewResponse::new)
-                .toList();
+        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id);
         List<Code> codeList = orderService.findByCodeCategory("material_category");
         List<Code> typeCode = orderService.findByCodeCategory("document_type");
 
@@ -59,28 +60,44 @@ public class OrderController {
 //            savedEntities.add(orderService.saveToShipment(shipment));
 //        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
 //        }
-        List<Shipment> savedEntities = orderService.saveToShipment(shipments);
-        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
-    }
-    @PostMapping("/order/qccheck")
-    public ResponseEntity<String> addToQcCheck(@RequestBody List<QcCheck> qcChecks) {
-        List<QcCheck> savedEntities = new ArrayList<>();
-        for (QcCheck qcCheck : qcChecks) {
-            savedEntities.add(orderService.saveToQcCheck(qcCheck));
-        }
+        orderService.saveToShipment(shipments);
         return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
     }
     @GetMapping("/order_print")
     public String getPrint(Model model, @RequestParam String id) {
-        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id).stream()
+        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id);
+                /*orderService.getPurchaseOrderPrint(id).stream()
                 .map(OrderPrintViewResponse::new)
-                .toList();
+                .toList();*/
         List<Code> codeList = orderService.findByCodeCategory("material_category");
 
         model.addAttribute("code",codeList);
         model.addAttribute("list", list);
 
         return "purchase/order_print";
+    }
+    @GetMapping("/company_list")
+    public String getOrderList(Model model,
+                               @RequestParam(value = "size", defaultValue = "10") int size,
+                               @RequestParam(value ="page" ,defaultValue = "0") int page,
+                               @RequestParam(value = "keyword", required = false) String keyword) {
+        Page<CompanyListViewResponse> companyList = companyService.companyList(size, page,keyword);
+//        List<CompanyListViewResponse> list = companyService.getCompanyList().stream()
+//                .map(CompanyListViewResponse::new)
+//                .toList();
+        model.addAttribute("list", companyList);
+        return "purchase/company_list";
+    }
+    @PostMapping("/company/add")
+    public ResponseEntity<String> addToCompany(@Valid @RequestBody AddCompanyRequest company) {
+        Company newCompany = companyService.newCompany(company);
+        return new ResponseEntity<>("협력사가 등록되었습니다.", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/company/delete/{companyId}")
+    public ResponseEntity<String> removeCompany(@PathVariable String companyId) {
+        companyService.removeCompany(companyId);
+        return ResponseEntity.ok("협력사가 삭제되었습니다.");
     }
 
 
