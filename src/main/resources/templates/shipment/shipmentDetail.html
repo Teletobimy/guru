@@ -110,10 +110,12 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
         <div class="pcoded-main-container">
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
                     <div class="main-body">
@@ -147,7 +149,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>출하 번호</th>
-                                                    <td><input type="text" readonly th:value="${shipment.shipmentId}"></td>
+                                                    <td><input type="text" readonly th:value="${shipment.shipmentId}" ></td>
 
                                                 </tr>
 
@@ -217,11 +219,20 @@
                                     </div>
                                     <div class="btn-display">
                                         <button class="btn btn-warning" th:attr="onclick='gotoList()'">목록</button>
-                                        <form th:action="'/shipment/addQcCheck?shipmentId='+${shipment.shipmentId}" method="post">
-                                            <button class="btn btn-warning"  th:style="${qcCheck == null ? '' : 'display:none'}">검수</button>
-                                            <button class="btn btn-disabled-y " th:if="${qcCheck != null}" th:disabled="${qcCheck != null}">검수</button>
+                                            <input type="hidden" name="shipmentId" th:value="${shipment.shipmentId}">
+                                            <button class="btn btn-warning"
+                                                    th:style="${qcCheck == null ? '' : 'display:none'}"
+                                                    onclick="addQcCheck()"
+                                                    data-toggle="modal"
+                                                    data-target="#exampleModal">
+                                                검수
+                                            </button>
+                                            <button class="btn btn-disabled-y "
+                                                    th:if="${qcCheck != null}"
+                                                    th:disabled="${qcCheck != null}">
+                                                검수
+                                            </button>
 
-                                        </form>
                                     </div>
 
                                 </div>
@@ -229,6 +240,25 @@
                             </div>
                             <div id="styleSelector">
 
+                            </div>
+                            <!-- modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">출하 명세서</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p id="modalP">Modal body text goes here.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -281,9 +311,29 @@
         var newUrl = '/shipment/shipmentList?size=10&page=0&category=-1'
         window.location.href= newUrl;
     }
-     function gotoEdit(url){
-    }
-     function remove(url){
+
+    function addQcCheck(){
+        var shipmentId = $("input[name=shipmentId]").val();
+        var modal = document.getElementById("modalP");
+
+        $.ajax({
+            type:'POST',
+            url:'/shipment/addQcCheck?shipmentId=' + shipmentId,
+            success:function(res){
+                console.log("응답 : " + res);
+                modal.innerText ="자재 검수 처리를 시작합니다.";
+
+            },
+            error: function(xhr, status, error){
+                if(xhr.status === 403){
+                    var message = xhr.responseText;
+                    modal.innerText = message;
+
+                } else{
+                    console.error("Error: " , status, error);
+                }
+            }
+        })
     }
 </script>
 </body>

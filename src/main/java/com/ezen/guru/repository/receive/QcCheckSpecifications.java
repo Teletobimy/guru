@@ -35,6 +35,7 @@ public class QcCheckSpecifications {
                         criteriaBuilder.like(root.get("materialId").get("materialName"),
                                 "%" + search + "%")
                 );
+            query.orderBy(criteriaBuilder.desc(root.get("qcCheckId")));
                 return query.getRestriction();
         };
     }
@@ -44,6 +45,7 @@ public class QcCheckSpecifications {
         return ((root, query, criteriaBuilder) -> {
             Predicate datePredicate = criteriaBuilder.between(root.get("qccheckDate"),startDate,endDate);
             Predicate finalPredicate = criteriaBuilder.and(datePredicate);
+            query.orderBy(criteriaBuilder.desc(root.get("qcCheckId")));
             return finalPredicate;
         });
     }

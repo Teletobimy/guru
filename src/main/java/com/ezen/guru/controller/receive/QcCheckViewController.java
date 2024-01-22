@@ -1,15 +1,18 @@
 package com.ezen.guru.controller.receive;
 
 import com.ezen.guru.domain.Code;
-import com.ezen.guru.domain.QcCheck;
+import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.receive.QcCheckResponse;
+import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.receive.QcCheckService;
 import com.ezen.guru.service.receive.ShipmentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/qcCheck")
@@ -27,7 +32,8 @@ public class QcCheckViewController {
     private final ShipmentService shipmentService;
 
     @GetMapping("/qcCheckList")
-    public String qcCheckList(Model model,
+    public String qcCheckList(HttpServletRequest request,
+                              Model model,
                               @RequestParam(name = "processStatus", defaultValue = "0") int processStatus,
                               @RequestParam(name = "search", required = false) String search,
                               @PageableDefault(page = 0, size = 10) Pageable pageable,
@@ -41,6 +47,20 @@ public class QcCheckViewController {
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage+9, page.getTotalPages());
 
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                                    userDetails.getUsername(),
+                                    userDetails.getName(),
+                                    userDetails.getEmail(),
+                                    userDetails.getPart(),
+                                    roles,
+                                    userDetails.getPhone());
+
+        model.addAttribute("user",user);
         model.addAttribute("list",page);
         model.addAttribute("code",codeList);
         model.addAttribute("processStatus",processStatus);

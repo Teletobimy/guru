@@ -55,6 +55,7 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .processStatus(2)
                 .purchaseOrderId(shipment.getPurchaseOrderId())
                 .qccheckDate(targetDateTime)
+                .purchaseOrderDetailId(shipment.getPurchaseOrderDetailId())
                 .build();
 
         return qcCheckRepository.save(qcCheck);

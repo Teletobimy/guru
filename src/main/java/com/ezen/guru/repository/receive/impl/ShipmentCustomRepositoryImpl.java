@@ -57,10 +57,12 @@ public class ShipmentCustomRepositoryImpl implements ShipmentCustomRepository {
                 ))
                 .from(qShipment)
                 .leftJoin(qCompany)
-                .on(qShipment.materialId.companyId.eq(qCompany.companyId))
+                .on(qShipment.companyId.companyId.eq(qCompany.companyId))
+
                .where(whereCondition)
                .offset(size * page)
                .limit(size)
+               .orderBy(qShipment.shipmentId.desc())
                .fetchResults();
        // 결과를 Page 객체로 변환
         List<ShipmentResponse> content = results.getResults();

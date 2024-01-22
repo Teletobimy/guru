@@ -65,7 +65,7 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
     @Modifying(clearAutomatically = true)
     @Query("UPDATE PurchaseOrderDetail pod " +
             "SET pod.qcCheckCnt = pod.qcCheckCnt + :qcCheckCnt " +
-            "WHERE pod.purchaseOrder.id = (SELECT qc.purchaseOrderId FROM QcCheck qc WHERE qc.qcCheckId = :qcCheckId)")
+            "WHERE pod.id = (SELECT qc.purchaseOrderDetailId FROM QcCheck qc WHERE qc.qcCheckId = :qcCheckId)")
     int updateQcCheckCnt(@Param("qcCheckId") int qcCheckId, @Param("qcCheckCnt") int qcCheckCnt);
 
 
