@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyRequest {
+public class AddCompanyRequest {
     String companyId;
     String companyName;
     String companyCeo;
@@ -22,6 +22,7 @@ public class CompanyRequest {
                 .companyName(companyName)
                 .ceo(companyCeo)
                 .tel(companyTel)
+                .email(companyEmail)
                 .address(companyAddress)
                 .build();
     }

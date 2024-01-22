@@ -1,10 +1,6 @@
 package com.ezen.guru.dto.purchase;
 
-import com.ezen.guru.domain.Company;
-import com.ezen.guru.domain.Document;
 import com.ezen.guru.domain.PurchaseOrder;
-import com.ezen.guru.repository.plan.DocumentRepository;
-import com.ezen.guru.repository.purchase.CompanyRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

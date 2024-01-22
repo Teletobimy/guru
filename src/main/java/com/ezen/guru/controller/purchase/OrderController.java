@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
@@ -88,7 +87,7 @@ public class OrderController {
         return "purchase/company_list";
     }
     @PostMapping("/company/add")
-    public ResponseEntity<String> addToCompany(@RequestBody CompanyRequest company) {
+    public ResponseEntity<String> addToCompany(@RequestBody AddCompanyRequest company) {
         Company newCompany = companyService.newCompany(company);
         return new ResponseEntity<>("협력사가 등록되었습니다.", HttpStatus.OK);
     }

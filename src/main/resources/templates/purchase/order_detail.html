@@ -362,7 +362,7 @@
             url: '/purchase/api/orders/' + orderId + '/update-status?newStatus=' + newStatus,
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
-                $('#exampleModal').modal('hide'); // 모달 닫기
+                $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
 
                 location.reload();
             },

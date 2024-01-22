@@ -230,7 +230,7 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${item.companyId}+ ')'" th:each="item,stat : ${list}" th:onclick="#">
+                                                        <tr th:each="item,stat : ${list}">
                                                             <th scope="row" th:text="${stat.count}"></th>
                                                             <td th:text="${item.companyName}"></td>
                                                             <td th:text="${item.companyId}"></td>
@@ -239,7 +239,7 @@
                                                             <td th:text="${item.email}"></td>
                                                             <td th:text="${item.address}"></td>
                                                             <td>
-                                                                <button class="btn btn-card btn-primary" th:onclick="updateCompany(this)" data-toggle="modal" th:attr="data-target=${'#modifyModal'+ item.companyId}">수정</button>
+                                                                <button class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#modifyModal'+ item.companyId}">수정</button>
                                                                 <button type="button" class="btn btn-card btn-primary" th:onclick="deleteCompany(this)" th:attr="data-company-id=${item.companyId}">삭제</button>
                                                             </td>
 
@@ -248,7 +248,7 @@
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title" id="modifyModalLabel">협력사 등록</h5>
+                                                                            <h5 class="modal-title" id="modifyModalLabel">협력사 정보 수정</h5>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                                 <span aria-hidden="true" style="font-size:30px;">&times;</span>
                                                                             </button>
@@ -256,10 +256,10 @@
                                                                         <div class="modal-body">
                                                                             <form>
                                                                                 <div class="form-group">
-                                                                                    <table class="table">
+                                                                                    <table class="table update-table">
                                                                                         <tr>
                                                                                             <th scope="row">사업자 번호 :</th>
-                                                                                            <td><input type="text" name="updateId" th:value="${item.companyId}"></td>
+                                                                                            <td><input type="text" name="updateId" th:value="${item.companyId}" th:disabled="true"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <th scope="row">회사명 :</th>
@@ -286,7 +286,8 @@
                                                                             </form>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-primary" th:onclick="updateCompany()">등록</button>
+                                                                            <input type="hidden" class="updateId" th:value="${item.companyId}">
+                                                                            <button type="button" class="btn btn-primary modify-btn">수정</button>
                                                                             <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
                                                                         </div>
                                                                     </div>
@@ -296,6 +297,7 @@
                                                         </tr>
                                                         </tbody>
                                                     </table>
+
                                                 </div>
                                             </div>
 
@@ -400,11 +402,6 @@
             performSearch();
         }
     });
-    function gotoDetail(id){
-        var newUrl = '/company/detail?companyId=' + companyId;
-
-        window.location.href = newUrl;
-    }
     function insertCompany() {
 
         var companyId = $('input[name=companyId]').val();
@@ -444,33 +441,32 @@
             }
         });
     }
-    function updateCompany() {
+    $('.modify-btn').on('click', function(){
 
-        var companyId = $('input[name=updateId]').val();
-        var companyName =$('input[name=updateName]').val();
-        var companyCeo =$('input[name=updateCeo]').val();
-        var companyTel =$('input[name=updateTel]').val();
-        var companyEmail =$('input[name=updateEmail]').val();
-        var companyAddress =$('input[name=updateAddress]').val();
+        var updateId = $(this).closest('.modal-content').find('.update-table input[name=updateId]').val();
+        var companyName = $(this).closest('.modal-content').find('.update-table input[name=updateName]').val();
+        var companyCeo = $(this).closest('.modal-content').find('.update-table input[name=updateCeo]').val();
+        var companyTel = $(this).closest('.modal-content').find('.update-table input[name=updateTel]').val();
+        var companyEmail = $(this).closest('.modal-content').find('.update-table input[name=updateEmail]').val();
+        var companyAddress = $(this).closest('.modal-content').find('.update-table input[name=updateAddress]').val();
 
         var changeCompany = {
-            companyId : companyId,
             companyName : companyName,
-            companyCeo : companyCeo,
-            companyTel : companyTel,
-            companyEmail : companyEmail,
-            companyAddress : companyAddress
+            ceo : companyCeo,
+            tel : companyTel,
+            email : companyEmail,
+            address : companyAddress
         }
         console.log(changeCompany);
 
         $.ajax({
             type: "PUT",
             contentType: "application/json",
-            url: '/purchase/api/company/' + companyId + '/update',
+            url: '/purchase/api/company/' + updateId + '/update',
             data: JSON.stringify(changeCompany),
             success: function (response) {
                 console.log(response);
-                $('#modifyModal').modal('hide'); // 모달 닫기
+                $('#modifyModal' + updateId).modal('hide'); // 모달 닫기
                 Swal.fire({
                   icon: "success",
                   title: "수정 완료",
@@ -482,7 +478,8 @@
                 console.error(error);
             }
         });
-    }
+    })
+
     function deleteCompany() {
 
     }

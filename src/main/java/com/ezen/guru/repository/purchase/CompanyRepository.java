@@ -1,25 +1,22 @@
 package com.ezen.guru.repository.purchase;
 
 import com.ezen.guru.domain.Company;
-import com.ezen.guru.dto.purchase.CompanyRequest;
+import com.ezen.guru.dto.purchase.UpdateCompanyRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 
 public interface CompanyRepository extends JpaRepository<Company, Integer>,CompanyCustomRepository {
-    Optional<Object> findByCompanyId(String companyId);
+    Company findByCompanyId(String companyId);
 
     @Modifying
-    @Query("UPDATE company " +
+    @Query("UPDATE Company " +
             "SET companyName = :#{#company.companyName}, " +
             "ceo = :#{#company.ceo}, " +
             "tel = :#{#company.tel}, " +
             "email = :#{#company.email}, " +
             "address = :#{#company.address} " +
-            "WHERE companyId = :#{#company.companyId}")
-    public void update(@RequestBody Company company);
-
+            "WHERE companyId = :companyId")
+    public void update(@Param("companyId") String companyId, @Param("company") UpdateCompanyRequest company);
 }

@@ -1,7 +1,7 @@
 package com.ezen.guru.controller.purchase;
 
-import com.ezen.guru.dto.purchase.CompanyRequest;
-import com.ezen.guru.dto.purchase.OrderCompleteRequest;
+import com.ezen.guru.dto.purchase.AddCompanyRequest;
+import com.ezen.guru.dto.purchase.UpdateCompanyRequest;
 import com.ezen.guru.service.purchase.CompanyService;
 import com.ezen.guru.service.purchase.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +54,8 @@ public class OrderApiController {
     }
 
     @PutMapping("/company/{companyId}/update")
-    public ResponseEntity<String> updateCompany(@PathVariable String companyId, @RequestBody CompanyRequest company) {
-        companyService.updateCompany(company);
-        return ResponseEntity.ok("협력사 정보가 업데이트되었습니다.");
+    public ResponseEntity<String> updateCompany(@PathVariable String companyId, @RequestBody UpdateCompanyRequest company) {
+        companyService.updateCompany(companyId, company);
+        return ResponseEntity.ok("협력사 정보가 수정되었습니다.");
     }
 }
