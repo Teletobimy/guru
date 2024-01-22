@@ -98,11 +98,36 @@
                         </a>
                         <ul class="pcoded-submenu">
                             <li class=" ">
-                                <a href="/purchase/order">
+                                <a class="closeOrder">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">발주</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                    var closeOrderButton = document.querySelector('.closeOrder');
+
+                                    if (closeOrderButton) {
+                                        closeOrderButton.addEventListener('click', function () {
+                                            fetch('/purchase/closeOrder', {
+                                                method: 'PUT',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                },
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                console.log(data);
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                            });
+                                            location.href = '/purchase/order';
+                                        });
+                                    }
+                                    });
+                                </script>
                             </li>
                             <li class=" ">
                                 <a href="/purchase/company_list">
@@ -112,14 +137,14 @@
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href=" ">
+                                <a href="#">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs"> . </span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href=" ">
+                                <a href="#">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs"> . </span>
                                     <span class="pcoded-mcaret"></span>

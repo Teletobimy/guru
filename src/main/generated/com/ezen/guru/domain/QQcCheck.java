@@ -30,6 +30,8 @@ public class QQcCheck extends EntityPathBase<QcCheck> {
 
     public final NumberPath<Integer> processStatus = createNumber("processStatus", Integer.class);
 
+    public final NumberPath<Integer> purchaseOrderDetailId = createNumber("purchaseOrderDetailId", Integer.class);
+
     public final StringPath purchaseOrderId = createString("purchaseOrderId");
 
     public final NumberPath<Integer> qcCheckCnt = createNumber("qcCheckCnt", Integer.class);
