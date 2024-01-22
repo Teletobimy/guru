@@ -14,5 +14,5 @@ public interface CompanyService {
     public Page<CompanyListViewResponse> companyList(int size, int page, String keyword);
     public Company newCompany(AddCompanyRequest company);
     public void updateCompany(String companyId, UpdateCompanyRequest company);
-
+    public void removeCompany(String companyId);
 }

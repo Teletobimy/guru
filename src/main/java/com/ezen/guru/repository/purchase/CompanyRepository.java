@@ -2,6 +2,7 @@ package com.ezen.guru.repository.purchase;
 
 import com.ezen.guru.domain.Company;
 import com.ezen.guru.dto.purchase.UpdateCompanyRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,10 @@ public interface CompanyRepository extends JpaRepository<Company, Integer>,Compa
             "address = :#{#company.address} " +
             "WHERE companyId = :companyId")
     public void update(@Param("companyId") String companyId, @Param("company") UpdateCompanyRequest company);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Company " +
+            "WHERE companyId = :companyId")
+    public void remove(@Param("companyId") String companyId);
 }

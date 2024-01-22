@@ -4,6 +4,8 @@ import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.*;
 import com.ezen.guru.service.purchase.CompanyService;
 import com.ezen.guru.service.purchase.OrderService;
+import io.micrometer.common.util.StringUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -87,9 +89,15 @@ public class OrderController {
         return "purchase/company_list";
     }
     @PostMapping("/company/add")
-    public ResponseEntity<String> addToCompany(@RequestBody AddCompanyRequest company) {
+    public ResponseEntity<String> addToCompany(@Valid @RequestBody AddCompanyRequest company) {
         Company newCompany = companyService.newCompany(company);
         return new ResponseEntity<>("협력사가 등록되었습니다.", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/company/delete/{companyId}")
+    public ResponseEntity<String> removeCompany(@PathVariable String companyId) {
+        companyService.removeCompany(companyId);
+        return ResponseEntity.ok("협력사가 삭제되었습니다.");
     }
 
 

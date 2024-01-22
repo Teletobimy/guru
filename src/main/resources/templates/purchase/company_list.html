@@ -311,7 +311,7 @@
                                                     <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
                                                         <a class="page-link pageA"
                                                            th:classappend="${pageNumber == (list.number + 1) ? 'btn-success' : ''}"
-                                                           th:href="@{'/company/list?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                           th:href="@{'/purchase/company_list?page=' + ${pageNumber - 1} + '&size=10'}"
                                                            th:text="${pageNumber}"></a>
                                                     </li>
 
@@ -403,7 +403,6 @@
         }
     });
     function insertCompany() {
-
         var companyId = $('input[name=companyId]').val();
         var companyName =$('input[name=companyName]').val();
         var companyCeo =$('input[name=companyCeo]').val();
@@ -420,6 +419,31 @@
             companyAddress : companyAddress
         }
         console.log(addCompany);
+
+        if (!companyId) {
+        alert('사업자번호를 다시 입력해주세요.');
+        return; // 더 이상 진행하지 않도록 반환
+        }
+        if (!companyName) {
+            alert('회사명을 다시 입력해주세요.');
+            return;
+        }
+        if (!companyCeo) {
+            alert('대표자명을 다시 입력해주세요.');
+            return;
+        }
+        if (!companyTel) {
+            alert('전화번호를 다시 입력해주세요.');
+            return;
+        }
+        if (!companyEmail) {
+            alert('이메일을 다시 입력해주세요.');
+            return;
+        }
+        if (!companyAddress) {
+            alert('주소를 다시 입력해주세요.');
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -480,8 +504,28 @@
         });
     })
 
-    function deleteCompany() {
+    function deleteCompany(button) {
 
+        var companyId = $(button).data('company-id');
+        console.log(companyId);
+
+        $.ajax({
+            type: "DELETE",
+            contentType: "application/json",
+            url: '/purchase/company/delete/' + companyId,
+            success: function (response) {
+                console.log(response);
+                Swal.fire({
+                  icon: "success",
+                  title: "삭제 완료",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.reload();}, 1500);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
     }
 </script>
 

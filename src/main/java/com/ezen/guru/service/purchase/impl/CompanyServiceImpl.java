@@ -6,7 +6,6 @@ import com.ezen.guru.dto.purchase.CompanyListViewResponse;
 import com.ezen.guru.dto.purchase.UpdateCompanyRequest;
 import com.ezen.guru.repository.purchase.CompanyRepository;
 import com.ezen.guru.service.purchase.CompanyService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,6 +37,11 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void updateCompany(String companyId, UpdateCompanyRequest company) {
         companyRepository.update(companyId, company);
+    }
+
+    @Override
+    public void removeCompany(String companyId) {
+        companyRepository.remove(companyId);
     }
 
 }

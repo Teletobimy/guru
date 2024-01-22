@@ -4,6 +4,7 @@ import com.ezen.guru.dto.purchase.AddCompanyRequest;
 import com.ezen.guru.dto.purchase.UpdateCompanyRequest;
 import com.ezen.guru.service.purchase.CompanyService;
 import com.ezen.guru.service.purchase.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,7 @@ public class OrderApiController {
     }
 
     @PutMapping("/company/{companyId}/update")
-    public ResponseEntity<String> updateCompany(@PathVariable String companyId, @RequestBody UpdateCompanyRequest company) {
+    public ResponseEntity<String> updateCompany(@PathVariable String companyId, @Valid @RequestBody UpdateCompanyRequest company) {
         companyService.updateCompany(companyId, company);
         return ResponseEntity.ok("협력사 정보가 수정되었습니다.");
     }
