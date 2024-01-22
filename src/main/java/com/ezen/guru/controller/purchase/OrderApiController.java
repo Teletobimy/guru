@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +18,7 @@ public class OrderApiController {
 
     private final OrderService orderService;
     private final CompanyService companyService;
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PostMapping("orders/{orderId}/update-status")
     public ResponseEntity<String> updateOrderStatus(
             @PathVariable int orderId,
