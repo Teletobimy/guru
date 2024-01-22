@@ -23,7 +23,7 @@
                     <div class="main-menu-content">
                         <ul>
                             <li class="more-details">
-                                <a href="#" th:style="${part == 'ADMIN'? 'display:none;' : ''}"><i class="ti-user" ></i>View Profile</a>
+                                <a href="/my/userInfo" th:style="${part == 'ADMIN'? 'display:none;' : ''}"><i class="ti-user" ></i>View Profile</a>
                                 <a href="/admin/userList"  th:style="${part == 'ADMIN' ? '' : 'display:none;'}"><i class="ti-settings"></i>Settings</a>
                                 <a th:href="@{/logout}"><i class="ti-layout-sidebar-left"></i>Logout</a>
                             </li>

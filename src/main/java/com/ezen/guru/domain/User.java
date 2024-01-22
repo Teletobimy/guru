@@ -42,11 +42,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>(Collections.singletonList(Role.USER));
 
+    @Column(name = "phone")
+    private String phone;
+
     @Builder
     public User(long userId, String userName,
                 String name,String password,
                 String email, String part,
-                boolean enabled, Set<Role> roles){
+                boolean enabled, Set<Role> roles,
+                String phone){
         this.userId = userId;
         this.userName = userName;
         this.name = name;
@@ -54,5 +58,6 @@ public class User {
         this.email = email;
         this.part = part;
         this.roles = roles;
+        this.phone = phone;
     }
 }

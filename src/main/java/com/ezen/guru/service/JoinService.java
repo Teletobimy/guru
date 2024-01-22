@@ -33,6 +33,7 @@ public class JoinService {
                    .email(joinDTO.getEmail())
                    .part(joinDTO.getPart())
                    .roles(new HashSet<>(Collections.singleton(Role.USER)))
+                   .phone(joinDTO.getPhone())
                    .build();
            userRepository.save(user);
        }

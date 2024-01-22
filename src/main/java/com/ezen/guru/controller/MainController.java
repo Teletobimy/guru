@@ -25,7 +25,7 @@ public class MainController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        UserDTO user = new UserDTO(userDetails.getUserId(),userDetails.getUsername(),userDetails.getName(), userDetails.getEmail(), userDetails.getPart(),roles);
+        UserDTO user = new UserDTO(userDetails.getUserId(),userDetails.getUsername(),userDetails.getName(), userDetails.getEmail(), userDetails.getPart(),roles,userDetails.getPhone());
 
         model.addAttribute("user",user);
 

@@ -56,8 +56,13 @@ public class ShipmentViewController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        UserDTO user = new UserDTO(userDetails.getUserId(), userDetails.getUsername(),userDetails.getName(), userDetails.getEmail(), userDetails.getPart(),roles);
-
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
         model.addAttribute("user",user);
         return "/shipment/shipmentList";
 
@@ -77,8 +82,13 @@ public class ShipmentViewController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        UserDTO user = new UserDTO(userDetails.getUserId(), userDetails.getUsername(),userDetails.getName(), userDetails.getEmail(), userDetails.getPart(),roles);
-
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
         model.addAttribute("user",user);
 
         return "/shipment/shipmentDetail";
@@ -86,12 +96,11 @@ public class ShipmentViewController {
 
     @PostMapping("/addQcCheck")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
-    public ResponseEntity<String> addQcCheck(@RequestParam int shipmentId, Authentication authentication){
+    public ResponseEntity<String> addQcCheck(@RequestParam int shipmentId){
         try {
             shipmentService.addQcCheck(shipmentId);
             return ResponseEntity.status(HttpStatus.FOUND).header("Location","/shipment/shipmentList").build();
         } catch (Exception e){
-            e.printStackTrace();
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }

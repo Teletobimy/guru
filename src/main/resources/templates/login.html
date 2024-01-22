@@ -71,7 +71,7 @@
                             </div>
                             <hr/>
                             <div class="input-group">
-                                <input type="text" name="username" class="form-control" placeholder="Your Name">
+                                <input type="text" name="username" class="form-control login-input" placeholder="Your Name">
                                 <span class="md-line"></span>
                             </div>
                             <div class="input-group">
@@ -134,7 +134,7 @@
     $(document).ready(function(){
         $(".login-input").on('keyup',function(e){
             if(e.key === 'Enter'){
-               $('#login-form').submit();
+               $('.login-btn').click();
             }
         })
 

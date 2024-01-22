@@ -17,7 +17,7 @@ public class QcCheckApiController {
     private final QcCheckService qcCheckService;
     private final ShipmentService shipmentService;
     @PutMapping("/updateQcCheckCnt")
-    @PreAuthorize("hasAnyRole('ADMIN','C')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
     public ResponseEntity<String> updatepurchase(@RequestParam int qcCheckId, @RequestParam int qcCheckCnt){
         try {
             qcCheckService.updateAllStatus(qcCheckId,qcCheckCnt);
@@ -34,13 +34,13 @@ public class QcCheckApiController {
     }
 
     @PostMapping("/fromQcCheckToShipment")
-    @PreAuthorize("hasAnyRole('ADMIN','C')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
     public ResponseEntity<String> addShipment(@RequestParam int cnt, @RequestBody QcCheckRequest shipment){
         qcCheckService.addShipment(shipment,cnt);
         return ResponseEntity.ok("Seccessful insert shipment! : " + shipment);
     }
     @PutMapping("/updateReturnStatus")
-    @PreAuthorize("hasAnyRole('ADMIN','C')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
     public ResponseEntity<String> updateReturnStatus(@RequestParam int qcCheckId,@RequestParam int qcCheckCnt){
         try {
             qcCheckService.updateReturnStatus(qcCheckId,qcCheckCnt);

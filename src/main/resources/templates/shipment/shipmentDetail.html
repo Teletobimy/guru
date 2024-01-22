@@ -241,11 +241,12 @@
                             <div id="styleSelector">
 
                             </div>
+                            <!-- modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">확인!</h5>
+                                            <h5 class="modal-title">출하 명세서</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -315,19 +316,18 @@
         var shipmentId = $("input[name=shipmentId]").val();
         var modal = document.getElementById("modalP");
 
-        console.log(shipmentId);
         $.ajax({
             type:'POST',
             url:'/shipment/addQcCheck?shipmentId=' + shipmentId,
             success:function(res){
                 console.log("응답 : " + res);
-                modal.innerText ="완료";
+                modal.innerText ="자재 검수 처리를 시작합니다.";
 
             },
             error: function(xhr, status, error){
                 if(xhr.status === 403){
                     var message = xhr.responseText;
-                    modal.innerText =message;
+                    modal.innerText = message;
 
                 } else{
                     console.error("Error: " , status, error);

@@ -1,7 +1,7 @@
 package com.ezen.guru.service.admin.impl;
 
-import com.ezen.guru.domain.Role;
 import com.ezen.guru.domain.User;
+import com.ezen.guru.dto.UserInfoDTO;
 import com.ezen.guru.repository.UserRepository;
 import com.ezen.guru.repository.UserSpecification;
 import com.ezen.guru.service.admin.AdminService;
@@ -32,6 +32,11 @@ public class AdminServiceImpl implements AdminService {
     public void updateAll(Long userId, String roles) {
         userRepository.updateRoles(userId,roles);
         userRepository.updatePart(userId, roles);
+    }
+
+    @Override
+    public void updateUserInfo(UserInfoDTO infoDTO, Long userId) {
+        userRepository.updateInfo(infoDTO,userId);
     }
 
     @Override

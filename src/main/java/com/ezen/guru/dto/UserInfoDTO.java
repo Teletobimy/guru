@@ -5,11 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class JoinDTO {
-    private final String userName;
+public class UserInfoDTO {
     private final String name;
-    private final String password;
     private final String email;
-    private final String part;
     private final String phone;
 }
