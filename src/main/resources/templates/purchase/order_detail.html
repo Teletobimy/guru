@@ -367,7 +367,13 @@
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
                 $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
-                location.reload();
+                Swal.fire({
+                  title: "발주 완료",
+                  text: "",
+                  icon: "success",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.reload();}, 1500);
             },
             error: function (xhr, status, error){
                 if(xhr.status === 403){
@@ -379,6 +385,17 @@
                       icon: "error",
                       showConfirmButton: false
                     });
+                    setTimeout (function() {location.reload();}, 1500);
+                } else if(xhr.status === 400){
+                    $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    Swal.fire({
+                      title: "Warning",
+                      text: errorResponse.message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+                    setTimeout (function() {location.reload();}, 1500);
                 } else{
                     console.error("Error: " , status, error);
                 }
@@ -406,8 +423,28 @@
                 success: function (response) {
                     console.log(response); // 성공적으로 응답을 받았을 때
                 },
-                error: function (error) {
-                    console.error(error);
+                error: function (xhr, status, error) {
+                   if(xhr.status === 403){
+                        $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
+                        var message = xhr.responseText;
+                        Swal.fire({
+                          title: "Warning",
+                          text: message,
+                          icon: "error",
+                          showConfirmButton: false
+                        });
+                   } else if(xhr.status === 400) {
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        Swal.fire({
+                          title: "Warning",
+                          text: errorResponse.message,
+                          icon: "error",
+                          showConfirmButton: false
+                        });
+                        setTimeout (function() {location.reload();}, 1500);
+                   } else{
+                        console.error("Error: " , status, error);
+                   }
                 }
             });
 

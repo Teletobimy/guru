@@ -31,13 +31,32 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
+        .input-box{
+         width:100%;
+         display:flex;
+         justify-content:end;
+         padding:5px;
+         box-sizing:border-box;
+         margin :15px auto;
+         margin-top:0;
+         align-items:center;
+        }
         .d-inline {
             display: flex;
             align-items: center;
         }
-        .searched {
-            margin-top: 20px!important;
+        input{
+            padding:5px 10px;
+        }
+        .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+            padding-right: 5px;
         }
         .btn-card {
             text-transform: uppercase;
@@ -195,15 +214,8 @@
                                             </div>
                                             <!-- Modal End -->
 
-                                            <div class="pcoded-search">
-                                                <span class="searchbar-toggle searched">  </span>
-                                                <div class="pcoded-search-box ">
-                                                    <input type="text" placeholder="Search" id="searchInput">
-                                                    <p class="search-icon" th:attr="onclick='performSearch()'">
-                                                    <i class="ti-search" aria-hidden="true"></i></p>
-                                                </div>
-                                            </div>
                                         </div>
+
                                         <div class="card-header-right">
                                             <ul class="list-unstyled card-option">
                                                 <li><i class="icofont icofont-simple-left "></i></li>
@@ -214,117 +226,130 @@
                                             </ul>
                                         </div>
                                     </div>
+
                                     <div class="tab-content tabs card-block">
                                         <div class="col-lg-12">
+                                            <div class="tab-pane active" id="home1" role="tabpanel">
+                                                <div class="pcoded-search-box input-box" >
+                                                    <div class="search-long">
+                                                        <input type="text" placeholder="search" id="searchInput" style="border:none;">
+                                                        <p class="search-icon" th:attr="onclick='performSearch()'"
+                                                           style="display:inline; margin:0;">
+                                                            <i class="ti-search" aria-hidden="true"></i>
+                                                        </p>
+                                                    </div>
+                                                </div>
 
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>회사명</th>
-                                                            <th>사업자번호</th>
-                                                            <th>대표자</th>
-                                                            <th>전화번호</th>
-                                                            <th>이메일</th>
-                                                            <th>주소</th>
-                                                            <th></th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:each="item,stat : ${list}">
-                                                            <th scope="row" th:text="${stat.count}"></th>
-                                                            <td th:text="${item.companyName}"></td>
-                                                            <td th:text="${item.companyId}"></td>
-                                                            <td th:text="${item.ceo}"></td>
-                                                            <td th:text="${item.tel}"></td>
-                                                            <td th:text="${item.email}"></td>
-                                                            <td th:text="${item.address}"></td>
-                                                            <td>
-                                                                <button class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#modifyModal'+ item.companyId}">수정</button>
-                                                                <button type="button" class="btn btn-card btn-primary" th:onclick="deleteCompany(this)" th:attr="data-company-id=${item.companyId}">삭제</button>
-                                                            </td>
 
-                                                            <!-- Modal -->
-                                                            <th class="modal fade" th:attr="id=${'modifyModal'+ item.companyId}"  tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="modifyModalLabel">협력사 정보 수정</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true" style="font-size:30px;">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <form>
-                                                                                <div class="form-group">
-                                                                                    <table class="table update-table">
-                                                                                        <tr>
-                                                                                            <th scope="row">사업자 번호 :</th>
-                                                                                            <td><input type="text" name="updateId" th:value="${item.companyId}" th:disabled="true"></td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <th scope="row">회사명 :</th>
-                                                                                            <td><input type="text" name="updateName" th:value="${item.companyName}"></td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <th scope="row">대표자명 :</th>
-                                                                                            <td><input type="text" name="updateCeo"  th:value="${item.ceo}"></td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <th scope="row">전화번호 :</th>
-                                                                                            <td><input type="text" name="updateTel" th:value="${item.tel}"></td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <th scope="row">e-mail :</th>
-                                                                                            <td><input type="text" name="updateEmail" th:value="${item.email}"></td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <th scope="row">주소 :</th>
-                                                                                            <td><input type="text" name="updateAddress" th:value="${item.address}"></td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <input type="hidden" class="updateId" th:value="${item.companyId}">
-                                                                            <button type="button" class="btn btn-primary modify-btn">수정</button>
-                                                                            <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
+                                                <div class="card-block table-border-style">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>No.</th>
+                                                                <th>회사명</th>
+                                                                <th>사업자번호</th>
+                                                                <th>대표자</th>
+                                                                <th>전화번호</th>
+                                                                <th>이메일</th>
+                                                                <th>주소</th>
+                                                                <th></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="item,stat : ${list}">
+                                                                <th scope="row" th:text="${stat.count}"></th>
+                                                                <td th:text="${item.companyName}"></td>
+                                                                <td th:text="${item.companyId}"></td>
+                                                                <td th:text="${item.ceo}"></td>
+                                                                <td th:text="${item.tel}"></td>
+                                                                <td th:text="${item.email}"></td>
+                                                                <td th:text="${item.address}"></td>
+                                                                <td>
+                                                                    <button class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#modifyModal'+ item.companyId}">수정</button>
+                                                                    <button type="button" class="btn btn-card btn-primary" th:onclick="deleteCompany(this)" th:attr="data-company-id=${item.companyId}">삭제</button>
+                                                                </td>
+
+                                                                <!-- Modal -->
+                                                                <th class="modal fade" th:attr="id=${'modifyModal'+ item.companyId}"  tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="modifyModalLabel">협력사 정보 수정</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form>
+                                                                                    <div class="form-group">
+                                                                                        <table class="table update-table">
+                                                                                            <tr>
+                                                                                                <th scope="row">사업자 번호 :</th>
+                                                                                                <td><input type="text" name="updateId" th:value="${item.companyId}" th:disabled="true"></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th scope="row">회사명 :</th>
+                                                                                                <td><input type="text" name="updateName" th:value="${item.companyName}"></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th scope="row">대표자명 :</th>
+                                                                                                <td><input type="text" name="updateCeo"  th:value="${item.ceo}"></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th scope="row">전화번호 :</th>
+                                                                                                <td><input type="text" name="updateTel" th:value="${item.tel}"></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th scope="row">e-mail :</th>
+                                                                                                <td><input type="text" name="updateEmail" th:value="${item.email}"></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th scope="row">주소 :</th>
+                                                                                                <td><input type="text" name="updateAddress" th:value="${item.address}"></td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <input type="hidden" class="updateId" th:value="${item.companyId}">
+                                                                                <button type="button" class="btn btn-primary modify-btn">수정</button>
+                                                                                <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            </th>
-                                                            <!-- Modal End -->
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
+                                                                </th>
+                                                                <!-- Modal End -->
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
 
+                                                    </div>
                                                 </div>
+
+                                                <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                                                    <ul class="pagination" style="justify-content: end;">
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="#" aria-label="Previous">
+                                                                <span aria-hidden="true">&laquo;</span>
+                                                            </a>
+                                                        </li>
+                                                        <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
+                                                            <a class="page-link pageA"
+                                                               th:classappend="${pageNumber == (list.number + 1) ? 'btn-success' : ''}"
+                                                               th:href="@{'/purchase/company_list?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                               th:text="${pageNumber}"></a>
+                                                        </li>
+
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="#" aria-label="Next">
+                                                                <span aria-hidden="true">&raquo;</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
                                             </div>
-
-                                            <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
-                                                <ul class="pagination" style="justify-content: end;">
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="#" aria-label="Previous">
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                        </a>
-                                                    </li>
-                                                    <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
-                                                        <a class="page-link pageA"
-                                                           th:classappend="${pageNumber == (list.number + 1) ? 'btn-success' : ''}"
-                                                           th:href="@{'/purchase/company_list?page=' + ${pageNumber - 1} + '&size=10'}"
-                                                           th:text="${pageNumber}"></a>
-                                                    </li>
-
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="#" aria-label="Next">
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
 
                                         </div>
                                     </div>
@@ -355,7 +380,6 @@
 <![endif]-->
 <!-- Warning Section Ends -->
 <!-- Required Jquery -->
-<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -367,8 +391,6 @@
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
-<!-- classie js -->
-<script type="text/javascript" src="assets/js/classie/classie.js"></script>
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
@@ -405,6 +427,40 @@
             performSearch();
         }
     });
+    $(document).ready(function(){
+            $('input[name="daterange"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().endOf('hour'),
+            locale: {
+                format: 'YYYY-MM-DD HH:mm:ss'
+            }
+       })
+       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
+            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
+            var urlParams = new URLSearchParams(window.location.search);
+            var category = urlParams.get('processStatus');
+            var page = urlParams.get('page');
+            var size = urlParams.get('size');
+            var search = $('#searchInput').val();
+            if(category === null){
+                category = -1;
+            }
+            var newUrl =  "/purchase/company_list?page=" + page +
+                            "&size=" + size +
+                            "&category=" + category +
+                            "&keyword=" + encodeURIComponent(search) +
+                            "&startDate=" + startDate +
+                            "&endDate=" + endDate;
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+          window.location.href = newUrl;
+          });
+
+          $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+              $(this).val('');
+          });
+        })
     function insertCompany() {
         var companyId = $('input[name=companyId]').val();
         var companyName =$('input[name=companyName]').val();
@@ -423,31 +479,6 @@
         }
         console.log(addCompany);
 
-        if (!companyId) {
-        alert('사업자번호를 다시 입력해주세요.');
-        return; // 더 이상 진행하지 않도록 반환
-        }
-        if (!companyName) {
-            alert('회사명을 다시 입력해주세요.');
-            return;
-        }
-        if (!companyCeo) {
-            alert('대표자명을 다시 입력해주세요.');
-            return;
-        }
-        if (!companyTel) {
-            alert('전화번호를 다시 입력해주세요.');
-            return;
-        }
-        if (!companyEmail) {
-            alert('이메일을 다시 입력해주세요.');
-            return;
-        }
-        if (!companyAddress) {
-            alert('주소를 다시 입력해주세요.');
-            return;
-        }
-
         $.ajax({
             type: "POST",
             contentType: "application/json;",
@@ -463,8 +494,29 @@
                 });
                 setTimeout (function() {location.reload();}, 1500);
             },
-            error: function (error) {
-                console.error(error);
+            error: function (xhr, status, error) {
+               if(xhr.status === 403){
+                    $('#exampleModal').modal('hide'); // 모달 닫기
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+               } else if(xhr.status === 400) {
+                    $('#exampleModal').modal('hide'); // 모달 닫기
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    Swal.fire({
+                      title: "Warning",
+                      text: errorResponse.message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+                    setTimeout (function() {location.reload();}, 5000);
+               } else{
+                    console.error("Error: " , status, error);
+               }
             }
         });
     }
@@ -501,8 +553,29 @@
                 });
                 setTimeout (function() {location.reload();}, 1500);
             },
-            error: function (error) {
-                console.error(error);
+            error: function (xhr, status, error) {
+               if(xhr.status === 403){
+                    $('#exampleModal' + updateId).modal('hide'); // 모달 닫기
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+               } else if(xhr.status === 400) {
+                    $('#exampleModal' + updateId).modal('hide'); // 모달 닫기
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    Swal.fire({
+                      title: "Warning",
+                      text: errorResponse.message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+                    setTimeout (function() {location.reload();}, 5000);
+               } else{
+                    console.error("Error: " , status, error);
+               }
             }
         });
     })
@@ -525,8 +598,27 @@
                 });
                 setTimeout (function() {location.reload();}, 1500);
             },
-            error: function (error) {
-                console.error(error);
+            error: function (xhr, status, error) {
+               if(xhr.status === 403){
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+               } else if(xhr.status === 400) {
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    Swal.fire({
+                      title: "Warning",
+                      text: errorResponse.message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+                    setTimeout (function() {location.reload();}, 1500);
+               } else{
+                    console.error("Error: " , status, error);
+               }
             }
         });
     }

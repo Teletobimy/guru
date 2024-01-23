@@ -26,4 +26,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer>,Compa
     @Query("DELETE FROM Company " +
             "WHERE companyId = :companyId")
     public void remove(@Param("companyId") String companyId);
+
+    boolean existsByCompanyId(String companyId);
 }

@@ -27,6 +27,7 @@ public class OrderApiController {
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PutMapping("/order/{id}/update-status")
     public ResponseEntity<String> updateOrderStatus(@PathVariable String id) {
         orderService.updateOrderStatus(id);
@@ -44,6 +45,7 @@ public class OrderApiController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PutMapping("/company/{companyId}/update")
     public ResponseEntity<String> updateCompany(@PathVariable String companyId, @Valid @RequestBody UpdateCompanyRequest company) {
         companyService.updateCompany(companyId, company);

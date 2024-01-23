@@ -1,6 +1,7 @@
 package com.ezen.guru.dto.purchase;
 
 import com.ezen.guru.domain.Company;
+import com.ezen.guru.dto.purchase.validation.Unique;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddCompanyRequest {
 
+    @Unique
     @NotBlank(message = "사업자번호를 입력해주세요.")
     String companyId;
 
