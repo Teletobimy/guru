@@ -383,9 +383,9 @@
                       title: "Warning",
                       text: message,
                       icon: "error",
-                      showConfirmButton: false
+                      showConfirmButton: false,
+                      timer: 1500
                     });
-                    setTimeout (function() {location.reload();}, 1500);
                 } else if(xhr.status === 400){
                     $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
                     var errorResponse = JSON.parse(xhr.responseText);
@@ -406,7 +406,7 @@
     //디테일 체크 0으로 바꾸는 함수(발주취소)
     function revertOrder(id) {
         Swal.fire({
-          title: "정말 취소하시겠습니까?",
+          title: "취소하시겠습니까?",
           text: "",
           icon: "warning",
           showCancelButton: true,
@@ -431,7 +431,8 @@
                           title: "Warning",
                           text: message,
                           icon: "error",
-                          showConfirmButton: false
+                          showConfirmButton: false,
+                          timer: 1500
                         });
                    } else if(xhr.status === 400) {
                         var errorResponse = JSON.parse(xhr.responseText);
@@ -575,9 +576,30 @@
                 });
                 setTimeout (function() {location.replace('/purchase/order');}, 1500);
             },
-            error: function (error) {
-                console.error(error);
-            }
+            error: function (xhr, status, error) {
+                   if(xhr.status === 403){
+                        $('#closeModal' + id).modal('hide'); // 모달 닫기
+                        var message = xhr.responseText;
+                        Swal.fire({
+                          title: "Warning",
+                          text: message,
+                          icon: "error",
+                          showConfirmButton: false,
+                          timer: 1500
+                        });
+                   } else if(xhr.status === 400) {
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        Swal.fire({
+                          title: "Warning",
+                          text: errorResponse.message,
+                          icon: "error",
+                          showConfirmButton: false
+                        });
+                        setTimeout (function() {location.reload();}, 1500);
+                   } else{
+                        console.error("Error: " , status, error);
+                   }
+                }
         });
     }
 </script>

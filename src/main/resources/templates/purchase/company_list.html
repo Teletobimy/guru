@@ -420,7 +420,7 @@
 
         console.log(encodedSearchValue);
 
-        window.location.href = '/purchase/company_list?size=10&page=0&keyword=' + encodedSearchValue;
+        //window.location.href = '/purchase/company_list?size=10&page=0&keyword=' + encodedSearchValue;
     }
      document.getElementById('searchInput').addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
@@ -502,7 +502,8 @@
                       title: "Warning",
                       text: message,
                       icon: "error",
-                      showConfirmButton: false
+                      showConfirmButton: false,
+                      timer: 1500
                     });
                } else if(xhr.status === 400) {
                     $('#exampleModal').modal('hide'); // 모달 닫기
@@ -511,9 +512,9 @@
                       title: "Warning",
                       text: errorResponse.message,
                       icon: "error",
-                      showConfirmButton: false
+                      showConfirmButton: false,
+                      timer: 1500
                     });
-                    setTimeout (function() {location.reload();}, 5000);
                } else{
                     console.error("Error: " , status, error);
                }
@@ -555,16 +556,17 @@
             },
             error: function (xhr, status, error) {
                if(xhr.status === 403){
-                    $('#exampleModal' + updateId).modal('hide'); // 모달 닫기
+                    $('#modifyModal' + updateId).modal('hide'); // 모달 닫기
                     var message = xhr.responseText;
                     Swal.fire({
                       title: "Warning",
                       text: message,
                       icon: "error",
-                      showConfirmButton: false
+                      showConfirmButton: false,
+                      timer: 1500
                     });
                } else if(xhr.status === 400) {
-                    $('#exampleModal' + updateId).modal('hide'); // 모달 닫기
+                    $('#modifyModal' + updateId).modal('hide'); // 모달 닫기
                     var errorResponse = JSON.parse(xhr.responseText);
                     Swal.fire({
                       title: "Warning",
@@ -572,7 +574,7 @@
                       icon: "error",
                       showConfirmButton: false
                     });
-                    setTimeout (function() {location.reload();}, 5000);
+                    setTimeout (function() {location.reload();}, 1500);
                } else{
                     console.error("Error: " , status, error);
                }

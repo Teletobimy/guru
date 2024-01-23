@@ -38,7 +38,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         BooleanBuilder whereCondition = new BooleanBuilder();
 
         if(keyword != null && !keyword.isEmpty()){
-            whereCondition.and(qOrderDetail.materialName.like("%" + keyword + "%"));
+            whereCondition.and(qOrder.id.like("%" + keyword + "%"));
         }
         if(category != -1){
             whereCondition.and(qOrder.status.eq(category));
