@@ -31,6 +31,8 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <style>
         .shadowTable{
             box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
@@ -77,7 +79,7 @@
             cursor: pointer;
             transition: all ease-in 0.3s;
         }
-        h2{
+        .h2{
             text-align:center;
             color:black;
             font-weight:bold;
@@ -144,7 +146,7 @@
                                                 <tbody>
                                                 <tr>
                                                     <td colspan="2">
-                                                    <h2 >출하 명세서</h2>
+                                                    <h2 class="h2">출하 명세서</h2>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -222,9 +224,7 @@
                                             <input type="hidden" name="shipmentId" th:value="${shipment.shipmentId}">
                                             <button class="btn btn-warning"
                                                     th:style="${qcCheck == null ? '' : 'display:none'}"
-                                                    onclick="addQcCheck()"
-                                                    data-toggle="modal"
-                                                    data-target="#exampleModal">
+                                                    onclick="addQcCheck()">
                                                 검수
                                             </button>
                                             <button class="btn btn-disabled-y "
@@ -242,24 +242,7 @@
 
                             </div>
                             <!-- modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">출하 명세서</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p id="modalP">Modal body text goes here.</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -296,46 +279,7 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script>
-    var $window = $(window);
-    var nav = $('.fixed-button');
-        $window.scroll(function(){
-            if ($window.scrollTop() >= 200) {
-             nav.addClass('active');
-         }
-         else {
-             nav.removeClass('active');
-         }
-     });
-    function gotoList(){
-        var newUrl = '/shipment/shipmentList?size=10&page=0&category=-1'
-        window.location.href= newUrl;
-    }
-
-    function addQcCheck(){
-        var shipmentId = $("input[name=shipmentId]").val();
-        var modal = document.getElementById("modalP");
-
-        $.ajax({
-            type:'POST',
-            url:'/shipment/addQcCheck?shipmentId=' + shipmentId,
-            success:function(res){
-                console.log("응답 : " + res);
-                modal.innerText ="자재 검수 처리를 시작합니다.";
-
-            },
-            error: function(xhr, status, error){
-                if(xhr.status === 403){
-                    var message = xhr.responseText;
-                    modal.innerText = message;
-
-                } else{
-                    console.error("Error: " , status, error);
-                }
-            }
-        })
-    }
-</script>
+<script src="/js/receive/shipmentDetail.js"></script>
 </body>
 
 </html>
