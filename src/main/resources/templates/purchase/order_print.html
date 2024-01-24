@@ -62,6 +62,12 @@
             text-align: center;
             padding: 10px;
         }
+        #print-area {
+            box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -webkit-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -moz-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            padding: 40px;
+        }
     </style>
 </head>
 <body>
@@ -133,7 +139,8 @@
                                                             <tbody>
                                                             <tr>
                                                                 <th colspan="2">주문번호</th>
-                                                                <td colspan="2" th:text="${firstItem.id}"></td>
+                                                                <td colspan="2" th:text="${firstItem.id}">
+                                                                </td>
                                                                 <th colspan="2">회사명</th>
                                                                 <td colspan="2" th:text="${firstItem.companyName}"></td>
                                                             </tr>
@@ -253,17 +260,9 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    var initBodyHtml;
-
     function printPage() {
-        // 인쇄 전에 현재의 HTML을 저장
-        initBodyHtml = document.body.innerHTML;
-        // 인쇄 시 인쇄 영역으로 HTML을 변경
         document.body.innerHTML = document.getElementById('print-area').innerHTML;
-        // 실제 인쇄 명령 실행
         window.print();
-        // 인쇄 후에 HTML을 복원
-        document.body.innerHTML = initBodyHtml;
         location.reload();
     }
 </script>
