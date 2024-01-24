@@ -9,7 +9,7 @@ var $window = $(window);
          }
      });
       function gotoDetail(purchaseOderId){
-            var newUrl = '/tradeDatail?purchaseOderId=' + purchaseOderId;
+            var newUrl = '/tradeDetail?purchaseOrderId=' + purchaseOderId;
 
             window.location.href = newUrl;
         }

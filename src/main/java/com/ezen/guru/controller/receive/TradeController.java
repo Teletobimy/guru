@@ -2,6 +2,7 @@ package com.ezen.guru.controller.receive;
 
 import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.receive.TradeDTO;
+import com.ezen.guru.dto.receive.TradeDetailDTO;
 import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.receive.TradeService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,5 +61,30 @@ public class TradeController {
         model.addAttribute("nextPage",nextPage);
         model.addAttribute("user",user);
         return "/shipment/tradeList";
+    }
+
+    @GetMapping("/tradeDetail")
+    public String tradeDetailList(Model model,
+                                  HttpServletRequest request,
+                                  @RequestParam("purchaseOrderId") String purchaseOrderId) {
+        List<TradeDetailDTO> tradeDetail = tradeService.tradeDetailList(purchaseOrderId);
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+
+        model.addAttribute("list", tradeDetail);
+        model.addAttribute("user",user);
+        
+        return "/shipment/tradeDetail";
     }
 }

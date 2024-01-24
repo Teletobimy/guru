@@ -2,6 +2,8 @@ package com.ezen.guru.service.receive.impl;
 
 import com.ezen.guru.domain.PurchaseOrder;
 import com.ezen.guru.dto.receive.TradeDTO;
+import com.ezen.guru.dto.receive.TradeDetailDTO;
+import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.purchase.OrderRepository;
 import com.ezen.guru.repository.purchase.OrderSpecification;
 import com.ezen.guru.service.receive.TradeService;
@@ -12,11 +14,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TradeServiceImpl implements TradeService {
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
     @Override
     public Page<TradeDTO> tradeList(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate) {
@@ -33,5 +37,10 @@ public class TradeServiceImpl implements TradeService {
                 purchaseOrder.getTotalprice(),
                 purchaseOrder.getRegdate()
         ));
+    }
+
+    @Override
+    public List<TradeDetailDTO> tradeDetailList(String purchaseOrderId) {
+        return orderDetailRepository.tradeDetailList(purchaseOrderId);
     }
 }
