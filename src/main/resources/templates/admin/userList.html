@@ -200,8 +200,12 @@
                                                     <nav id="pagination-container" aria-label="Page navigation example"
                                                          style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                            <li class="page-item"
+                                                                th:classappend="${prevPage ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   th:if="${prevPage}"
+                                                                   th:href="@{'/amin/userList?page=' + ${nowPage - 2} + '&size=10'}"
+                                                                   aria-label="Previous">
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
@@ -209,12 +213,16 @@
                                                                 th:each="pageNumber:${#numbers.sequence(startPage,endPage)}">
                                                                 <a class="page-link pageA"
                                                                    th:classappend="${pageNumber == nowPage ? 'btn-primary' : ''}"
-                                                                   th:href="@{'/qcCheck/qcCheckList?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                                   th:href="@{'/amin/userList?page=' + ${pageNumber - 1} + '&size=10'}"
                                                                    th:text="${pageNumber}"></a>
                                                             </li>
 
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Next">
+                                                            <li class="page-item"
+                                                                th:classappend="${nextPage ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   th:if="${nextPage}"
+                                                                   th:href="@{'/amin/userList?page=' + ${nowPage} + '&size=10'}"
+                                                                   aria-label="Next">
                                                                     <span aria-hidden="true">&raquo;</span>
                                                                 </a>
                                                             </li>
@@ -278,51 +286,7 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script>
-    var $window = $(window);
-    var nav = $('.fixed-button');
-        $window.scroll(function(){
-            if ($window.scrollTop() >= 200) {
-             nav.addClass('active');
-         }
-         else {
-             nav.removeClass('active');
-         }
-     });
-     function updateLocation(category) {
-        var newUrl = "/admin/userList?size=10&page=0&part=" + category;
-
-        window.location.href = newUrl;
-    }
-    $('.modifyB').on('click',function(){
-        var parent = $(this).closest('tr');
-
-        var userId = parent.find("input[name='userId']").val();
-        var roles = parent.find("select[name='roles'] option:selected").val();
-        console.log(roles)
-        $.ajax({
-            url: "/admin/updateRoles?userId=" + userId + "&roles=" + roles,
-            type : "PUT",
-            contentType:'application/json',
-            success:function(response){
-                window.location.href="/admin/userList";
-            }
-        })
-    })
-    $('.deleteB').on('click',function(){
-        var parent = $(this).closest('tr');
-
-        var userId = parent.find("input[name='userId']").val();
-        $.ajax({
-            url: "/admin/deleteUser?userId=" + userId,
-            type : "DELETE",
-            contentType:'application/json',
-            success:function(response){
-                window.location.href="/admin/userList";
-            }
-        })
-    })
-</script>
+<script src="/js/receive/userList.js"></script>
 </body>
 
 </html>

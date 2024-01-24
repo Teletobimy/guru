@@ -48,6 +48,8 @@ public class AdminViewController {
         int nowPage = userPage.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage+9, userPage.getTotalPages());
+        boolean prevPage = nowPage > 1;
+        boolean nextPage = nowPage < userPage.getTotalPages();
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -69,6 +71,9 @@ public class AdminViewController {
         model.addAttribute("nowPage",nowPage);
         model.addAttribute("startPage",startPage);
         model.addAttribute("endPage",endPage);
+        model.addAttribute("prevPage", prevPage);
+        model.addAttribute("nextPage",nextPage);
+
         return "/admin/userList";
     }
 }
