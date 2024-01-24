@@ -324,20 +324,24 @@
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th scope="row">주소 :</th>
-                                                                                                <td><input type="text" name="updateZipcode" th:value="${item.zipcode}" readonly>
-                                                                                                    <input type="button" class="btn btn-card btn-primary" onclick="upexecDaumPostcode()" value="우편번호 찾기"></td>
+                                                                                                <td><input type="text" name="updateZipcode"
+                                                                                                           th:id="${'updateZipcode-' + item.companyId}"
+                                                                                                           th:value="${item.zipcode}" readonly>
+                                                                                                    <input type="button" class="btn btn-card btn-primary"
+                                                                                                           th:attr="data-company-id=${item.companyId}"
+                                                                                                           th:onclick="upexecDaumPostcode(this)" value="우편번호 찾기"></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th></th>
                                                                                                 <td>
-                                                                                                    <input type="text" name="updateAddress1" readonly
+                                                                                                    <input type="text" name="updateAddress1" class="updateAddress1" readonly
                                                                                                            th:id="${'updateAddress1-' + item.companyId}">
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th></th>
                                                                                                 <td>
-                                                                                                    <input type="text" name="updateAddress2" placeholder="상세주소(생략가능)"
+                                                                                                    <input type="text" name="updateAddress2" class="updateAddress2" placeholder="상세주소(생략가능)"
                                                                                                            th:id="${'updateAddress2-' + item.companyId}">
                                                                                                 </td>
                                                                                             </tr>
@@ -672,7 +676,7 @@
             }
         }).open();
     }
-    function upexecDaumPostcode() {
+    function upexecDaumPostcode(element) {
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -688,12 +692,13 @@
                 } else { // 사용자가 지번 주소를 선택했을 경우(J)
                     addr = data.jibunAddress;
                 }
-
+                var companyId = element.getAttribute('data-company-id');
+                console.log(companyId);
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('updateZipcode').value = data.zonecode;
-                document.getElementById("updateAddress1").value = addr;
+                document.getElementById('updateZipcode-' + companyId).value = data.zonecode;
+                document.getElementById('updateAddress1-' + companyId).value = addr;
                 // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("updateAddress2").focus();
+                document.getElementById('updateAddress2-' + companyId).focus();
             }
         }).open();
     }
