@@ -672,7 +672,7 @@
             }
         }).open();
     }
-    function upexecDaumPostcode(companyId) {
+    function upexecDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -689,16 +689,11 @@
                     addr = data.jibunAddress;
                 }
 
-
-                console.log('#updateAddress1-' + companyId, document.getElementById('updateAddress1-' + companyId));
-                console.log('#updateAddress2-' + companyId, document.getElementById('updateAddress2-' + companyId));
-
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('updateZipcode').value = data.zonecode;
-                document.getElementById("updateAddress1-" + companyId).value = addr;
+                document.getElementById("updateAddress1").value = addr;
                 // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("updateAddress2-" + companyId).focus();
-
+                document.getElementById("updateAddress2").focus();
             }
         }).open();
     }
