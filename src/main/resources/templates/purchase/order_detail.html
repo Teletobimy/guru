@@ -168,10 +168,10 @@
                                                             <input type="hidden" id="data-status" name="data-status" th:value="${firstItem.status}">
                                                             <th th:text="${firstItem.id}"></th>
                                                             <td th:text="${firstItem.companyName}"></td>
-                                                            <td th:text="|${firstItem.materialName} 외..|"></td>
+                                                            <td th:text="${list.size() == 1 ? firstItem.materialName : firstItem.materialName + ' 외 ' + (#lists.size(list) - 1) + '건'}"></td>
                                                             <td th:text="${firstItem.totalprice} + &#8361;"></td>
-                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm:ss', 'Asia/Seoul')}"></td>
-                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm:ss', 'Asia/Seoul')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
                                                             <td th:text="${firstItem.memo}"></td>
                                                         </tr>
                                                     </th:block>

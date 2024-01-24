@@ -30,6 +30,9 @@ public class AddCompanyRequest {
     @Email(message = "올바른 이메일 형식이 아닙니다.")
     String companyEmail;
 
+    @NotBlank(message="우편번호를 입력해주세요.")
+    String companyZipcode;
+
     @NotBlank(message = "주소를 입력해주세요.")
     String companyAddress;
 
@@ -40,6 +43,7 @@ public class AddCompanyRequest {
                 .ceo(companyCeo)
                 .tel(companyTel)
                 .email(companyEmail)
+                .zipcode(companyZipcode)
                 .address(companyAddress)
                 .build();
     }

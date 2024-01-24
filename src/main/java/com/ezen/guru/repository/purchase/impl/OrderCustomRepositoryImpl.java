@@ -55,7 +55,8 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                         qCompany.companyName,
                         Expressions.stringTemplate("MIN({0})", qOrderDetail.materialName),
                         qOrder.totalprice,
-                        qOrder.deadline
+                        qOrder.deadline,
+                        qOrder.purchaseOrderDetails.size()
                 ))
                 .from(qOrder)
                 .leftJoin(qOrderDetail)

@@ -138,30 +138,32 @@
                                                                 <td colspan="2" th:text="${firstItem.companyName}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="2" colspan="2">계약일자</th>
+                                                                <th rowspan="2" colspan="2">계약일</th>
                                                                 <td rowspan="2" colspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                <th rowspan="1" colspan="2">사업자번호</th>
-                                                                <td colspan="2" th:text="${firstItem.companyId}"></td>
+                                                                <th rowspan="2" colspan="2">사업자번호</th>
+                                                                <td colspan="2" rowspan="2" th:text="${firstItem.companyId}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="1" colspan="2">대표자</th>
-                                                                <td colspan="2" th:text="${firstItem.ceo}"></td>
+
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="2" colspan="2">납기일자</th>
+                                                                <th rowspan="2" colspan="2">마감일</th>
                                                                 <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                <th colspan="2" rowspan="2">담당자</th>
+                                                                <th colspan="2" rowspan="2">대표자</th>
                                                                 <th>성명</th>
-                                                                <td>박주영</td>
+                                                                <td th:text="${firstItem.ceo}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th>연락처</th>
-                                                                <td>010-3539-0819</td>
+                                                                <th >연락처</th>
+                                                                <td th:text="${firstItem.ceo}"></td>
                                                             </tr>
-                                                            <!---------------------------------------------------->
                                                             <tr>
-                                                                <th colspan="2">제목</th>
-                                                                <td colspan="6" th:text="|${firstItem.materialName} 외..|"></td>
+                                                                <td colspan="8" style="border-left:none; border-right:none;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="1">제목</th>
+                                                                <td colspan="7"
+                                                                    th:text="${list.size() == 1 ? firstItem.materialName : firstItem.materialName + ' 외 ' + (#lists.size(list) - 1) + '건'}"></td>
                                                             </tr>
                                                             <!---------------------------------------------------->
                                                             <tr>
@@ -179,9 +181,7 @@
                                                                 <td th:text="${item.category}"></td>
                                                                 <td th:text="${item.price}"></td>
                                                                 <td th:text="${item.cnt}"></td>
-                                                                <td colspan="2" th:text="${item.totalprice}">
-                                                                    <button class="btn btn-card btn-primary">발주</button>
-                                                                </td>
+                                                                <td colspan="2" th:text="${item.materialprice}"></td>
                                                             </tr>
                                                             <!---------------------------------------------------->
                                                             <tr>
@@ -189,7 +189,10 @@
                                                                 <td></td>
                                                                 <td></td>
                                                                 <td></td>
-                                                                <td colspan="2"></td>
+                                                                <td colspan="2" th:text="|${firstItem.totalprice}|"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="8" style="border-left:none; border-right:none;"></td>
                                                             </tr>
                                                             <tr>
                                                                 <th colspan="2">특기사항</th>

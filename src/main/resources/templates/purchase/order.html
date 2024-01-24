@@ -201,15 +201,15 @@
                                                             </thead>
                                                             <tbody>
 
-                                                            <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.id}+ ')'" th:each="list : ${list}">
-                                                                <th th:text="${list.id}" class="data-id" th:attr="data-id=${list.id}"></th>
+                                                            <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${order.id}+ ')'" th:each="order : ${list}">
+                                                                <th th:text="${order.id}" class="data-id" th:attr="data-id=${order.id}"></th>
                                                                 <th th:each="code:${code}"
-                                                                    th:if="${code.codeNum eq list.status and category eq -1}"
+                                                                    th:if="${code.codeNum eq order.status and category eq -1}"
                                                                     th:text="${code.codeName}"></th>
-                                                                <td th:text="${list.companyName}"></td>
-                                                                <td th:text="|${list.materialName} 외..|"></td>
-                                                                <td th:text="${list.totalprice} + &#8361;"></td>
-                                                                <td th:text="${#temporals.format(list.deadline, 'yyyy-MM-dd')}"></td>
+                                                                <td th:text="${order.companyName}"></td>
+                                                                <td th:text="${order.purchaseOrderDetails == 1 ? order.materialName : order.materialName + ' 외 ' + (order.purchaseOrderDetails - 1) + '건'}"></td>
+                                                                <td th:text="${order.totalprice} + &#8361;"></td>
+                                                                <td th:text="${#temporals.format(order.deadline, 'yyyy-MM-dd')}"></td>
                                                             </tr>
 
                                                             </tbody>

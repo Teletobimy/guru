@@ -15,6 +15,7 @@ public class CompanyListViewResponse {
     private final String ceo;
     private final String tel;
     private final String email;
+    private final String zipcode;
     private final String address;
 
 //    public CompanyListViewResponse(Company company) {
