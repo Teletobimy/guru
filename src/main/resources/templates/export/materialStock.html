@@ -180,6 +180,7 @@
                                                                 <i class="ti-search" aria-hidden="true"></i>
                                                             </p>
                                                         </div>
+                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
@@ -305,6 +306,42 @@
         window.location.href = '/export/materialStock?size=10&page=0&category='+ category
                                 +'&keyword=' + encodedSearchValue
     }
+
+    $(document).ready(function() {
+
+      $('input[name="daterange"]').daterangepicker({
+  singleDatePicker: true,
+  showDropdowns: true,
+  minDate: '06/01/2013',
+  maxDate: '06/30/2015',
+  format: 'DD/MM/YYYY'
+}).on('hide.daterangepicker', function (ev, picker) {
+  $('.table-condensed tbody tr:nth-child(2) td').click();
+});
+
+       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            var startDate = picker.startDate.format('YYYY-MM');
+            var endDate = picker.endDate.format('YYYY-MM');
+            var urlParams = new URLSearchParams(window.location.search);
+            var category = urlParams.get('category');
+            var keyword = $('#searchInput').val();
+
+            if (!category || category === 'null') {
+                category = -1;
+            }
+
+            var newUrl =  '/export/materialStock?category=' + category +
+                            "&keyword=" + encodeURIComponent(keyword) +
+                            "&startDate=" + startDate +
+                            "&endDate=" + endDate;
+            $(this).val(picker.startDate.format('MM/YYYY') + ' - ' + picker.endDate.format('MM/YYYY'));
+          window.location.href = newUrl;
+      });
+
+      $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+          $(this).val('');
+      });
+    });
 </script>
 </body>
 </html>
