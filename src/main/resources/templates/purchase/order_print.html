@@ -145,24 +145,33 @@
                                                                 <td colspan="2" th:text="${firstItem.companyName}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="2" colspan="2">계약일</th>
-                                                                <td rowspan="2" colspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                <th rowspan="2" colspan="2">사업자번호</th>
-                                                                <td colspan="2" rowspan="2" th:text="${firstItem.companyId}"></td>
+                                                                <th colspan="2">계약일</th>
+                                                                <td colspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                <th colspan="2">사업자번호</th>
+                                                                <td colspan="2" th:text="${firstItem.companyId}"></td>
                                                             </tr>
                                                             <tr>
 
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="2" colspan="2">마감일</th>
-                                                                <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                <th colspan="2" rowspan="1">마감일</th>
+                                                                <td colspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+
                                                                 <th colspan="2" rowspan="2">대표자</th>
-                                                                <th>성명</th>
+                                                                <th rowspan="1">성명</th>
                                                                 <td th:text="${firstItem.ceo}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th >연락처</th>
-                                                                <td th:text="${firstItem.ceo}"></td>
+                                                                <th colspan="2" rowspan="1">공급 L/T</th>
+                                                                <td colspan="2"></td>
+                                                                <th rowspan="1" colspan="">연락처</th>
+                                                                <td th:text="${firstItem.tel}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2">거래조건</th>
+                                                                <td colspan="2"></td>
+                                                                <th colspan="2">대금지불</th>
+                                                                <td colspan="2"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="8" style="border-left:none; border-right:none;"></td>

@@ -16,6 +16,7 @@ public class OrderPrintViewResponse {
     private final String companyName;
     private final String companyId;
     private final String ceo;
+    private final String tel;
     private final String materialName;
     private final int category;
     private final int price;
@@ -31,6 +32,7 @@ public class OrderPrintViewResponse {
         this.companyName = detail.getPurchaseOrder().getCompany().getCompanyName();
         this.companyId = detail.getPurchaseOrder().getCompany().getCompanyId();
         this.ceo = detail.getPurchaseOrder().getCompany().getCeo();
+        this.tel = detail.getPurchaseOrder().getCompany().getTel();
         this.materialName = detail.getMaterialName();
         this.category = detail.getMaterialCategory();
         this.price = detail.getMaterialPrice();
