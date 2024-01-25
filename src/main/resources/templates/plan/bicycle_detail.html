@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .btn-card {
+           text-transform: uppercase;
+           font-size: 13px;
+           padding: 5px 10px;
+           margin: 0px 10px;
+           color: #fff;
+           border-radius: 5px;
+       }
+       table{
+        border-collapse: collapse;
+        border-spacing: 0
+       }
+       th{
+           background-color: #f6f7fb;
+       color: #000;
+       }
+       th, td{
+           border: 1px solid #ccc;
+       padding: 10px;
+       }
+       input{
+           border:none;
+       }
+       .container{
+           display: flex;
+           max-width: 1141px;
+           flex-flow: column;
+           justify-content: center;
+           align-items: center;
+       }
+       .btn-display{
+        display: flex;
+        justify-content: center;
+        margin-bottom:20px;
+       }
+       button{
+           margin:10px;
+       }
+       textarea {
+       border: none;
+       resize: none;
+       width: 100%;
+       }
+       table input {
+       width: 100%;
+       }
+
+    </style>
+</head>
+
+<body>
+<!-- Pre-loader start -->
+
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"></div>
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
+                                            <div style="display:flex; align-items:center;">
+                                                <h4> 자전거품목상세 </h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="page-body">
+
+
+                                <div class="card">
+
+                                    <div class="card-header">
+                                        <div class="container">
+                                        <h1>자전거품목상세</h1>
+
+
+
+                                            <table id="estimateTable" width="90%" >
+                                                <tr>
+
+                                                    <th >품목번호</th>
+                                                    <td colspan="4">
+                                                        <input type="text" id="bicycleId" th:value="${bicycle.bicycleId}">
+                                                    </td>
+
+                                                </tr>
+
+                                            <tr>
+
+                                                <th >품목명</th>
+                                                <td colspan="4">
+                                                    <input type="text" id="bicycleName" th:value="${bicycle.bicycleName}">
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <th  >설명</th>
+                                                <td  colspan="4">
+                                                <textarea  rows="2" cols="30" id="bicycleDescription" th:text="${bicycle.bicycleDescription}"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+
+                                                <th colspan="1">판매가</th>
+                                                <td colspan="4">
+                                                    <input type="text" id="bicyclePrice" th:value="${bicycle.bicyclePrice}">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="1">재고</th>
+                                                <td colspan="4">
+                                                    <input type="text" placeholder="초기 재고를 입력하세요" id="bicycleStock" th:value="${bicycle.bicycleStock}" >
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Recipe.No.</th>
+                                                <th>품목명</th>
+                                                <th>필요수량</th>
+                                                <th>수정</th>
+                                                <th>삭제</th>
+
+
+
+                                            </tr>
+                                            <tr th:each="recipe, itemStat : ${recipes}">
+                                                <th scope="row" th:text="${itemStat.count}"></th>
+
+                                                <td th:text="${recipe.id.material_name}"></td>
+                                                <td><input type="text" th:value="${recipe.recipeCnt}"></td>
+                                                <td style="text-align: center;"
+                                                ><button onclick="modify(this)"
+                                                            class="btn btn-card btn-primary"
+                                                            style="background-color: #FC6180; border-color: #FC6180;">수정</button></td>
+                                                <td style="text-align: center;"
+                                                ><button onclick="deleteRecipe(this)"
+                                                            class="btn btn-card btn-primary"
+                                                            style="background-color: #FC6180; border-color: #FC6180;">삭제</button></td>
+
+
+                                            </tr>
+
+                                            <tbody id="tableBody">
+
+                                            </tbody>
+
+
+                                            <tr>
+                                                <td colspan="5">
+                                                    <button onclick="addRow()"
+                                                            class="btn btn-card btn-primary"
+                                                            style="background-color: #FC6180; border-color: #FC6180;">레시피추가하기</button>
+                                                                                                  </td>
+                                            </tr>
+
+                                        </table>
+
+
+                                    </div>
+                                    </div>
+
+                                    <div class="btn-display">
+                                        <button id="saveButton" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;">수정</button>
+                                        <button class="btn btn-warning"
+                                                th:attr="onclick='gotoList()'"
+                                                style="background-color: #FC6180; border-color: #FC6180;">목록</button>
+                                        <button id="deleteButton" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;">삭제</button>
+                                    </div>
+
+
+
+                                </div>
+
+
+                            </div>
+                            <div id="styleSelector">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+
+    function modify(button){
+      var previousCell = button.parentElement.previousElementSibling.previousElementSibling;
+      var previousCellValue = previousCell.innerText.trim();
+      var previousInput = button.parentElement.previousElementSibling.querySelector('input');
+
+
+        console.log(previousCellValue);
+     if (previousInput) {
+      var previousInputValue = previousInput.value.trim();
+      console.log(previousInputValue);
+    } else {
+      console.error('이전 셀에 input 요소가 없습니다.');
+    }
+
+    var bicycleIdInput = document.getElementById('bicycleId');
+
+    // input 요소가 있다면 해당 값을 가져오기
+    if (bicycleIdInput) {
+      var bicycleIdValue = bicycleIdInput.value.trim();
+      console.log(bicycleIdValue);
+    } else {
+      console.error('bicycleId input 요소를 찾을 수 없습니다.');
+    }
+    // AJAX를 사용하여 서버에 데이터 전송
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+             var response = xhr.responseText;
+                console.log(response);
+                alert(response);
+              location.reload();
+
+            } else {
+                 alert('실패');
+            }
+        }
+    };
+     var formData = new FormData();
+    formData.append('previousCellValue', previousCellValue);
+    formData.append('previousInputValue', previousInputValue);
+    formData.append('bicycleIdValue', bicycleIdValue);
+
+
+   xhr.open('POST', '/plan/recipe_update', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+   xhr.send(formData);
+
+
+
+    }
+
+    //
+
+    function deleteRecipe(button){
+     var previousCell = button.parentElement.previousElementSibling.previousElementSibling.previousElementSibling;
+     var previousCellValue = previousCell.innerText.trim();
+    var bicycleIdInput = document.getElementById('bicycleId');
+    var bicycleIdValue = bicycleIdInput.value.trim();
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+             var response = xhr.responseText;
+               console.log(response);
+                alert(response);
+                 location.reload();
+
+            } else {
+                 alert('실패');
+            }
+        }
+    };
+     var formData = new FormData();
+    formData.append('previousCellValue', previousCellValue);
+    formData.append('bicycleIdValue', bicycleIdValue);
+
+
+   xhr.open('POST', '/plan/recipe_delete', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+   xhr.send(formData);
+
+    }
+
+
+
+  function gotoList(){
+    var url = '/plan/item';
+    window.location.href = url;
+}
+
+
+
+function deleteRow() {
+var table = document.getElementById("tableBody");
+var rowCount = table.rows.length;
+
+if (rowCount > 0) { // 최소한의 행이 유지되도록 설정
+    table.deleteRow(rowCount - 1); // 맨 끝 행 삭제
+}
+}
+
+
+// 품목 추가를 위한 행 추가 기능 시작
+
+   function addRow() {
+    var newWindow = window.open('/plan/item_search', '_blank', 'width=800,height=800');
+    if (newWindow) {
+        newWindow.focus();
+    } else {
+        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+    }
+}
+
+
+function check(materialId) {
+var xhr = new XMLHttpRequest();
+var url = '/plan/material_search/' + materialId; // 실제 컨트롤러 엔드포인트 URL로 변경해주세요
+
+xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+            var materialDTO = JSON.parse(xhr.responseText);
+            console.log(materialDTO); // 가져온 데이터 확인
+
+            var companyId = materialDTO.companyId;
+            var materialCategory = materialDTO.materialCategory;
+            var materialCode = materialDTO.materialCode;
+            var materialDescription = materialDTO.materialDescription;
+            var materialId = materialDTO.materialId;
+            var materialMeasure = materialDTO.materialMeasure;
+            var materialName = materialDTO.materialName;
+            var materialPrice = materialDTO.materialPrice;
+
+
+            recipe_add(materialName);
+
+
+            }else {
+            console.log('Request failed. Status: ' + xhr.status);
+        }
+    }
+}
+ xhr.open('GET', url, true);
+xhr.send();
+}
+
+function recipe_add(materialName){
+var xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+         var response = xhr.responseText;
+               alert(response);
+               location.reload();
+
+
+        }else {
+            alert('Request failed. Status: ' + xhr.status);
+        }
+    }
+}
+    var bicycleIdInput = document.getElementById('bicycleId');
+    var bicycleIdValue = bicycleIdInput.value.trim();
+
+     var formData = new FormData();
+    formData.append('previousCellValue', materialName);
+    formData.append('bicycleIdValue', bicycleIdValue);
+
+
+ xhr.open('POST', '/plan/recipe_add', true);
+xhr.send(formData);
+
+}
+
+
+document.getElementById('saveButton').addEventListener('click', function () {
+    var bicycleId = document.getElementById('bicycleId').value;
+    var bicycleName = document.getElementById('bicycleName').value;
+    var bicycleDescription = document.getElementById("bicycleDescription").value;
+    var bicycleStock = document.getElementById("bicycleStock").value;
+    var bicyclePrice = document.getElementById("bicyclePrice").value;
+    if (bicycleName.length<1){
+    alert("품목명을 입력해 주세요");
+    document.getElementById('bicycleName').focus();
+    return false;
+    }
+    if (bicycleDescription.length<1){
+    alert("품목설명을 입력해 주세요");
+    document.getElementById('bicycleDescription').focus();
+    return false;
+    }
+    if (bicyclePrice.length<1){
+    alert("판매가를 입력해 주세요");
+    document.getElementById('bicyclePrice').focus();
+    return false;
+
+    }
+    if (isNaN(bicyclePrice)) {
+                alert('판매가는 숫자를 입력하세요.');
+               document.getElementById('bicyclePrice').focus();
+                return false;
+            }
+    if (bicycleStock.length<1){
+    alert("재고를 입력해 주세요");
+    document.getElementById('bicycleStock').focus();
+    return false;
+    }
+    if (isNaN(bicycleStock)) {
+                alert('재고는 숫자를 입력하세요.');
+               document.getElementById('bicycleStock').focus();
+                return false;
+            }
+
+
+
+     var Bicycle = {
+        bicycleId: bicycleId,
+        bicycleName: bicycleName,
+        bicycleDescription: bicycleDescription,
+        bicycleStock: bicycleStock,
+        bicyclePrice: bicyclePrice,
+        }
+
+
+    // List를 JSON 형태로 변환
+    var bicycleJSON = JSON.stringify(Bicycle);
+
+    // AJAX를 사용하여 서버에 데이터 전송
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+
+               alert("수정완료");
+
+            } else {
+
+               alert("수정실패");
+            }
+        }
+    };
+
+
+   xhr.open('POST', '/plan/bicycle_save', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   xhr.send(bicycleJSON);
+});
+
+document.getElementById('deleteButton').addEventListener('click', function () {
+var bicycleId = document.getElementById('bicycleId').value;
+    var bicycleIdInput = document.getElementById('bicycleId');
+    var bicycleIdValue = parseInt(bicycleIdInput, 10);
+
+     var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = xhr.responseText;
+               alert(response);
+                window.location.href = '/plan/item';
+            } else {
+                var response = xhr.responseText;
+               alert(response);
+            }
+        }
+    };
+   xhr.open('POST', '/plan/bicycle_delete', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   xhr.send(bicycleId);
+
+});
+
+</script>
+</body>
+</html>

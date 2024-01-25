@@ -3,11 +3,17 @@ package com.ezen.guru.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
+
 @Table(name = "bicycle")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Setter
+@ToString
+
 public class Bicycle {
 
     @Id
@@ -28,15 +34,13 @@ public class Bicycle {
     private int bicyclePrice;
 
     @Builder
-    public Bicycle(int bicycleId,
-                   String bicycleName,
-                   String bicycleDescription,
-                   int bicycleStock,
-                   int bicyclePrice) {
+    public Bicycle(int bicycleId, String bicycleName, String bicycleDescription, int bicycleStock, int bicyclePrice) {
+        Recipe newRecipe = new Recipe();
         this.bicycleId = bicycleId;
         this.bicycleName = bicycleName;
         this.bicycleDescription = bicycleDescription;
         this.bicycleStock = bicycleStock;
         this.bicyclePrice = bicyclePrice;
     }
+
 }

@@ -20,6 +20,9 @@ public class QQuotation extends EntityPathBase<Quotation> {
 
     public static final QQuotation quotation = new QQuotation("quotation");
 
+
+    public final NumberPath<Integer> biddingNo = createNumber("biddingNo", Integer.class);
+
     public final StringPath company_id = createString("company_id");
 
     public final StringPath company_name = createString("company_name");
@@ -27,6 +30,11 @@ public class QQuotation extends EntityPathBase<Quotation> {
     public final DateTimePath<java.time.LocalDateTime> deadline = createDateTime("deadline", java.time.LocalDateTime.class);
 
     public final StringPath id = createString("id");
+
+
+    public final StringPath leadTime = createString("leadTime");
+
+    public final StringPath paymentTerms = createString("paymentTerms");
 
     public final StringPath quotation_memo = createString("quotation_memo");
 
@@ -37,6 +45,10 @@ public class QQuotation extends EntityPathBase<Quotation> {
     public final DateTimePath<java.time.LocalDateTime> regdate = createDateTime("regdate", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
+
+
+    public final StringPath tradeTerms = createString("tradeTerms");
+
 
     public QQuotation(String variable) {
         super(Quotation.class, forVariable(variable));

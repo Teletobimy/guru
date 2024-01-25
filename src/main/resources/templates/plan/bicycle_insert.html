@@ -32,36 +32,53 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
     <style>
-        table{
-         border-collapse: collapse;
-         border-spacing: 0
-        }
-        th{
-            background-color: #f6f7fb;
-    	color: #000;
-        }
-        th, td{
-            border: 1px solid #ccc;
-    	padding: 10px;
-        }
-        input{
-            border:none;
-        }
-        .container{
-            display: flex;
-            max-width: 1141px;
-            flex-flow: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .btn-display{
-         display: flex;
-         justify-content: center;
-         margin-bottom:20px;
-        }
-        button{
-            margin:10px;
-        }
+        .btn-card {
+           text-transform: uppercase;
+           font-size: 13px;
+           padding: 5px 10px;
+           margin: 0px 10px;
+           color: #fff;
+           border-radius: 5px;
+       }
+       table{
+        border-collapse: collapse;
+        border-spacing: 0
+       }
+       th{
+           background-color: #f6f7fb;
+       color: #000;
+       }
+       th, td{
+           border: 1px solid #ccc;
+       padding: 10px;
+       }
+       input{
+           border:none;
+       }
+       .container{
+           display: flex;
+           max-width: 1141px;
+           flex-flow: column;
+           justify-content: center;
+           align-items: center;
+       }
+       .btn-display{
+        display: flex;
+        justify-content: center;
+        margin-bottom:20px;
+       }
+       button{
+           margin:10px;
+       }
+       textarea {
+       border: none;
+       resize: none;
+       width: 100%;
+       }
+       table input {
+       width: 100%;
+       }
+
     </style>
 </head>
 
@@ -86,7 +103,7 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
                                             <div style="display:flex; align-items:center;">
-                                                <h4> 견적서 </h4>
+                                                <h4> 자전거품목생성 </h4>
 
                                             </div>
                                         </div>
@@ -102,62 +119,40 @@
 
                                     <div class="card-header">
                                         <div class="container">
-                                        <h1>견 적 서</h1>
+                                        <h1>자전거품목생성</h1>
 
 
 
                                             <table id="estimateTable" width="90%" >
 
                                             <tr>
-                                                <th colspan="2">견적서번호</th>
-                                                <td colspan="3">
-                                                    <input type="text">
-                                                </td>
-                                                <th colspan="2">회사명<button id="openNewWindowButton">회사검색</button></th>
-                                                <td colspan="3">
-                                                    <input type="text">
+
+                                                <th colspan="2">품목명</th>
+                                                <td colspan="7">
+                                                    <input type="text" placeholder="품목명 입력하세요" id="bicycleName" required>
                                                 </td>
 
                                             </tr>
                                             <tr>
-                                                <th rowspan="2" colspan="2">주소</th>
-                                                <td rowspan="2" colspan="3">
-                                                    <input type="text">
-                                                </td>
-                                                <th rowspan="1" colspan="2">사업자번호</th>
-                                                <td colspan="3">
-                                                    <input type="text">
+                                                <th  colspan="2">설명</th>
+                                                <td  colspan="7">
+                                                <textarea  rows="2" cols="40" placeholder="품목설명을 입력하세요" id="bicycleDescription" required></textarea>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th rowspan="1" colspan="2">대표자</th>
-                                                <td colspan="3">
-                                                    <input type="text">
+
+                                                <th colspan="2">판매가</th>
+                                                <td colspan="7">
+                                                    <input type="text" placeholder="판매가를 입력하세요" id="bicyclePrice" required>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th rowspan="2" colspan="2">참조</th>
-                                                <td colspan="3" rowspan="2">
-                                                    <input type="text" placeholder="참조 입력하세요">
-                                                </td>
-                                                <th colspan="2" rowspan="2">담당자</th>
-                                                <th>성명</th>
-                                                <td colspan="2">
-                                                    강현규
+                                                <th colspan="2">재고</th>
+                                                <td colspan="7">
+                                                    <input type="text" placeholder="초기 재고를 입력하세요" id="bicycleStock" required >
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <th >연락처</th>
-                                                <td colspan="2">
-                                                    031-548-4664
-                                                </td>
-                                            </tr>
-                                            <!--
-                                            <tr>
-                                                <th colspan="2">제목</th>
-                                                <td colspan="6"></td>
-                                            </tr>
-                                            -->
+
                                             <tr>
                                                 <th>No</th>
                                                 <th>PID</th>
@@ -178,8 +173,12 @@
 
                                             <tr>
                                                 <td colspan="10">
-                                                    <button onclick="addRow()">품목추가하기</button>
-                                                    <button onclick="deleteRow()">품목삭제하기</button>
+                                                    <button onclick="addRow()"
+                                                            class="btn btn-card btn-primary"
+                                                            style="background-color: #FC6180; border-color: #FC6180;">레시피추가하기</button>
+                                                    <button onclick="deleteRow()"
+                                                            class="btn btn-card btn-primary"
+                                                            style="background-color: #FC6180; border-color: #FC6180;">삭제하기</button>
                                                 </td>
                                             </tr>
 
@@ -187,20 +186,12 @@
 
                                             <!---------------------------------------------------->
                                             <tr>
-                                                <th colspan="3">합계(VAT 포함)</th>
+                                                <th colspan="3">원가 집계 (VAT 포함)</th>
 
                                                 <td colspan="7" class="total"></td>
 
                                             </tr>
-                                            <tr>
-                                                <th colspan="2">특기사항</th>
-                                                <td colspan="8">
-                                                    <ol>
-                                                        <li>납기 일자 : <input type="text" ></li>
-                                                        <li>기    타 : <input type="text" ></li>
-                                                    </ol>
-                                                </td>
-                                            </tr>
+
 
                                         </table>
 
@@ -213,7 +204,6 @@
                                         <button class="btn btn-warning"
                                                 th:attr="onclick='gotoList()'"
                                                 style="background-color: #FC6180; border-color: #FC6180;">목록</button>
-                                        <input type="reset" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
                                     </div>
 
 
@@ -265,25 +255,10 @@
 
 
   function gotoList(){
-    var url = '/plan/document';
+    var url = '/plan/item';
     window.location.href = url;
 }
 
-
-// 회사정보를 찾기 위한 새창열기 기능 시작
-
- document.getElementById('openNewWindowButton').addEventListener('click', function() {
-    var newWindow = window.open('/plan/company_search', '_blank', 'width=1000,height=800');
-    if (newWindow) {
-        newWindow.focus();
-    } else {
-        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
-    }
-});
-
-
-
-// 행을 반대로 삭제하는 메서드
 
 
 function deleteRow() {
@@ -299,8 +274,6 @@ if (rowCount > 0) { // 최소한의 행이 유지되도록 설정
 // 품목 추가를 위한 행 추가 기능 시작
 
    function addRow() {
-
-
     var newWindow = window.open('/plan/item_search', '_blank', 'width=800,height=800');
     if (newWindow) {
         newWindow.focus();
@@ -311,9 +284,6 @@ if (rowCount > 0) { // 최소한의 행이 유지되도록 설정
 
 
 function check(materialId) {
-
-console.log(materialId);
-
 var xhr = new XMLHttpRequest();
 var url = '/plan/material_search/' + materialId; // 실제 컨트롤러 엔드포인트 URL로 변경해주세요
 
@@ -373,6 +343,8 @@ xhr.onreadystatechange = function() {
                     input.classList.add("countNumber");
                     cell.appendChild(input);
 
+
+
                  cell = row.insertCell(5); //단위
                  cell.colSpan = "1";
                      idInput = "materialMeasure"+rowNum;
@@ -419,25 +391,13 @@ xhr.onreadystatechange = function() {
                                 row.cells[7].textContent = isFinite(multiplicationResult) ? multiplicationResult : '';
 
                                 // 'totalPrice' 클래스를 가진 모든 input 요소를 선택합니다.
-totalPriceInputs = document.querySelectorAll('.totalPrice');
-
-
-    updateTotalSumOfAllRows();
-
-
-
-
-
-                            } else {
+                            totalPriceInputs = document.querySelectorAll('.totalPrice');
+                                updateTotalSumOfAllRows();
+                             } else {
                                 row.cells[7].textContent = ''; // 하나라도 숫자가 아니면 빈 문자열로 표시합니다.
                             }
-
-
                         });
-
-
                     }
-
         } else {
             console.log('Request failed. Status: ' + xhr.status);
         }
@@ -502,68 +462,101 @@ for (var i = 0; i < rows.length; i++) {
 
 document.getElementById('saveButton').addEventListener('click', function () {
     var rows = document.getElementById('tableBody').getElementsByTagName('tr');
-    var quotationDetailDTOList = [];
+    var recipeList = [];
 
     // 각 행의 데이터 수집
     for (var i = 0; i < rows.length; i++) {
         var cells = rows[i].getElementsByTagName('td');
 
-        var materialId = parseFloat(cells[1].textContent);
         var materialName = cells[2].textContent;
-        var materialDescription = cells[3].textContent;
-        var countNumber = parseFloat(cells[4].getElementsByTagName('input')[0].value);
-        var materialMeasure = cells[5].textContent;
-        var materialPrice = parseFloat(cells[6].textContent);
-        var totalPrice = parseFloat(cells[7].textContent);
 
+        var recipe_cnt = parseFloat(cells[4].getElementsByTagName('input')[0].value);
+        if (isNaN(recipe_cnt)) {
+                alert('레시피 수량에 숫자를 입력하세요.');
+               cells[4].focus();
+                return false;
+            }
         // 데이터를 DTO로 만들어 List에 추가
-        var quotationDetailDTO = {
-            // 필드들
-
-            material_id: materialId,
+        var recipe = {
             materialName: materialName,
-            quotationCnt: countNumber,
-            quotationMeasure: materialMeasure,
-            quotationPrice: totalPrice
+            recipeCnt: recipe_cnt,
         };
-
-        quotationDetailDTOList.push(quotationDetailDTO);
+        console.log(recipe);
+        recipeList.push(recipe);
     }
 
+
+
     var quotationTotalPriceElement = document.querySelector('.total');
-var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
+    var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
 
-    // QuotationDTO 객체 구성
-    var quotationDTO = {
+    var bicycleName = document.getElementById('bicycleName').value;
+    var bicycleDescription = document.getElementById("bicycleDescription").value;
+    var bicycleStock = document.getElementById("bicycleStock").value;
+    var bicyclePrice = document.getElementById("bicyclePrice").value;
+    if (bicycleName.length<1){
+    alert("품목명을 입력해 주세요");
+    document.getElementById('bicycleName').focus();
+    return false;
+    }
+    if (bicycleDescription.length<1){
+    alert("품목설명을 입력해 주세요");
+    document.getElementById('bicycleDescription').focus();
+    return false;
+    }
+    if (bicyclePrice.length<1){
+    alert("판매가를 입력해 주세요");
+    document.getElementById('bicyclePrice').focus();
+    return false;
 
-        company_id: "456-12-78912",  // company_id도 서버에서 설정
-        company_name: "프레임택",  // company_name도 서버에서 설정
-        quotation_totalprice: quotationTotalPrice,  // 서버에서 계산
-        regdate: null,  // 서버에서 설정
-        deadline: null,  // 서버에서 설정
-        status: 0,  // 서버에서 설정
-        quotation_memo: "ASAP",  // 서버에서 설정
-        quotationDetails: quotationDetailDTOList
-    };
+    }
+    if (isNaN(bicyclePrice)) {
+                alert('판매가는 숫자를 입력하세요.');
+               document.getElementById('bicyclePrice').focus();
+                return false;
+            }
+    if (bicycleStock.length<1){
+    alert("재고를 입력해 주세요");
+    document.getElementById('bicycleStock').focus();
+    return false;
+    }
+    if (isNaN(bicycleStock)) {
+                alert('재고는 숫자를 입력하세요.');
+               document.getElementById('bicycleStock').focus();
+                return false;
+            }
+
+
+
+     var Bicycle = {
+        bicycleName: bicycleName,
+        bicycleDescription: bicycleDescription,
+        bicycleStock: bicycleStock,
+        bicyclePrice: bicyclePrice,
+        recipes: recipeList
+        }
+
 
     // List를 JSON 형태로 변환
-    var quotationDTOJSON = JSON.stringify(quotationDTO);
+    var bicycleJSON = JSON.stringify(Bicycle);
 
     // AJAX를 사용하여 서버에 데이터 전송
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log('Data saved successfully');
+                alert('품목 등록 성공');
+                 window.location.href = '/plan/item';
             } else {
-                console.log('Failed to save data. Status: ' + xhr.status);
+                 alert('품목 등록 실패');
             }
         }
     };
 
-    xhr.open('POST', '/plan/save_quotation', true); // 실제 컨트롤러 엔드포인트 URL로 변경
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(quotationDTOJSON);
+
+   xhr.open('POST', '/plan/bicycle_save', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   xhr.send(bicycleJSON);
 });
 
 
