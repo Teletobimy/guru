@@ -34,7 +34,14 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <style>
+        .card .card-header span {
+            color: #919aa3;
+            display: block;
+            font-size: 13px;
+            margin-top: 1px;
+        }
         .btn-card {
             text-transform: uppercase;
             font-size: 13px;
@@ -102,10 +109,10 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
         <div class="pcoded-main-container" >
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
 
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
@@ -238,6 +245,7 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script>
     function submitRowData(button) {
         var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
@@ -276,11 +284,21 @@
                 // 성공 시 페이지 새로고침
                 location.reload();
             },
-            error: function(error) {
-                // 오류 발생 시 처리
-                console.log(error);
-                location.reload();
+            error: function (xhr, status, error){
+                if(xhr.status === 403){
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false,
+                      timer: 1500
+                    });
+                } else{
+                    console.error("Error: " , status, error);
+                }
             }
+
         });
     }
 
@@ -315,10 +333,19 @@
                 // 성공 시 페이지 이동
                 location.reload();
             },
-            error: function(error) {
-                // 오류 발생 시 처리
-                console.log(error);
-                location.reload();
+            error: function (xhr, status, error){
+                if(xhr.status === 403){
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false,
+                      timer: 1500
+                    });
+                } else{
+                    console.error("Error: " , status, error);
+                }
             }
         });
     }
