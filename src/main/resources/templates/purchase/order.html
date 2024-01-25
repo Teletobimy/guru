@@ -192,24 +192,24 @@
                                                             <thead>
                                                             <tr>
                                                                 <th>주문번호</th>
-                                                                <th th:if="${category == -1}">상태</th>
                                                                 <th>협력사</th>
                                                                 <th>품목명</th>
                                                                 <th>총액</th>
                                                                 <th>납기</th>
+                                                                <th th:if="${category == -1}">상태</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
 
                                                             <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${order.id}+ ')'" th:each="order : ${list}">
                                                                 <th th:text="${order.id}" class="data-id" th:attr="data-id=${order.id}"></th>
-                                                                <th th:each="code:${code}"
-                                                                    th:if="${code.codeNum eq order.status and category eq -1}"
-                                                                    th:text="${code.codeName}"></th>
                                                                 <td th:text="${order.companyName}"></td>
                                                                 <td th:text="${order.purchaseOrderDetails == 1 ? order.materialName : order.materialName + ' 외 ' + (order.purchaseOrderDetails - 1) + '건'}"></td>
                                                                 <td th:text="${order.totalprice} + &#8361;"></td>
                                                                 <td th:text="${#temporals.format(order.deadline, 'yyyy-MM-dd')}"></td>
+                                                                <th style="color: #009000" th:each="code:${code}"
+                                                                    th:if="${code.codeNum eq order.status and category eq -1}"
+                                                                    th:text="${code.codeName}"></th>
                                                             </tr>
 
                                                             </tbody>
