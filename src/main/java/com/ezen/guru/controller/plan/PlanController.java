@@ -366,15 +366,15 @@ public class PlanController {
         model.addAttribute("quotationId",quotationId);
         return "plan/quotation_insert";
     }
-
-    @GetMapping("/company_search")
-    public String company_search(Model model){
-        List<CompanyListViewResponse> list = companyService.getCompanyList().stream()
-                .map(CompanyListViewResponse::new)
-                .toList();
-        model.addAttribute("list", list);
-        return "plan/company_search";
-    }
+//
+//    @GetMapping("/company_search")
+//    public String company_search(Model model) {
+//        List<CompanyListViewResponse> list = companyService.getCompanyList().stream()
+//                .map(CompanyListViewResponse::new)
+//                .toList();
+//        model.addAttribute("list", list);
+//        return "plan/company_search";
+//    }
 
     @GetMapping("/searchCompany")
     public String searchCompany(@RequestParam("name") String companyName, Model model) {
