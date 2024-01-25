@@ -1,8 +1,6 @@
 package com.ezen.guru.repository.purchase;
 
 import com.ezen.guru.domain.PurchaseOrder;
-import com.ezen.guru.domain.QcCheck;
-import com.ezen.guru.dto.receive.TradeDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +11,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<PurchaseOrder, Integer>,OrderCustomRepository, JpaSpecificationExecutor<PurchaseOrder> {

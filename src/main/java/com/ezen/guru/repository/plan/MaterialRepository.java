@@ -1,15 +1,13 @@
 package com.ezen.guru.repository.plan;
 
 import com.ezen.guru.domain.Material;
-import com.ezen.guru.dto.plan.MaterialDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
@@ -28,4 +26,8 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
     Page<Material> findAllWithkeywordWithcategory(@Param("materialName") String materialName, @Param("materialCategory") Integer materialCategory, Pageable pageable);
 
     Material findByMaterialId(int materialId);
+
+    @Modifying
+    @Query("UPDATE Material m SET m.materialStock = m.materialStock + :qcCheckCnt WHERE m.materialId = (SELECT q.materialId.materialId FROM QcCheck q WHERE q.qcCheckId = :qcCheckId)")
+    void updateMaterialStock(@Param("qcCheckId")int qcCheckId, @Param("qcCheckCnt")int qcCheckCnt);
 }

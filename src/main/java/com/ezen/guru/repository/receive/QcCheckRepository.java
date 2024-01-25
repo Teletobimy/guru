@@ -14,7 +14,7 @@ public interface QcCheckRepository extends JpaRepository<QcCheck, Integer>, JpaS
     @Query("SELECT q FROM QcCheck q WHERE q.shipmentId = :shipmentId")
     QcCheck findByShipmentId(@Param("shipmentId") int shipmentId);
 
-    Page<QcCheck> findAll(Specification<QcCheck>spec, Pageable pageable);
+    Page<QcCheck> findAll(Specification<QcCheck> spec, Pageable pageable);
 
     // 정품
     @Modifying(clearAutomatically = true)
@@ -31,4 +31,5 @@ public interface QcCheckRepository extends JpaRepository<QcCheck, Integer>, JpaS
     @Modifying(clearAutomatically = true)
     @Query("UPDATE QcCheck qc SET qc.processStatus = 3 WHERE qc.qcCheckCnt = 0")
     int updateProcessStatus();
+
 }
