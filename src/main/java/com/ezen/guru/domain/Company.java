@@ -1,7 +1,6 @@
 package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +14,6 @@ public class Company {
     @Id
     @Column(name="company_id", updatable = false)
     private String companyId;
-
-    @Column(name="material_id")
-    private int materialId;
 
     @Column(name="company_name")
     private String companyName;
@@ -36,18 +32,17 @@ public class Company {
 
     @Builder
     public Company(String companyId,
-                   int materialId,
                    String companyName,
                    String ceo,
                    String tel,
                    String email,
                    String address) {
         this.companyId = companyId;
-        this.materialId = materialId;
         this.companyName = companyName;
         this.ceo = ceo;
         this.tel = tel;
         this.email = email;
         this.address = address;
     }
+
 }

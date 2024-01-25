@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <style>
+        .d-inline {
+            display: flex;
+            align-items: center;
+        }
+        .searched {
+            margin-top: 20px!important;
+        }
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 5px;
+            color: #fff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header"
+             th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- Main-body start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- Page-header start -->
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-green"></i>
+                                            <div class="d-inline">
+                                                <h4>협력사</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a th:href="@{http://localhost:8080}">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">구매<!--(이동 필요)--></a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="/purchase/company_list">협력사</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Page-header end -->
+
+                            <!-- Page-body start -->
+                            <div class="page-body">
+
+                                <!-- Hover table card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="col-lg-12">
+                                            <button class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'}"><i class="ti-plus"></i>등록</button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:attr="id='exampleModal'"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">협력사 등록</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form>
+                                                                <div class="form-group">
+                                                                    <table class="table">
+                                                                        <tr>
+                                                                            <th scope="row">사업자 번호 :</th>
+                                                                            <td><input type="text" name="companyId"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">회사명 :</th>
+                                                                            <td><input type="text" name="companyName"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">대표자명 :</th>
+                                                                            <td><input type="text" name="companyCeo"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">전화번호 :</th>
+                                                                            <td><input type="text" name="companyTel"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">e-mail :</th>
+                                                                            <td><input type="text" name="companyEmail"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">주소 :</th>
+                                                                            <td><input type="text" name="companyAddress"></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" th:onclick="insertCompany()">등록</button>
+                                                            <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal End -->
+
+                                            <div class="pcoded-search">
+                                                <span class="searchbar-toggle searched">  </span>
+                                                <div class="pcoded-search-box ">
+                                                    <input type="text" placeholder="Search" id="searchInput">
+                                                    <p class="search-icon" th:attr="onclick='performSearch()'">
+                                                    <i class="ti-search" aria-hidden="true"></i></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="tab-content tabs card-block">
+                                        <div class="col-lg-12">
+
+                                            <div class="card-block table-border-style">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>회사명</th>
+                                                            <th>사업자번호</th>
+                                                            <th>대표자</th>
+                                                            <th>전화번호</th>
+                                                            <th>이메일</th>
+                                                            <th>주소</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="item,stat : ${list}">
+                                                            <th scope="row" th:text="${stat.count}"></th>
+                                                            <td th:text="${item.companyName}"></td>
+                                                            <td th:text="${item.companyId}"></td>
+                                                            <td th:text="${item.ceo}"></td>
+                                                            <td th:text="${item.tel}"></td>
+                                                            <td th:text="${item.email}"></td>
+                                                            <td th:text="${item.address}"></td>
+                                                            <td>
+                                                                <button class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#modifyModal'+ item.companyId}">수정</button>
+                                                                <button type="button" class="btn btn-card btn-primary" th:onclick="deleteCompany(this)" th:attr="data-company-id=${item.companyId}">삭제</button>
+                                                            </td>
+
+                                                            <!-- Modal -->
+                                                            <th class="modal fade" th:attr="id=${'modifyModal'+ item.companyId}"  tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="modifyModalLabel">협력사 정보 수정</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true" style="font-size:30px;">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form>
+                                                                                <div class="form-group">
+                                                                                    <table class="table update-table">
+                                                                                        <tr>
+                                                                                            <th scope="row">사업자 번호 :</th>
+                                                                                            <td><input type="text" name="updateId" th:value="${item.companyId}" th:disabled="true"></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th scope="row">회사명 :</th>
+                                                                                            <td><input type="text" name="updateName" th:value="${item.companyName}"></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th scope="row">대표자명 :</th>
+                                                                                            <td><input type="text" name="updateCeo"  th:value="${item.ceo}"></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th scope="row">전화번호 :</th>
+                                                                                            <td><input type="text" name="updateTel" th:value="${item.tel}"></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th scope="row">e-mail :</th>
+                                                                                            <td><input type="text" name="updateEmail" th:value="${item.email}"></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th scope="row">주소 :</th>
+                                                                                            <td><input type="text" name="updateAddress" th:value="${item.address}"></td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <input type="hidden" class="updateId" th:value="${item.companyId}">
+                                                                            <button type="button" class="btn btn-primary modify-btn">수정</button>
+                                                                            <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+                                                            <!-- Modal End -->
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+
+                                            <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                                                <ul class="pagination" style="justify-content: end;">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li  class="page-item" th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}">
+                                                        <a class="page-link pageA"
+                                                           th:classappend="${pageNumber == (list.number + 1) ? 'btn-success' : ''}"
+                                                           th:href="@{'/purchase/company_list?page=' + ${pageNumber - 1} + '&size=10'}"
+                                                           th:text="${pageNumber}"></a>
+                                                    </li>
+
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Hover table card end -->
+
+                            </div>
+                            <!-- Page-body end -->
+                        </div>
+                    </div>
+                    <!-- Main-body end -->
+
+                    <div id="styleSelector">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+<script type="text/javascript" src="assets/js/classie/classie.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<script>
+    var $window = $(window);
+    var nav = $('.fixed-button');
+        $window.scroll(function(){
+            if ($window.scrollTop() >= 200) {
+             nav.addClass('active');
+         }
+         else {
+             nav.removeClass('active');
+         }
+     });
+    function performSearch(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var searchValue = document.getElementById('searchInput').value;
+
+        var encodedSearchValue = encodeURIComponent(searchValue);
+
+        console.log(encodedSearchValue);
+
+        window.location.href = '/purchase/company_list?size=10&page=0&keyword=' + encodedSearchValue;
+    }
+     document.getElementById('searchInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
+    function insertCompany() {
+        var companyId = $('input[name=companyId]').val();
+        var companyName =$('input[name=companyName]').val();
+        var companyCeo =$('input[name=companyCeo]').val();
+        var companyTel =$('input[name=companyTel]').val();
+        var companyEmail =$('input[name=companyEmail]').val();
+        var companyAddress =$('input[name=companyAddress]').val();
+
+        var addCompany = {
+            companyId : companyId,
+            companyName : companyName,
+            companyCeo : companyCeo,
+            companyTel : companyTel,
+            companyEmail : companyEmail,
+            companyAddress : companyAddress
+        }
+        console.log(addCompany);
+
+        if (!companyId) {
+        alert('사업자번호를 다시 입력해주세요.');
+        return; // 더 이상 진행하지 않도록 반환
+        }
+        if (!companyName) {
+            alert('회사명을 다시 입력해주세요.');
+            return;
+        }
+        if (!companyCeo) {
+            alert('대표자명을 다시 입력해주세요.');
+            return;
+        }
+        if (!companyTel) {
+            alert('전화번호를 다시 입력해주세요.');
+            return;
+        }
+        if (!companyEmail) {
+            alert('이메일을 다시 입력해주세요.');
+            return;
+        }
+        if (!companyAddress) {
+            alert('주소를 다시 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;",
+            url: "/purchase/company/add",
+            data: JSON.stringify(addCompany),
+            success: function (response) {
+                console.log(response);
+                $('#exampleModal').modal('hide'); // 모달 닫기
+                Swal.fire({
+                  icon: "success",
+                  title: "등록 완료",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.reload();}, 1500);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+    $('.modify-btn').on('click', function(){
+
+        var updateId = $(this).closest('.modal-content').find('.update-table input[name=updateId]').val();
+        var companyName = $(this).closest('.modal-content').find('.update-table input[name=updateName]').val();
+        var companyCeo = $(this).closest('.modal-content').find('.update-table input[name=updateCeo]').val();
+        var companyTel = $(this).closest('.modal-content').find('.update-table input[name=updateTel]').val();
+        var companyEmail = $(this).closest('.modal-content').find('.update-table input[name=updateEmail]').val();
+        var companyAddress = $(this).closest('.modal-content').find('.update-table input[name=updateAddress]').val();
+
+        var changeCompany = {
+            companyName : companyName,
+            ceo : companyCeo,
+            tel : companyTel,
+            email : companyEmail,
+            address : companyAddress
+        }
+        console.log(changeCompany);
+
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: '/purchase/api/company/' + updateId + '/update',
+            data: JSON.stringify(changeCompany),
+            success: function (response) {
+                console.log(response);
+                $('#modifyModal' + updateId).modal('hide'); // 모달 닫기
+                Swal.fire({
+                  icon: "success",
+                  title: "수정 완료",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.reload();}, 1500);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    })
+
+    function deleteCompany(button) {
+
+        var companyId = $(button).data('company-id');
+        console.log(companyId);
+
+        $.ajax({
+            type: "DELETE",
+            contentType: "application/json",
+            url: '/purchase/company/delete/' + companyId,
+            success: function (response) {
+                console.log(response);
+                Swal.fire({
+                  icon: "success",
+                  title: "삭제 완료",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.reload();}, 1500);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

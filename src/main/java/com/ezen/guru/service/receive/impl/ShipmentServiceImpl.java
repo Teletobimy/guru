@@ -23,8 +23,8 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final QcCheckRepository qcCheckRepository;
 
     @Override
-    public Page<ShipmentResponse> shipmentList(int size, int page,String keyword, int category) {
-       return shipmentRepository.shipmentList(size, page,keyword,category);
+    public Page<ShipmentResponse> shipmentList(int size, int page,String keyword, int category,LocalDateTime startDate, LocalDateTime endDate) {
+       return shipmentRepository.shipmentList(size, page,keyword,category,startDate,endDate);
 
     }
 
@@ -55,6 +55,7 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .processStatus(2)
                 .purchaseOrderId(shipment.getPurchaseOrderId())
                 .qccheckDate(targetDateTime)
+                .purchaseOrderDetailId(shipment.getPurchaseOrderDetailId())
                 .build();
 
         return qcCheckRepository.save(qcCheck);

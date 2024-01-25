@@ -1,20 +1,26 @@
 package com.ezen.guru.controller.purchase;
 
-import com.ezen.guru.domain.Code;
-import com.ezen.guru.domain.QcCheck;
-import com.ezen.guru.domain.Shipment;
+import com.ezen.guru.domain.*;
+import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.purchase.*;
+import com.ezen.guru.service.CustomUserDetails;
+import com.ezen.guru.service.purchase.CompanyService;
 import com.ezen.guru.service.purchase.OrderService;
+import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.ResponseEntity.status;
 
@@ -24,28 +30,62 @@ import static org.springframework.http.ResponseEntity.status;
 public class OrderController {
 
     private final OrderService orderService;
+    private final CompanyService companyService;
 
     @GetMapping("/order")
     public String getOrderList(Model model,
+                               HttpServletRequest request,
                                @RequestParam(value = "size", defaultValue = "10") int size,
                                @RequestParam(value ="page" ,defaultValue = "0") int page,
                                @RequestParam(value = "keyword", required = false) String keyword,
-                               @RequestParam(value = "category", defaultValue = "-1") int category) {
+                               @RequestParam(value = "category", defaultValue = "-1") int category,
+                               String id) {
         Page<OrderListViewResponse> orderList = orderService.orderList(size, page,keyword,category);
         List<Code> codeList = orderService.findByCodeCategory("purchase_order_status");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         model.addAttribute("list", orderList);
         model.addAttribute("code",codeList);
         model.addAttribute("category",category);
         return "purchase/order";
     }
+    @PutMapping("/closeOrder")
+    public ResponseEntity<String> closeOrder() {
+        orderService.closeOrder();
+        return ResponseEntity.ok("success update");
+    }
     @GetMapping("/order_detail")
-    public String getDetail(Model model, @RequestParam String id) {
-        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id).stream()
-                .map(OrderDetailViewResponse::new)
-                .toList();
+    public String getDetail(Model model, HttpServletRequest request, @RequestParam String id) {
+        List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id);
         List<Code> codeList = orderService.findByCodeCategory("material_category");
         List<Code> typeCode = orderService.findByCodeCategory("document_type");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         model.addAttribute("code",codeList);
         model.addAttribute("type", typeCode);
@@ -59,28 +99,70 @@ public class OrderController {
 //            savedEntities.add(orderService.saveToShipment(shipment));
 //        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
 //        }
-        List<Shipment> savedEntities = orderService.saveToShipment(shipments);
-        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
-    }
-    @PostMapping("/order/qccheck")
-    public ResponseEntity<String> addToQcCheck(@RequestBody List<QcCheck> qcChecks) {
-        List<QcCheck> savedEntities = new ArrayList<>();
-        for (QcCheck qcCheck : qcChecks) {
-            savedEntities.add(orderService.saveToQcCheck(qcCheck));
-        }
+        orderService.saveToShipment(shipments);
         return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
     }
     @GetMapping("/order_print")
-    public String getPrint(Model model, @RequestParam String id) {
-        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id).stream()
+    public String getPrint(Model model, HttpServletRequest request, @RequestParam String id) {
+        List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id);
+                /*orderService.getPurchaseOrderPrint(id).stream()
                 .map(OrderPrintViewResponse::new)
-                .toList();
+                .toList();*/
         List<Code> codeList = orderService.findByCodeCategory("material_category");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         model.addAttribute("code",codeList);
         model.addAttribute("list", list);
 
         return "purchase/order_print";
+    }
+    @GetMapping("/company_list")
+    public String getOrderList(Model model, HttpServletRequest request,
+                               @RequestParam(value = "size", defaultValue = "10") int size,
+                               @RequestParam(value ="page" ,defaultValue = "0") int page,
+                               @RequestParam(value = "keyword", required = false) String keyword) {
+        Page<CompanyListViewResponse> companyList = companyService.companyList(size, page,keyword);
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
+        model.addAttribute("list", companyList);
+        return "purchase/company_list";
+    }
+    @PostMapping("/company/add")
+    public ResponseEntity<String> addToCompany(@Valid @RequestBody AddCompanyRequest company) {
+        Company newCompany = companyService.newCompany(company);
+        return new ResponseEntity<>("협력사가 등록되었습니다.", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/company/delete/{companyId}")
+    public ResponseEntity<String> removeCompany(@PathVariable String companyId) {
+        companyService.removeCompany(companyId);
+        return ResponseEntity.ok("협력사가 삭제되었습니다.");
     }
 
 

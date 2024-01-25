@@ -31,14 +31,17 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <style>
         table{
-         border-collapse: collapse;
-         border-spacing: 0
+             border-collapse: collapse;
+             border-spacing: 0;
+             margin: 30px auto;
         }
         th{
             background-color: #f6f7fb;
-    	color: #000;
+    	    color: #000;
         }
         th, td{
             border: 1px solid #ccc;
@@ -46,30 +49,37 @@
         }
         input{
             border:none;
+            width:10%;
+        }
+
+        .title{
+            margin:20px 0;
+            text-align: center;
         }
         .container{
             display: flex;
             max-width: 1141px;
             flex-flow: column;
             justify-content: center;
-            align-items: center;
-            margin:30px;
+            align-items: flex-end;
+            margin:30px auto;
+        }
+        #print-body{
+            box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -webkit-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -moz-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            border:1px solid #ccc;
+            margin: 50px auto;
+            padding: 40px;
         }
         .btn-display{
-         display: flex;
-         justify-content: center;
-         margin-bottom:20px;
+            padding: 20px;
+            justify-content: center;
+            display: flex;
+            margin-bottom:30px;
         }
-        .btn{
-            margin:10px;
-            font-weight:bold;
-        }
-        .btn-disabled-y{
-            background-color: rgba(254, 214, 150);
-            border-color: rgb(255, 185, 99);
-            color: #fff;
-            cursor: pointer;
-            transition: all ease-in 0.3s;
+        .btn-display button{
+            margin-right: 10px
         }
     </style>
 </head>
@@ -79,16 +89,36 @@
 <div class="theme-loader">
     <div class="ball-scale">
         <div class='contain'>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -96,10 +126,12 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
         <div class="pcoded-main-container">
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
                     <div class="main-body">
@@ -120,101 +152,118 @@
 
                             </div>
                             <div class="page-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card">
+                                            <div class="container">
+                                                <button type="button" class="btn btn-warning complete-btn"
+                                                        onclick="printPage()">
+                                                    <i class="ti-printer"></i>
+                                                    출력
+                                                </button>
+                                                <div id="print-body" style="margin:auto; margin-top:30px;">
+                                                    <h4 class="title">출하 명세서</h4>
+                                                    <table style="table-layout:auto;">
+                                                        <tbody>
+                                                        <tr>
+                                                            <th colspan="2">출하 번호</th>
+                                                            <td colspan="2" th:text="${shipment.shipmentId}"></td>
+                                                            <th colspan="2">회사명</th>
+                                                            <td colspan="2" th:text="${shipment.companyName}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="2" colspan="2">게약일</th>
+                                                            <td rowspan="2" colspan="2"></td>
+                                                            <th rowspan="1" colspan="2">사업자 번호</th>
+                                                            <td colspan="2" rowspan="1"
+                                                                th:text="${shipment.companyId}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="1" colspan="2">사업지 주소</th>
+                                                            <td colspan="2" th:text="${shipment.address}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="2" colspan="2">마감일</th>
+                                                            <td colspan="2" rowspan="2"
+                                                                th:text="${shipment.shippingDate}"></td>
+                                                            <th colspan="2" rowspan="2">대표자</th>
+                                                            <th>성명</th>
+                                                            <td th:text="${shipment.ceo}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>연락처</th>
+                                                            <td th:text="${shipment.tel}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8"
+                                                                style="border-left:none; border-right:none;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="2">No.</th>
+                                                            <th colspan="2">자재명</th>
+                                                            <th colspan="2">수량</th>
+                                                            <th colspan="2">가격</th>
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="container">
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" th:text="${shipment.shipmentId}"></td>
+                                                            <td colspan="2" th:text="${shipment.materialName}"></td>
+                                                            <td colspan="2" th:text="${shipment.shipmentCnt} + ${shipment.materialMeasure}"></td>
+                                                            <td colspan="2"
+                                                                th:text="'&#8361; ' +${#numbers.formatInteger(shipment.materialPrice,0,'COMMA')}"></td>
 
-                                        <table width="60%">
-                                            <tr>
-                                                <th colspan="2">출하 번호</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.shipmentId}">
-                                                </td>
-                                                <th colspan="2">회사명</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.companyName}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2" colspan="2">주소</th>
-                                                <td rowspan="2" colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.address}">
-                                                </td>
-                                                <th rowspan="1" colspan="2">사업자번호</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.companyId}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="1" colspan="2">대표자</th>
-                                                <td colspan="2">
-                                                    <input type="text" readonly th:value="${shipment.ceo}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2" colspan="2">납기 일자</th>
-                                                <td colspan="2" rowspan="2">
-                                                    <input type="text" readonly th:value="${shipment.shippingDate}" placeholder="참조 입력하세요">
-                                                </td>
-                                                <th colspan="2" rowspan="2">담당자</th>
-                                                <th>성명</th>
-                                                <td>
-                                                    <input type="text" readonly th:value="${shipment.manager}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>연락처</th>
-                                                <td >
-                                                    <input type="text" readonly th:value="${shipment.tel}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>No</th>
-                                                <th colspan="2">품명</th>
-                                                <th>규격</th>
-                                                <th>수량</th>
-                                                <th>단가</th>
-                                                <th colspan="2">합계</th>
-
-                                            </tr>
-                                            <!---------------------------------------------------->
-                                            <tr>
-                                                <td th:text="${shipment.materialNumber}"></td>
-                                                <td colspan="2" th:text="${shipment.materialName}"></td>
-                                                <td th:text="${shipment.materialMeasure}"></td>
-                                                <td th:text="${shipment.shipmentCnt}"></td>
-                                                <td th:text="${shipment.materialPrice}"></td>
-                                                <td colspan="2" th:text="${shipment.materialPrice * shipment.shipmentCnt}"></td>
-                                            </tr>
-                                            <!---------------------------------------------------->
-
-                                        </table>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3">합계(VAT 포함)</th>
+                                                            <td colspan="3"
+                                                                style="border-left:none;border-right:none;"></td>
+                                                            <td colspan="2" style="border-left:none;"
+                                                                th:text="'&#8361; ' +${#numbers.formatInteger((shipment.materialPrice * shipment.shipmentCnt),0,'COMMA')}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8"
+                                                                style="border-left:none; border-right:none;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3">세부사항</th>
+                                                            <td colspan="5"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="btn-display">
+                                                <button class="btn btn-warning" th:attr="onclick='gotoList()'">목록</button>
+                                                <input type="hidden" name="shipmentId" th:value="${shipment.shipmentId}">
+                                                <button class="btn btn-warning"
+                                                        th:style="${qcCheck == null ? '' : 'display:none'}"
+                                                        onclick="addQcCheck()">
+                                                    검수
+                                                </button>
+                                                <button class="btn btn-disabled-y "
+                                                        th:if="${qcCheck != null}"
+                                                        th:disabled="${qcCheck != null}">
+                                                    검수
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    </div>
-                                    <div class="btn-display">
-                                        <button class="btn btn-warning" th:attr="onclick='gotoList()'">목록</button>
-                                        <form th:action="'/shipment/addQcCheck?shipmentId='+${shipment.shipmentId}" method="post">
-                                            <button class="btn btn-warning"  th:style="${qcCheck == null ? '' : 'display:none'}">검수</button>
-                                            <button class="btn btn-disabled-y " th:if="${qcCheck != null}" th:disabled="${qcCheck != null}">검수</button>
-
-                                        </form>
-                                    </div>
-
                                 </div>
-
-                            </div>
-                            <div id="styleSelector">
-
                             </div>
                         </div>
+                        <div id="styleSelector">
+
+                        </div>
+                        <!-- modal -->
+
                     </div>
                 </div>
             </div>
-
         </div>
 
     </div>
+
+</div>
 </div>
 
 <!-- Warning Section Starts -->
@@ -243,24 +292,18 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/js/receive/shipmentDetail.js"></script>
 <script>
-    var $window = $(window);
-    var nav = $('.fixed-button');
-        $window.scroll(function(){
-            if ($window.scrollTop() >= 200) {
-             nav.addClass('active');
-         }
-         else {
-             nav.removeClass('active');
-         }
-     });
-    function gotoList(){
-        var newUrl = '/shipment/shipmentList?size=10&page=0&category=-1'
-        window.location.href= newUrl;
-    }
-     function gotoEdit(url){
-    }
-     function remove(url){
+    function printPage(){
+        var initBody = document.body.innerHTML;
+        window.onbeforeprint = function(){
+            document.body.innerHTML = document.getElementById('print-body').innerHTML;
+        }
+        window.onafterprint = function(){
+            document.innerHTML = initBody;
+        }
+        window.print();
+        location.reload();
     }
 </script>
 </body>

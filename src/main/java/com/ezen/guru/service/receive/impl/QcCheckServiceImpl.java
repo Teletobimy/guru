@@ -33,7 +33,7 @@ public class QcCheckServiceImpl implements QcCheckService {
     @Override
     public Page<QcCheckResponse> qcCheckList(int processStatus, String search, Pageable pageable, LocalDateTime startDate, LocalDateTime endDate) {
         Specification<QcCheck> spec = Specification.where(null);
-        if(processStatus > 0){
+        if(processStatus >= 1){
             spec = spec.and(QcCheckSpecifications.processStatusEquals(processStatus));
         }
         if(search != null && !search.isEmpty()){

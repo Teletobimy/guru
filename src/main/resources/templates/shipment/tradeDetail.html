@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <style>
+        table{
+             border-collapse: collapse;
+             border-spacing: 0;
+             margin: 30px auto;
+        }
+        th{
+            background-color: #f6f7fb;
+    	    color: #000;
+        }
+        th, td{
+            border: 1px solid #ccc;
+    	padding: 10px;
+        }
+        input{
+            border:none;
+            width:10%;
+        }
+
+        .title{
+            margin:20px 0;
+            text-align: center;
+        }
+        .container{
+            display: flex;
+            max-width: 1141px;
+            flex-flow: column;
+            justify-content: center;
+            align-items: flex-end;
+            margin:30px auto;
+        }
+        #print-body{
+            box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -webkit-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -moz-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            border:1px solid #ccc;
+            margin: 50px auto;
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+            <div class="ring">
+                <div class="frame"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-yellow"></i>
+                                            <div style="display:flex; align-items:center;">
+                                                <h4>거래 명세서 </h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="page-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card">
+                                            <div class="container">
+                                                <button type="button" class="btn btn-warning complete-btn"
+                                                        onclick="printPage()">
+                                                    <i class="ti-printer"></i>
+                                                    출력
+                                                </button>
+                                                <div id="print-body" style="margin:50px auto;">
+                                                    <h4 class="title">거래 명세서</h4>
+                                                    <table style="table-layout:auto;">
+                                                        <tbody>
+                                                        <tr>
+                                                            <th colspan="2">발주서 번호</th>
+                                                            <td colspan="2" th:text="${list[0].purchaseOrderId}"></td>
+                                                            <th colspan="2">회사명</th>
+                                                            <td colspan="2" th:text="${list[0].companyName}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="2" colspan="2">게약일</th>
+                                                            <td rowspan="2" colspan="2"></td>
+                                                            <th rowspan="1" colspan="2">사업자 번호</th>
+                                                            <td colspan="2" rowspan="1"
+                                                                th:text="${list[0].companyId}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="1" colspan="2">사업지 주소</th>
+                                                            <td colspan="2" th:text="${list[0].address}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th rowspan="2" colspan="2">마감일</th>
+                                                            <td colspan="2" rowspan="2"
+                                                                th:text="${list[0].purchaseOrderRegDate}"></td>
+                                                            <th colspan="2" rowspan="2">대표자</th>
+                                                            <th>성명</th>
+                                                            <td th:text="${list[0].ceo}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>연락처</th>
+                                                            <td th:text="${list[0].tel}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8"
+                                                                style="border-left:none; border-right:none;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th colspan="2">자재명</th>
+                                                            <th>수량</th>
+                                                            <th colspan="2">가격</th>
+                                                            <th colspan="2">총 가격</th>
+
+                                                        </tr>
+                                                        <!---------------------------------------------------->
+                                                        <tr th:each="list:${list}">
+                                                            <td th:text="${list.purchaseOrderDetailId}"></td>
+                                                            <td th:text="${list.materialName}"></td>
+                                                            <td colspan="2"
+                                                                th:text="${list.materialCnt} + ${list.materialMeasure}"></td>
+                                                            <td th:text="'&#8361; ' + ${#numbers.formatInteger(list.materialPrice,0,'COMMA')}"></td>
+                                                            <td colspan="3"
+                                                                th:text="'&#8361; ' + ${#numbers.formatInteger(list.materialTotalPrice,0,'COMMA')}"></td>
+                                                        </tr>
+                                                        <!---------------------------------------------------->
+                                                        <tr>
+                                                            <th colspan="3">합계(VAT 포함)</th>
+                                                            <td colspan="3"
+                                                                style="border-left:none;border-right:none;"></td>
+                                                            <td colspan="2" style="border-left:none;"
+                                                                th:text="'&#8361; ' +${#numbers.formatInteger(#aggregates.sum(list.![materialTotalPrice]),0,'COMMA')}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8"
+                                                                style="border-left:none; border-right:none;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3">세부사항</th>
+                                                            <td colspan="5"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="styleSelector">
+
+                        </div>
+                        <!-- modal -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/js/receive/shipmentDetail.js"></script>
+<script>
+    function printPage(){
+        var initBody = document.body.innerHTML;
+        window.onbeforeprint = function(){
+            document.body.innerHTML = document.getElementById('print-body').innerHTML;
+        }
+        window.onafterprint = function(){
+            document.innerHTML = initBody;
+        }
+        window.print();
+        location.reload();
+    }
+</script>
+</body>
+
+</html>

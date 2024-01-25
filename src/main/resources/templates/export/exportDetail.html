@@ -30,13 +30,59 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
-        .d-inline {
-            display: flex;
-            align-items: center;
+        .card .card-header span {
+            color: #919aa3;
+            display: block;
+            font-size: 13px;
+            margin-top: 1px;
         }
-        .searched {
-            margin-top: 20px!important;
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .input-box{
+             width:100%;
+             display:flex;
+             justify-content:end;
+             padding:5px;
+             box-sizing:border-box;
+             margin :15px auto;
+             margin-top:0;
+             align-items:center;
+        }
+        .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+
+        }
+        .pageA{
+            color:#fff;
+        }
+        .btn-warning{
+            color:#fff;
+        }
+        .current-page {
+            color: #ab7967;
+        }
+        input{
+            padding:5px 10px;
+        }
+        p{
+            padding:5px 10px;
+            cursor: pointer;
+        }
+        .disabled{
+            background-color: rgba(254, 214, 150);
+            border-color: rgb(255, 185, 99);
         }
     </style>
 </head>
@@ -46,36 +92,16 @@
 <div class="theme-loader">
     <div class="ball-scale">
         <div class='contain'>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
-            <div class="ring">
-                <div class="frame"></div>
-            </div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
         </div>
     </div>
 </div>
@@ -83,10 +109,10 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
-        <div class="pcoded-main-container">
-            <div th:include="includes/navbar :: navbar"></div>
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
 
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
@@ -98,9 +124,10 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-8">
                                         <div class="page-header-title">
-                                            <i class="icofont icofont-table bg-c-green"></i>
+                                            <i class="icofont icofont-table bg-c-brown"></i>
                                             <div class="d-inline">
-                                                <h4>협력사</h4>
+                                                <h4 th:text="'Production No.' + ${producePlaner[0].producePlanerId}"></h4>
+                                                <h4 th:text="'생산계획 : [' + ${producePlaner[0].bicycleName} + '] ' + ${producePlaner[0].produceBicycleCnt} + '대'"></h4>
                                             </div>
                                         </div>
                                     </div>
@@ -108,13 +135,13 @@
                                         <div class="page-header-breadcrumb">
                                             <ul class="breadcrumb-title">
                                                 <li class="breadcrumb-item">
-                                                    <a th:href="@{http://localhost:8080}">
+                                                    <a href="/">
                                                         <i class="icofont icofont-home"></i>
                                                     </a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">구매<!--(이동 필요)--></a>
+                                                <li class="breadcrumb-item"><a href="#!">출고</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/company/list">협력사</a>
+                                                <li class="breadcrumb-item"><a href="/export/exportList">생산계획서:[출고완료]</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -129,64 +156,43 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Hover table</h5>
-                                        <div class="card-header-right">
-                                            <ul class="list-unstyled card-option">
-                                                <li><i class="icofont icofont-simple-left "></i></li>
-                                                <li><i class="icofont icofont-maximize full-card"></i></li>
-                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
-                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
-                                                <li><i class="icofont icofont-error close-card"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="pcoded-search">
-                                            <span class="searchbar-toggle searched">  </span>
-                                            <div class="pcoded-search-box ">
-                                                <input type="text" placeholder="Search">
-                                                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                        <div class="col-lg-12">
+                                            <div class="card-block table-border-style">
+                                                <div class="table-responsive">
+                                                    <form action="/export/producePlanerDetail" method="post">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>원자재이름</th>
+                                                                <th>요구수량</th>
+                                                                <th>출고수량</th>
+                                                                <th>요청기한</th>
+                                                                <th>출고날짜</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="item, index : ${exportList}">
+                                                                <th th:text="${item.materialName}"></th>
+                                                                <td th:text="${producePlaner[index.index].produceMaterialCnt}"></td>
+                                                                <td th:text="${item.exportCnt}"></td>
+                                                                <td th:text="${producePlaner[index.index].producePlanerDeadline}"></td>
+                                                                <td th:text="${item.exportDate}"></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card-block table-border-style">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>회사명</th>
-                                                    <th>사업자번호</th>
-                                                    <th>대표자</th>
-                                                    <th>전화번호</th>
-                                                    <th>이메일</th>
-                                                    <th>주소</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="item,stat : ${list}" th:onclick="#">
-                                                    <th scope="row" th:text="${stat.count}"></th>
-                                                    <td th:text="${item.companyName}"></td>
-                                                    <td th:text="${item.companyId}"></td>
-                                                    <td th:text="${item.ceo}"></td>
-                                                    <td th:text="${item.tel}"></td>
-                                                    <td th:text="${item.email}"></td>
-                                                    <td th:text="${item.address}"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
                                     </div>
                                 </div>
                                 <!-- Hover table card end -->
-
                             </div>
                             <!-- Page-body end -->
                         </div>
                     </div>
                     <!-- Main-body end -->
-
-                    <div id="styleSelector">
-
-                    </div>
                 </div>
             </div>
 
@@ -224,6 +230,5 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
 </body>
 </html>

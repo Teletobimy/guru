@@ -35,6 +35,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </head>
 <style>
     .input-box{
@@ -50,7 +52,9 @@
     .search-long{
         border:1px solid #ccc;
         margin-right:10px;
-
+        padding-right: 5px;
+        padding: 3px 0px;
+        text-align: center;
     }
     .pageA{
         color:#FFB64D;
@@ -67,6 +71,9 @@
     .disabled{
         background-color: rgba(254, 214, 150);
         border-color: rgb(255, 185, 99);
+    }
+    .swal2-container {
+      z-index: 99999 !important;
     }
 </style>
 
@@ -113,10 +120,16 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header"
+             th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"
+        >
+        </nav>
 
-        <div class="pcoded-main-container">
-            <div th:include="includes/navbar :: navbar"></div>
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"
+            ></div>
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
                     <div class="main-body">
@@ -151,13 +164,8 @@
                                                        th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${processStatus == 0 and code.codeNum == 0 ? 'active' : ''} +
-                                                                       ${processStatus == 2 and code.codeNum == 2 ? 'active' : ''} +
-                                                                       ${processStatus == 3 and code.codeNum == 3 ? 'active' : ''}"
-
-                                                       th:text="${code.codeNum == 0 ? '전체 보기' :
-                                                                  code.codeNum == 2 ? '검수 중' :
-                                                                  code.codeNum == 3 ? '검수 완료' : ''}">
+                                                       th:classappend="${processStatus == code.codeNum ? 'active' : ''}"
+                                                       th:text="${code.codeName}">
                                                     </a>
                                                 </li>
 
@@ -168,14 +176,14 @@
                                                     <div class="pcoded-search-box input-box" >
                                                         <div class="search-long">
                                                             <input type="text" placeholder="search" id="searchInput" style="border:none;">
-                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
                                                             <p class="search-icon" th:attr="onclick='performSearch()'"
                                                                style="display:inline; margin:0;">
                                                                 <i class="ti-search" aria-hidden="true"></i>
                                                             </p>
                                                         </div>
-
-                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
+                                                        <div class="search-long" style="cursor:pointer;">
+                                                            <input style="border:none; cursor:pointer;" type="text" placeholder="choose date" name="daterange" value="" />
+                                                        </div>
                                                     </div>
                                                     <div class="card-block table-border-style">
 
@@ -208,7 +216,7 @@
                                                                     <td th:text="${page.purchaseOrderId}"></td>
                                                                     <th th:text="${page.processStatus == 2 ? '검수중' :
                                                                                     page.processStatus == 3 ? '검수 완료' : ''}"
-                                                                        style="color:009000;"></th>
+                                                                        style="color:#009000;"></th>
                                                                     <th>
                                                                         <button class=" btn-warning qcCheckModal"
                                                                                 style="font-size:12px;border: none;padding: 5px 10px; border-radius: 5px; outline:none;"
@@ -222,7 +230,7 @@
                                                                         </button>
                                                                     </th>
 
-                                                                    <th class="modal fade " th:attr="id='exampleModal' + ${page.qcCheckId}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <th class="modal fade " style="z-index:9999;" th:attr="id='exampleModal' + ${page.qcCheckId}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                         <div class="modal-dialog" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
@@ -244,8 +252,10 @@
                                                                                     </form>
                                                                                 </div>
                                                                                 <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-danger return" >반품</button>
-                                                                                    <button type="button" class="btn btn-primary purchase" >정품</button>
+                                                                                    <button type="button"
+                                                                                            class="btn btn-danger return">반품</button>
+                                                                                    <button type="button"
+                                                                                            class="btn btn-primary purchase">정품</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -254,6 +264,8 @@
 
                                                                 </tbody>
                                                             </table>
+                                                            <!-- modal1 -->
+
 
                                                         </div>
 
@@ -262,8 +274,12 @@
                                                     <nav id="pagination-container" aria-label="Page navigation example"
                                                          style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                            <li class="page-item"
+                                                                th:classappend="${prevPage ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   th:if="${prevPage}"
+                                                                   th:href="@{'/qcCheck/qcCheckList?page=' + ${nowPage - 2} + '&size=10'}"
+                                                                   aria-label="Previous">
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
@@ -275,8 +291,11 @@
                                                                    th:text="${pageNumber}"></a>
                                                             </li>
 
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Next">
+                                                            <li class="page-item" th:classappend="${nextPage ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   th:if="${nextPage}"
+                                                                   th:href="@{'/qcCheck/qcCheckList?page=' + ${nowPage} + '&size=10'}"
+                                                                   aria-label="Next">
                                                                     <span aria-hidden="true">&raquo;</span>
                                                                 </a>
                                                             </li>
@@ -341,191 +360,7 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script>
-    var $window = $(window);
-    var nav = $('.fixed-button');
-        $window.scroll(function(){
-            if ($window.scrollTop() >= 200) {
-             nav.addClass('active');
-         }
-         else {
-             nav.removeClass('active');
-         }
-     });
-    function updateLocation(category) {
-        var newUrl = '/qcCheck/qcCheckList?size=10&page=0&processStatus=' + category;
-
-        window.location.href = newUrl;
-    }
-    function performSearch(){
-        var urlParams = new URLSearchParams(window.location.search);
-        var category = urlParams.get('processStatus');
-        var startDate = urlParams.get('startDate');
-        var endDate = urlParams.get('endDate');
-        var searchValue = document.getElementById('searchInput').value;
-
-        var encodedSearchValue = encodeURIComponent(searchValue);
-
-        if (!startDate || startDate === 'null') {
-            startDate = null;
-        }
-
-        if (!endDate || endDate === 'null') {
-            endDate = null;
-        }
-
-        window.location.href = '/qcCheck/qcCheckList?size=10&page=0&processStatus='+ category
-                                +'&search=' + encodedSearchValue
-                                + (startDate ? '&startDate=' + startDate : '')
-                                + (endDate ? '&endDate=' + endDate : '');
-    }
-     document.getElementById('searchInput').addEventListener('keyup', function (event) {
-        if (event.key === 'Enter') {
-            performSearch();
-        }
-    });
-    function gotoDetail(shipmentId){
-        var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
-
-        window.location.href = newUrl;
-    }
-
-    $(document).ready(function() {
-
-      $('input[name="daterange"]').daterangepicker({
-            timePicker: true,
-            startDate: moment().startOf('hour'),
-            endDate: moment().endOf('hour'),
-            locale: {
-                format: 'YYYY-MM-DD HH:mm:ss'
-            }
-       })
-       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
-            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
-            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('processStatus');
-            var search = $('#searchInput').val();
-
-            var newUrl =  '/qcCheck/qcCheckList?processStatus=' + category +
-                            "&search=" + encodeURIComponent(search) +
-                            "&startDate=" + startDate +
-                            "&endDate=" + endDate;
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-          window.location.href = newUrl;
-      });
-
-      $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
-          $(this).val('');
-      });
-
-        var modalList = $('.modalList');
-        $(".qcCheckModal").on('click', function(){
-            var shipmentId = $(this).val();
-            console.log(shipmentId)
-             $.ajax({
-            url: "/api/qcCheckModal?shipmentId=" +  shipmentId,
-            type: "GET",
-            dataType:"json",
-            success: function(data){
-                console.log(data);
-                var html = "";
-                html += '<input class="modalInput" name="shipmentId" value='+ data.shipmentId +' type="hidden" readOnly></input>';
-                html += '<input class="modalInput" name="companyId" value='+ data.materialId.companyId +' type="hidden" readOnly></input>';
-                html += '<input class="modalInput" name="materialMeasure" value='+ data.materialId.materialMeasure +' type="hidden" readOnly></input>';
-                html += '<input class="modalInput" name="materialPrice" value='+ data.materialId.materialPrice +' type="hidden" readOnly></input>';
-                html += '<input class="modalInput" name="materialCategory" value='+ data.materialId.materialCategory +' type="hidden" readOnly></input>';
-                html += '<input class="modalInput" name="materialNumber" value='+ data.materialId.materialId +' type="hidden" readOnly></input>';
-                html += '<input class="modalInput" name="manager" value='+ data.manager +' type="hidden" readOnly></input>';
-                html += '<tr><th>검수 번호</th><td><input name="qcCheckId" class="modalInput"  value='+ data.qcCheckId +' type="text" readOnly></input></td></tr>';
-                html += '<tr><th>자재 이름</th><td><input name="materialName" class="modalInput" value='+ data.materialId.materialName +'  type="text" readOnly></input></td></tr>';
-                html += '<tr><th>발주서 번호</th><td><input name="purchaseOrderId"  class="modalInput" value='+ data.purchaseOrderId  +' type="text" readOnly></input></td></tr>';
-                html += '<tr><th>검수 날짜</th><td><input class="modalInput" value='+ data.qccheckDate +' type="text" readOnly></input></td></tr>';
-                html += '<tr><th>자재 총 수량</th><td><input class="modalInput" value='+ data.qcCheckCnt +' type="text" readOnly></input></td></tr>';
-                html += '<tr><th>자재 수량</th><td><input name="qcCheckCnt" class="modalInput qcCheckCnt" data-shipment-id="'+ shipmentId +'"  type="text"></input></td></tr>';
-                modalList.html(html);
-            }
-        })
-         $(".purchase").on("click",function(e){
-                e.preventDefault();
-                 var modal = $(this).closest('.modal');
-
-                var qcCheckCnt = modal.find('.qcCheckCnt').val();
-                var qcCheckId = $('input[name=qcCheckId]').val();
-
-                console.log(qcCheckCnt)
-                console.log(qcCheckId)
-
-                $.ajax({
-                    url: "/api/updateQcCheckCnt?qcCheckId=" + qcCheckId + "&qcCheckCnt=" + qcCheckCnt,
-                    type: "PUT",
-                    contentType: 'application/json',
-                    success: function(response){
-                        window.location.href="/qcCheck/qcCheckList?size=10&page=0&processStatus=0"
-                        }
-                    })
-
-
-           })
-
-         $(".return").on("click",function(e){
-                e.preventDefault();
-                var modal = $(this).closest('.modal');
-
-                var qcCheckId = $('input[name=qcCheckId]').val();
-                var qcCheckCnt = modal.find('.qcCheckCnt').val();
-                var materialId = $('input[name=materialNumber]').val();
-                var manager = $('input[name=manager]').val();
-                var purchaseOrderId = $('input[name=purchaseOrderId]').val();
-                var manager = $('input[name=manager]').val();
-                var materialCategory = $('input[name=materialCategory]').val();
-                var materialMeasure = $('input[name=materialMeasure]').val();
-                var shipmentId = $('input[name=shipmentId]').val();
-                var materialPrice = $('input[name=materialPrice]').val();
-                var materialName = $('input[name=materialName]').val();
-                var materialNumber = $('input[name=materialNumber]').val();
-                var companyId = $('input[name=companyId]').val();
-
-                var qcCheckRequest = {
-                    materialId: materialId,
-                    manager: manager,
-                    purchaseOrderId: purchaseOrderId,
-                    materialCategory: materialCategory,
-                    materialMeasure: materialMeasure,
-                    shipmentId: shipmentId,
-                    materialPrice: materialPrice,
-                    materialNumber:materialNumber,
-                    materialName:materialName,
-                    companyId:companyId
-                };
-                $.ajax({
-                    url: "/api/fromQcCheckToShipment?cnt="+qcCheckCnt,
-                    type: "POST",
-                    contentType: 'application/json',
-                    data: JSON.stringify(qcCheckRequest),
-                    success: function(response){
-                        console.log(response)
-                       window.location.href="/qcCheck/qcCheckList?size=10&page=0&processStatus=0"
-                    }
-                 })
-
-                $.ajax({
-                    url: "/api/updateReturnStatus?qcCheckId=" + qcCheckId + "&qcCheckCnt=" + qcCheckCnt,
-                    type: "PUT",
-                    contentType: 'application/json',
-                    success: function(response){
-                        window.location.href="/qcCheck/qcCheckList?size=10&page=0&processStatus=0"
-                        }
-                    })
-         })
-      })
-
-
-
- });
-
-
-</script>
+<script src="/js/receive/qccheck.js"></script>
 </body>
 
 </html>

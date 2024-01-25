@@ -49,12 +49,16 @@ public class QcCheck {
     @Column(name = "qccheck_date")
     private LocalDateTime qccheckDate;
 
+    @Column(name = "purchase_order_detail_id")
+    private int purchaseOrderDetailId;
+
     @Builder
     public QcCheck(int qcCheckId,int returnStatus, int shipmentId,
                    Material materialId, String manager,
                    int qcCheckCnt,int passCnt,
                    int returnCnt, int processStatus,
-                   String purchaseOrderId, LocalDateTime qccheckDate){
+                   String purchaseOrderId, LocalDateTime qccheckDate,
+                   int purchaseOrderDetailId){
         this.qcCheckId = qcCheckId;
         this.returnStatus = returnStatus;
         this.materialId = materialId;
@@ -66,5 +70,6 @@ public class QcCheck {
         this.processStatus = processStatus;
         this.purchaseOrderId = purchaseOrderId;
         this.qccheckDate = qccheckDate;
+        this.purchaseOrderDetailId = purchaseOrderDetailId;
     }
 }

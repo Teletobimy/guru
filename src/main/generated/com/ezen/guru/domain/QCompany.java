@@ -29,8 +29,6 @@ public class QCompany extends EntityPathBase<Company> {
 
     public final StringPath email = createString("email");
 
-    public final NumberPath<Integer> materialId = createNumber("materialId", Integer.class);
-
     public final StringPath tel = createString("tel");
 
     public QCompany(String variable) {

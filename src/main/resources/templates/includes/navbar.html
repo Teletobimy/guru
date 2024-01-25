@@ -6,19 +6,26 @@
             <div class="pcoded-inner-navbar main-menu">
                 <div class="">
                     <div class="main-menu-header">
-                        <img class="img-40 img-radius" src="/images/avatar-4.jpg" alt="User-Profile-Image">
                         <div class="user-details">
-                            <span>John Doe</span>
-                            <span id="more-details">UX Designer<i class="ti-angle-down"></i></span>
+                            <span th:text="${name}"></span>
+                            <span id="more-details"  th:text="${#strings.contains(roles.toString(), 'A') ? '관리 부서':
+                                                                #strings.contains(roles.toString(), 'B') ? '구매 부서' :
+                                                                #strings.contains(roles.toString(), 'C') ? '입고 부서' :
+                                                                #strings.contains(roles.toString(), 'D') ? '출고 부서' :
+                                                                #strings.contains(roles.toString(), 'USER') ? '부서가 할당되지 않았습니다.' :
+                                                                #strings.contains(roles.toString(), 'ADMIN') ? '관리자' :
+                                                                '로그인을 해주세요.'}">
+                                <i class="ti-angle-down"></i>
+                            </span>
                         </div>
                     </div>
 
                     <div class="main-menu-content">
                         <ul>
                             <li class="more-details">
-                                <a href="#"><i class="ti-user"></i>View Profile</a>
-                                <a href="#!"><i class="ti-settings"></i>Settings</a>
-                                <a href="auth-normal-sign-in.html"><i class="ti-layout-sidebar-left"></i>Logout</a>
+                                <a href="/my/userInfo" th:style="${part == 'ADMIN'? 'display:none;' : ''}"><i class="ti-user" ></i>View Profile</a>
+                                <a href="/admin/userList"  th:style="${part == 'ADMIN' ? '' : 'display:none;'}"><i class="ti-settings"></i>Settings</a>
+                                <a th:href="@{/logout}"><i class="ti-layout-sidebar-left"></i>Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -91,28 +98,53 @@
                         </a>
                         <ul class="pcoded-submenu">
                             <li class=" ">
-                                <a href="/purchase/order">
+                                <a class="closeOrder">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">발주</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                    var closeOrderButton = document.querySelector('.closeOrder');
+
+                                    if (closeOrderButton) {
+                                        closeOrderButton.addEventListener('click', function () {
+                                            fetch('/purchase/closeOrder', {
+                                                method: 'PUT',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                },
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                console.log(data);
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                            });
+                                            location.href = '/purchase/order';
+                                        });
+                                    }
+                                    });
+                                </script>
                             </li>
                             <li class=" ">
-                                <a href="/company/list">
+                                <a href="/purchase/company_list">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">협력사</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href=" ">
+                                <a href="#">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs"> . </span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href=" ">
+                                <a href="#">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs"> . </span>
                                     <span class="pcoded-mcaret"></span>
@@ -142,7 +174,7 @@
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href="breadcrumb.html">
+                                <a href="/tradeList?page=0&size=10">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">거래 명세서</span>
                                     <span class="pcoded-mcaret"></span>
@@ -160,14 +192,28 @@
                             <li class=" ">
                                 <a href="/export/producePlanerList">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">생산계획서</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">생산계획서:[미출고]</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class=" ">
-                                <a href="/">
+                                <a href="/export/exportList">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">재고산출</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">생산계획서:[출고완료]</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="/export/materialStock">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">재고:[원자재]</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="/export/productStock">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">재고:[상품]</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

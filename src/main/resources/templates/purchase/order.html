@@ -71,10 +71,14 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header"
+             th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"
+        ></nav>
 
         <div class="pcoded-main-container" >
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
 
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
@@ -88,7 +92,7 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
-                                                <h4>발주</h4>
+                                                <h4>발주 목록</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -176,14 +180,14 @@
                                                             <tbody>
 
                                                             <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.id}+ ')'" th:each="list : ${list}">
-                                                                <th th:text="${list.id}"></th>
+                                                                <th th:text="${list.id}" class="data-id" th:attr="data-id=${list.id}"></th>
                                                                 <th th:each="code:${code}"
                                                                     th:if="${code.codeNum eq list.status and category eq -1}"
                                                                     th:text="${code.codeName}"></th>
                                                                 <th th:text="${list.companyName}"></th>
                                                                 <th th:text="|${list.materialName} 외..|"></th>
                                                                 <td th:text="${list.totalprice} + &#8361;"></td>
-                                                                <td th:text="${#temporals.format(list.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                <td th:text="${#temporals.format(list.deadline, 'yyyy-MM-dd')}"></td>
                                                             </tr>
 
                                                             </tbody>

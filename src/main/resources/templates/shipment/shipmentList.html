@@ -31,23 +31,39 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
-        .search-long{
-             width:90%;
-             display:flex;
-             justify-content:center;
-             padding:5px;
-             box-sizing:border-box;
-             margin :15px auto;
-             margin-top:0;
-             align-items:center;
-             border:#ddd 1px solid;
+        .input-box{
+         width:100%;
+         display:flex;
+         justify-content:end;
+         padding:5px;
+         box-sizing:border-box;
+         margin :15px auto;
+         margin-top:0;
+         align-items:center;
         }
         .pageA{
             color:#FFB64D;
         }
         .btn-warning{
             color:#fff;
+        }
+         input{
+            padding:5px 10px;
+        }
+         .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+            padding-right: 5px;
+            padding: 3px 0px;
+            text-align: center;
+        }
+        p{
+            padding:5px 10px;
         }
     </style>
 </head>
@@ -74,10 +90,16 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header"
+             th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"
+        >
+        </nav>
 
-        <div class="pcoded-main-container">
-            <div th:include="includes/navbar :: navbar"></div>
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"
+            ></div>
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
                     <div class="main-body">
@@ -109,17 +131,11 @@
                                                 <li th:each="code:${code}" class="nav-item">
                                                     <a class="nav-link"
                                                        data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
-                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
-                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
-                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
-                                                       th:text="${code.codeNum == 0 ? '전체보기' :
-                                                                  code.codeNum == 1 ? '손잡이' :
-                                                                  code.codeNum == 2 ? '프레임' :
-                                                                  code.codeNum == 3 ? '휠' : ''}">
+                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
+                                                       th:text="${code.codeName}">
                                                     </a>
                                                 </li>
 
@@ -127,15 +143,20 @@
                                             <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
-                                                    <div class="pcoded-search-box search-long" >
-
-                                                        <input type="text" placeholder="Search" id="searchInput"
-                                                               style="width:95%; border:none; margin-right:5px; ">
-                                                        <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
-                                                        <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
-                                                            <i class="ti-search" aria-hidden="true"></i>
-                                                        </p>
+                                                    <div class="pcoded-search-box input-box" >
+                                                        <div class="search-long">
+                                                            <input type="text" placeholder="search" id="searchInput" style="border:none;">
+                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
+                                                            <p class="search-icon" th:attr="onclick='performSearch()'"
+                                                               style="display:inline; margin:0;">
+                                                                <i class="ti-search" aria-hidden="true"></i>
+                                                            </p>
+                                                        </div>
+                                                        <div class="search-long" style="cursor:pointer;">
+                                                            <input style="border:none;cursor:pointer;" type="text" placeholder="choose date" name="daterange" value="" />
+                                                        </div>
                                                     </div>
+
                                                     <div class="card-block table-border-style">
 
                                                         <div class="table-responsive" id="shipment-container">
@@ -168,7 +189,7 @@
                                                                         th:if="${qcCheckList.shipmentId == list.shipmentId}"
                                                                         th:text="${qcCheckList.processStatus == 2 ? '검수중' :
                                                                                     qcCheckList.processStatus == 3 ? '검수 완료' : ''}"
-                                                                        style="color:009000;"></th>
+                                                                        style="color:#009000;"></th>
                                                                 </tr>
 
                                                                 </tbody>
@@ -237,7 +258,7 @@
     <![endif]-->
     <!-- Warning Section Ends -->
     <!-- Required Jquery -->
-    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+
     <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -257,46 +278,7 @@
     <script src="/js/pcoded.min.js"></script>
     <script src="/js/demo-12.js"></script>
     <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script>
-        var $window = $(window);
-        var nav = $('.fixed-button');
-            $window.scroll(function(){
-                if ($window.scrollTop() >= 200) {
-                 nav.addClass('active');
-             }
-             else {
-                 nav.removeClass('active');
-             }
-         });
-        function updateLocation(category) {
-            var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
-
-            window.location.href = newUrl;
-        }
-        function performSearch(){
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('category');
-            var searchValue = document.getElementById('searchInput').value;
-
-            var encodedSearchValue = encodeURIComponent(searchValue);
-
-            console.log(encodedSearchValue);
-            console.log('Category:', category);
-
-            window.location.href = '/shipment/shipmentList?size=10&page=0&category='+ category +'&keyword=' + encodedSearchValue;
-        }
-         document.getElementById('searchInput').addEventListener('keyup', function (event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        });
-        function gotoDetail(shipmentId){
-            var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
-
-            window.location.href = newUrl;
-        }
-
-    </script>
+    <script src="/js/receive/shipment.js"></script>
 </body>
 
 </html>

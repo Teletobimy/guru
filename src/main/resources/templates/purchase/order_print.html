@@ -88,10 +88,13 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header"
+             th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
         <div class="pcoded-main-container" >
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
 
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
@@ -122,76 +125,79 @@
                                         <div class="card">
 
                                             <div style="margin: auto; padding: 40px">
+                                                <button type="button" class="btn btn-primary complete-btn" th:onclick="printPage()"><i class="ti-printer"></i> 출력</button>
                                                 <th:block th:with="firstItem=${list[0]}">
-                                                    <h4 class="document-title" th:text="발주서"></h4>
-                                                    <table style="table-layout:auto;">
-                                                        <tbody>
-                                                        <tr>
-                                                            <th colspan="2">주문번호</th>
-                                                            <td colspan="2" th:text="${firstItem.id}"></td>
-                                                            <th colspan="2">회사명</th>
-                                                            <td colspan="2" th:text="${firstItem.companyName}"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th rowspan="2" colspan="2">계약일자</th>
-                                                            <td rowspan="2" colspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
-                                                            <th rowspan="1" colspan="2">사업자번호</th>
-                                                            <td colspan="2" th:text="${firstItem.companyId}"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th rowspan="1" colspan="2">대표자</th>
-                                                            <td colspan="2" th:text="${firstItem.ceo}"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th rowspan="2" colspan="2">납기일자</th>
-                                                            <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                            <th colspan="2" rowspan="2">담당자</th>
-                                                            <th>성명</th>
-                                                            <td>박주영</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>연락처</th>
-                                                            <td>010-3539-0819</td>
-                                                        </tr>
-                                                        <!---------------------------------------------------->
-                                                        <tr>
-                                                            <th colspan="2">제목</th>
-                                                            <td colspan="6" th:text="|${firstItem.materialName} 외..|"></td>
-                                                        </tr>
-                                                        <!---------------------------------------------------->
-                                                        <tr>
-                                                            <th>No</th>
-                                                            <th colspan="2">품명</th>
-                                                            <th>카테고리</th>
-                                                            <th>단가</th>
-                                                            <th>수량(단위)</th>
-                                                            <th colspan="2">금액</th>
+                                                    <div id="print-area">
+                                                        <h4 class="document-title" th:text="발주서"></h4>
+                                                        <table style="table-layout:auto;">
+                                                            <tbody>
+                                                            <tr>
+                                                                <th colspan="2">주문번호</th>
+                                                                <td colspan="2" th:text="${firstItem.id}"></td>
+                                                                <th colspan="2">회사명</th>
+                                                                <td colspan="2" th:text="${firstItem.companyName}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th rowspan="2" colspan="2">계약일자</th>
+                                                                <td rowspan="2" colspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                <th rowspan="1" colspan="2">사업자번호</th>
+                                                                <td colspan="2" th:text="${firstItem.companyId}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th rowspan="1" colspan="2">대표자</th>
+                                                                <td colspan="2" th:text="${firstItem.ceo}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th rowspan="2" colspan="2">납기일자</th>
+                                                                <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                <th colspan="2" rowspan="2">담당자</th>
+                                                                <th>성명</th>
+                                                                <td>박주영</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>연락처</th>
+                                                                <td>010-3539-0819</td>
+                                                            </tr>
+                                                            <!---------------------------------------------------->
+                                                            <tr>
+                                                                <th colspan="2">제목</th>
+                                                                <td colspan="6" th:text="|${firstItem.materialName} 외..|"></td>
+                                                            </tr>
+                                                            <!---------------------------------------------------->
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th colspan="2">품명</th>
+                                                                <th>카테고리</th>
+                                                                <th>단가</th>
+                                                                <th>수량(단위)</th>
+                                                                <th colspan="2">금액</th>
 
-                                                        </tr>
-                                                        <tr th:each="item, stat : ${list}">
-                                                            <td th:text="${stat.count}"></td>
-                                                            <td colspan="2" th:text="${item.materialName}"></td>
-                                                            <td th:text="${item.category}"></td>
-                                                            <td th:text="${item.price}"></td>
-                                                            <td th:text="${item.cnt}"></td>
-                                                            <td colspan="2" th:text="${item.totalprice}">
-                                                                <button class="btn btn-card btn-primary">발주</button>
-                                                            </td>
-                                                        </tr>
-                                                        <!---------------------------------------------------->
-                                                        <tr>
-                                                            <th colspan="3">합계(VAT 포함)</th>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td colspan="2"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="2">특기사항</th>
-                                                            <td colspan="6" th:text="${firstItem.memo}"></td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
+                                                            </tr>
+                                                            <tr th:each="item, stat : ${list}">
+                                                                <td th:text="${stat.count}"></td>
+                                                                <td colspan="2" th:text="${item.materialName}"></td>
+                                                                <td th:text="${item.category}"></td>
+                                                                <td th:text="${item.price}"></td>
+                                                                <td th:text="${item.cnt}"></td>
+                                                                <td colspan="2" th:text="${item.totalprice}">
+                                                                    <button class="btn btn-card btn-primary">발주</button>
+                                                                </td>
+                                                            </tr>
+                                                            <!---------------------------------------------------->
+                                                            <tr>
+                                                                <th colspan="3">합계(VAT 포함)</th>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td colspan="2"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2">특기사항</th>
+                                                                <td colspan="6" th:text="${firstItem.memo}"></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </th:block>
                                             </div>
                                         </div>
@@ -243,6 +249,20 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    var initBodyHtml;
 
+    function printPage() {
+        // 인쇄 전에 현재의 HTML을 저장
+        initBodyHtml = document.body.innerHTML;
+        // 인쇄 시 인쇄 영역으로 HTML을 변경
+        document.body.innerHTML = document.getElementById('print-area').innerHTML;
+        // 실제 인쇄 명령 실행
+        window.print();
+        // 인쇄 후에 HTML을 복원
+        document.body.innerHTML = initBodyHtml;
+        location.reload();
+    }
+</script>
 </body>
 </html>

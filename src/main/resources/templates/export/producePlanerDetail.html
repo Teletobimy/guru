@@ -30,7 +30,18 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <style>
+        .card .card-header span {
+            color: #919aa3;
+            display: block;
+            font-size: 13px;
+            margin-top: 1px;
+        }
         .btn-card {
             text-transform: uppercase;
             font-size: 13px;
@@ -39,8 +50,41 @@
             color: #fff;
             border-radius: 5px;
         }
+        .input-box{
+             width:100%;
+             display:flex;
+             justify-content:end;
+             padding:5px;
+             box-sizing:border-box;
+             margin :15px auto;
+             margin-top:0;
+             align-items:center;
+        }
+        .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+
+        }
+        .pageA{
+            color:#fff;
+        }
+        .btn-warning{
+            color:#fff;
+        }
+        .current-page {
+            color: #ab7967;
+        }
+        input{
+            padding:5px 10px;
+        }
+        p{
+            padding:5px 10px;
+            cursor: pointer;
+        }
+        .disabled{
+            color: rgba(170, 170, 170);
+        }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 
@@ -65,10 +109,10 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
         <div class="pcoded-main-container" >
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
 
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
@@ -97,7 +141,7 @@
                                                 </li>
                                                 <li class="breadcrumb-item"><a href="#!">출고</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/export/producePlanerList">생산계획서</a>
+                                                <li class="breadcrumb-item"><a href="/export/producePlanerList">생산계획서:[미출고]</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -112,62 +156,62 @@
                                 <!-- Hover table card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Hover table</h5>
-                                        <span>use class <code>table-hover</code> inside table element</span>
-                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
-                                        <div class="pcoded-search">
-                                            <span class="searchbar-toggle">  </span>
-                                            <div class="pcoded-search-box ">
-                                                <input type="text" placeholder="Search">
-                                                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+                                        <div class="col-lg-12">
+                                            <div class="card-block table-border-style">
+                                                <div class="table-responsive">
+                                                    <form action="/export/producePlanerDetail" method="post">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>원자재이름</th>
+                                                                <th>재고수량</th>
+                                                                <th>필요수량</th>
+                                                                <th>마감일</th>
+                                                                <th colspan="2">진행상태</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="item, index : ${producePlanerList}" th:class="${item.producePlanerStatus != 0 ? 'disabled' : ''}">
+                                                                <input type="hidden" name="producePlanerId" th:value="${producePlanerList[index.index].producePlanerId}">
+                                                                <input type="hidden" name="bicycleId" th:value="${producePlanerList[index.index].bicycleId}">
+                                                                <input type="hidden" name="materialId" th:value="${producePlanerList[index.index].materialId}">
+                                                                <input type="hidden" name="bicycleName" th:value="${producePlanerList[index.index].bicycleName}">
+                                                                <input type="hidden" name="produceBicycleCnt" th:value="${producePlanerList[index.index].produceBicycleCnt}">
+                                                                <input type="hidden" name="produceMaterialCnt" th:value="${producePlanerList[index.index].produceMaterialCnt}">
+                                                                <input type="hidden" name="producePlanerStatus" th:value="${producePlanerList[index.index].producePlanerStatus}">
+                                                                <th th:text="${item.materialName}"></th>
+                                                                <td th:text="${materialList[index.index].materialStock} +'('+ ${materialList[index.index].materialMeasure}+')'"></td>
+                                                                <td th:text="${item.produceMaterialCnt} +'('+ ${materialList[index.index].materialMeasure} + ')'"></td>
+                                                                <td th:text="${item.producePlanerDeadline}"></td>
+                                                                <td th:text="${codeList[index.index].codeName}"></td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-card btn-brown" onclick="submitRowData(this)" th:if="${producePlanerList[index.index].producePlanerStatus == 0}">불출</button>
+                                                                    <button type="button" class="btn btn-card btn-danger" onclick="submitRowData(this)" th:if="${producePlanerList[index.index].producePlanerStatus != 0}">불출 취소</button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card-block table-border-style">
-                                        <div class="table-responsive">
-                                            <form action="/export/producePlanerDetail" method="post">
-                                                <table class="table table-hover">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>원자재이름</th>
-                                                        <th>필요수량</th>
-                                                        <th>마감일</th>
-                                                        <th colspan="2">진행상태</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr th:each="item, index : ${producePlanerList}">
-                                                        <input type="hidden" name="producePlanerId" th:value="${producePlanerList[index.index].producePlanerId}">
-                                                        <input type="hidden" name="bicycleId" th:value="${producePlanerList[index.index].bicycleId}">
-                                                        <input type="hidden" name="materialId" th:value="${producePlanerList[index.index].materialId}">
-                                                        <input type="hidden" name="bicycleName" th:value="${producePlanerList[index.index].bicycleName}">
-                                                        <input type="hidden" name="producePlanerStatus" th:value="${producePlanerList[index.index].producePlanerStatus}">
-                                                        <th th:text="${item.materialName}"></th>
-                                                        <td th:text="${item.produceMaterialCnt}"></td>
-                                                        <td th:text="${item.producePlanerDeadline}"></td>
-                                                        <td th:text="${codeList[index.index].codeName}"></td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-card btn-brown" onclick="submitRowData(this)" th:if="${producePlanerList[index.index].producePlanerStatus == 0}">불출</button>
-                                                            <button type="button" class="btn btn-card btn-danger" onclick="cancelRowData(this)" th:if="${producePlanerList[index.index].producePlanerStatus != 0}">불출 취소</button>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </form>
+                                        <div class="card-header-right">
+                                            <ul class="list-unstyled card-option">
+                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Hover table card end -->
-
                             </div>
                             <!-- Page-body end -->
                         </div>
                     </div>
                     <!-- Main-body end -->
-
-                    <div id="styleSelector">
-
-                    </div>
                 </div>
             </div>
 
@@ -182,7 +226,6 @@
 <![endif]-->
 <!-- Warning Section Ends -->
 <!-- Required Jquery -->
-<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -190,12 +233,9 @@
 <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
 <!-- modernizr js -->
 <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
-<!-- classie js -->
-<script type="text/javascript" src="assets/js/classie/classie.js"></script>
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
@@ -205,6 +245,7 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script>
     function submitRowData(button) {
         var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
@@ -213,46 +254,52 @@
         var bicycleId = row.find('input[name="bicycleId"]').val();
         var materialId = row.find('input[name="materialId"]').val();
         var bicycleName = row.find('input[name="bicycleName"]').val();
+        var produceBicycleCnt = row.find('input[name="produceBicycleCnt"]').val();
+        var produceMaterialCnt = row.find('input[name="produceMaterialCnt"]').val();
         var producePlanerStatus = row.find('input[name="producePlanerStatus"]').val();
         // 나머지 데이터 가져오기
         var materialName = row.find('th:eq(0)').text();
-        var produceMaterialCnt = row.find('td:eq(0)').text();
+        var producePlanerDeadline = row.find('td:eq(2)').text();
 
-        if (producePlanerStatus == 0) {
-            // 현재 시간을 구함
-            var exportDate = new Date().toISOString();
-
-            // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
-            $.ajax({
-                type: 'POST',
-                url: '/export/producePlanerDetail',
-                contentType: 'application/json;charset=UTF-8',
-                data: JSON.stringify({
-                    producePlanerId: producePlanerId,
-                    bicycleId: bicycleId,
-                    materialId: materialId,
-                    bicycleName: bicycleName,
-                    materialName: materialName,
-                    exportCnt: produceMaterialCnt,
-                    exportDate: exportDate
-                }),
-                dataType: 'json', // 변경된 부분
-                success: function(response) {
-                    // 서버로부터의 응답 처리
-                    console.log(response);
-                    // 성공 시 페이지 새로고침
-                    location.reload();
-                },
-                error: function(error) {
-                    // 오류 발생 시 처리
-                    console.log(error);
-                    location.reload();
+        // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
+        $.ajax({
+            type: 'POST',
+            url: '/export/producePlanerDetail',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({
+                producePlanerId: producePlanerId,
+                bicycleId: bicycleId,
+                bicycleName: bicycleName,
+                produceBicycleCnt: produceBicycleCnt,
+                materialId: materialId,
+                materialName: materialName,
+                produceMaterialCnt: produceMaterialCnt,
+                producePlanerDeadline: producePlanerDeadline,
+                producePlanerStatus: producePlanerStatus
+            }),
+            dataType: 'json', // 변경된 부분
+            success: function(response) {
+                // 서버로부터의 응답 처리
+                console.log(response);
+                // 성공 시 페이지 새로고침
+                location.reload();
+            },
+            error: function (xhr, status, error){
+                if(xhr.status === 403){
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false,
+                      timer: 1500
+                    });
+                } else{
+                    console.error("Error: " , status, error);
                 }
-            });
-        } else {
-            // 이미 불출 완료된 경우에 대한 처리 추가
-            console.log('이미 불출 완료된 항목입니다.');
-        }
+            }
+
+        });
     }
 
     function cancelRowData(button) {
@@ -286,10 +333,19 @@
                 // 성공 시 페이지 이동
                 location.reload();
             },
-            error: function(error) {
-                // 오류 발생 시 처리
-                console.log(error);
-                location.reload();
+            error: function (xhr, status, error){
+                if(xhr.status === 403){
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false,
+                      timer: 1500
+                    });
+                } else{
+                    console.error("Error: " , status, error);
+                }
             }
         });
     }

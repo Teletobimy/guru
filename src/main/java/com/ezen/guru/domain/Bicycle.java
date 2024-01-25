@@ -2,11 +2,14 @@ package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.List;
+
 
 @Table(name = "bicycle")
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 @Setter
 @ToString
