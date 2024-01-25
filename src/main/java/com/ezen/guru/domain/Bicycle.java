@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Setter
 @ToString
 
 public class Bicycle {
