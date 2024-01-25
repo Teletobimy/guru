@@ -1,20 +1,25 @@
 package com.ezen.guru.controller.export;
 
 import com.ezen.guru.domain.Code;
+import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.export.ExportDTO;
 import com.ezen.guru.dto.export.IdRequest;
 import com.ezen.guru.dto.plan.BicycleDTO;
 import com.ezen.guru.dto.plan.MaterialDTO;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
+import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.export.ExportService;
 import com.ezen.guru.service.plan.BicycleService;
 import com.ezen.guru.service.plan.MaterialService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/export")
@@ -33,13 +40,28 @@ public class ExportController {
     private final BicycleService bicycleService;
 
     @GetMapping("/producePlanerList")
-    public String producePlanerList(Model model,
+    public String producePlanerList(Model model, HttpServletRequest request,
                                     @RequestParam(value = "size", defaultValue = "10") int size,
                                     @RequestParam(value ="page" ,defaultValue = "0") int page,
                                     @RequestParam(value = "keyword", required = false) String keyword,
                                     @RequestParam(value = "category", defaultValue = "-1", required = false) int category,
                                     @RequestParam(name = "startDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                     @RequestParam(name = "endDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
 
         System.out.println("category : " + category);
         Page<ProducePlanerDTO> producePlanerDTOList = exportService.findAll(size, page, category, keyword, startDate, endDate);
@@ -58,7 +80,21 @@ public class ExportController {
     }
 
     @GetMapping("/producePlanerDetail")
-    public String producePlanerDetail(@RequestParam("producePlanerId") String producePlanerId, Model model) {
+    public String producePlanerDetail(@RequestParam("producePlanerId") String producePlanerId, Model model, HttpServletRequest request) {
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         List<ProducePlanerDTO> list = exportService.findByProducePlanerId(producePlanerId);
         List<Code> codeList = exportService.findByCodeList(list);
@@ -76,13 +112,28 @@ public class ExportController {
     }
 
     @GetMapping("/exportList")
-    public String exportList(Model model,
+    public String exportList(Model model, HttpServletRequest request,
                                     @RequestParam(value = "size", defaultValue = "10") int size,
                                     @RequestParam(value ="page" ,defaultValue = "0") int page,
                                     @RequestParam(value = "keyword", required = false) String keyword,
                                     @RequestParam(name = "startDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                     @RequestParam(name = "endDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        //로그인세션
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
 
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
+        //출고데이터
         Page<ExportDTO> exportList = exportService.findExportList(size, page, keyword, startDate, endDate);
         List<ProducePlanerDTO> producePlanerList = new ArrayList<>();
 
@@ -99,23 +150,54 @@ public class ExportController {
     }
 
     @GetMapping("/exportDetail")
-    public String exportDetail(@RequestParam("producePlanerId") String producePlanerId, Model model) {
+    public String exportDetail(@RequestParam("producePlanerId") String producePlanerId, Model model, HttpServletRequest request) {
 
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
+        List<ExportDTO> export = exportService.findExport(producePlanerId);
         List<ProducePlanerDTO> list = exportService.findByProducePlanerId(producePlanerId);
-        List<Code> codeList = exportService.findByCodeList(list);
+        System.out.println("exportList : " + export);
+        System.out.println("producePlanerList : " + list);
 
-        model.addAttribute("producePlanerList", list);
-        model.addAttribute("codeList", codeList);
+        model.addAttribute("exportList", export);
+        model.addAttribute("producePlaner", list);
 
         return "export/exportDetail";
     }
 
     @GetMapping("/materialStock")
-    public String materialList(Model model,
+    public String materialList(Model model, HttpServletRequest request,
                                @RequestParam(value="size", defaultValue = "10") int size,
                                @RequestParam(value="page", defaultValue = "0") int page,
                                @RequestParam(value = "keyword", required = false, defaultValue = "") String materialName,
                                @RequestParam(value = "category", required = false, defaultValue = "-1") Integer  category) {
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
         System.out.println("--------------------");
         System.out.println("category : " + category);
         System.out.println("keyword : " + materialName);
@@ -130,10 +212,24 @@ public class ExportController {
     }
 
     @GetMapping("/productStock")
-    public String productList(Model model,
+    public String productList(Model model, HttpServletRequest request,
                               @RequestParam(value="size", defaultValue = "10") int size,
                               @RequestParam(value="page", defaultValue = "0") int page,
                               @RequestParam(value = "keyword", defaultValue = "", required = false) String bicycleName) {
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         Page<BicycleDTO> bicycles = bicycleService.getAllBicycles(bicycleName, PageRequest.of(page, size));
         model.addAttribute("bicycles", bicycles);
@@ -142,6 +238,7 @@ public class ExportController {
     }
 
     @PostMapping("/producePlanerDetail")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_D')")
     public ResponseEntity<?> producePlanerDetail(@RequestBody ProducePlanerDTO request) {
 
         System.out.println("----------------detail controller");
@@ -156,6 +253,7 @@ public class ExportController {
     }
 
     @PostMapping("/deleteExport")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_D')")
     public ResponseEntity<?> cancelExport(@RequestBody IdRequest request) {
 
         System.out.println("deleteExport---------------------------");
@@ -169,6 +267,7 @@ public class ExportController {
     }
 
     @PostMapping("/listExport")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_D')")
     public ResponseEntity<String> handleListExport(@RequestBody IdRequest request) {
         try {
             // producePlanerId 값으로 수행할 작업 수행
