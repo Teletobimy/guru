@@ -43,12 +43,6 @@
              align-items:center;
              border:#ddd 1px solid;
         }
-        .pageA{
-            color:#FFB64D;
-        }
-        .btn-warning{
-            color:#fff;
-        }
 
 
           .btn-card {
@@ -65,6 +59,19 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     display: inline-block; /* 텍스트 줄임 처리를 위한 설정 */
+}
+         .pageA{
+           background-color:#fff;
+           color:#FC6180;
+        }
+        .btn-warning{
+        background-color:#fff;
+            color:#FC6180;
+        }
+        .current-page {
+    background-color: #FC6180; /* 배경색을 원하는 색상으로 설정하세요 */
+    color: #fff; /* 텍스트 색상을 원하는 색상으로 설정하세요 */
+    /* 기타 스타일 속성들을 추가하세요 */
 }
     </style>
 </head>
@@ -173,8 +180,9 @@
                                                         <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
                                                             <i class="ti-search" aria-hidden="true"></i>
                                                         </p>
+                                                        <input type="text" name="datetimes"/>
                                                     </div>
-                                                    <a href="/plan/document_insert" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">견적서생성</a>
+                                                    <a href="/plan/quotation_insert" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">견적서생성</a>
                                                     <div class="card-block table-border-style">
 
 
@@ -182,51 +190,69 @@
                                                             <table class="table table-hover">
                                                                 <thead>
                                                                 <tr>
-                                                                    <th>아이디</th>
-                                                                    <th>자재 이름</th>
-                                                                    <th>출하 수량</th>
-                                                                    <th>자재 가격</th>
-                                                                    <th>자재 종류</th>
-                                                                    <th>회사명</th>
-                                                                    <th>출하 날짜</th>
+                                                                    <th>견적서ID</th>
+                                                                    <th>제출회사</th>
+                                                                    <th>사업자등록번호</th>
+                                                                    <th>견적가</th>
+                                                                    <th>견적등록일</th>
+                                                                    <th>견적유효</th>
+                                                                    <th>견적서상태</th>
+                                                                    <th>리드타임</th>
+                                                                    <th>거래조건</th>
+                                                                    <th>지불조건</th>
+                                                                    <th>견적서메모</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-
-
-
+                                                                <tr th:each = "quotation, itemStat : ${quotations}" style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${quotation.id}+ ')'">
+                                                                    <td th:text="${quotation.id}"></td>
+                                                                    <!-- <td th:text="${material.materialCode}"></td> -->
+                                                                    <td th:text="${quotation.company_name}"></td>
+                                                                    <td th:text="${quotation.company_id}"></td>
+                                                                    <td th:text="${quotation.quotation_totalprice}"></td>
+                                                                    <td th:text="${#temporals.format(quotation.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                    <td th:text="${#temporals.format(quotation.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                                    <td th:text="${quotation.status}"></td>
+                                                                    <td th:text="${quotation.leadTime}"></td>
+                                                                    <td th:text="${quotation.tradeTerms}"></td>
+                                                                    <td th:text="${quotation.paymentTerms}"></td>
+                                                                    <td th:class="${quotation.quotation_memo.length() > 50} ? 'ellipsis' : ''">
+                                                                    <span th:utext="${quotation.quotation_memo.length() > 50} ? ${#strings.substring(quotation.quotation_memo, 0, 50)} + '...' : ${quotation.quotation_memo}">
+                                                                    </span>
+                                                                    </td>
+                                                                </tr>
                                                                 </tbody>
                                                             </table>
 
                                                         </div>
 
                                                     </div>
-                                                    <!-- 페이지네이션
+                                                    <!-- 페이지네이션  -->
 
-                                                    <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
-                                                        <ul class="pagination" style="justify-content: end;">
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Previous">
-                                                                    <span aria-hidden="true">&laquo;</span>
-                                                                </a>
-                                                            </li>
-                                                            <li  class="page-item"
-                                                                 th:each="pageNumber:${#numbers.sequence(1, list.totalPages)}"
-                                                            >
-                                                                <a class="page-link pageA"
-                                                                   th:classappend="${pageNumber == (list.number + 1) ? 'btn-warning' : ''}"
-                                                                   th:href="@{'/shipment/shipmentList?page=' + ${pageNumber - 1} + '&size=10'}"
-                                                                   th:text="${pageNumber}"></a>
-                                                            </li>
+                                                   <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                                    <ul class="pagination" style="justify-content: end;">
+                                        <li th:class="${page.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                                            <a class="page-link" th:if="${page.number > 0}" th:href="@{'/plan/quotation?page=' + (${page.number} - 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}" aria-label="Previous">
 
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Next">
-                                                                    <span aria-hidden="true">&raquo;</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </nav>
-                                                    -->
+                                                <span aria-hidden="true" style="margin-top: 1px;">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li th:each="pageNumber : ${#numbers.sequence(1, page.totalPages)}" class="page-item"
+                                        >
+                                            <a th:classappend="${pageNumber == (page.number + 1) ? 'page-link current-page' : 'page-link pageA'}"
+                                               th:href="@{'/plan/quotation?page=' + (${pageNumber} - 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}"
+                                               th:text="${pageNumber}"></a>
+
+                                        </li>
+                                        <li th:class="${page.hasNext() ? 'page-item' : 'page-item disabled'}"
+                                            th:style="${page.hasNext() ? '' : 'display: none;'}">
+                                            <a class="page-link" th:if="${page.number != page.totalPages}" th:href="@{'/plan/quotation?page=' + (${page.number} + 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}" aria-label="Next">
+                                                <span aria-hidden="true" style="margin-top: 1px;">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
                                                 </div>
 
                                             </div>
@@ -265,7 +291,7 @@
     <![endif]-->
     <!-- Warning Section Ends -->
     <!-- Required Jquery -->
-    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -285,7 +311,23 @@
     <script src="/js/pcoded.min.js"></script>
     <script src="/js/demo-12.js"></script>
     <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+
     <script>
+        $(function() {
+  $('input[name="datetimes"]').daterangepicker({
+    timePicker: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(32, 'hour'),
+    locale: {
+      format: 'M/DD hh:mm A'
+    }
+  });
+});
+
         var $window = $(window);
         var nav = $('.fixed-button');
             $window.scroll(function(){
@@ -296,6 +338,12 @@
                  nav.removeClass('active');
              }
          });
+
+
+      function gotoDetail(bicycleId){
+            var newUrl = '/plan/bicycle_detail?bicycleId=' + bicycleId;
+           window.location.href = newUrl;
+        }
 
         function updateLocation(category) {
             var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
@@ -319,10 +367,11 @@
                 performSearch();
             }
         });
-        function gotoDetail(shipmentId){
-            var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
+        function gotoDetail(id){
+            //var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
 
-            window.location.href = newUrl;
+            //window.location.href = newUrl;
+            console.log(id);
         }
 
     </script>

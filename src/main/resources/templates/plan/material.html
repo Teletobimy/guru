@@ -181,25 +181,21 @@
                                                 <thead>
                                                 <tr>
                                                     <th>품목번호</th>
-                                                    <!--   <th>원자재코드</th> -->
                                                     <th>판매회사</th>
                                                     <th>원자재명</th>
                                                     <th>스펙</th>
-                                                    <th>재고</th>
                                                     <th>구매가</th>
                                                     <th>단위</th>
                                                     <th>카테고리</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                        <tr th:each="material : ${materials}">
+                                                        <tr th:each="material : ${materials}"  style="cursor:pointer;"  th:attr="onclick='gotoDetail('+ ${material.materialId}+ ')'">
 
                                                             <td th:text="${material.materialId}"></td>
-                                                            <!-- <td th:text="${material.materialCode}"></td> -->
                                                              <td th:text="${material.companyName}"></td>
                                                             <td th:text="${material.materialName}"></td>
                                                             <td th:text="${material.materialDescription}"></td>
-                                                            <td th:text="${material.materialStock}"></td>
                                                             <td th:text="${material.materialPrice}"></td>
                                                             <td th:text="${material.materialMeasure}"></td>
                                                             <td th:each="code:${code}"
@@ -307,6 +303,11 @@
             var newUrl = '/plan/material?size=10&page=0&materialCategory=' + category;
 
             window.location.href = newUrl;
+        }
+
+      function gotoDetail(materialId){
+            var newUrl = '/plan/material_detail?materialId=' + materialId;
+           window.location.href = newUrl;
         }
 
 

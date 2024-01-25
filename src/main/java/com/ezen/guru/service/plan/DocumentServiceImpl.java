@@ -37,11 +37,15 @@ public class DocumentServiceImpl implements DocumentService {
         DocumentDTO documentDTO = new DocumentDTO();
         documentDTO.setId(document.getId());
         documentDTO.setType(document.getType());
+        documentDTO.setBiddingNo(document.getBiddingNo());
         documentDTO.setCompanyId(document.getCompany_id());
         documentDTO.setTotalprice(document.getTotalprice());
         documentDTO.setRegdate(document.getRegdate());
         documentDTO.setDeadline(document.getDeadline());
         documentDTO.setStatus(document.getStatus());
+        documentDTO.setLeadTime(document.getLeadTime());
+        documentDTO.setPaymentTerms(document.getPaymentTerms());
+        documentDTO.setTradeTerms(document.getTradeTerms());
         documentDTO.setMemo(document.getMemo());
         return documentDTO;
     }

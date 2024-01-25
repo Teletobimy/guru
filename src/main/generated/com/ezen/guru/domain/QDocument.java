@@ -20,6 +20,8 @@ public class QDocument extends EntityPathBase<Document> {
 
     public static final QDocument document = new QDocument("document");
 
+    public final NumberPath<Integer> biddingNo = createNumber("biddingNo", Integer.class);
+
     public final StringPath company_id = createString("company_id");
 
     public final DateTimePath<java.time.LocalDateTime> deadline = createDateTime("deadline", java.time.LocalDateTime.class);
@@ -28,13 +30,19 @@ public class QDocument extends EntityPathBase<Document> {
 
     public final StringPath id = createString("id");
 
+    public final StringPath leadTime = createString("leadTime");
+
     public final StringPath memo = createString("memo");
+
+    public final StringPath paymentTerms = createString("paymentTerms");
 
     public final DateTimePath<java.time.LocalDateTime> regdate = createDateTime("regdate", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
 
     public final NumberPath<Integer> totalprice = createNumber("totalprice", Integer.class);
+
+    public final StringPath tradeTerms = createString("tradeTerms");
 
     public final NumberPath<Integer> type = createNumber("type", Integer.class);
 

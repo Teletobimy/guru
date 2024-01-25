@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .shadowTable{
+            box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -webkit-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -moz-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            border-radius:10px;
+
+        }
+        tr{
+            padding :20px;
+        }
+        th, td{
+            color: #000;
+            padding: 20px 40px;
+            font-size: 15px;
+        }
+        th{
+            padding-left:100px;
+        }
+        input{
+            border:none;
+        }
+        .container{
+            display: flex;
+            max-width: 1141px;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+            margin:30px auto;
+        }
+        .btn-display{
+         display: flex;
+         justify-content: center;
+         margin-bottom:20px;
+        }
+        .btn{
+            margin:10px;
+            font-weight:bold;
+        }
+        .btn-disabled-y{
+            background-color: rgba(254, 214, 150);
+            border-color: rgb(255, 185, 99);
+            color: #fff;
+            cursor: pointer;
+            transition: all ease-in 0.3s;
+        }
+        h2{
+            text-align:center;
+            color:black;
+            font-weight:bold;
+            padding-top:50px;
+            padding-bottom:50px;
+            border-bottom:2px dashed #ccc;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"></div>
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table bg-c-yellow"></i>
+                                            <div style="display:flex; align-items:center;">
+                                                <h4>출하 명세서 </h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="page-body">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="container">
+                                            <table width="70%" class="shadowTable" >
+                                                <tbody>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <h2 >출하 명세서</h2>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>출하 번호</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <th>회사명</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>회사 주소</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>사업자 번호</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>대표자</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>납기 일자</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>담당자</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>담당자 연락처</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>자재 품명</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>규격</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>자재 수량</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>단가</th>
+                                                    <td><input type="text" readonly></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th style="padding-bottom: 70px">합계</th>
+                                                    <td style="padding-bottom: 70px"><input type="text" readonly></td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="btn-display">
+                                        <button class="btn btn-warning">목록</button>
+
+                                            <button class="btn btn-warning" >검수</button>
+                                            <button class="btn btn-warning" onclick="printPage()">출력</button>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div id="styleSelector">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    var $window = $(window);
+    var nav = $('.fixed-button');
+        $window.scroll(function(){
+            if ($window.scrollTop() >= 200) {
+             nav.addClass('active');
+         }
+         else {
+             nav.removeClass('active');
+         }
+     });
+    function gotoList(){
+        var newUrl = '/shipment/shipmentList?size=10&page=0&category=-1'
+        window.location.href= newUrl;
+    }
+     function gotoEdit(url){
+    }
+     function remove(url){
+    }
+     function printPage() {
+        window.print();
+    }
+
+</script>
+</body>
+
+</html>
