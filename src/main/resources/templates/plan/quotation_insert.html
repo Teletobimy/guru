@@ -137,10 +137,10 @@
 
                                             </tr>
                                             <tr>
-                                                <th rowspan="2" colspan="2">주소</th>
+                                                <th rowspan="2" colspan="2">수신</th>
                                                 <td rowspan="2" colspan="3">
-
-                                                    <textarea cols="20" rows="4" style="width:100%" id="companyAddress" readonly></textarea>
+                                                    <p style="font-size: larger;"><u>GURO자전거</u></p>
+                                                    <p><u>권나현 대표 귀하</u></p>
                                                 </td>
                                                 <th rowspan="1" colspan="2">사업자번호</th>
                                                 <td colspan="3">
@@ -148,28 +148,56 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th rowspan="1" colspan="2">대표자</th>
+                                                <th rowspan="1" colspan="2">Bidding No.</th>
                                                 <td colspan="3">
-                                                    <input type="text" id="companyCeo" readonly>
+                                                    <input type="number" id="biddingNo">
+
+
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th rowspan="2" colspan="2">납기</th>
+                                                <th rowspan="2" colspan="2">주소</th>
                                                 <td colspan="3" rowspan="2">
-                                                    <input type="date" id="deadline">
+                                                    <textarea cols="20" rows="4" style="width:100%" id="companyAddress" readonly></textarea>
+
+
                                                 </td>
-                                                <th colspan="2" rowspan="2">담당자</th>
+                                                <th colspan="2" rowspan="2">대표자(혹은 담당자)</th>
                                                 <th>성명</th>
                                                 <td colspan="2">
-                                                    강현규
+                                                    대표<input type="text" id="companyCeo" readonly>
+
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th >연락처</th>
                                                 <td colspan="2">
-                                                    031-548-4664
+                                                    <input type="text" id="phoneNumber" readonly>
+
                                                 </td>
                                             </tr>
+                                                <tr>
+                                                    <th colspan="2">리드타임</th>
+                                                    <td colspan="3">
+                                                        <input type="text" id="leadTime">
+                                                    </td>
+                                                    <th colspan="2">거래조건</th>
+                                                    <td colspan="3">
+                                                        <input type="text" id="tradeTerms" >
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2">지불조건</th>
+                                                    <td colspan="3">
+                                                        <input type="text" id="paymentTerms">
+                                                    </td>
+                                                    <th colspan="2">납기일</th>
+                                                    <td colspan="3">
+                                                        <input type="date" id="deadline">
+                                                    </td>
+
+                                                </tr>
 
                                             <tr>
                                                 <th>No</th>
@@ -306,6 +334,8 @@
         document.getElementById("company_id").value = rowData[1];
         document.getElementById("companyAddress").value = rowData[5];
         document.getElementById("companyCeo").value = rowData[2];
+        document.getElementById("phoneNumber").value = rowData[3];
+
         // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
     }
 
@@ -565,12 +595,15 @@ document.getElementById('saveButton').addEventListener('click', function () {
 
     var quotationTotalPriceElement = document.querySelector('.total');
 var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
-
+  var biddingNo = document.getElementById('biddingNo').value;
    var company_id = document.getElementById('company_id').value;
     var company_name = document.getElementById("company_name").value;
     var deadlinePre = document.getElementById("deadline").value;
      var deadline = new Date(deadlinePre);
     var quotation_memo = document.getElementById("quotation_memo").value;
+    var leadTime = document.getElementById('leadTime').value;
+    var tradeTerms = document.getElementById('tradeTerms').value;
+    var paymentTerms = document.getElementById('paymentTerms').value;
 
     if(company_id.length<1){
     alert("사업자번호를 입력하세요");
@@ -591,12 +624,16 @@ var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
     // QuotationDTO 객체 구성
     var quotationDTO = {
         id:quotationId,
+        biddingNo:biddingNo,
         company_id:company_id,  // company_id도 서버에서 설정
         company_name: company_name,  // company_name도 서버에서 설정
         quotation_totalprice: quotationTotalPrice,  // 서버에서 계산
         regdate: null,  // 서버에서 설정
         deadline: deadline,  // 서버에서 설정
         status: 0,  // 서버에서 설정
+        leadTime: leadTime,
+        tradeTerms: tradeTerms,
+        paymentTerms: paymentTerms,
         quotation_memo: quotation_memo,  // 서버에서 설정
         quotationDetails: quotationDetailDTOList
     };
