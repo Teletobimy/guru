@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .btn-card {
+          text-transform: uppercase;
+          font-size: 13px;
+          padding: 5px 10px;
+          margin: 0px 10px;
+          color: #fff;
+          border-radius: 5px;
+      }
+       table{
+        border-collapse: collapse;
+        border-spacing: 0
+       }
+       th{
+           background-color: #f6f7fb;
+       color: #000;
+       }
+       th, td{
+           border: 1px solid #ccc;
+       padding: 10px;
+       }
+       input{
+           border:none;
+       }
+       .container{
+           display: flex;
+           max-width: 1141px;
+           flex-flow: column;
+           justify-content: center;
+           align-items: center;
+       }
+       .btn-display{
+        display: flex;
+        justify-content: center;
+        margin-bottom:20px;
+       }
+       button{
+           margin:10px;
+       }
+       textarea {
+       border: none;
+       resize: none;
+   }
+    </style>
+</head>
+
+<body>
+<!-- Pre-loader start -->
+
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"></div>
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
+                                            <div style="display:flex; align-items:center;">
+                                                <h4> 원자재상세 </h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="page-body">
+
+
+                                <div class="card">
+                                    <form id="modifyForm" method="post">
+                                    <div class="card-header">
+                                        <div class="container">
+                                        <h1>원자재상세</h1><br>
+
+                                            <table id="estimateTable" width="90%" >
+                                                <input type="hidden">
+                                            <tr>
+                                                <th >PID</th>
+                                                <td colspan="2">
+                                                    <input type="text" style="width: 100%;"
+                                                           id="materialId" name="materialId"
+                                                           th:value="${material.materialId}" readonly
+                                                    >
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th >원자재명</th>
+                                                <td colspan="2">
+                                                    <input type="text" style="width: 100%;"
+                                                           id="materialName" name="materialName"
+                                                           th:value="${material.materialName}" required
+                                                    >
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                    <th >회사명</th>
+                                                    <td >
+                                                        <input type="text" style="width: 100%;"
+                                                               id="companyName" name="companyName"
+                                                               th:value="${material.companyName}" required >
+                                                    </td>
+                                                    <td><input type="button" onclick="addCompany()"
+                                                                class="btn btn-card btn-primary"
+                                                                style="background-color: #FC6180; border-color: #FC6180;"
+                                                               value="회사찾기"
+                                                    ></td>
+                                                </tr>
+                                                <tr>
+                                                    <th >사업자등록증</th>
+                                                    <td colspan="2" >
+                                                        <input type="text"  style="width: 100%;"
+                                                               id="companyId" name="companyId"
+                                                               th:value="${material.companyId}" required >
+                                                    </td>
+                                                </tr>
+                                                <tr> <th >원자재설명</th>
+                                                    <td colspan="2">
+                                                        <textarea cols="80" rows="3"
+                                                                  id="materialDescription" name="materialDescription"
+                                                                  th:value="${material.materialDescription}"
+                                                                  th:text="${material.materialDescription}" required> </textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th >재고</th>
+                                                    <td colspan="2" >
+                                                        <input type="text" placeholder="기초재고를 입력하세요" style="width: 100%;"
+                                                               id="materialStock" name="materialStock"
+                                                               th:value="${material.materialStock}" required>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th >구매가</th>
+                                                    <td colspan="2" >
+                                                        <input type="text" placeholder="구매가 입력하세요(vat포함)" style="width: 100%;"
+                                                               id="materialPrice" name="materialPrice"
+                                                               th:value="${material.materialPrice}" required>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th >단위</th>
+                                                    <td colspan="2" >
+                                                        <input type="text" placeholder="kg, ea, pc 등 단위를 입력하세요" style="width: 100%;"
+                                                               id="materialMeasure" name="materialMeasure"
+                                                               th:value="${material.materialMeasure}" required>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th >자재종류</th>
+                                                    <td colspan="2" >
+                                                        <select id="materialCategory" name="materialCategory" style="border: none;"
+                                                                th:value="${material.materialCategory}">
+                                                            <option th:selected="${material.materialCategory}=='0'" value="0">원자재</option>
+                                                            <option th:selected="${material.materialCategory}=='1'" value="1">손잡이</option>
+                                                            <option th:selected="${material.materialCategory}=='2'" value="2">프레임</option>
+                                                            <option th:selected="${material.materialCategory}=='3'" value="3">휠</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+
+
+
+                                        </table>
+
+
+                                    </div>
+                                    </div>
+
+                                    <div class="btn-display">
+                                        <button type="submit" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;">수정</button>
+                                        <input type="button"
+                                               id="deleteButton"
+                                               class="btn btn-warning"
+                                               onclick="gotoList()"
+                                               style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="삭제"/>
+                                        <input type="button"
+                                               class="btn btn-warning"
+                                               onclick="gotoList()"
+                                               style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
+                                        <input type="reset" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
+                                    </div>
+                                    </form>
+
+
+
+                                </div>
+
+
+                            </div>
+                            <div id="styleSelector">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+
+
+
+  function gotoList(){
+    var url = '/plan/material';
+    window.location.href = url;
+}
+
+
+
+// 품목 추가를 위한 행 추가 기능 시작
+
+   function addCompany() {
+
+
+    var newWindow = window.open('/plan/company_search', '_blank', 'width=1000,height=800');
+    if (newWindow) {
+        newWindow.focus();
+    } else {
+        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+    }
+}
+
+      function comapnyInput(rowData) {
+        // rowData를 사용하여 각 ID에 값을 채우는 동작을 수행
+
+        // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
+        document.getElementById("companyName").value = rowData[0];
+        document.getElementById("companyId").value = rowData[1];
+        // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
+    }
+
+
+
+
+document.getElementById('deleteButton').addEventListener('click', function () {
+var materialId = document.getElementById('materialId').value;
+
+
+     var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+               alert("삭제완료");
+                window.location.href = '/plan/material';
+            } else {
+               alert("삭제실패");
+            }
+        }
+    };
+   xhr.open('POST', '/plan/material_delete', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   xhr.send(materialId);
+
+});
+
+    $(document).ready(function () {
+    $("#modifyForm").submit(function (e) {
+        e.preventDefault();
+
+        // Ajax로 폼 제출
+        $.ajax({
+            type: "POST",
+            url: "/plan/material_update",
+            data: $(this).serialize(),
+            success: function (response) {
+            alert("수정성공");
+
+                if (response.success) {
+
+                }
+                else{
+
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+});
+
+</script>
+</body>
+
+</html>

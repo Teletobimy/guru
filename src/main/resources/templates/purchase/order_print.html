@@ -62,6 +62,18 @@
             text-align: center;
             padding: 10px;
         }
+        #print-area {
+            box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -webkit-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -moz-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            padding: 40px;
+        }
+        .button-area {
+            padding-bottom: 40px;
+        }
+        .complete-btn {
+            margin-left: 595px;
+        }
     </style>
 </head>
 <body>
@@ -125,7 +137,11 @@
                                         <div class="card">
 
                                             <div style="margin: auto; padding: 40px">
-                                                <button type="button" class="btn btn-primary complete-btn" th:onclick="printPage()"><i class="ti-printer"></i> 출력</button>
+                                                <div class="button-area">
+                                                    <button type="button" class="btn btn-secondary" th:onclick="history.back()"><i class="ti-arrow-left"></i>뒤로</button>
+                                                    <button type="button" class="btn btn-primary complete-btn btn-success" th:onclick="printPage()"><i class="ti-printer"></i> 출력</button>
+                                                </div>
+
                                                 <th:block th:with="firstItem=${list[0]}">
                                                     <div id="print-area">
                                                         <h4 class="document-title" th:text="발주서"></h4>
@@ -133,35 +149,39 @@
                                                             <tbody>
                                                             <tr>
                                                                 <th colspan="2">주문번호</th>
-                                                                <td colspan="2" th:text="${firstItem.id}"></td>
+                                                                <td colspan="2" th:text="${firstItem.id}">
+                                                                </td>
                                                                 <th colspan="2">회사명</th>
                                                                 <td colspan="2" th:text="${firstItem.companyName}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="2" colspan="2">계약일자</th>
-                                                                <td rowspan="2" colspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                <th rowspan="1" colspan="2">사업자번호</th>
+                                                                <th colspan="2" rowspan="2">계약일</th>
+                                                                <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.regdate, 'yyyy. MM. dd.')}"></td>
+                                                                <th colspan="2">사업자번호</th>
                                                                 <td colspan="2" th:text="${firstItem.companyId}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="1" colspan="2">대표자</th>
+                                                                <th colspan="2">주소</th>
+                                                                <td colspan="2" th:text="${firstItem.address}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2" rowspan="2">마감일</th>
+                                                                <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy. MM. dd.')}"></td>
+                                                                <th rowspan="2">대표자</th>
+                                                                <th rowspan="1">성명</th>
                                                                 <td colspan="2" th:text="${firstItem.ceo}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th rowspan="2" colspan="2">납기일자</th>
-                                                                <td colspan="2" rowspan="2" th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                <th colspan="2" rowspan="2">담당자</th>
-                                                                <th>성명</th>
-                                                                <td>박주영</td>
+                                                                <th rowspan="1">연락처</th>
+                                                                <td colspan="2" th:text="${firstItem.tel}"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th>연락처</th>
-                                                                <td>010-3539-0819</td>
+                                                                <td colspan="8" style="border-left:none; border-right:none;"></td>
                                                             </tr>
-                                                            <!---------------------------------------------------->
                                                             <tr>
-                                                                <th colspan="2">제목</th>
-                                                                <td colspan="6" th:text="|${firstItem.materialName} 외..|"></td>
+                                                                <th colspan="1">Title</th>
+                                                                <td colspan="7"
+                                                                    th:text="${list.size() == 1 ? firstItem.materialName : firstItem.materialName + ' 외 ' + (#lists.size(list) - 1) + '건'}"></td>
                                                             </tr>
                                                             <!---------------------------------------------------->
                                                             <tr>
@@ -179,9 +199,7 @@
                                                                 <td th:text="${item.category}"></td>
                                                                 <td th:text="${item.price}"></td>
                                                                 <td th:text="${item.cnt}"></td>
-                                                                <td colspan="2" th:text="${item.totalprice}">
-                                                                    <button class="btn btn-card btn-primary">발주</button>
-                                                                </td>
+                                                                <td colspan="2" th:text="${item.materialprice}"></td>
                                                             </tr>
                                                             <!---------------------------------------------------->
                                                             <tr>
@@ -189,10 +207,20 @@
                                                                 <td></td>
                                                                 <td></td>
                                                                 <td></td>
-                                                                <td colspan="2"></td>
+                                                                <td colspan="2" th:text="|${firstItem.totalprice}|"></td>
                                                             </tr>
                                                             <tr>
-                                                                <th colspan="2">특기사항</th>
+                                                                <td colspan="8" style="border-left:none; border-right:none;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2">계약사항</th>
+                                                                <td colspan="6" th:utext="'공급 L/T : ' + ${firstItem.leadTime} + '<br/>' +
+                                                                                 '거래조건 : ' + ${firstItem.tradeTerms} + '<br/>' +
+                                                                                 '대금지불 : ' + ${firstItem.paymentTerms}">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2">비 고</th>
                                                                 <td colspan="6" th:text="${firstItem.memo}"></td>
                                                             </tr>
                                                             </tbody>
@@ -250,17 +278,9 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    var initBodyHtml;
-
     function printPage() {
-        // 인쇄 전에 현재의 HTML을 저장
-        initBodyHtml = document.body.innerHTML;
-        // 인쇄 시 인쇄 영역으로 HTML을 변경
         document.body.innerHTML = document.getElementById('print-area').innerHTML;
-        // 실제 인쇄 명령 실행
         window.print();
-        // 인쇄 후에 HTML을 복원
-        document.body.innerHTML = initBodyHtml;
         location.reload();
     }
 </script>

@@ -1,6 +1,7 @@
 package com.ezen.guru.dto.purchase;
 
 import com.ezen.guru.domain.Company;
+import com.ezen.guru.dto.purchase.validation.Unique;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddCompanyRequest {
 
+    @Unique
     @NotBlank(message = "사업자번호를 입력해주세요.")
     String companyId;
 
@@ -28,6 +30,9 @@ public class AddCompanyRequest {
     @Email(message = "올바른 이메일 형식이 아닙니다.")
     String companyEmail;
 
+    @NotBlank(message="우편번호를 입력해주세요.")
+    String companyZipcode;
+
     @NotBlank(message = "주소를 입력해주세요.")
     String companyAddress;
 
@@ -38,6 +43,7 @@ public class AddCompanyRequest {
                 .ceo(companyCeo)
                 .tel(companyTel)
                 .email(companyEmail)
+                .zipcode(companyZipcode)
                 .address(companyAddress)
                 .build();
     }

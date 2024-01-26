@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class OrderListViewResponse {
     private final String materialName;
     private final int totalprice;
     private final LocalDateTime deadline;
+    private final int purchaseOrderDetails;
 
 //    public OrderListViewResponse(PurchaseOrder purchaseOrder) {
 //        this.id = purchaseOrder.getId();

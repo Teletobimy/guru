@@ -32,36 +32,48 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
     <style>
-        table{
-         border-collapse: collapse;
-         border-spacing: 0
-        }
-        th{
-            background-color: #f6f7fb;
-    	color: #000;
-        }
-        th, td{
-            border: 1px solid #ccc;
-    	padding: 10px;
-        }
-        input{
-            border:none;
-        }
-        .container{
-            display: flex;
-            max-width: 1141px;
-            flex-flow: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .btn-display{
-         display: flex;
-         justify-content: center;
-         margin-bottom:20px;
-        }
-        button{
-            margin:10px;
-        }
+        .btn-card {
+          text-transform: uppercase;
+          font-size: 13px;
+          padding: 5px 10px;
+          margin: 0px 10px;
+          color: #fff;
+          border-radius: 5px;
+      }
+       table{
+        border-collapse: collapse;
+        border-spacing: 0
+       }
+       th{
+           background-color: #f6f7fb;
+       color: #000;
+       }
+       th, td{
+           border: 1px solid #ccc;
+       padding: 10px;
+       }
+       input{
+           border:none;
+       }
+       .container{
+           display: flex;
+           max-width: 1141px;
+           flex-flow: column;
+           justify-content: center;
+           align-items: center;
+       }
+       .btn-display{
+        display: flex;
+        justify-content: center;
+        margin-bottom:20px;
+       }
+       button{
+           margin:10px;
+       }
+        textarea {
+       border: none;
+       resize: none;
+   }
     </style>
 </head>
 
@@ -99,6 +111,7 @@
 
 
                                 <div class="card">
+                                    <form>
 
                                     <div class="card-header">
                                         <div class="container">
@@ -111,34 +124,37 @@
                                             <tr>
                                                 <th colspan="2">견적서번호</th>
                                                 <td colspan="3">
-                                                    <input type="text">
+                                                    <input type="text" th:value="${quotationId}" id="quotationId">
                                                 </td>
-                                                <th colspan="2">회사명<button id="openNewWindowButton">회사검색</button></th>
+                                                <th colspan="2">회사명<input type="button" onclick="addCompany()" value="회사검색"
+                                                                          class="btn-warning"
+                                                                          style="background-color: #FC6180; border-color: #FC6180;  margin:10px;"/></th>
                                                 <td colspan="3">
-                                                    <input type="text">
+                                                    <input type="text" id="company_name" readonly>
                                                 </td>
 
                                             </tr>
                                             <tr>
                                                 <th rowspan="2" colspan="2">주소</th>
                                                 <td rowspan="2" colspan="3">
-                                                    <input type="text">
+
+                                                    <textarea cols="20" rows="4" style="width:100%" id="companyAddress" readonly></textarea>
                                                 </td>
                                                 <th rowspan="1" colspan="2">사업자번호</th>
                                                 <td colspan="3">
-                                                    <input type="text">
+                                                    <input type="text" id="company_id" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th rowspan="1" colspan="2">대표자</th>
                                                 <td colspan="3">
-                                                    <input type="text">
+                                                    <input type="text" id="companyCeo" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th rowspan="2" colspan="2">참조</th>
+                                                <th rowspan="2" colspan="2">납기</th>
                                                 <td colspan="3" rowspan="2">
-                                                    <input type="text" placeholder="참조 입력하세요">
+                                                    <input type="date" id="deadline">
                                                 </td>
                                                 <th colspan="2" rowspan="2">담당자</th>
                                                 <th>성명</th>
@@ -152,12 +168,7 @@
                                                     031-548-4664
                                                 </td>
                                             </tr>
-                                            <!--
-                                            <tr>
-                                                <th colspan="2">제목</th>
-                                                <td colspan="6"></td>
-                                            </tr>
-                                            -->
+
                                             <tr>
                                                 <th>No</th>
                                                 <th>PID</th>
@@ -178,8 +189,12 @@
 
                                             <tr>
                                                 <td colspan="10">
-                                                    <button onclick="addRow()">품목추가하기</button>
-                                                    <button onclick="deleteRow()">품목삭제하기</button>
+                                                    <input type="button" onclick="addRow()" value="품목추가하기"
+                                                           class="btn-warning"
+                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
+                                                    <input type="button" onclick="deleteRow()" value="품목삭제하기"
+                                                           class="btn-warning"
+                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
                                                 </td>
                                             </tr>
 
@@ -195,10 +210,9 @@
                                             <tr>
                                                 <th colspan="2">특기사항</th>
                                                 <td colspan="8">
-                                                    <ol>
-                                                        <li>납기 일자 : <input type="text" ></li>
-                                                        <li>기    타 : <input type="text" ></li>
-                                                    </ol>
+
+                                                        <textarea style="width:100%;" cols="40" rows="6" id="quotation_memo"></textarea>
+
                                                 </td>
                                             </tr>
 
@@ -209,13 +223,14 @@
                                     </div>
 
                                     <div class="btn-display">
-                                        <button id="saveButton" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;">등록</button>
-                                        <button class="btn btn-warning"
+                                        <input type="button" id="saveButton" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="등록"/>
+                                        <input type="button"
                                                 th:attr="onclick='gotoList()'"
-                                                style="background-color: #FC6180; border-color: #FC6180;">목록</button>
+                                                class="btn btn-warning"
+                                                style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
                                         <input type="reset" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
                                     </div>
-
+                                    </form>
 
 
                                 </div>
@@ -265,22 +280,32 @@
 
 
   function gotoList(){
-    var url = '/plan/document';
+    var url = '/plan/quotation';
     window.location.href = url;
 }
 
 
-// 회사정보를 찾기 위한 새창열기 기능 시작
+  function addCompany() {
 
- document.getElementById('openNewWindowButton').addEventListener('click', function() {
+
     var newWindow = window.open('/plan/company_search', '_blank', 'width=1000,height=800');
     if (newWindow) {
         newWindow.focus();
     } else {
         alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
     }
-});
+}
 
+      function comapnyInput(rowData) {
+        // rowData를 사용하여 각 ID에 값을 채우는 동작을 수행
+
+        // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
+        document.getElementById("company_name").value = rowData[0];
+        document.getElementById("company_id").value = rowData[1];
+        document.getElementById("companyAddress").value = rowData[5];
+        document.getElementById("companyCeo").value = rowData[2];
+        // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
+    }
 
 
 // 행을 반대로 삭제하는 메서드
@@ -341,8 +366,8 @@ xhr.onreadystatechange = function() {
                 var row = table.insertRow(-1);
 
 
-                var cell = row.insertCell(0);
                    var idInput = "index"+rowNum;
+                var cell = row.insertCell(0);
                    cell.setAttribute("id", idInput);
                  cell.appendChild(document.createTextNode(""));
 
@@ -512,14 +537,20 @@ document.getElementById('saveButton').addEventListener('click', function () {
         var materialName = cells[2].textContent;
         var materialDescription = cells[3].textContent;
         var countNumber = parseFloat(cells[4].getElementsByTagName('input')[0].value);
+        if(isNaN(countNumber)){
+        alert("품목 수량을 입혁하세요");
+        cells[4].getElementsByTagName('input')[0].focus();
+        return false;
+        }
         var materialMeasure = cells[5].textContent;
         var materialPrice = parseFloat(cells[6].textContent);
         var totalPrice = parseFloat(cells[7].textContent);
+        var quotationId = document.getElementById('quotationId').value;
 
         // 데이터를 DTO로 만들어 List에 추가
         var quotationDetailDTO = {
             // 필드들
-
+            quotation_id : quotationId,
             material_id: materialId,
             materialName: materialName,
             quotationCnt: countNumber,
@@ -533,19 +564,44 @@ document.getElementById('saveButton').addEventListener('click', function () {
     var quotationTotalPriceElement = document.querySelector('.total');
 var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
 
+   var company_id = document.getElementById('company_id').value;
+    var company_name = document.getElementById("company_name").value;
+    var deadlinePre = document.getElementById("deadline").value;
+     var deadline = new Date(deadlinePre);
+    var quotation_memo = document.getElementById("quotation_memo").value;
+
+    if(company_id.length<1){
+    alert("사업자번호를 입력하세요");
+    document.getElementById('company_id').focus();
+    return false;
+    }
+    if(company_name.length<1){
+    alert("회사명을 입력하세요");
+    document.getElementById('company_name').focus();
+    return false;
+    }
+      if(deadlinePre.length<1){
+    alert("마감일을 입력하세요");
+    document.getElementById('deadline').focus();
+    return false;
+    }
+
     // QuotationDTO 객체 구성
     var quotationDTO = {
-
-        company_id: "456-12-78912",  // company_id도 서버에서 설정
-        company_name: "프레임택",  // company_name도 서버에서 설정
+        id:quotationId,
+        company_id:company_id,  // company_id도 서버에서 설정
+        company_name: company_name,  // company_name도 서버에서 설정
         quotation_totalprice: quotationTotalPrice,  // 서버에서 계산
         regdate: null,  // 서버에서 설정
-        deadline: null,  // 서버에서 설정
+        deadline: deadline,  // 서버에서 설정
         status: 0,  // 서버에서 설정
-        quotation_memo: "ASAP",  // 서버에서 설정
+        quotation_memo: quotation_memo,  // 서버에서 설정
         quotationDetails: quotationDetailDTOList
     };
-
+    if (quotationDetailDTOList.length<1){
+    alert("품목을 추가해 주세요");
+    return false;
+    }
     // List를 JSON 형태로 변환
     var quotationDTOJSON = JSON.stringify(quotationDTO);
 
@@ -554,9 +610,11 @@ var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log('Data saved successfully');
+                alert("견적서등록완료");
+                window.location.href = '/plan/quotation';
+
             } else {
-                console.log('Failed to save data. Status: ' + xhr.status);
+                alert("견적서등록실패");
             }
         }
     };

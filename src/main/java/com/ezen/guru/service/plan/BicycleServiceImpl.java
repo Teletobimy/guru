@@ -32,7 +32,7 @@ public class BicycleServiceImpl implements BicycleService {
         }
     }
 
-    private BicycleDTO convertToDTO(Bicycle bicycle) {
+    public BicycleDTO convertToDTO(Bicycle bicycle) {
         // 자전거 엔터티를 자전거 DTO로 변환
         BicycleDTO bicycleDTO = new BicycleDTO();
         // 속성을 맞게 매핑
@@ -44,20 +44,36 @@ public class BicycleServiceImpl implements BicycleService {
         // 필요한 경우 더 많은 매핑 추가
         return bicycleDTO;
     }
+    private Bicycle convertToBicycle(BicycleDTO bicycleDTO){
+        Bicycle bicycle = new Bicycle();
+        bicycle.setBicycleId(bicycleDTO.getBicycleId());
+        bicycle.setBicycleName(bicycleDTO.getBicycleName());
+        bicycle.setBicycleDescription(bicycleDTO.getBicycleDescription());
+        bicycle.setBicycleDescription(bicycle.getBicycleDescription());
+        bicycle.setBicycleStock(bicycleDTO.getBicycleStock());
+        bicycle.setBicyclePrice(bicycleDTO.getBicyclePrice());
 
-    @Override
-    public BicycleDTO getBicycleById(int bicycleId) {
-        return null;
+        return bicycle;
     }
 
     @Override
-    public BicycleDTO createBicycle(BicycleDTO bicycleDTO) {
-        return null;
+    public Bicycle saveBicycle(BicycleDTO bicycleDTO) {
+        Bicycle bicycle = convertToBicycle(bicycleDTO);
+        return bicycleRepository.save(bicycle);
     }
 
     @Override
     public void deleteBicycle(int bicycleId) {
-
+        bicycleRepository.deleteById(bicycleId);
     }
+
+
+
+    @Override
+    public Bicycle getBicycleById(int bicycleId) {
+
+        return bicycleRepository.findById(bicycleId).orElse(null);
+    }
+
 
 }

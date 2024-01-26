@@ -27,15 +27,4 @@ public class QuotationDetailDTO {
     private Integer quotationPrice;
 
 
-    public QuotationDetail toEntity() {
-        return QuotationDetail.builder()
-                .id(this.id)
-                .quotation(Quotation.builder().id(this.quotation_id).build()) // 예시로 Quotation을 만들어서 설정
-                .material_id(this.material_id)
-                .materialName(this.materialName)
-                .quotationCnt(this.quotationCnt)
-                .quotationMeasure(this.quotationMeasure)
-                .quotationPrice(this.quotationPrice)
-                .build();
-    }
 }

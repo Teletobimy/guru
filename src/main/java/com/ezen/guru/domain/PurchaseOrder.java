@@ -44,6 +44,15 @@ public class PurchaseOrder {
     @Column(name="purchase_order_deadline")
     private LocalDateTime deadline;
 
+    @Column(name="lead_time")
+    private String leadTime;
+
+    @Column(name="trade_terms")
+    private String tradeTerms;
+
+    @Column(name="payment_terms")
+    private String paymentTerms;
+
     @OneToMany(mappedBy = "purchaseOrder")
     private List<PurchaseOrderDetail> purchaseOrderDetails;
 

@@ -30,7 +30,21 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
+        .input-box{
+         width:100%;
+         display:flex;
+         justify-content:end;
+         padding:5px;
+         box-sizing:border-box;
+         margin :15px auto;
+         margin-top:0;
+         align-items:center;
+        }
         .btn-card {
             text-transform: uppercase;
             font-size: 13px;
@@ -43,8 +57,13 @@
             display: flex;
             align-items: center;
         }
-        .searched {
-            margin-top: 20px!important;
+        input{
+            padding:5px 10px;
+        }
+        .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+            padding-right: 5px;
         }
     </style>
 </head>
@@ -156,12 +175,15 @@
                                     <div class="tab-content tabs card-block">
                                         <div class="col-lg-12">
                                             <div class="tab-pane active" id="home1" role="tabpanel">
-                                                <div class="pcoded-search-box search-long" >
-                                                    <input type="text" placeholder="Search" id="searchInput"
-                                                           style="width:95%; border:none; margin-right:5px; ">
-                                                    <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
-                                                        <i class="ti-search" aria-hidden="true"></i>
-                                                    </p>
+                                                <div class="pcoded-search-box input-box" >
+                                                    <div class="search-long">
+                                                        <input type="text" placeholder="search" id="searchInput" style="border:none;">
+                                                        <p class="search-icon" th:attr="onclick='performSearch()'"
+                                                           style="display:inline; margin:0;">
+                                                            <i class="ti-search" aria-hidden="true"></i>
+                                                        </p>
+                                                    </div>
+                                                    <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
                                                 </div>
 
                                                 <div class="card-block table-border-style">
@@ -170,24 +192,24 @@
                                                             <thead>
                                                             <tr>
                                                                 <th>주문번호</th>
-                                                                <th th:if="${category == -1}">상태</th>
                                                                 <th>협력사</th>
                                                                 <th>품목명</th>
                                                                 <th>총액</th>
                                                                 <th>납기</th>
+                                                                <th th:if="${category == -1}">상태</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
 
-                                                            <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.id}+ ')'" th:each="list : ${list}">
-                                                                <th th:text="${list.id}" class="data-id" th:attr="data-id=${list.id}"></th>
-                                                                <th th:each="code:${code}"
-                                                                    th:if="${code.codeNum eq list.status and category eq -1}"
+                                                            <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${order.id}+ ')'" th:each="order : ${list}">
+                                                                <th th:text="${order.id}" class="data-id" th:attr="data-id=${order.id}"></th>
+                                                                <td th:text="${order.companyName}"></td>
+                                                                <td th:text="${order.purchaseOrderDetails == 1 ? order.materialName : order.materialName + ' 외 ' + (order.purchaseOrderDetails - 1) + '건'}"></td>
+                                                                <td th:text="${order.totalprice} + &#8361;"></td>
+                                                                <td th:text="${#temporals.format(order.deadline, 'yyyy-MM-dd')}"></td>
+                                                                <th style="color: #009000" th:each="code:${code}"
+                                                                    th:if="${code.codeNum eq order.status and category eq -1}"
                                                                     th:text="${code.codeName}"></th>
-                                                                <th th:text="${list.companyName}"></th>
-                                                                <th th:text="|${list.materialName} 외..|"></th>
-                                                                <td th:text="${list.totalprice} + &#8361;"></td>
-                                                                <td th:text="${#temporals.format(list.deadline, 'yyyy-MM-dd')}"></td>
                                                             </tr>
 
                                                             </tbody>
@@ -247,7 +269,6 @@
 <![endif]-->
 <!-- Warning Section Ends -->
 <!-- Required Jquery -->
-<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
@@ -259,8 +280,6 @@
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
-<!-- classie js -->
-<script type="text/javascript" src="assets/js/classie/classie.js"></script>
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
@@ -308,6 +327,40 @@
 
         window.location.href = newUrl;
     }
+    $(document).ready(function(){
+            $('input[name="daterange"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().endOf('hour'),
+            locale: {
+                format: 'YYYY-MM-DD HH:mm:ss'
+            }
+       })
+       $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
+            var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
+            var urlParams = new URLSearchParams(window.location.search);
+            var category = urlParams.get('processStatus');
+            var page = urlParams.get('page');
+            var size = urlParams.get('size');
+            var search = $('#searchInput').val();
+            if(category === null){
+                category = -1;
+            }
+            var newUrl =  "/purchase/order?page=" + page +
+                            "&size=" + size +
+                            "&category=" + category +
+                            "&keyword=" + encodeURIComponent(search) +
+                            "&startDate=" + startDate +
+                            "&endDate=" + endDate;
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+          window.location.href = newUrl;
+          });
+
+          $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+              $(this).val('');
+          });
+        })
 
 </script>
 </body>

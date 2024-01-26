@@ -35,6 +35,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <style>
         .btn-primary{
             color:#fff;
@@ -166,10 +168,10 @@
                                                                     <th th:text="${list.userName}"></th>
                                                                     <th th:text="${list.name}"></th>
                                                                     <td th:text="${list.email}"></td>
-                                                                    <td th:text="${#strings.contains(list.roles.toString(), 'A') ? '관리 부서':
-                                                                                        #strings.contains(list.roles.toString(), 'B') ? '구매 부서' :
-                                                                                        #strings.contains(list.roles.toString(), 'C') ? '입고 부서' :
-                                                                                        #strings.contains(list.roles.toString(), 'D') ? '출고 부서' : '부서를 선택해 주세요'}">
+                                                                    <td th:text="${list.part == 'A' ? '관리 부서':
+                                                                                   list.part == 'B' ? '구매 부서' :
+                                                                                   list.part == 'C' ? '입고 부서' :
+                                                                                   list.part == 'D' ? '출고 부서' : ''}">
                                                                     </td>
                                                                     <td>
                                                                         <select name="roles"

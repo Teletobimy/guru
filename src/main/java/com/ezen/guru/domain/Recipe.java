@@ -1,37 +1,37 @@
 package com.ezen.guru.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ezen.guru.config.RecipeId;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.io.Serializable;
+
 
 @Table(name = "recipe")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Recipe {
+@Setter
+@ToString
+@NoArgsConstructor
+public class Recipe implements Serializable {
 
-    @Id
-    @Column(name="bicycle_id", insertable = false, nullable = false)
-    private int bicycleId;
+    @EmbeddedId
+    private RecipeId id;
 
-    @Id
-    @Column(name="material_code", insertable = false, nullable = false)
-    private String materialCode;
+    @ManyToOne
+    @JoinColumn(name = "bicycle_id", insertable = false, updatable = false)
+    private Bicycle bicycle;
 
-    @Column(name="recipe_cnt")
+    @Column(name = "recipe_cnt")
     private int recipeCnt;
 
     @Builder
-    public Recipe(int bicycleId,
-                  String materialCode,
-                  int recipeCnt) {
-        this.bicycleId = bicycleId;
-        this.materialCode = materialCode;
+    public Recipe(RecipeId id, Bicycle bicycle, int recipeCnt) {
+        this.id = id;
+        this.bicycle = bicycle;
         this.recipeCnt = recipeCnt;
     }
+
+
 }

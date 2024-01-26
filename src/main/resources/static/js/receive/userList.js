@@ -19,25 +19,61 @@
         var userId = parent.find("input[name='userId']").val();
         var roles = parent.find("select[name='roles'] option:selected").val();
         console.log(roles)
-        $.ajax({
-            url: "/admin/updateRoles?userId=" + userId + "&roles=" + roles,
-            type : "PUT",
-            contentType:'application/json',
-            success:function(response){
-                window.location.href="/admin/userList";
-            }
-        })
+        Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, update it!"
+        }).then((result) => {
+             $.ajax({
+                        url: "/admin/updateRoles?userId=" + userId + "&roles=" + roles,
+                        type : "PUT",
+                        contentType:'application/json',
+                        success:function(response){
+                            window.location.href="/admin/userList";
+                        }
+                    })
+              if (result.isConfirmed) {
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success"
+                });
+              }
+        });
+
     })
     $('.deleteB').on('click',function(){
         var parent = $(this).closest('tr');
 
         var userId = parent.find("input[name='userId']").val();
-        $.ajax({
-            url: "/admin/deleteUser?userId=" + userId,
-            type : "DELETE",
-            contentType:'application/json',
-            success:function(response){
-                window.location.href="/admin/userList";
-            }
-        })
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+              $.ajax({
+                          url: "/admin/deleteUser?userId=" + userId,
+                          type : "DELETE",
+                          contentType:'application/json',
+                          success:function(response){
+                              window.location.href="/admin/userList";
+                          }
+                      })
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success"
+            });
+          }
+        });
+
     })

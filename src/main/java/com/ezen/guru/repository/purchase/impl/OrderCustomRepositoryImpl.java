@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Arrays.stream;
@@ -28,7 +29,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category) {
+    public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category, LocalDateTime startDate, LocalDateTime endDate) {
 
         QPurchaseOrder qOrder = QPurchaseOrder.purchaseOrder;
         QPurchaseOrderDetail qOrderDetail = QPurchaseOrderDetail.purchaseOrderDetail;
@@ -37,10 +38,13 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         BooleanBuilder whereCondition = new BooleanBuilder();
 
         if(keyword != null && !keyword.isEmpty()){
-            whereCondition.and(qOrderDetail.materialName.like("%" + keyword + "%"));
+            whereCondition.and(qOrder.id.like("%" + keyword + "%"));
         }
         if(category != -1){
             whereCondition.and(qOrder.status.eq(category));
+        }
+        if(startDate != null && endDate != null){
+            whereCondition.and(qOrder.deadline.between(startDate, endDate));
         }
 
         QueryResults<OrderListViewResponse> results = jpaQueryFactory
@@ -51,7 +55,8 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                         qCompany.companyName,
                         Expressions.stringTemplate("MIN({0})", qOrderDetail.materialName),
                         qOrder.totalprice,
-                        qOrder.deadline
+                        qOrder.deadline,
+                        qOrder.purchaseOrderDetails.size()
                 ))
                 .from(qOrder)
                 .leftJoin(qOrderDetail)

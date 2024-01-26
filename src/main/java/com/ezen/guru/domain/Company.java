@@ -27,6 +27,9 @@ public class Company {
     @Column(name="email")
     private String email;
 
+    @Column(name="zipcode")
+    private String zipcode;
+
     @Column(name="address")
     private String address;
 
@@ -36,12 +39,14 @@ public class Company {
                    String ceo,
                    String tel,
                    String email,
+                   String zipcode,
                    String address) {
         this.companyId = companyId;
         this.companyName = companyName;
         this.ceo = ceo;
         this.tel = tel;
         this.email = email;
+        this.zipcode = zipcode;
         this.address = address;
     }
 
