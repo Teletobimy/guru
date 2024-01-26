@@ -33,15 +33,18 @@
                         type : "PUT",
                         contentType:'application/json',
                         success:function(response){
-                            window.location.href="/admin/userList";
+
                         }
                     })
               if (result.isConfirmed) {
                 Swal.fire({
-                  title: "Deleted!",
+                  title: "Update!",
                   text: "Your file has been deleted.",
                   icon: "success"
+                }).then(()=>{
+                    window.location.href="/admin/userList";
                 });
+
               }
         });
 
