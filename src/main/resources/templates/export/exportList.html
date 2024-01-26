@@ -183,7 +183,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr th:each="item, index : ${exportList}" onclick="handleRowClick(this)">
+                                                                    <tr th:each="item, index : ${exportList}" style="cursor:pointer;" onclick="handleRowClick(this)">
                                                                         <th scope="row" th:text="${item.producePlanerId}"></th>
                                                                         <td th:text="${item.bicycleName}"></td>
                                                                         <td th:text="${producePlanerList[index.index].produceBicycleCnt}"></td>

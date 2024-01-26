@@ -310,14 +310,13 @@
     $(document).ready(function() {
 
       $('input[name="daterange"]').daterangepicker({
-  singleDatePicker: true,
-  showDropdowns: true,
-  minDate: '06/01/2013',
-  maxDate: '06/30/2015',
-  format: 'DD/MM/YYYY'
-}).on('hide.daterangepicker', function (ev, picker) {
-  $('.table-condensed tbody tr:nth-child(2) td').click();
-});
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().endOf('hour'),
+            locale: {
+                format: 'YYYY-MM-DD HH:mm:ss'
+            }
+       })
 
        $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
             var startDate = picker.startDate.format('YYYY-MM');
