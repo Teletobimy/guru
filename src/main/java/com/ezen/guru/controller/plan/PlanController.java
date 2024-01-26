@@ -4,16 +4,21 @@ package com.ezen.guru.controller.plan;
 
 import com.ezen.guru.config.RecipeId;
 import com.ezen.guru.domain.*;
+import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.plan.*;
 import com.ezen.guru.dto.purchase.CompanyListViewResponse;
+import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.plan.*;
 import com.ezen.guru.service.purchase.CompanyService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -22,7 +27,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.SplittableRandom;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -42,10 +49,25 @@ public class PlanController {
     public String item(Model model,
                        @RequestParam(value="size", defaultValue = "10") int size,
                        @RequestParam(value="page", defaultValue = "0") int page,
-                       @RequestParam(value = "bicycleName", required = false) String bicycleName){
+                       @RequestParam(value = "bicycleName", required = false) String bicycleName,
+                       HttpServletRequest request){
         Page<BicycleDTO> bicyclePage = bicycleService.getAllBicycles(bicycleName, PageRequest.of(page, size));
         List<BicycleDTO> bicycles = bicyclePage.getContent();
         if(bicycleName==null||bicycleName==""||bicycleName.length()<1){bicycleName = "";}
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
         model.addAttribute("bicycleName",bicycleName);
         model.addAttribute("bicycles", bicycles);
         model.addAttribute("page", bicyclePage);
@@ -55,12 +77,28 @@ public class PlanController {
 
     @GetMapping("/bicycle_detail")
     public String bicycle_detail(Model model,
-                                 @RequestParam(value = "bicycleId") Integer bicycleId
+                                 @RequestParam(value = "bicycleId") Integer bicycleId,
+                                 HttpServletRequest request
     ){
 
         Bicycle savedBicycle = bicycleService.getBicycleById(bicycleId);
         BicycleDTO bicycleDTO = bicycleService.convertToDTO(bicycleService.getBicycleById(bicycleId));
         List<Recipe> recipe = recipeService.findByBicycle(savedBicycle);
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
 
         model.addAttribute("bicycle", savedBicycle);
         model.addAttribute("recipes", recipe);
@@ -68,12 +106,28 @@ public class PlanController {
     }
 
     @GetMapping("/bicycle_insert")
-    public String bicycle_insert(Model model){
+    public String bicycle_insert(Model model,
+                                 HttpServletRequest request){
         System.out.println("아이템생성");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         return "plan/bicycle_insert";
     }
     @PostMapping("/bicycle_save")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String bicycle_save(@RequestBody BicycleDTO newBicycle) {
        Bicycle savedBicycle = bicycleService.saveBicycle(newBicycle);
         List<RecipeDTO> recipeList = newBicycle.getRecipes();
@@ -98,6 +152,7 @@ public class PlanController {
 
     @PostMapping("/bicycle_delete")
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> bicycle_delete(@RequestBody Integer bicycleId){
 
         try {
@@ -121,6 +176,7 @@ public class PlanController {
 
     @PostMapping("/recipe_add")
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> recipe_add (
             @RequestParam String previousCellValue,
             @RequestParam Integer bicycleIdValue
@@ -141,6 +197,7 @@ public class PlanController {
 
     @PostMapping("/recipe_update")
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> recipe_update(
             @RequestParam String previousCellValue,
             @RequestParam Integer previousInputValue,
@@ -166,6 +223,7 @@ public class PlanController {
 
     @PostMapping("/recipe_delete")
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> recipe_delete (
             @RequestParam String previousCellValue,
             @RequestParam Integer bicycleIdValue
@@ -188,7 +246,8 @@ public class PlanController {
                            @RequestParam(value="size", defaultValue = "10") int size,
                            @RequestParam(value="page", defaultValue = "0") int page,
                            @RequestParam(value = "materialName", required = false) String materialName,
-                           @RequestParam(value = "materialCategory", defaultValue = "-1") Integer  materialCategory
+                           @RequestParam(value = "materialCategory", defaultValue = "-1") Integer  materialCategory,
+                           HttpServletRequest request
                           ){
 
             Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size));
@@ -196,6 +255,21 @@ public class PlanController {
         List<MaterialDTO> materials = materialPage.getContent();
         if(materialName==null||materialName==""||materialName.length()<1){materialName = "";}
         List<Code> codeList = materialService.findByCodeCategory("material_category");
+
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
         model.addAttribute("materialName", materialName);
         model.addAttribute("materials", materials);
         model.addAttribute("page", materialPage);
@@ -208,12 +282,27 @@ public class PlanController {
     }
     @GetMapping("/material_detail")
     public String material_detail(
-            Model model, @RequestParam(value = "materialId") Integer materialId){
+            Model model, @RequestParam(value = "materialId") Integer materialId,
+            HttpServletRequest request){
         System.out.println("materialId : " + materialId);
 
         MaterialDTO materialDTO = materialService.getMaterialById(materialId);
         System.out.println(materialDTO);
         List<Code> codeList = materialService.findByCodeCategory("material_category");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         model.addAttribute("code",codeList);
         model.addAttribute("material", materialDTO);
@@ -221,23 +310,54 @@ public class PlanController {
     }
 
     @GetMapping("/material_insert")
-    public String material_insert(Model model){
+    public String material_insert(Model model, HttpServletRequest request){
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
 
         return "plan/material_insert";
     }
 
     @PostMapping("/material_save")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String material_save(
-            MaterialDTO materialDTO
+            Model model,
+            MaterialDTO materialDTO,
+            HttpServletRequest request
+
     ){
-        System.out.println(materialDTO);
        materialService.saveMaterial(materialDTO);
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         return "plan/material_insert";
     }
 
     @PostMapping("/material_update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     @ResponseBody
     public ResponseEntity<String> material_update(
             MaterialDTO materialDTO
@@ -253,6 +373,7 @@ public class PlanController {
     }
 
     @PostMapping("/material_delete")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     @ResponseBody
     public ResponseEntity<String> material_delete (
             @RequestBody Integer materialId
@@ -269,14 +390,38 @@ public class PlanController {
     public String item_search(Model model,
                               @RequestParam(value="size", defaultValue = "10") int size,
                               @RequestParam(value="page", defaultValue = "0") int page,
-                              @RequestParam(value = "keyword", required = false) String keyword,
-                              @RequestParam(value = "category", defaultValue = "-1") int category){
-        Page<MaterialDTO> materialPage = materialService.getAllMaterials(keyword, category, PageRequest.of(page, size));
-        List<MaterialDTO> materials = materialPage.getContent();
+                              @RequestParam(value = "materialName", required = false) String materialName,
+                              @RequestParam(value = "materialCategory", defaultValue = "-1") Integer  materialCategory,
+                              HttpServletRequest request
 
-        model.addAttribute("keyword", keyword);
+    ){
+        Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size));
+
+        List<MaterialDTO> materials = materialPage.getContent();
+        if(materialName==null||materialName==""||materialName.length()<1){materialName = "";}
+        List<Code> codeList = materialService.findByCodeCategory("material_category");
+
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+        model.addAttribute("materialName", materialName);
         model.addAttribute("materials", materials);
         model.addAttribute("page", materialPage);
+        model.addAttribute("code",codeList);
+
+        model.addAttribute("category",materialCategory);
+        System.out.println("codeList!!! : "+ codeList);
         return "plan/item_search";
     }
 
@@ -292,12 +437,28 @@ public class PlanController {
     @GetMapping("/quotation")
     public String quotation(Model model,
                             @RequestParam(value="size", defaultValue = "10") int size,
-                            @RequestParam(value="page", defaultValue = "0") int page
+                            @RequestParam(value="page", defaultValue = "0") int page,
+                            HttpServletRequest request
                             ){
         System.out.println("견적서접속요청");
 
         Page<QuotationDTO> QuotationPage = quotationService.findAllwithPageable(PageRequest.of(page, size));
         List<QuotationDTO> quotationDetailDTOList = QuotationPage.getContent();
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
         model.addAttribute("page", QuotationPage);
         model.addAttribute("quotations", quotationDetailDTOList);
 
@@ -305,21 +466,55 @@ public class PlanController {
     }
 
     @GetMapping("/procurementPlan")
-    public String procurementPlan(Model model){
+    public String procurementPlan(Model model,
+                                  HttpServletRequest request){
         List<DocumentDTO> documents = documentService.getAllProcurementPlan();
+
+
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
         model.addAttribute("documents", documents);
+
+
 
         return "plan/procurementPlan";
     }
     @GetMapping("/procurementPlan_insert")
-    public String procurementPlan_insert(Model model){
+    public String procurementPlan_insert(Model model, HttpServletRequest request){
         System.out.println("조달계획서생성");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
 
         return "plan/procurementPlan_insert";
     }
 
     @PostMapping("/save_quotation")
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String saveQuotation(@RequestBody QuotationDTO quotationDTO) {
 //        String quotationId = LocalDateTime.now().toString() + "-" + new Random().nextInt(10000);
 //        quotationDTO.setId(quotationId);
@@ -337,8 +532,23 @@ public class PlanController {
 
 
     @GetMapping("/document")
-    public String document(Model model){
+    public String document(Model model,
+                           HttpServletRequest request){
         List<DocumentDTO> documents = documentService.getAllDocuments();
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
         model.addAttribute("documents", documents);
         return "plan/document";
     }
@@ -346,35 +556,79 @@ public class PlanController {
     @GetMapping("/document/{documentId}")
     public String getDocumentWithDetails(
             @PathVariable("documentId")String documentId,
+            HttpServletRequest request,
             Model model
     ){
         DocumentDTO documents = documentService.findDocumentById(documentId);
         List<DocumentDetail> documentDetails = documentService.findDocumentDetailsByDocumentId(documentId);
 
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
         model.addAttribute("documents", documents);
         model.addAttribute("documentDetails", documentDetails);
         return "plan/document_detail_list";
     }
 
     @GetMapping("/quotation_insert")
-    public String documentInsert(Model model){
+    public String documentInsert(Model model, HttpServletRequest request){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String formattedDate = now.format(formatter);
         String quotationId = formattedDate.toString() +"00"+ new Random().nextInt(1000);
 
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
         model.addAttribute("quotationId",quotationId);
         return "plan/quotation_insert";
     }
-//
-//    @GetMapping("/company_search")
-//    public String company_search(Model model) {
-//        List<CompanyListViewResponse> list = companyService.getCompanyList().stream()
-//                .map(CompanyListViewResponse::new)
-//                .toList();
-//        model.addAttribute("list", list);
-//        return "plan/company_search";
-//    }
+
+    @GetMapping("/company_search")
+    public String company_search(Model model, HttpServletRequest request,
+                                 @RequestParam(value = "size", defaultValue = "10") int size,
+                                 @RequestParam(value ="page" ,defaultValue = "0") int page,
+                                 @RequestParam(value = "keyword", required = false) String keyword) {
+        Page<CompanyListViewResponse> companyList = companyService.companyList(size, page,keyword);
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
+        model.addAttribute("list", companyList);
+        return "plan/company_search";
+    }
 
     @GetMapping("/searchCompany")
     public String searchCompany(@RequestParam("name") String companyName, Model model) {

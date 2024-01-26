@@ -72,10 +72,12 @@
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
         <div class="pcoded-main-container">
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
                     <div class="main-body">
