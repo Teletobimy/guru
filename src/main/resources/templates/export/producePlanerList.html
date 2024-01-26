@@ -197,7 +197,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr th:each="item, index : ${producePlanerList}" onclick="handleRowClick(this)" th:class="${item.producePlanerStatus == 99 ? 'disabled' : ''}">
+                                                                    <tr th:each="item, index : ${producePlanerList}" onclick="handleRowClick(this)" th:class="${item.producePlanerStatus == 99 ? 'disabled' : ''}" style="cursor:pointer;">
                                                                         <th scope="row" th:text="${item.producePlanerId}"></th>
                                                                         <td th:text="${item.bicycleName}"></td>
                                                                         <td th:text="${item.produceBicycleCnt}"></td>

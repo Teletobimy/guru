@@ -44,27 +44,29 @@
 </head>
 <body>
 <h1>원자재 정보 검색</h1>
-<input type="text" id="materialID" placeholder="원자재ID를 입력하세요">
-<button onclick="searchMaterial()">검색</button>
+
 <div id="companyInfo"></div>
 <div class="card">
     <div class="card-header">
 
 
         <div class="pcoded-search">
-
+            <span class="searchbar-toggle">  </span>
             <div class="pcoded-search-box ">
+                <input type="text" placeholder="원자재명 검색" id="searchmaterialName" th:value="${materialName}" />
 
+
+                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
             </div>
         </div>
     </div>
     <div class="card-block table-border-style">
+
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th>품목번호</th>
-                    <th>원자재코드</th>
                     <th>판매회사</th>
                     <th>원자재명</th>
                     <th>스펙</th>
@@ -81,8 +83,7 @@
                 >
 
                     <td th:text="${material.materialId}"></td>
-                    <td th:text="${material.materialCode}"></td>
-                    <td th:text="${material.companyId}"></td>
+                    <td th:text="${material.companyName}"></td>
                     <td th:text="${material.materialName}"></td>
                     <td th:text="${material.materialDescription}"></td>
                     <td th:text="${material.materialStock}"></td>
@@ -93,39 +94,84 @@
                 </tr>
                 </tbody>
             </table>
+            <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
+                <ul class="pagination" style="justify-content: end;">
+                    <li th:class="${page.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                        <a class="page-link" th:if="${page.number > 0}" th:href="@{'/plan/item_search?page=' + (${page.number} - 1) + '&size=' + 10 + '&bicycleName='+${bicycleName}}" aria-label="Previous">
+
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(1, page.totalPages)}" class="page-item"
+                    >
+                        <a th:classappend="${pageNumber == (page.number + 1) ? 'page-link current-page' : 'page-link pageA'}"
+                           th:href="@{'/plan/item_search?page=' + (${pageNumber} - 1) + '&size=' + 10 + '&bicycleName='+${bicycleName}}"
+                           th:text="${pageNumber}"></a>
+
+                    </li>
+                    <li th:class="${page.hasNext() ? 'page-item' : 'page-item disabled'}"
+                        th:style="${page.hasNext() ? '' : 'display: none;'}">
+                        <a class="page-link" th:if="${page.number != page.totalPages}" th:href="@{'/plan/item_search?page=' + (${page.number} + 1) + '&size=' + 10 + '&bicycleName='+${bicycleName}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
 
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    function outPutRow(row) {
-        var materialId = row.querySelector("td:nth-child(1)").innerText; // 첫 번째 td의 값 가져오기
+    $(document).ready(function () {
+       // 검색 아이콘 클릭 시
+       $('.search-icon').on('click', function () {
+           // 검색어 입력란의 값을 가져옴
 
-          window.opener.check(materialId);
-    }
+           var materialName = $('#searchmaterialName').val();
 
-    function searchMaterial() {
-        var companyName = document.getElementById('materialID').value;
+               var urlParams = new URLSearchParams(window.location.search);
+               var url = '/plan/item_search?page=' + 0 + '&size=' + 10 + '&materialName=' + encodeURIComponent(materialName);
 
-        // AJAX를 사용하여 서버에 검색 요청을 보냄
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // 검색 결과를 받아서 companyInfo 영역에 표시
-                    document.getElementById('companyInfo').innerHTML = xhr.responseText;
-                } else {
-                    // 에러 처리
-                    document.getElementById('companyInfo').innerHTML = '검색 실패';
-                }
-            }
-        };
+               // 페이지 이동
+               window.location.href = url;
 
-        // 서버의 검색 기능을 사용하는 API 엔드포인트 URL을 설정
-        var url = '/plan/searchCompany?name=' + encodeURIComponent(companyName);
-        xhr.open('GET', url, true);
-        xhr.send();
-    }
+       });
+   });
+
+   function outPutRow(row) {
+       var materialId = row.querySelector("td:nth-child(1)").innerText; // 첫 번째 td의 값 가져오기
+
+         window.opener.check(materialId);
+   }
+
+
+
 </script>
 </body>
 </html>
