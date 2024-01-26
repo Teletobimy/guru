@@ -31,6 +31,8 @@ public class QCompany extends EntityPathBase<Company> {
 
     public final StringPath tel = createString("tel");
 
+    public final StringPath zipcode = createString("zipcode");
+
     public QCompany(String variable) {
         super(Company.class, forVariable(variable));
     }

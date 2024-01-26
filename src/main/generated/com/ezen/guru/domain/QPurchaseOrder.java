@@ -30,7 +30,11 @@ public class QPurchaseOrder extends EntityPathBase<PurchaseOrder> {
 
     public final StringPath id = createString("id");
 
+    public final StringPath leadTime = createString("leadTime");
+
     public final StringPath memo = createString("memo");
+
+    public final StringPath paymentTerms = createString("paymentTerms");
 
     public final ListPath<PurchaseOrderDetail, QPurchaseOrderDetail> purchaseOrderDetails = this.<PurchaseOrderDetail, QPurchaseOrderDetail>createList("purchaseOrderDetails", PurchaseOrderDetail.class, QPurchaseOrderDetail.class, PathInits.DIRECT2);
 
@@ -39,6 +43,8 @@ public class QPurchaseOrder extends EntityPathBase<PurchaseOrder> {
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
 
     public final NumberPath<Integer> totalprice = createNumber("totalprice", Integer.class);
+
+    public final StringPath tradeTerms = createString("tradeTerms");
 
     public QPurchaseOrder(String variable) {
         this(PurchaseOrder.class, forVariable(variable), INITS);
