@@ -161,7 +161,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="col-lg-12">
-                                            <button class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'}"><i class="ti-plus"></i>등록</button>
+                                            <button class="btn btn-card btn-primary btn-success" data-toggle="modal" th:attr="data-target=${'#exampleModal'}"><i class="ti-plus"></i>등록</button>
 
                                             <!-- Modal -->
                                             <div class="modal fade" th:attr="id='exampleModal'"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -200,7 +200,7 @@
                                                                         <tr>
                                                                             <th scope="row">주소 :</th>
                                                                             <td><input type="text" id="zipcode" name="zipcode" readonly>
-                                                                                <input type="button" class="btn btn-card btn-primary" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+                                                                                <input type="button" class="btn btn-card btn-primary btn-success" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -220,7 +220,7 @@
                                                             </form>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary" th:onclick="insertCompany()">등록</button>
+                                                            <button type="button" class="btn btn-primary btn-success" th:onclick="insertCompany()">등록</button>
                                                             <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
                                                         </div>
                                                     </div>
@@ -281,9 +281,9 @@
                                                                     th:id="${'address-' + item.companyId}"
                                                                     th:attr="data-company-id=${item.companyId}"></td>
                                                                 <td>
-                                                                    <button class="btn btn-card btn-primary" data-toggle="modal"
+                                                                    <button class="btn btn-card btn-primary btn-success" data-toggle="modal"
                                                                             th:attr="data-target=${'#modifyModal'+ item.companyId}">수정</button>
-                                                                    <button type="button" class="btn btn-card btn-primary"
+                                                                    <button type="button" class="btn btn-card btn-primary btn-success"
                                                                             th:onclick="deleteCompany(this)"
                                                                             th:attr="data-company-id=${item.companyId}">삭제</button>
                                                                 </td>
@@ -327,7 +327,7 @@
                                                                                                 <td><input type="text" name="updateZipcode"
                                                                                                            th:id="${'updateZipcode-' + item.companyId}"
                                                                                                            th:value="${item.zipcode}" readonly>
-                                                                                                    <input type="button" class="btn btn-card btn-primary"
+                                                                                                    <input type="button" class="btn btn-card btn-primary btn-success"
                                                                                                            th:attr="data-company-id=${item.companyId}"
                                                                                                            th:onclick="upexecDaumPostcode(this)" value="우편번호 찾기"></td>
                                                                                             </tr>
@@ -351,7 +351,7 @@
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <input type="hidden" class="updateId" th:value="${item.companyId}">
-                                                                                <button type="button" class="btn btn-primary modify-btn">수정</button>
+                                                                                <button type="button" class="btn btn-primary modify-btn btn-success">수정</button>
                                                                                 <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
                                                                             </div>
                                                                         </div>

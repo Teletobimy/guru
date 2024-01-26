@@ -17,28 +17,16 @@ public class OrderPrintViewResponse {
     private final String companyId;
     private final String ceo;
     private final String tel;
+    private final String email;
+    private final String address;
     private final String materialName;
     private final int category;
     private final int price;
     private final String cnt;
     private final int materialprice;
     private final int totalprice;
+    private final String leadTime;
+    private final String tradeTerms;
+    private final String paymentTerms;
     private final String memo;
-
-    public OrderPrintViewResponse(PurchaseOrderDetail detail) {
-        this.id = detail.getPurchaseOrder().getId();
-        this.regdate = detail.getPurchaseOrder().getRegdate();
-        this.deadline = detail.getPurchaseOrder().getDeadline();
-        this.companyName = detail.getPurchaseOrder().getCompany().getCompanyName();
-        this.companyId = detail.getPurchaseOrder().getCompany().getCompanyId();
-        this.ceo = detail.getPurchaseOrder().getCompany().getCeo();
-        this.tel = detail.getPurchaseOrder().getCompany().getTel();
-        this.materialName = detail.getMaterialName();
-        this.category = detail.getMaterialCategory();
-        this.price = detail.getMaterialPrice();
-        this.cnt = detail.getPurchaseOrderCnt() + " (" + detail.getMaterialMeasure() + ")";
-        this.materialprice = detail.getMaterialPrice() * detail.getPurchaseOrderCnt();
-        this.totalprice = detail.getPurchaseOrder().getTotalprice();
-        this.memo = detail.getPurchaseOrder().getMemo();
-    }
 }
