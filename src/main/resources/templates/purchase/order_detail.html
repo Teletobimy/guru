@@ -127,14 +127,20 @@
                                     <div class="card-header">
                                         <th:block th:with="firstItem=${list[0]}">
                                             <h5 th:if="${firstItem.status == 1}">모든 품목을 발주한 후 완료 처리가 가능합니다.</h5>
-                                            <button class="btn btn-card btn-primary"
+                                            <button class="btn btn-card btn-primary btn-success"
                                                     th:each="type:${type}"
                                                     th:if="${type.codeNum} == ${firstItem.type}"
                                                     th:text="|${type.codeName} 조회|"
                                                     th:onclick="|location.href='@{/plan/document/{documentId}(documentId=${firstItem.documentId})}'|"></button>
-                                            <button class="btn btn-card btn-primary"
-                                                    th:if="${firstItem.status != 1}"
+                                            <button class="btn btn-card btn-primary btn-success"
+                                                    th:if="${firstItem.status == 2}"
                                                     th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|">발주서 출력</button>
+                                            <button class="btn btn-card btn-primary btn-success"
+                                                    th:if="${firstItem.status == 3}"
+                                                    th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|">발주서 조회</button>
+                                            <button class="btn btn-card btn-primary btn-success"
+                                                    th:if="${firstItem.status == 3}"
+                                                    th:onclick="|location.href='@{/tradeDetail?purchaseOrderId={id}(id=${firstItem.id})}'|">거래명세서 조회</button>
                                         </th:block>
                                         <div class="card-header-right">
                                             <ul class="list-unstyled card-option">
@@ -159,7 +165,10 @@
                                                         <th>총액</th>
                                                         <th>계약일자</th>
                                                         <th>납기일자</th>
-                                                        <th>특기사항</th>
+                                                        <th>공급 L/T</th>
+                                                        <th>거래조건</th>
+                                                        <th>대금지불</th>
+                                                        <th>세부사항</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -167,11 +176,14 @@
                                                         <tr>
                                                             <input type="hidden" id="data-status" name="data-status" th:value="${firstItem.status}">
                                                             <th th:text="${firstItem.id}"></th>
-                                                            <th th:text="${firstItem.companyName}"></th>
-                                                            <th th:text="|${firstItem.materialName} 외..|"></th>
+                                                            <td th:text="${firstItem.companyName}"></td>
+                                                            <td th:text="${list.size() == 1 ? firstItem.materialName : firstItem.materialName + ' 외 ' + (#lists.size(list) - 1) + '건'}"></td>
                                                             <td th:text="${firstItem.totalprice} + &#8361;"></td>
-                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm:ss', 'Asia/Seoul')}"></td>
-                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm:ss', 'Asia/Seoul')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${#temporals.format(firstItem.deadline, 'yyyy-MM-dd HH:mm')}"></td>
+                                                            <td th:text="${firstItem.leadTime}"></td>
+                                                            <td th:text="${firstItem.tradeTerms}"></td>
+                                                            <td th:text="${firstItem.paymentTerms}"></td>
                                                             <td th:text="${firstItem.memo}"></td>
                                                         </tr>
                                                     </th:block>
@@ -220,41 +232,57 @@
                                                         <td th:text="${item.price} + &#8361;" id="price" th:attr="data-mat-price=${item.price}"></td>
                                                         <td th:text="${item.cnt}"></td>
                                                         <td th:if="${item.status != 1}" th:text="|${item.qccheckCnt + ' (' + item.measure + ')'}|"></td>
-                                                        <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
+                                                        <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary btn-success" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
                                                         <td th:if="${item.check == 1 && item.status == 1}">
-                                                            <button class="btn btn-card btn-disabled disabled">발주</button>
-                                                            <button type="button" class="btn btn-card btn-primary" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
+                                                            <button class="btn btn-card btn-disabled disabled btn-success">발주</button>
+                                                            <button type="button" class="btn btn-card btn-primary btn-success" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
                                                         </td>
-                                                        <td th:if="${item.status == 2}"><button class="btn btn-card btn-disabled disabled">발주완료</button></td>
-                                                        <td th:if="${item.status == 3}"><button class="btn btn-card btn-disabled disabled">발주마감</button></td>
+                                                        <td th:if="${item.status == 2}"><button class="btn btn-card btn-disabled disabled btn-success">발주완료</button></td>
+                                                        <td th:if="${item.status == 3}"><button class="btn btn-card btn-disabled disabled btn-success">발주마감</button></td>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" th:attr="id=${'exampleModal'+ item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <th class="modal fade" th:attr="id=${'exampleModal'+ item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                                                                        <h5 class="modal-title" id="exampleModalLabel">품목 발주 확인</h5>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true" style="font-size:30px;">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <input type="hidden" th:value="${item.check}">
-                                                                        <p th:text="|품목명 : ${item.materialName}|"></p>
-                                                                        <p th:each="code:${code}"
-                                                                           th:if="${code.codeNum} == ${item.category}"
-                                                                           th:text="|카테고리 : ${code.codeName}|"></p>
-                                                                        <p th:text="|수량 (단위) : ${item.cnt}|"></p>
-                                                                        <p th:text="|총액 : ${item.materialprice}&#8361;|"></p>
-                                                                        <p>발주하시겠습니까?</p>
+                                                                        <table class="table">
+                                                                            <tr th:attr="data-item-check=${item.check}">
+                                                                                <th scope="row">품목명 :</th>
+                                                                                <td th:text="${item.materialName}"></td>
+                                                                            </tr>
+                                                                            <tr th:attr="data-item-check=${item.check}">
+                                                                                <th scope="row">카테고리 :</th>
+                                                                                <td th:each="code:${code}"
+                                                                                    th:if="${code.codeNum} == ${item.category}"
+                                                                                    th:text="${code.codeName}"></td>
+                                                                            </tr>
+                                                                            <tr th:attr="data-item-check=${item.check}">
+                                                                                <th scope="row">수량(단위) :</th>
+                                                                                <td th:text="${item.cnt}"></td>
+                                                                            </tr>
+                                                                            <tr th:attr="data-item-check=${item.check}">
+                                                                                <th scope="row">총액 :</th>
+                                                                                <td th:text="|${item.materialprice}&#8361;|"></td>
+                                                                            </tr>
+                                                                            <tr th:attr="data-item-check=${item.check}">
+                                                                                <th scope="row">발주하시겠습니까?</th>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                        </table>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary order-btn" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">예</button>
+                                                                        <button type="button" class="btn btn-primary order-btn btn-success" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">예</button>
                                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </th>
                                                         <!-- Modal End -->
 
                                                     </tr>
@@ -265,12 +293,11 @@
                                                 <th:block th:with="firstItem=${list[0]}">
                                                     <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
                                                     <div th:if="${firstItem.status == 1}" style="display: inline-block;">
-                                                        <button type="button" class="btn btn-primary complete-btn" style="margin-right: 5px;" th:onclick="toShipment(this);" th:attr="data-id=${firstItem.id}">완료</button>
-                                                        <button class="btn btn-disabled disabled uncompleted-btn" >완료</button>
+                                                        <button type="button" class="btn btn-primary complete-btn btn-success" style="margin-right: 5px;" th:onclick="toShipment(this);" th:attr="data-id=${firstItem.id}">완료</button>
+                                                        <button class="btn btn-disabled disabled uncompleted-btn btn-success" >완료</button>
                                                     </div>
                                                     <div th:if="${firstItem.status == 2}" style="display: inline-block;">
-                                                        <button type="button" class="btn btn-primary complete-btn" style="margin-right: 5px;" th:onclick="#" th:attr="data-id=${firstItem.id}">일정등록</button>
-                                                        <button type="button" class="btn btn-primary complete-btn" style="margin-right: 5px;" data-toggle="modal" th:attr="data-target=${'#closeModal'+ firstItem.id}">발주마감</button>
+                                                        <button type="button" class="btn btn-primary complete-btn btn-success" style="margin-right: 5px;" data-toggle="modal" th:attr="data-target=${'#closeModal'+ firstItem.id}">발주마감</button>
 
                                                         <!-- Modal -->
                                                         <div class="modal fade" th:attr="id='closeModal'+${firstItem.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -283,12 +310,23 @@
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body text-start">
-                                                                        <p th:text="|주문번호: [${firstItem.id}]|"></p>
-                                                                        <p>검수완료수량을 반드시 확인해주세요.</p>
-                                                                        <p>발주를 정말 마감하시겠습니까?</p>
+                                                                        <table class="table">
+                                                                            <tr>
+                                                                                <th scope="row">주문번호 :</th>
+                                                                                <td th:text="${firstItem.id}"></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th scope="row">검수완료수량을 반드시 확인해주세요.</th>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th scope="row">발주를 정말 마감하시겠습니까?</th>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                        </table>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary order-btn" th:onclick="validateOrderClose(this)" th:attr="data-id=${firstItem.id}">예</button>
+                                                                        <button type="button" class="btn btn-primary order-btn btn-success" th:onclick="validateOrderClose(this)" th:attr="data-id=${firstItem.id}">예</button>
                                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
                                                                     </div>
                                                                 </div>
@@ -367,11 +405,38 @@
             success: function (response) {
                 console.log(response); // 성공적으로 응답을 받았을 때
                 $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
-
-                location.reload();
+                Swal.fire({
+                  title: "발주 완료",
+                  text: "",
+                  icon: "success",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.reload();}, 1500);
             },
-            error: function (error) {
-                console.error(error);
+            error: function (xhr, status, error){
+                if(xhr.status === 403){
+                    $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
+                    var message = xhr.responseText;
+                    Swal.fire({
+                      title: "Warning",
+                      text: message,
+                      icon: "error",
+                      showConfirmButton: false,
+                      timer: 1500
+                    });
+                } else if(xhr.status === 400){
+                    $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    Swal.fire({
+                      title: "Warning",
+                      text: errorResponse.message,
+                      icon: "error",
+                      showConfirmButton: false
+                    });
+                    setTimeout (function() {location.reload();}, 1500);
+                } else{
+                    console.error("Error: " , status, error);
+                }
             }
         });
     }
@@ -379,7 +444,7 @@
     //디테일 체크 0으로 바꾸는 함수(발주취소)
     function revertOrder(id) {
         Swal.fire({
-          title: "정말 취소하시겠습니까?",
+          title: "취소하시겠습니까?",
           text: "",
           icon: "warning",
           showCancelButton: true,
@@ -396,15 +461,36 @@
                 success: function (response) {
                     console.log(response); // 성공적으로 응답을 받았을 때
                 },
-                error: function (error) {
-                    console.error(error);
+                error: function (xhr, status, error) {
+                   if(xhr.status === 403){
+                        $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
+                        var message = xhr.responseText;
+                        Swal.fire({
+                          title: "Warning",
+                          text: message,
+                          icon: "error",
+                          showConfirmButton: false,
+                          timer: 1500
+                        });
+                   } else if(xhr.status === 400) {
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        Swal.fire({
+                          title: "Warning",
+                          text: errorResponse.message,
+                          icon: "error",
+                          showConfirmButton: false
+                        });
+                        setTimeout (function() {location.reload();}, 1500);
+                   } else{
+                        console.error("Error: " , status, error);
+                   }
                 }
             });
 
           if (result.isConfirmed) {
             Swal.fire({
-              title: "Success",
-              text: "성공적으로 취소되었습니다.",
+              title: "취소 완료",
+              text: "",
               icon: "success",
               showConfirmButton: false
             });
@@ -491,6 +577,7 @@
             Array.from(tableRows).forEach(function (row) {
                 // 각 행의 item.check 값 확인
                 var checkValue = parseInt(row.getAttribute('data-item-check'));
+
                 // item.check 값이 0인 경우, 완료되지 않았으므로 비활성화
                 if (checkValue !== 1) {
                     result = false;
@@ -528,9 +615,30 @@
                 });
                 setTimeout (function() {location.replace('/purchase/order');}, 1500);
             },
-            error: function (error) {
-                console.error(error);
-            }
+            error: function (xhr, status, error) {
+                   if(xhr.status === 403){
+                        $('#closeModal' + id).modal('hide'); // 모달 닫기
+                        var message = xhr.responseText;
+                        Swal.fire({
+                          title: "Warning",
+                          text: message,
+                          icon: "error",
+                          showConfirmButton: false,
+                          timer: 1500
+                        });
+                   } else if(xhr.status === 400) {
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        Swal.fire({
+                          title: "Warning",
+                          text: errorResponse.message,
+                          icon: "error",
+                          showConfirmButton: false
+                        });
+                        setTimeout (function() {location.reload();}, 1500);
+                   } else{
+                        console.error("Error: " , status, error);
+                   }
+                }
         });
     }
 </script>

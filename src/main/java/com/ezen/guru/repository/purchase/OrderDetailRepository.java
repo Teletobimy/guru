@@ -32,6 +32,9 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "d.qcCheckCnt, " +
             "d.materialMeasure, " +
             "d.purchaseOrder.totalprice, " +
+            "d.purchaseOrder.leadTime, " +
+            "d.purchaseOrder.tradeTerms, " +
+            "d.purchaseOrder.paymentTerms, " +
             "d.purchaseOrder.memo, " +
             "(d.materialPrice * d.purchaseOrderCnt), " +
             "d.check) " +
@@ -40,7 +43,7 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "JOIN d.material m " +
             "JOIN d.purchaseOrder.document t " +
             "WHERE d.purchaseOrder.id = :id " +
-            "ORDER BY d.materialName ASC")
+            "ORDER BY d.materialName")
     List<OrderDetailViewResponse> findByPurchaseOrder(@Param("id") String id); // where purchase_order_id = ?;
 
     @Query("SELECT distinct new com.ezen.guru.dto.purchase.OrderPrintViewResponse(" +
@@ -50,17 +53,23 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "d.purchaseOrder.company.companyName, " +
             "d.purchaseOrder.company.companyId, " +
             "d.purchaseOrder.company.ceo, " +
+            "d.purchaseOrder.company.tel, " +
+            "d.purchaseOrder.company.email, " +
+            "d.purchaseOrder.company.address, " +
             "d.materialName, " +
             "d.materialCategory, " +
             "d.materialPrice, " +
             "concat(d.purchaseOrderCnt, ' (', d.materialMeasure, ')'), " +
             "(d.materialPrice * d.purchaseOrderCnt), " +
             "d.purchaseOrder.totalprice, " +
+            "d.purchaseOrder.leadTime, " +
+            "d.purchaseOrder.tradeTerms, " +
+            "d.purchaseOrder.paymentTerms, " +
             "d.purchaseOrder.memo) " +
             "FROM PurchaseOrderDetail d " +
             "JOIN d.purchaseOrder p " +
             "WHERE d.purchaseOrder.id = :id " +
-            "ORDER BY d.materialName ASC")
+            "ORDER BY d.materialName")
     List<OrderPrintViewResponse> getPrintPage(@Param("id") String id); // where purchase_order_id = ?;
 
     @Modifying(clearAutomatically = true)

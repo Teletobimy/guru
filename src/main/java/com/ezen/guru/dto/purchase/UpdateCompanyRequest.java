@@ -26,5 +26,8 @@ public class UpdateCompanyRequest {
     private final String email;
 
     @NotBlank(message = "주소를 입력해주세요.")
+    private final String zipcode;
+
+    @NotBlank(message = "주소를 입력해주세요.")
     private final String address;
 }

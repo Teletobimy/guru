@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private final CompanyRepository companyRepository;
 
     @Override
-    public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category) {
-        return orderRepository.orderList(size, page, keyword, category);
+    public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category, LocalDateTime startDate, LocalDateTime endDate) {
+        return orderRepository.orderList(size, page, keyword, category,startDate,endDate);
     }
     @Override
     public List<Code> findByCodeCategory(String codeCategory) {

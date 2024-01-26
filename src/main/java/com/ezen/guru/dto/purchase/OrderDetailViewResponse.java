@@ -28,31 +28,10 @@ public class OrderDetailViewResponse {
     private final int qccheckCnt;
     private final String measure;
     private final int totalprice;
+    private final String leadTime;
+    private final String tradeTerms;
+    private final String paymentTerms;
     private final String memo;
     private final int materialprice;
     private final int check;
-
-    public OrderDetailViewResponse(PurchaseOrderDetail detail) {
-        this.type = detail.getPurchaseOrder().getDocument().getType();
-        this.id = detail.getPurchaseOrder().getId();
-        this.documentId = detail.getPurchaseOrder().getDocument().getId();
-        this.regdate = detail.getPurchaseOrder().getRegdate();
-        this.deadline = detail.getPurchaseOrder().getDeadline();
-        this.status = detail.getPurchaseOrder().getStatus();
-        this.companyId = detail.getPurchaseOrder().getCompany().getCompanyId();
-        this.companyName = detail.getPurchaseOrder().getCompany().getCompanyName();
-        this.detailId = detail.getId();
-        this.materialId = detail.getMaterial().getMaterialId();
-        this.materialName = detail.getMaterialName();
-        this.category = detail.getMaterialCategory();
-        this.price = detail.getMaterialPrice();
-        this.cnt = detail.getPurchaseOrderCnt() + " (" + detail.getMaterialMeasure() + ")";
-        this.orderCnt = detail.getPurchaseOrderCnt();
-        this.qccheckCnt = detail.getQcCheckCnt();
-        this.measure = detail.getMaterialMeasure();
-        this.totalprice = detail.getPurchaseOrder().getTotalprice();
-        this.memo = detail.getPurchaseOrder().getMemo();
-        this.materialprice = detail.getMaterialPrice() * detail.getPurchaseOrderCnt();
-        this.check = detail.getCheck();
-    }
 }

@@ -4,11 +4,12 @@ import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.*;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderService {
 
-    public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category);
+    public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category, LocalDateTime startDate, LocalDateTime endDate);
 
     public List<Code> findByCodeCategory(String codeCategory);
 

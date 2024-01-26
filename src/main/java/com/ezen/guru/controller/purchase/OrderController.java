@@ -11,13 +11,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,8 +42,9 @@ public class OrderController {
                                @RequestParam(value ="page" ,defaultValue = "0") int page,
                                @RequestParam(value = "keyword", required = false) String keyword,
                                @RequestParam(value = "category", defaultValue = "-1") int category,
-                               String id) {
-        Page<OrderListViewResponse> orderList = orderService.orderList(size, page,keyword,category);
+                               @RequestParam(name = "startDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                               @RequestParam(name = "endDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate) {
+        Page<OrderListViewResponse> orderList = orderService.orderList(size, page,keyword,category,startDate,endDate);
         List<Code> codeList = orderService.findByCodeCategory("purchase_order_status");
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
@@ -153,12 +157,13 @@ public class OrderController {
         model.addAttribute("list", companyList);
         return "purchase/company_list";
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PostMapping("/company/add")
     public ResponseEntity<String> addToCompany(@Valid @RequestBody AddCompanyRequest company) {
         Company newCompany = companyService.newCompany(company);
         return new ResponseEntity<>("협력사가 등록되었습니다.", HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @DeleteMapping("/company/delete/{companyId}")
     public ResponseEntity<String> removeCompany(@PathVariable String companyId) {
         companyService.removeCompany(companyId);

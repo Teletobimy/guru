@@ -43,6 +43,7 @@ public class CompanyCustomRepositoryImpl implements CompanyCustomRepository {
                         qCompany.ceo,
                         qCompany.tel,
                         qCompany.email,
+                        qCompany.zipcode,
                         qCompany.address
                 ))
                 .from(qCompany)

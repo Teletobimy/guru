@@ -17,6 +17,7 @@ public interface CompanyRepository extends JpaRepository<Company, Integer>,Compa
             "ceo = :#{#company.ceo}, " +
             "tel = :#{#company.tel}, " +
             "email = :#{#company.email}, " +
+            "zipcode = :#{#company.zipcode}, " +
             "address = :#{#company.address} " +
             "WHERE companyId = :companyId")
     public void update(@Param("companyId") String companyId, @Param("company") UpdateCompanyRequest company);
@@ -26,4 +27,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer>,Compa
     @Query("DELETE FROM Company " +
             "WHERE companyId = :companyId")
     public void remove(@Param("companyId") String companyId);
+
+    boolean existsByCompanyId(String companyId);
 }
