@@ -68,6 +68,13 @@ public class ExportService {
         return list.stream().map(ProducePlanerDTO::new).toList();
     }
 
+    public List<ExportDTO> findExport(String producePlanerId) {
+
+        List<Export> list = exportRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
+
+        return list.stream().map(ExportDTO::new).toList();
+    }
+
     public Code findByCode(String codeCategory, int codeNum) {
 
         return codeRepository.findByCodeCategoryAndCodeNum(codeCategory, codeNum);

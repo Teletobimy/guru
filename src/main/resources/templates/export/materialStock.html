@@ -36,6 +36,12 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
+        .card .card-header span {
+            color: #919aa3;
+            display: block;
+            font-size: 13px;
+            margin-top: 1px;
+        }
         .btn-card {
             text-transform: uppercase;
             font-size: 13px;
@@ -103,10 +109,10 @@
 <!-- Pre-loader end -->
 <div id="pcoded" class="pcoded">
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"></nav>
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
 
         <div class="pcoded-main-container" >
-            <div th:include="includes/navbar :: navbar"></div>
+            <div th:include="includes/navbar :: navbar" th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
 
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
@@ -185,7 +191,7 @@
                                                                     <th>자재명</th>
                                                                     <th>자재스펙</th>
                                                                     <th>현재고</th>
-                                                                    <th>구매가</th>
+                                                                    <th>원가</th>
                                                                     <th>종류</th>
                                                                 </tr>
                                                                 </thead>

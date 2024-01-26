@@ -38,7 +38,8 @@ public class Document {
         // 현재 날짜와 랜덤 숫자를 조합하여 PK 생성
         return currentDate + "-" + randomNumber;
     }
-
+    @Column(name="bidding_no")
+    private int biddingNo;
 
 
     @Column(name="document_type")
@@ -58,6 +59,15 @@ public class Document {
 
     @Column(name="document_status")
     private int status;
+
+    @Column(name="lead_time")
+    private String leadTime;
+
+    @Column(name="trade_terms")
+    private String tradeTerms;
+
+    @Column(name="payment_terms")
+    private String paymentTerms;
 
     @Column(name="document_memo")
     private String memo;

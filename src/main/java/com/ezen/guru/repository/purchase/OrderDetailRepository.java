@@ -3,6 +3,7 @@ package com.ezen.guru.repository.purchase;
 import com.ezen.guru.domain.PurchaseOrderDetail;
 import com.ezen.guru.dto.purchase.OrderDetailViewResponse;
 import com.ezen.guru.dto.purchase.OrderPrintViewResponse;
+import com.ezen.guru.dto.receive.TradeDetailDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -69,5 +70,28 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "WHERE pod.id = (SELECT qc.purchaseOrderDetailId FROM QcCheck qc WHERE qc.qcCheckId = :qcCheckId)")
     int updateQcCheckCnt(@Param("qcCheckId") int qcCheckId, @Param("qcCheckCnt") int qcCheckCnt);
 
+    @Query("SELECT DISTINCT new com.ezen.guru.dto.receive.TradeDetailDTO(" +
+            "pd.id, " +
+            "p.id, " +
+            "pd.materialName, "  +
+            "pd.materialCategory, " +
+            "pd.materialMeasure, " +
+            "pd.materialPrice, " +
+            "p.totalprice, " +
+            "pd.qcCheckCnt, " +
+            "p.regdate, " +
+            "c.companyId," +
+            "c.companyName, " +
+            "c.ceo, " +
+            "c.tel, " +
+            "c.email, " +
+            "c.address) " +
+            "FROM PurchaseOrderDetail pd " +
+            "JOIN PurchaseOrder p ON pd.purchaseOrder.id = p.id " +
+            "JOIN Company c ON p.company.companyId = c.companyId " +
+            "JOIN Material m ON pd.material.materialId = m.materialId " +
+            "WHERE pd.purchaseOrder.id = :purchaseOrderId " +
+            "ORDER BY pd.id DESC")
+    List<TradeDetailDTO> tradeDetailList(@Param("purchaseOrderId") String purchaseOrderId);
 
 }

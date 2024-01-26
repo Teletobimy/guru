@@ -143,6 +143,10 @@
                                                     <th>계약날짜</th>
                                                     <th>마감일자</th>
                                                     <th>계약서현황</th>
+                                                    <th>리드타임</th>
+                                                    <th>거래조건</th>
+                                                    <th>지불조건</th>
+
                                                     <th>계약서메모</th>
                                                     <th>상세</th>
                                                     <th>출력</th>
@@ -155,6 +159,10 @@
 
                                                     <td th:text="${documents.companyId}"></td>
                                                     <td th:text="${documents.totalprice}"></td>
+
+                                                    <!-- <td th:text="${#numbers.formatDecimal(documents.totalprice, 0, ',', '.')}"></td>-->
+
+
                                                     <td th:text="${documents.regdate}"></td>
                                                     <td th:text="${documents.deadline}"></td>
                                                     <td th:text="${documents.status}"></td>
@@ -163,6 +171,9 @@
                                                         <textarea th:text="${documents.memo}" rows="6" cols="50"></textarea>
                                                     </td>
                                                     -->
+                                                    <td th:text="${documents.leadTime}"></td>
+                                                    <td th:text="${documents.tradeTerms}"></td>
+                                                    <td th:text="${documents.paymentTerms}"></td>
                                                     <td th:class="${documents.memo.length() > 50} ? 'ellipsis' : ''">
     <span th:utext="${documents.memo.length() > 50} ? ${#strings.substring(documents.memo, 0, 50)} + '...' : ${documents.memo}">
     </span>

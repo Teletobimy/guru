@@ -1,5 +1,8 @@
 package com.ezen.guru.dto.plan;
+import com.ezen.guru.domain.Recipe;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,4 +17,5 @@ public class BicycleDTO {
     private String bicycleDescription;
     private int bicycleStock;
     private int bicyclePrice;
+    private List<RecipeDTO> recipes;
 }

@@ -5,6 +5,7 @@ import com.ezen.guru.dto.receive.QcCheckRequest;
 import com.ezen.guru.dto.receive.QcCheckResponse;
 import com.ezen.guru.dto.receive.ShipmentDetailResponse;
 import com.ezen.guru.repository.CodeRepository;
+import com.ezen.guru.repository.plan.MaterialRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.receive.QcCheckRepository;
 import com.ezen.guru.repository.receive.QcCheckSpecifications;
@@ -30,6 +31,7 @@ public class QcCheckServiceImpl implements QcCheckService {
     private final CodeRepository codeRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ShipmentRepository shipmentRepository;
+    private final MaterialRepository materialRepository;
     @Override
     public Page<QcCheckResponse> qcCheckList(int processStatus, String search, Pageable pageable, LocalDateTime startDate, LocalDateTime endDate) {
         Specification<QcCheck> spec = Specification.where(null);
@@ -73,11 +75,9 @@ public class QcCheckServiceImpl implements QcCheckService {
         qcCheckRepository.updatePurchaseReturnStatus(qcCheckId, qcCheckCnt);
         orderDetailRepository.updateQcCheckCnt(qcCheckId, qcCheckCnt);
         qcCheckRepository.updateProcessStatus();
-
-        log.info("id: " + qcCheckId + ", cnt: " + qcCheckCnt);
+        materialRepository.updateMaterialStock(qcCheckId, qcCheckCnt);
 
         return 1;
-
     }
 
     @Override

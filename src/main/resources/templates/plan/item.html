@@ -154,7 +154,9 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="card-block table-border-style">
+                                        <a href="/plan/bicycle_insert" class="btn btn-card btn-primary" style="background-color: #FC6180; border-color: #FC6180;">자전거품목생성</a>
                                         <div class="table-responsive">
                                             <table class="table table-hover">
                                                 <thead>
@@ -162,7 +164,6 @@
                                                     <th>번호</th>
                                                     <th>자전거명</th>
                                                     <th>설명</th>
-                                                    <th>재고</th>
                                                     <th>판매가</th>
                                                 </tr>
                                                 </thead>
@@ -171,7 +172,6 @@
                                                     <td th:text="${bicycle.bicycleId}"></td>
                                                     <td th:text="${bicycle.bicycleName}"></td>
                                                     <td th:text="${bicycle.bicycleDescription}"></td>
-                                                    <td th:text="${bicycle.bicycleStock}"></td>
                                                     <td th:text="${bicycle.bicyclePrice}"></td>
                                                 </tr>
                                                 </tbody>
@@ -241,12 +241,11 @@
 <script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
 <!-- modernizr js -->
 <script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
+
 <!-- am chart -->
 <script src="/pages/widget/amchart/amcharts.min.js"></script>
 <script src="/pages/widget/amchart/serial.min.js"></script>
-<!-- classie js -->
-<script type="text/javascript" src="assets/js/classie/classie.js"></script>
+
 <!-- Todo js -->
 <script type="text/javascript " src="/pages/todo/todo.js "></script>
 <!-- Custom js -->
@@ -278,10 +277,9 @@
 
     });
 
-      function gotoDetail(shipmentId){
-            var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
-            console.log(newUrl);
-           // window.location.href = newUrl;
+      function gotoDetail(bicycleId){
+            var newUrl = '/plan/bicycle_detail?bicycleId=' + bicycleId;
+           window.location.href = newUrl;
         }
 </script>
 

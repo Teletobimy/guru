@@ -19,4 +19,5 @@ public interface QcCheckService {
     public Shipment addShipment(QcCheckRequest shipment, int cnt);
 
     public int updateReturnStatus(int qcCheckId, int qcCheckCnt);
+
 }
