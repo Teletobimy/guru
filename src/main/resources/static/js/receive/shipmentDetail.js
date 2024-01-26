@@ -29,7 +29,10 @@
                       text:"자재 검수 처리를 시작합니다.",
                       showConfirmButton: false,
                       timer: 1500
-                    });
+                    }).then(()=>{
+                        window.location.href='/shipment/shipmentDetail?shipmentId=' + shipmentId;
+                    })
+
             },
             error: function(xhr, status, error){
                 if(xhr.status === 403){
@@ -42,12 +45,16 @@
                           text: message,
                           showConfirmButton: false,
                           timer: 1500
+                        }).then(()=>{
+                              window.location.href='/shipment/shipmentDetail?shipmentId=' + shipmentId;
                         });
 
 
                 } else{
                     console.error("Error: " , status, error);
                 }
+
             }
         })
+
     }
