@@ -20,4 +20,7 @@ public interface QcCheckService {
 
     public int updateReturnStatus(int qcCheckId, int qcCheckCnt);
 
+    public Long countBy();
+
+    public Long countByProcessStatus(int processStatus);
 }

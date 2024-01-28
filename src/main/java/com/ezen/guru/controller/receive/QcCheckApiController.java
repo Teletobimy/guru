@@ -28,20 +28,20 @@ public class QcCheckApiController {
         }
     }
     @GetMapping("/qcCheckModal")
-    public ResponseEntity<QcCheck> qcCheckModal(@RequestParam int shipmentId){
+    public ResponseEntity<QcCheck> qcCheckModal(@RequestParam(value = "shipmentId") int shipmentId){
         QcCheck qcCheck = shipmentService.qcCheck(shipmentId);
         return new ResponseEntity<>(qcCheck,HttpStatus.OK);
     }
 
     @PostMapping("/fromQcCheckToShipment")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
-    public ResponseEntity<String> addShipment(@RequestParam int cnt, @RequestBody QcCheckRequest shipment){
+    public ResponseEntity<String> addShipment(@RequestParam(value = "cnt") int cnt, @RequestBody QcCheckRequest shipment){
         qcCheckService.addShipment(shipment,cnt);
         return ResponseEntity.ok("Seccessful insert shipment! : " + shipment);
     }
     @PutMapping("/updateReturnStatus")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
-    public ResponseEntity<String> updateReturnStatus(@RequestParam int qcCheckId,@RequestParam int qcCheckCnt){
+    public ResponseEntity<String> updateReturnStatus(@RequestParam(value = "qcCheckId") int qcCheckId,@RequestParam(value = "qcCheckCnt") int qcCheckCnt){
         try {
             qcCheckService.updateReturnStatus(qcCheckId,qcCheckCnt);
             return ResponseEntity.ok("Update successful for qcCheckId: " + qcCheckId + "qcCheckCnt: " + qcCheckCnt);

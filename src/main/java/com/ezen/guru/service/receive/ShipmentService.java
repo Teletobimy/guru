@@ -21,4 +21,5 @@ public interface ShipmentService {
     public List<QcCheck> qcCheckList();
 
     public QcCheck qcCheck(int shipmentId);
+
 }

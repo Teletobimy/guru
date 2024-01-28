@@ -108,4 +108,14 @@ public class QcCheckServiceImpl implements QcCheckService {
         return 1;
     }
 
+    @Override
+    public Long countBy() {
+        return qcCheckRepository.countBy();
+    }
+
+    @Override
+    public Long countByProcessStatus(int processStatus) {
+        return qcCheckRepository.countByProcessStatus(processStatus);
+    }
+
 }
