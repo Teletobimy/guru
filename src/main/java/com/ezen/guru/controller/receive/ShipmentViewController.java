@@ -96,7 +96,7 @@ public class ShipmentViewController {
 
     @PostMapping("/addQcCheck")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
-    public ResponseEntity<String> addQcCheck(@RequestParam int shipmentId){
+    public ResponseEntity<String> addQcCheck(@RequestParam(value = "shipmentId") int shipmentId){
         try {
             shipmentService.addQcCheck(shipmentId);
             return ResponseEntity.status(HttpStatus.FOUND).header("Location","/shipment/shipmentList").build();

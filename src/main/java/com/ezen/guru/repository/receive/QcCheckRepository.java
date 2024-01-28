@@ -32,4 +32,8 @@ public interface QcCheckRepository extends JpaRepository<QcCheck, Integer>, JpaS
     @Query("UPDATE QcCheck qc SET qc.processStatus = 3 WHERE qc.qcCheckCnt = 0")
     int updateProcessStatus();
 
+    Long countBy();
+
+    Long countByProcessStatus(int processStatus);
+
 }

@@ -105,15 +105,16 @@
                                     </div>
                                     <!-- card1 end -->
                                     <!-- card1 start -->
-                                    <div class="col-md-6 col-xl-3">
+                                    <div style="cursor:pointer;" class="col-md-6 col-xl-3" onclick="location.href='/qcCheck/qcCheckList?size=10&page=0&processStatus=0'">
                                         <div class="card widget-card-1">
                                             <div class="card-block-small">
-                                                <i class="icofont icofont-warning-alt bg-c-green card1-icon"></i>
-                                                <span class="text-c-green f-w-600">Fixed issue</span>
-                                                <h4>45</h4>
+                                                <i class="icofont icofont-stamp bg-c-yellow card1-icon"></i>
+                                                <span class="text-c-yellow f-w-600">검수 마감 율</span>
+                                                <h4 th:text="${percent} + '%'"></h4>
                                                 <div>
                                                             <span class="f-left m-t-10 text-muted">
-                                                                <i class="text-c-green f-16 icofont icofont-tag m-r-10"></i>Tracked via microsoft
+                                                                <i style="margin:0;" class="text-c-yellow f-16 icofont icofont-arrow-right m-r-10"></i>
+                                                                 <span th:text="${status} + ' out of ' + ${total}"></span>
                                                             </span>
                                                 </div>
                                             </div>
