@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,7 +52,7 @@ public class PlanController {
                        @RequestParam(value="page", defaultValue = "0") int page,
                        @RequestParam(value = "bicycleName", required = false) String bicycleName,
                        HttpServletRequest request){
-        Page<BicycleDTO> bicyclePage = bicycleService.getAllBicycles(bicycleName, PageRequest.of(page, size));
+        Page<BicycleDTO> bicyclePage = bicycleService.getAllBicycles(bicycleName, PageRequest.of(page, size, Sort.by(Sort.Order.desc("bicycleId"))));
         List<BicycleDTO> bicycles = bicyclePage.getContent();
         if(bicycleName==null||bicycleName==""||bicycleName.length()<1){bicycleName = "";}
 
@@ -251,7 +252,7 @@ public class PlanController {
                            HttpServletRequest request
                           ){
 
-            Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size));
+            Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size, Sort.by(Sort.Order.desc("materialId"))));
 
         List<MaterialDTO> materials = materialPage.getContent();
         if(materialName==null||materialName==""||materialName.length()<1){materialName = "";}
