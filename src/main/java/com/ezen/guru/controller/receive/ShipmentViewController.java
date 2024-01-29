@@ -46,10 +46,17 @@ public class ShipmentViewController {
         Page<ShipmentResponse> shipmentList = shipmentService.shipmentList(size, page,keyword,category,startDate,endDate);
         List<Code> codeList = shipmentService.findByCodeCategory("material_category");
         List<QcCheck> qcCheckList = shipmentService.qcCheckList();
+        int nowPage = shipmentList.getPageable().getPageNumber() + 1;
+        boolean prevPage = nowPage > 1;
+        boolean nextPage = nowPage < shipmentList.getTotalPages();
+
         model.addAttribute("list",shipmentList);
         model.addAttribute("code",codeList);
         model.addAttribute("category",category);
         model.addAttribute("qcCheckList",qcCheckList);
+        model.addAttribute("prev", prevPage);
+        model.addAttribute("next", nextPage);
+        model.addAttribute("nowPage" , nowPage);
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
