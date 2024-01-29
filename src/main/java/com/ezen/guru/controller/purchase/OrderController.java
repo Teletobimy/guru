@@ -72,7 +72,7 @@ public class OrderController {
         return ResponseEntity.ok("success update");
     }
     @GetMapping("/order_detail")
-    public String getDetail(Model model, HttpServletRequest request, @RequestParam String id) {
+    public String getDetail(Model model, HttpServletRequest request, @RequestParam(value = "id") String id) {
         List<OrderDetailViewResponse> list = orderService.getPurchaseOrderDetail(id);
         List<Code> codeList = orderService.findByCodeCategory("material_category");
         List<Code> typeCode = orderService.findByCodeCategory("document_type");
@@ -107,7 +107,7 @@ public class OrderController {
         return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
     }
     @GetMapping("/order_print")
-    public String getPrint(Model model, HttpServletRequest request, @RequestParam String id) {
+    public String getPrint(Model model, HttpServletRequest request, @RequestParam(value = "id") String id) {
         List<OrderPrintViewResponse> list = orderService.getPurchaseOrderPrint(id);
                 /*orderService.getPurchaseOrderPrint(id).stream()
                 .map(OrderPrintViewResponse::new)
