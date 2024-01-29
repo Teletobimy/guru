@@ -68,13 +68,15 @@
                           type : "DELETE",
                           contentType:'application/json',
                           success:function(response){
-                              window.location.href="/admin/userList";
+
                           }
                       })
             Swal.fire({
               title: "Deleted!",
               text: "Your file has been deleted.",
               icon: "success"
+            }).then(()=>{
+                       window.location.href="/admin/userList";
             });
           }
         });
