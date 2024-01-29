@@ -118,7 +118,7 @@
                                         <div class="container">
                                         <h1>원자재품목생성</h1><br>
 
-                                            <table id="estimateTable" width="90%" >
+                                            <table id="estimateTable" width="60%" >
                                                 <input type="hidden">
 
                                             <tr>
@@ -156,14 +156,14 @@
                                                 <tr>
                                                     <th >재고</th>
                                                     <td colspan="2" >
-                                                        <input type="text" placeholder="기초재고를 입력하세요" style="width: 100%;"
+                                                        <input type="number" placeholder="기초재고를 입력하세요" style="width: 100%;"
                                                                id="materialStock" name="materialStock" required>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th >구매가</th>
                                                     <td colspan="2" >
-                                                        <input type="text" placeholder="구매가 입력하세요(vat포함)" style="width: 100%;"
+                                                        <input type="number" placeholder="구매가 입력하세요(vat포함)" style="width: 100%;"
                                                                id="materialPrice" name="materialPrice" required>
                                                     </td>
                                                 </tr>
@@ -281,6 +281,8 @@
         document.getElementById("companyId").value = rowData[1];
         // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
     }
+
+
 
 
 

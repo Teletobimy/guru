@@ -201,8 +201,13 @@
 
                                                     <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
                                                         <ul class="pagination" style="justify-content: end;">
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                            <li class="page-item"
+                                                                th:classappend="${prev ? '' : 'disabled'}"
+                                                            >
+                                                                <a class="page-link"
+                                                                   th:if="${prev}"
+                                                                   th:href="@{'/shipment/shipmentList?page=' + ${nowPage - 2} + '&size=10'}"
+                                                                   aria-label="Previous">
                                                                     <span aria-hidden="true">&laquo;</span>
                                                                 </a>
                                                             </li>
@@ -213,8 +218,13 @@
                                                                    th:text="${pageNumber}"></a>
                                                             </li>
 
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#" aria-label="Next">
+                                                            <li class="page-item"
+                                                                th:classappend="${next ? '' : 'disabled'}"
+                                                            >
+                                                                <a class="page-link"
+                                                                   th:if="${next}"
+                                                                   th:href="@{'/shipment/shipmentList?page=' + ${nowPage} + '&size=10'}"
+                                                                   aria-label="Next">
                                                                     <span aria-hidden="true">&raquo;</span>
                                                                 </a>
                                                             </li>

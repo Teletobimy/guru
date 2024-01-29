@@ -232,58 +232,18 @@
                                                         <td th:text="${item.price} + &#8361;" id="price" th:attr="data-mat-price=${item.price}"></td>
                                                         <td th:text="${item.cnt}"></td>
                                                         <td th:if="${item.status != 1}" th:text="|${item.qccheckCnt + ' (' + item.measure + ')'}|"></td>
-                                                        <td th:if="${item.check == 0 && item.status == 1}"><button type="button" class="btn btn-card btn-primary btn-success" data-toggle="modal" th:attr="data-target=${'#exampleModal'+ item.detailId}">발주</button></td>
+                                                        <td th:if="${item.check == 0 && item.status == 1}">
+                                                            <button type="button" class="btn btn-card btn-primary btn-success"
+                                                                    th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">발주</button>
+                                                        </td>
                                                         <td th:if="${item.check == 1 && item.status == 1}">
                                                             <button class="btn btn-card btn-disabled disabled btn-success">발주</button>
-                                                            <button type="button" class="btn btn-card btn-primary btn-success" id="order-cancel" name="order-cancel" th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
+                                                            <button type="button" class="btn btn-card btn-primary btn-success" id="order-cancel" name="order-cancel"
+                                                                    th:onclick="revertOrder(this)" th:attr="data-detail-id=${item.detailId}">발주취소</button>
                                                         </td>
                                                         <td th:if="${item.status == 2}"><button class="btn btn-card btn-disabled disabled btn-success">발주완료</button></td>
                                                         <td th:if="${item.status == 3}"><button class="btn btn-card btn-disabled disabled btn-success">발주마감</button></td>
 
-                                                        <!-- Modal -->
-                                                        <th class="modal fade" th:attr="id=${'exampleModal'+ item.detailId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">품목 발주 확인</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true" style="font-size:30px;">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <table class="table">
-                                                                            <tr th:attr="data-item-check=${item.check}">
-                                                                                <th scope="row">품목명 :</th>
-                                                                                <td th:text="${item.materialName}"></td>
-                                                                            </tr>
-                                                                            <tr th:attr="data-item-check=${item.check}">
-                                                                                <th scope="row">카테고리 :</th>
-                                                                                <td th:each="code:${code}"
-                                                                                    th:if="${code.codeNum} == ${item.category}"
-                                                                                    th:text="${code.codeName}"></td>
-                                                                            </tr>
-                                                                            <tr th:attr="data-item-check=${item.check}">
-                                                                                <th scope="row">수량(단위) :</th>
-                                                                                <td th:text="${item.cnt}"></td>
-                                                                            </tr>
-                                                                            <tr th:attr="data-item-check=${item.check}">
-                                                                                <th scope="row">총액 :</th>
-                                                                                <td th:text="|${item.materialprice}&#8361;|"></td>
-                                                                            </tr>
-                                                                            <tr th:attr="data-item-check=${item.check}">
-                                                                                <th scope="row">발주하시겠습니까?</th>
-                                                                                <td></td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary order-btn btn-success" th:onclick="confirmOrder(this)" th:attr="data-detail-id=${item.detailId}">예</button>
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </th>
-                                                        <!-- Modal End -->
 
                                                     </tr>
                                                     </tbody>
@@ -311,17 +271,14 @@
                                                                     </div>
                                                                     <div class="modal-body text-start">
                                                                         <table class="table">
-                                                                            <tr>
                                                                                 <th scope="row">주문번호 :</th>
                                                                                 <td th:text="${firstItem.id}"></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th scope="row">검수완료수량을 반드시 확인해주세요.</th>
-                                                                                <td></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th scope="row">발주를 정말 마감하시겠습니까?</th>
-                                                                                <td></td>
                                                                             </tr>
                                                                         </table>
                                                                     </div>
@@ -396,6 +353,7 @@
     //디테일 체크 1로 바꾸는 함수
     function confirmOrder(id) {
         var orderId = $(id).data('detail-id');
+        console.log(orderId);
         var newStatus = 1; // 변경할 상태
 
         // AJAX를 사용하여 서버에 발주 상태 업데이트 요청
@@ -406,7 +364,7 @@
                 console.log(response); // 성공적으로 응답을 받았을 때
                 $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
                 Swal.fire({
-                  title: "발주 완료",
+                  title: "발주 성공",
                   text: "",
                   icon: "success",
                   showConfirmButton: false
@@ -433,7 +391,7 @@
                       icon: "error",
                       showConfirmButton: false
                     });
-                    setTimeout (function() {location.reload();}, 1500);
+                    //setTimeout (function() {location.reload();}, 1500);
                 } else{
                     console.error("Error: " , status, error);
                 }
@@ -489,7 +447,7 @@
 
           if (result.isConfirmed) {
             Swal.fire({
-              title: "취소 완료",
+              title: "취소 성공",
               text: "",
               icon: "success",
               showConfirmButton: false

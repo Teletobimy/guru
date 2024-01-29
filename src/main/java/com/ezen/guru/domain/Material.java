@@ -17,9 +17,6 @@ public class Material {
     @Column(name="material_id", updatable = false)
     private int materialId;
 
-    @Column(name="material_code")
-    private String materialCode;
-
     @Column(name="company_id")
     private String companyId;
 
@@ -46,7 +43,6 @@ public class Material {
 
     @Builder
     public Material(int materialId,
-                    String materialCode,
                     String companyId,
                     String companyName,
                     String materialName,
@@ -56,7 +52,6 @@ public class Material {
                     String materialMeasure,
                     int materialCategory) {
         this.materialId = materialId;
-        this.materialCode = materialCode;
         this.companyId = companyId;
         this.companyName = companyName;
         this.materialName = materialName;

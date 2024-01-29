@@ -72,6 +72,15 @@
             margin: 50px auto;
             padding: 40px;
         }
+        .btn-display{
+            padding: 20px;
+            justify-content: center;
+            display: flex;
+            margin-bottom:30px;
+        }
+        .btn-display button{
+            margin-right: 10px
+        }
     </style>
 </head>
 
@@ -227,6 +236,9 @@
                                                     </table>
                                                 </div>
                                             </div>
+                                            <div class="btn-display">
+                                                <button class="btn btn-warning" th:attr="onclick='gotoList()'">목록</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -285,6 +297,10 @@
         }
         window.print();
         location.reload();
+    }
+    function gotoList(){
+        var newUrl = '/tradeList?page=0&size=10'
+        window.location.href= newUrl;
     }
 </script>
 </body>

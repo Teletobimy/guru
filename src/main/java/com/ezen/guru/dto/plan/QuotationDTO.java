@@ -1,5 +1,6 @@
 package com.ezen.guru.dto.plan;
 
+import com.ezen.guru.domain.Company;
 import com.ezen.guru.domain.Quotation;
 import com.ezen.guru.domain.QuotationDetail;
 import lombok.*;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class QuotationDTO {
     private String id;
     private int biddingNo;
-    private String company_id;
+    private Company company;
     private String company_name;
     private int quotation_totalprice;
     private LocalDateTime regdate;

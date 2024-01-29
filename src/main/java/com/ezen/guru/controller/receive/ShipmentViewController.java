@@ -46,10 +46,17 @@ public class ShipmentViewController {
         Page<ShipmentResponse> shipmentList = shipmentService.shipmentList(size, page,keyword,category,startDate,endDate);
         List<Code> codeList = shipmentService.findByCodeCategory("material_category");
         List<QcCheck> qcCheckList = shipmentService.qcCheckList();
+        int nowPage = shipmentList.getPageable().getPageNumber() + 1;
+        boolean prevPage = nowPage > 1;
+        boolean nextPage = nowPage < shipmentList.getTotalPages();
+
         model.addAttribute("list",shipmentList);
         model.addAttribute("code",codeList);
         model.addAttribute("category",category);
         model.addAttribute("qcCheckList",qcCheckList);
+        model.addAttribute("prev", prevPage);
+        model.addAttribute("next", nextPage);
+        model.addAttribute("nowPage" , nowPage);
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -96,7 +103,7 @@ public class ShipmentViewController {
 
     @PostMapping("/addQcCheck")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
-    public ResponseEntity<String> addQcCheck(@RequestParam int shipmentId){
+    public ResponseEntity<String> addQcCheck(@RequestParam(value = "shipmentId") int shipmentId){
         try {
             shipmentService.addQcCheck(shipmentId);
             return ResponseEntity.status(HttpStatus.FOUND).header("Location","/shipment/shipmentList").build();

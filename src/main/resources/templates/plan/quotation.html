@@ -148,30 +148,20 @@
                                     <div class="card-header">
                                         <div class="col-lg-12">
 
-                                            <!-- Nav tabs -->
-                                            <!-- 위에 상태 버튼
                                             <ul class="nav nav-tabs  tabs" role="tablist">
 
                                                 <li th:each="code:${code}" class="nav-item">
                                                     <a class="nav-link"
                                                        data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"
+                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
                                                        role="tab"
                                                        style="cursor:pointer;"
-                                                       th:classappend="${category == -1 and code.codeNum == 0 ? 'active' : ''} +
-                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
-                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
-                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
-                                                       th:text="${code.codeNum == 0 ? '전체보기' :
-                                                                  code.codeNum == 1 ? '손잡이' :
-                                                                  code.codeNum == 2 ? '프레임' :
-                                                                  code.codeNum == 3 ? '휠' : ''}">
+                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
+                                                       th:text="${code.codeName}">
                                                     </a>
                                                 </li>
 
                                             </ul>
-                                            -->
-                                            <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
                                                     <div class="pcoded-search-box search-long" >
@@ -195,6 +185,7 @@
                                                                 <thead>
                                                                 <tr>
                                                                     <th>견적서ID</th>
+                                                                    <th>Bidding No.</th>
                                                                     <th>제출회사</th>
                                                                     <th>사업자등록번호</th>
                                                                     <th>견적가</th>
@@ -208,15 +199,19 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <tr th:each = "quotation, itemStat : ${quotations}" style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${quotation.id}+ ')'">
+                                                                <tr th:each = "quotation, itemStat : ${quotations}" style="cursor:pointer;" th:onclick="gotoDetail(this)">
                                                                     <td th:text="${quotation.id}"></td>
+                                                                    <td th:text="${quotation.biddingNo}"></td>
                                                                     <!-- <td th:text="${material.materialCode}"></td> -->
                                                                     <td th:text="${quotation.company_name}"></td>
-                                                                    <td th:text="${quotation.company_id}"></td>
+                                                                    <td th:text="${quotation.Company.companyId}"></td>
                                                                     <td th:text="${quotation.quotation_totalprice}"></td>
                                                                     <td th:text="${#temporals.format(quotation.regdate, 'yyyy-MM-dd HH:mm')}"></td>
                                                                     <td th:text="${#temporals.format(quotation.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                    <td th:text="${quotation.status}"></td>
+                                                                    <td th:each="code:${code}"
+                                                                        th:if ="${quotation.status == code.codeNum}"
+                                                                            th:text="${code.codeName}"
+                                                                    ></td>
                                                                     <td th:text="${quotation.leadTime}"></td>
                                                                     <td th:text="${quotation.tradeTerms}"></td>
                                                                     <td th:text="${quotation.paymentTerms}"></td>
@@ -344,11 +339,6 @@
          });
 
 
-      function gotoDetail(bicycleId){
-            var newUrl = '/plan/bicycle_detail?bicycleId=' + bicycleId;
-           window.location.href = newUrl;
-        }
-
         function updateLocation(category) {
             var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
 
@@ -371,12 +361,17 @@
                 performSearch();
             }
         });
-        function gotoDetail(id){
-            //var newUrl = '/shipment/shipmentDetail?shipmentId=' + shipmentId;
 
-            //window.location.href = newUrl;
-            console.log(id);
-        }
+        function gotoDetail(element){
+        var quotationId = element.cells[0].innerText;
+
+
+       var newUrl = '/plan/quotationDetail?quotationId=' + quotationId;
+       window.location.href = newUrl;
+
+      }
+
+
 
     </script>
 </body>
