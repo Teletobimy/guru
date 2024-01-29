@@ -10,7 +10,6 @@ import lombok.*;
 @ToString
 public class MaterialDTO {
     private int materialId;
-    private String materialCode;
     private String companyId;
     private String companyName;
     private String materialName;
