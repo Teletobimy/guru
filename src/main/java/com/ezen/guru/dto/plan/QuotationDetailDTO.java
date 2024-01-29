@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 public class QuotationDetailDTO {
 
     private int id;
-    private String quotation_id;
-    private int material_id;
+    private Quotation quotation;
+    private Material material;
     private String materialName;
     private Integer quotationCnt;
     private String quotationMeasure;

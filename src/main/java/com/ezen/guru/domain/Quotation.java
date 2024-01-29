@@ -22,9 +22,9 @@ public class Quotation {
     @Column(name="bidding_no")
     private int biddingNo;
 
-    @Column(name = "company_id")
-    private String company_id;
-
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @Column(name = "company_name")
     private String company_name;
@@ -56,5 +56,9 @@ public class Quotation {
     @OneToMany(mappedBy = "quotation", cascade = CascadeType.ALL)
     private List<QuotationDetail> quotationDetails;
 
+    @PrePersist
+    public void prePersist() {
+        this.regdate = LocalDateTime.now();
+    }
 
 }

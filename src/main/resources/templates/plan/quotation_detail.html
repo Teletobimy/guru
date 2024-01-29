@@ -126,13 +126,11 @@
                                             <tr>
                                                 <th colspan="2">견적서번호</th>
                                                 <td colspan="3">
-                                                    <input type="text" th:value="${quotationId}" id="quotationId">
+                                                    <input type="text" th:value="${quotation.id}" id="quotationId" readonly>
                                                 </td>
-                                                <th colspan="2">회사명<input type="button" onclick="addCompany()" value="회사검색"
-                                                                          class="btn-warning"
-                                                                          style="background-color: #FC6180; border-color: #FC6180;  margin:10px;"/></th>
+                                                <th colspan="2">회사명</th>
                                                 <td colspan="3">
-                                                    <input type="text" id="company_name" readonly>
+                                                    <input type="text" id="company_name" th:value="${quotation.company_name}" readonly>
                                                 </td>
 
                                             </tr>
@@ -144,66 +142,46 @@
                                                 </td>
                                                 <th rowspan="1" colspan="2">사업자번호</th>
                                                 <td colspan="3">
-                                                    <input type="text" id="company_id" readonly>
+                                                    <input type="text" id="company_id" th:value="${quotation.Company.companyId}" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th rowspan="1" colspan="2">Bidding No.</th>
-                                                <td colspan="3">
-
-                                                    <select id="biddingNo" name="biddingNo">
-                                                        <option value="001">1011</option>
-                                                        <option value="002">1012</option>
-                                                        <option value="003">1013</option>
-                                                        <option value="003">1014</option>
-                                                        <option value="003">1015</option>
-                                                    </select>
-
-
+                                                <td colspan="3" th:text="${quotation.biddingNo}">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th rowspan="2" colspan="2">주소</th>
-                                                <td colspan="3" rowspan="2">
-                                                    <textarea cols="20" rows="4" style="width:100%" id="companyAddress" readonly></textarea>
-
-
+                                                <td colspan="3" rowspan="2" th:text="${quotation.Company.address}">
                                                 </td>
                                                 <th colspan="2" rowspan="2">대표자(혹은 담당자)</th>
                                                 <th>성명</th>
-                                                <td colspan="2">
-                                                    <input type="text" id="companyCeo" style="width:100%" readonly>
+                                                <td colspan="2" th:text="${quotation.Company.ceo}">>
 
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th >연락처</th>
-                                                <td colspan="2">
-                                                    <input type="text" id="phoneNumber" style="width:100%" readonly>
+                                                <td colspan="2" th:text="${quotation.Company.tel}">
 
                                                 </td>
                                             </tr>
                                                 <tr>
                                                     <th colspan="2">리드타임</th>
-                                                    <td colspan="3">
-                                                        <input type="text" style="width:100%" id="leadTime">
+                                                    <td colspan="3" th:text="${quotation.leadTime}">
+
                                                     </td>
                                                     <th colspan="2">거래조건</th>
-                                                    <td colspan="3">
-                                                        <input type="text" style="width:100%" id="tradeTerms" >
+                                                    <td colspan="3" th:text="${quotation.tradeTerms}">
+
                                                     </td>
 
                                                 </tr>
                                                 <tr>
                                                     <th colspan="2">지불조건</th>
-                                                    <td colspan="3">
-                                                        <input type="text" style="width:100%" id="paymentTerms">
-                                                    </td>
+                                                    <td colspan="3" th:text="${quotation.paymentTerms}"></td>
                                                     <th colspan="2">납기일</th>
-                                                    <td colspan="3">
-                                                        <input type="date" style="width:100%" id="deadline">
-                                                    </td>
-
+                                                    <td colspan="3" th:text="${quotation.deadline}"></td>
                                                 </tr>
 
                                             <tr>
@@ -224,33 +202,26 @@
                                             </tbody>
 
 
-                                            <tr>
-                                                <td colspan="10">
-                                                    <input type="button" onclick="addRow()" value="품목추가하기"
-                                                           class="btn-warning"
-                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
-                                                    <input type="button" onclick="deleteRow()" value="품목삭제하기"
-                                                           class="btn-warning"
-                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
-                                                </td>
+                                            <tr th:each="qd, itemStat : ${quotationDetailDTOList}">
+                                                <th scope="row" th:text="${itemStat.count}"></th>
+                                                <td th:text="${qd.Material.materialId}"></td>
+                                                <td colspan="2" th:text="${qd.Material.materialName}"></td>
+                                                <td th:text="${qd.Material.materialDescription}"></td>
+                                                <td th:text="${qd.quotationCnt}"></td>
+                                                <td th:text="${qd.quotationMeasure}"></td>
+                                                <td th:text="${qd.quotationPrice}"></td>
+                                                <td colspan="2" th:text="${qd.quotationPrice*qd.quotationCnt}"></td>
                                             </tr>
-
-
-
                                             <!---------------------------------------------------->
                                             <tr>
                                                 <th colspan="3">합계(VAT 포함)</th>
 
-                                                <td colspan="7" class="total"></td>
+                                                <td colspan="7" class="total" th:text="${quotation.quotation_totalprice}"></td>
 
                                             </tr>
                                             <tr>
                                                 <th colspan="2">특기사항</th>
-                                                <td colspan="8">
-
-                                                        <textarea style="width:100%;" cols="40" rows="6" id="quotation_memo"></textarea>
-
-                                                </td>
+                                                <td colspan="8" th:text="${quotation.quotation_memo}"></td>
                                             </tr>
 
                                         </table>
@@ -260,12 +231,13 @@
                                     </div>
 
                                     <div class="btn-display">
-                                        <input type="button" id="saveButton" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="등록"/>
+                                        <input type="button"  th:attr="onclick='acceptQuotaion()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="수락"/>
+                                        <input type="button"  th:attr="onclick='dropQuotation()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="거절"/>
+                                        <input type="button"  th:attr="onclick='deleteQuotation()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="삭제"/>
                                         <input type="button"
                                                 th:attr="onclick='gotoList()'"
                                                 class="btn btn-warning"
                                                 style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
-                                        <input type="reset" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
                                     </div>
                                     </form>
 
@@ -572,7 +544,7 @@ document.getElementById('saveButton').addEventListener('click', function () {
     for (var i = 0; i < rows.length; i++) {
         var cells = rows[i].getElementsByTagName('td');
 
-        var material_id = parseFloat(cells[1].textContent);
+        var materialId = parseFloat(cells[1].textContent);
         var materialName = cells[2].textContent;
         var materialDescription = cells[3].textContent;
         var countNumber = parseFloat(cells[4].getElementsByTagName('input')[0].value);
@@ -589,10 +561,8 @@ document.getElementById('saveButton').addEventListener('click', function () {
         // 데이터를 DTO로 만들어 List에 추가
         var quotationDetailDTO = {
             // 필드들
-             quotation: { id: quotationId // 이 부분은 필요에 따라 다르게 수정
-
-                        },
-            material: {materialId: material_id},
+            quotation_id : quotationId,
+            material_id: materialId,
             materialName: materialName,
             quotationCnt: countNumber,
             quotationMeasure: materialMeasure,
@@ -660,7 +630,7 @@ var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
     var quotationDTO = {
         id:quotationId,
         biddingNo:biddingNo,
-        company:{companyId:company_id},  // company_id도 서버에서 설정
+        company_id:company_id,  // company_id도 서버에서 설정
         company_name: company_name,  // company_name도 서버에서 설정
         quotation_totalprice: quotationTotalPrice,  // 서버에서 계산
         regdate: null,  // 서버에서 설정
@@ -699,6 +669,24 @@ var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
 });
 
 
+
+function deleteQuotation(){
+var quotationId = document.getElementById('quotationId').value;
+    $.ajax({
+        type: 'POST',
+        url: '/plan/quotation_delete',
+        contentType: 'application/json',
+        data: quotationId,
+        success: function (response) {
+            alert(response);
+            // 필요한 작업 수행, 예: 페이지 리로드 또는 다른 업데이트
+        },
+        error: function (error) {
+            alert('삭제실패:', error);
+        }
+    });
+
+}
 
 
 

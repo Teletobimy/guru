@@ -5,31 +5,35 @@ import com.ezen.guru.domain.Quotation;
 import com.ezen.guru.domain.QuotationDetail;
 import com.ezen.guru.dto.plan.QuotationDTO;
 import com.ezen.guru.dto.plan.QuotationDetailDTO;
+import com.ezen.guru.repository.plan.QuotationDetailRepository;
 import com.ezen.guru.repository.plan.QuotationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class QuotationServiceImpl implements QuotationService {
 
     private final QuotationRepository quotationRepository;
+    private final QuotationDetailRepository quotationDetailRepository;
 
 
     @Autowired
-    public QuotationServiceImpl(QuotationRepository quotationRepository) {
+    public QuotationServiceImpl(QuotationRepository quotationRepository, QuotationDetailRepository quotationDetailRepository) {
         this.quotationRepository = quotationRepository;
-
+        this.quotationDetailRepository = quotationDetailRepository;
     }
 
+    @Override
     public QuotationDTO convertToDTO(Quotation quotation) {
         QuotationDTO dto = new QuotationDTO();
         dto.setId(quotation.getId());
         dto.setBiddingNo(quotation.getBiddingNo());
-        dto.setCompany_id(quotation.getCompany_id());
+        dto.setCompany(quotation.getCompany());
         dto.setCompany_name(quotation.getCompany_name());
         dto.setQuotation_totalprice(quotation.getQuotation_totalprice());
         dto.setRegdate(quotation.getRegdate());
@@ -56,7 +60,7 @@ public class QuotationServiceImpl implements QuotationService {
         Quotation entity = new Quotation();
         entity.setId(dto.getId());
         entity.setBiddingNo(dto.getBiddingNo());
-        entity.setCompany_id(dto.getCompany_id());
+        entity.setCompany(dto.getCompany());
         entity.setCompany_name(dto.getCompany_name());
         entity.setQuotation_totalprice(dto.getQuotation_totalprice());
         entity.setRegdate(dto.getRegdate());
@@ -87,11 +91,12 @@ public class QuotationServiceImpl implements QuotationService {
         return "Data saved successfully";
     }
 
+    @Override
     public QuotationDetailDTO convertToDetailDTO(QuotationDetail detail) {
         QuotationDetailDTO detailDTO = new QuotationDetailDTO();
         detailDTO.setId(detail.getId());
-        detailDTO.setQuotation_id(detail.getQuotation().getId()); // Assuming getId() method exists in Quotation entity
-        detailDTO.setMaterial_id(detail.getMaterial_id());
+        detailDTO.setQuotation(detail.getQuotation());
+        detailDTO.setMaterial(detail.getMaterial());
         detailDTO.setMaterialName(detail.getMaterialName());
         detailDTO.setQuotationCnt(detail.getQuotationCnt());
         detailDTO.setQuotationMeasure(detail.getQuotationMeasure());
@@ -106,9 +111,9 @@ public class QuotationServiceImpl implements QuotationService {
 
         // Assuming you have a constructor in QuotationDetail that accepts a Quotation id
         // You need to create a Quotation entity and set its id using setQuotation method.
-        Quotation quotation = detailEntity.getQuotation();
-        detailEntity.setQuotation(quotation);
-        detailEntity.setMaterial_id(detailDTO.getMaterial_id());
+
+        detailEntity.setQuotation(detailDTO.getQuotation());
+        detailEntity.setMaterial(detailDTO.getMaterial());
         detailEntity.setMaterialName(detailDTO.getMaterialName());
         detailEntity.setQuotationCnt(detailDTO.getQuotationCnt());
         detailEntity.setQuotationMeasure(detailDTO.getQuotationMeasure());
@@ -120,4 +125,20 @@ public class QuotationServiceImpl implements QuotationService {
     public Page<QuotationDTO> findAllwithPageable(Pageable pageable){
     return quotationRepository.findAll(pageable).map(this::convertToDTO);
     }
+
+    @Override
+    public Quotation findById(String id){
+    return quotationRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<QuotationDetailDTO> findAllByQuotation(Quotation quotation){
+        return  quotationDetailRepository.findAllByQuotation(quotation).stream().map(quotationDetail -> convertToDetailDTO(quotationDetail)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteQuotation(String id){
+        quotationRepository.deleteById(id);
+    }
+
 }
