@@ -65,6 +65,9 @@
             margin-right:10px;
             padding-right: 5px;
         }
+        .pageA {
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -222,8 +225,8 @@
 
                                                 <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
                                                     <ul class="pagination" style="justify-content: end;">
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Previous">
+                                                        <li class="page-item" th:class="${list.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                                                            <a class="page-link" th:if="${list.number > 0}" th:href="@{'/purchase/order?page=' + ${list.number - 1} + '&size=10'}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                             </a>
                                                         </li>
@@ -233,9 +236,8 @@
                                                                th:href="@{'/purchase/order?page=' + ${pageNumber - 1} + '&size=10'}"
                                                                th:text="${pageNumber}"></a>
                                                         </li>
-
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Next">
+                                                        <li class="page-item" th:class="${list.hasNext() ? 'page-item' : 'page-item disabled'}" th:style="${list.hasNext() ? '' : 'display: none;'}">
+                                                            <a class="page-link" th:if="${list.number != list.totalPages}" th:href="@{'/purchase/order?page=' + ${list.number + 1} + '&size=10'}" aria-label="Next">
                                                                 <span aria-hidden="true">&raquo;</span>
                                                             </a>
                                                         </li>

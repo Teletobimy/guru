@@ -364,7 +364,7 @@
                 console.log(response); // 성공적으로 응답을 받았을 때
                 $('#exampleModal' + orderId).modal('hide'); // 모달 닫기
                 Swal.fire({
-                  title: "발주 완료",
+                  title: "발주 성공",
                   text: "",
                   icon: "success",
                   showConfirmButton: false
@@ -447,7 +447,7 @@
 
           if (result.isConfirmed) {
             Swal.fire({
-              title: "취소 완료",
+              title: "취소 성공",
               text: "",
               icon: "success",
               showConfirmButton: false
