@@ -22,7 +22,7 @@ public class OrderApiController {
     @PostMapping("orders/{orderId}/update-status")
     public ResponseEntity<String> updateOrderStatus(
             @PathVariable int orderId,
-            @RequestParam int newStatus) {
+            @RequestParam(value = "newStatus") int newStatus) {
         orderService.updateOrderDetailStatus(orderId, newStatus);
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
