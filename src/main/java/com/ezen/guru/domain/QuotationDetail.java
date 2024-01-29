@@ -25,9 +25,9 @@ public class QuotationDetail {
         @JoinColumn(name = "quotation_id")
         private Quotation quotation;
 
-
-        @Column(name="material_id")
-        private int material_id;
+        @OneToOne
+        @JoinColumn(name = "material_id")
+        private Material material;
 
         @Column(name="material_name")
         private String materialName;

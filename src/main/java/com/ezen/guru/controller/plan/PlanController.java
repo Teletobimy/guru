@@ -225,8 +225,8 @@ public class PlanController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> recipe_delete (
-            @RequestParam String previousCellValue,
-            @RequestParam Integer bicycleIdValue
+            @RequestParam(value="previousCellValue") String previousCellValue,
+            @RequestParam(value="bicycleIdValue") Integer bicycleIdValue
     ){
         System.out.println("previousCellValue : "+previousCellValue);
         System.out.println("bicycleIdValue :"+bicycleIdValue);
@@ -459,41 +459,34 @@ public class PlanController {
                 userDetails.getPhone());
         model.addAttribute("user",user);
 
+        List<Code> codeList = materialService.findByCodeCategory("quotation_status");
+        model.addAttribute("code", codeList);
         model.addAttribute("page", QuotationPage);
         model.addAttribute("quotations", quotationDetailDTOList);
+        System.out.println("quotationDTO :" + quotationDetailDTOList);
 
         return "plan/quotation";
     }
 
-    @GetMapping("/procurementPlan")
-    public String procurementPlan(Model model,
-                                  HttpServletRequest request){
-        List<DocumentDTO> documents = documentService.getAllProcurementPlan();
+    @GetMapping("/quotationDetail")
+    public String quotationDetail(
+            Model model, @RequestParam(value = "quotationId") String quotationId,
+            HttpServletRequest request){
+        System.out.println("quotationId : " + quotationId);
+
+        Quotation quotation = quotationService.findById(quotationId);
+
+        QuotationDTO quotationDTO = quotationService.convertToDTO(quotation);
+
+        List<QuotationDetailDTO> quotationDetailDTOList = quotationService.findAllByQuotation(quotation);
+        System.out.println("quotationDTO :" + quotationDTO);
+        System.out.println("quotationDetailDTOList :"+quotationDetailDTOList);
 
 
 
-        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
-        Set<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
-
-        UserDTO user = new UserDTO(userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getName(),
-                userDetails.getEmail(),
-                userDetails.getPart(),
-                roles,
-                userDetails.getPhone());
-        model.addAttribute("user",user);
-        model.addAttribute("documents", documents);
 
 
-
-        return "plan/procurementPlan";
-    }
-    @GetMapping("/procurementPlan_insert")
-    public String procurementPlan_insert(Model model, HttpServletRequest request){
-        System.out.println("조달계획서생성");
+        List<Code> codeList = materialService.findByCodeCategory("quotation_status");
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -507,77 +500,38 @@ public class PlanController {
                 userDetails.getPart(),
                 roles,
                 userDetails.getPhone());
-        model.addAttribute("user",user);
 
-        return "plan/procurementPlan_insert";
+        model.addAttribute("user",user);
+        model.addAttribute("code",codeList);
+        model.addAttribute("quotation", quotationDTO);
+        model.addAttribute("quotationDetailDTOList", quotationDetailDTOList);
+
+        return "plan/quotation_detail";
     }
+
 
     @PostMapping("/save_quotation")
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String saveQuotation(@RequestBody QuotationDTO quotationDTO) {
-//        String quotationId = LocalDateTime.now().toString() + "-" + new Random().nextInt(10000);
-//        quotationDTO.setId(quotationId);
-//        if(quotationDTO.getQuotationDetails() !=null){
-//            for(QuotationDetailDTO detailDTO : quotationDTO.getQuotationDetails()){
-//                detailDTO.setQuotation_id(quotationId);
-//            }
-//        }
-//
-       System.out.println(quotationDTO);
-
         quotationService.saveQuotation(quotationDTO);
         return "견적서저장";
     }
 
+    @PostMapping("/quotation_delete")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public String quotation_delete(@RequestBody String Id) {
+        System.out.println(Id);
 
-    @GetMapping("/document")
-    public String document(Model model,
-                           HttpServletRequest request){
-        List<DocumentDTO> documents = documentService.getAllDocuments();
-
-        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
-        Set<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
-
-        UserDTO user = new UserDTO(userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getName(),
-                userDetails.getEmail(),
-                userDetails.getPart(),
-                roles,
-                userDetails.getPhone());
-        model.addAttribute("user",user);
-        model.addAttribute("documents", documents);
-        return "plan/document";
-    }
-
-    @GetMapping("/document/{documentId}")
-    public String getDocumentWithDetails(
-            @PathVariable("documentId")String documentId,
-            HttpServletRequest request,
-            Model model
-    ){
-        DocumentDTO documents = documentService.findDocumentById(documentId);
-        List<DocumentDetail> documentDetails = documentService.findDocumentDetailsByDocumentId(documentId);
-
-        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
-        Set<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
-
-        UserDTO user = new UserDTO(userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getName(),
-                userDetails.getEmail(),
-                userDetails.getPart(),
-                roles,
-                userDetails.getPhone());
-        model.addAttribute("user",user);
-        model.addAttribute("documents", documents);
-        model.addAttribute("documentDetails", documentDetails);
-        return "plan/document_detail_list";
+        try {
+            // 여기에 ID를 이용한 삭제 로직 추가
+            quotationService.deleteQuotation(Id);
+            return "견적서 삭제 성공";
+        } catch (Exception e) {
+            // 삭제 중 에러가 발생한 경우 처리
+            return "견적서 삭제 실패: " + e.getMessage();
+        }
     }
 
     @GetMapping("/quotation_insert")
@@ -629,6 +583,105 @@ public class PlanController {
         model.addAttribute("list", companyList);
         return "plan/company_search";
     }
+
+    @GetMapping("/procurementPlan")
+    public String procurementPlan(Model model,
+                                  HttpServletRequest request){
+        List<DocumentDTO> documents = documentService.getAllProcurementPlan();
+
+
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+        model.addAttribute("documents", documents);
+
+
+
+        return "plan/procurementPlan";
+    }
+    @GetMapping("/procurementPlan_insert")
+    public String procurementPlan_insert(Model model, HttpServletRequest request){
+        System.out.println("조달계획서생성");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+
+        return "plan/procurementPlan_insert";
+    }
+
+
+
+    @GetMapping("/document")
+    public String document(Model model,
+                           HttpServletRequest request){
+        List<DocumentDTO> documents = documentService.getAllDocuments();
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+        model.addAttribute("documents", documents);
+        return "plan/document";
+    }
+
+    @GetMapping("/document/{documentId}")
+    public String getDocumentWithDetails(
+            @PathVariable("documentId")String documentId,
+            HttpServletRequest request,
+            Model model
+    ){
+        DocumentDTO documents = documentService.findDocumentById(documentId);
+        List<DocumentDetail> documentDetails = documentService.findDocumentDetailsByDocumentId(documentId);
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+        model.addAttribute("user",user);
+        model.addAttribute("documents", documents);
+        model.addAttribute("documentDetails", documentDetails);
+        return "plan/document_detail_list";
+    }
+
 
     @GetMapping("/searchCompany")
     public String searchCompany(@RequestParam("name") String companyName, Model model) {
