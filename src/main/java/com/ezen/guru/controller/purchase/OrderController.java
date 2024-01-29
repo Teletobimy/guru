@@ -177,7 +177,7 @@ public class OrderController {
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @DeleteMapping("/company/delete/{companyId}")
-    public ResponseEntity<String> removeCompany(@PathVariable String companyId) {
+    public ResponseEntity<String> removeCompany(@PathVariable(value="companyId") String companyId) {
         companyService.removeCompany(companyId);
         return ResponseEntity.ok("협력사가 삭제되었습니다.");
     }

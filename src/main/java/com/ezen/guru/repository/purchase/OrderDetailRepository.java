@@ -22,6 +22,10 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrderDetail
             "d.purchaseOrder.status, " +
             "d.purchaseOrder.company.companyId, " +
             "d.purchaseOrder.company.companyName, " +
+            "d.purchaseOrder.company.ceo, " +
+            "d.purchaseOrder.company.tel, " +
+            "d.purchaseOrder.company.email, " +
+            "d.purchaseOrder.company.address, " +
             "d.id, " +
             "d.material.materialId, " +
             "d.materialName, " +
