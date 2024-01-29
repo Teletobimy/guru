@@ -18,6 +18,10 @@ public class OrderDetailViewResponse {
     private final int status;
     private final String companyId;
     private final String companyName;
+    private final String ceo;
+    private final String tel;
+    private final String email;
+    private final String address;
     private final int detailId;
     private final int materialId;
     private final String materialName;
