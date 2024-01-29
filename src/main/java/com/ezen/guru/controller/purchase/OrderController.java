@@ -10,6 +10,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -159,7 +163,15 @@ public class OrderController {
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PostMapping("/company/add")
-    public ResponseEntity<String> addToCompany(@Valid @RequestBody AddCompanyRequest company) {
+    public ResponseEntity<?> addToCompany(@Valid @RequestBody AddCompanyRequest company, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            // 검증 오류가 발생한 경우
+            List<String> errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        }
         Company newCompany = companyService.newCompany(company);
         return new ResponseEntity<>("협력사가 등록되었습니다.", HttpStatus.OK);
     }

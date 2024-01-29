@@ -66,6 +66,12 @@
             color: #fff;
             border-radius: 5px;
         }
+        .pageA {
+            color: #93BE52;
+        }
+        .btn-success {
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -304,29 +310,29 @@
                                                                                         <table class="table update-table">
                                                                                             <tr>
                                                                                                 <th scope="row">사업자 번호 :</th>
-                                                                                                <td><input type="text" name="updateId" th:value="${item.companyId}" readonly></td>
+                                                                                                <td><input type="text" name="updateId" th:value="${item.companyId}" readonly ></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th scope="row">회사명 :</th>
-                                                                                                <td><input type="text" name="updateName" th:value="${item.companyName}"></td>
+                                                                                                <td><input type="text" name="updateName" th:value="${item.companyName}" ></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th scope="row">대표자명 :</th>
-                                                                                                <td><input type="text" name="updateCeo"  th:value="${item.ceo}"></td>
+                                                                                                <td><input type="text" name="updateCeo"  th:value="${item.ceo}" ></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th scope="row">전화번호 :</th>
-                                                                                                <td><input type="text" name="updateTel" th:value="${item.tel}"></td>
+                                                                                                <td><input type="text" name="updateTel" th:value="${item.tel}" ></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th scope="row">e-mail :</th>
-                                                                                                <td><input type="text" name="updateEmail" th:value="${item.email}"></td>
+                                                                                                <td><input type="text" name="updateEmail" th:value="${item.email}" ></td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th scope="row">주소 :</th>
                                                                                                 <td><input type="text" name="updateZipcode"
                                                                                                            th:id="${'updateZipcode-' + item.companyId}"
-                                                                                                           th:value="${item.zipcode}" readonly>
+                                                                                                           th:value="${item.zipcode}" readonly >
                                                                                                     <input type="button" class="btn btn-card btn-primary btn-success"
                                                                                                            th:attr="data-company-id=${item.companyId}"
                                                                                                            th:onclick="upexecDaumPostcode(this)" value="우편번호 찾기"></td>
@@ -335,7 +341,7 @@
                                                                                                 <th></th>
                                                                                                 <td>
                                                                                                     <input type="text" name="updateAddress1" class="updateAddress1" readonly
-                                                                                                           th:id="${'updateAddress1-' + item.companyId}">
+                                                                                                           th:id="${'updateAddress1-' + item.companyId}" >
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
@@ -367,8 +373,8 @@
 
                                                 <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
                                                     <ul class="pagination" style="justify-content: end;">
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Previous">
+                                                        <li class="page-item" th:class="${list.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                                                            <a class="page-link" th:if="${list.number > 0}" th:href="@{'/purchase/company_list?page=' + ${list.number - 1} + '&size=10'}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                             </a>
                                                         </li>
@@ -379,8 +385,8 @@
                                                                th:text="${pageNumber}"></a>
                                                         </li>
 
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Next">
+                                                        <li class="page-item" th:class="${list.hasNext() ? 'page-item' : 'page-item disabled'}" th:style="${list.hasNext() ? '' : 'display: none;'}">
+                                                            <a class="page-link" th:if="${list.number != list.totalPages}" th:href="@{'/purchase/company_list?page=' + ${list.number + 1} + '&size=10'}" aria-label="Next">
                                                                 <span aria-hidden="true">&raquo;</span>
                                                             </a>
                                                         </li>
@@ -440,6 +446,7 @@
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script>
     var $window = $(window);
     var nav = $('.fixed-button');
@@ -517,12 +524,14 @@
                } else if(xhr.status === 400) {
                     $('#exampleModal').modal('hide'); // 모달 닫기
                     var errorResponse = JSON.parse(xhr.responseText);
-                    Swal.fire({
-                      title: "Warning",
-                      text: errorResponse.message,
-                      icon: "error",
-                      showConfirmButton: false,
-                      timer: 1500
+                    errorResponse.forEach(function (error) {
+                        Swal.fire({
+                            title: "Warning",
+                            text: error, // 여기서 error는 검증 오류 메시지입니다.
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     });
                } else{
                     console.error("Error: " , status, error);
@@ -595,11 +604,14 @@
                } else if(xhr.status === 400) {
                     $('#modifyModal' + updateId).modal('hide'); // 모달 닫기
                     var errorResponse = JSON.parse(xhr.responseText);
-                    Swal.fire({
-                      title: "Warning",
-                      text: errorResponse.message,
-                      icon: "error",
-                      showConfirmButton: false
+                    errorResponse.forEach(function (error) {
+                        Swal.fire({
+                            title: "Warning",
+                            text: error, // 여기서 error는 검증 오류 메시지입니다.
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     });
                     setTimeout (function() {location.reload();}, 1500);
                } else{

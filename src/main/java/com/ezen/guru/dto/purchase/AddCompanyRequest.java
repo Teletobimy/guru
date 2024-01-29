@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddCompanyRequest {
 
-    @Unique
+    @Unique(message = "중복된 사업자번호입니다.")
     @NotBlank(message = "사업자번호를 입력해주세요.")
     String companyId;
 
