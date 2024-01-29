@@ -14,7 +14,7 @@ public interface BicycleRepository extends CrudRepository<Bicycle, Integer> {
 
     @Query("SELECT b FROM Bicycle b WHERE " +
             "(:bicycleName IS NULL OR LOWER(b.bicycleName) LIKE LOWER(CONCAT('%', :bicycleName, '%'))) " +
-            "ORDER BY b.bicycleId ASC")
+            "ORDER BY b.bicycleId DESC")
     Page<Bicycle> findAllByBicycleNameContainingIgnoreCaseOrderByBicyclePriceAsc(@Param("bicycleName") String bicycleName, Pageable pageable);
 
     Page<Bicycle> findAll(Pageable pageable);
