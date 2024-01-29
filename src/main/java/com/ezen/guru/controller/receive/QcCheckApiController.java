@@ -18,7 +18,7 @@ public class QcCheckApiController {
     private final ShipmentService shipmentService;
     @PutMapping("/updateQcCheckCnt")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
-    public ResponseEntity<String> updatepurchase(@RequestParam int qcCheckId, @RequestParam int qcCheckCnt){
+    public ResponseEntity<String> updatepurchase(@RequestParam(value = "qcCheckId") int qcCheckId, @RequestParam(value = "qcCheckCnt") int qcCheckCnt){
         try {
             qcCheckService.updateAllStatus(qcCheckId,qcCheckCnt);
             return ResponseEntity.ok("Update successful for qcCheckId: " + qcCheckId + "qcCheckCnt: " + qcCheckCnt);
