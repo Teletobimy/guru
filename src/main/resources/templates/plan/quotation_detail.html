@@ -238,6 +238,9 @@
                                                 th:attr="onclick='gotoList()'"
                                                 class="btn btn-warning"
                                                 style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
+                                        <input type="button" class="btn btn-card btn-primary btn-success"
+                                                th:if="${firstItem.status == 2}"
+                                                th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|" value="발주서출력">
                                     </div>
                                     </form>
 

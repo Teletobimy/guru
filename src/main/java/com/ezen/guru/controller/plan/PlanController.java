@@ -425,9 +425,9 @@ public class PlanController {
         return "plan/item_search";
     }
 
-    @GetMapping("/material_search/{materialId}") // 실제 컨트롤러 엔드포인트 URL로 변경해주세요
+    @GetMapping("/material_search/{materialId}")
     @ResponseBody
-    public MaterialDTO getMaterialById(@PathVariable int materialId) {
+    public MaterialDTO getMaterialById(@PathVariable(value = "materialId") int materialId) {
 
         return materialService.getMaterialById(materialId);
     }

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        table{
+         border-collapse: collapse;
+         border-spacing: 0
+        }
+        th{
+            background-color: #f6f7fb;
+    	    color: #000;
+        }
+        th, td{
+            border: 1px solid #ccc;
+    	    padding: 10px;
+        }
+        input{
+            border:none;
+        }
+        .d-inline {
+            display: flex;
+            align-items: center;
+        }
+        .btn-card {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .document-title {
+            text-align: center;
+            padding: 10px;
+        }
+        #print-area {
+            box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -webkit-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            -moz-box-shadow: 5px 4px 13px 5px rgba(145,144,144,0.61);
+            padding: 40px;
+        }
+        .button-area {
+            padding-bottom: 40px;
+        }
+        .complete-btn {
+            margin-left: 595px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pre-loader start -->
+<div class="theme-loader">
+    <div class="ball-scale">
+        <div class='contain'>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+            <div class="ring"><div class="frame"></div></div>
+        </div>
+    </div>
+</div>
+<!-- Pre-loader end -->
+
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header"
+             th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
+
+        <div class="pcoded-main-container" >
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- Main-body start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+
+                            <!-- Page-header start -->
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont icofont icofont-file-document bg-c-green"></i>
+                                            <div class="d-inline">
+                                                <h4>상세 내역</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- Page-header end -->
+
+                            <!-- Page start -->
+                            <div class="page-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card">
+
+                                            <div style="margin: auto; padding: 40px">
+                                                <div class="button-area">
+                                                    <button type="button" class="btn btn-secondary" th:onclick="history.back()"><i class="ti-arrow-left"></i>뒤로</button>
+                                                    <button type="button" class="btn btn-primary complete-btn btn-success" th:onclick="printPage()"><i class="ti-printer"></i> 출력</button>
+                                                </div>
+
+                                                <th:block th:with="firstItem=${list[0]}">
+                                                    <div id="print-area">
+                                                        <h4 class="document-title" th:text="견 적 서"></h4>
+
+
+                                                        <table id="estimateTable" width="90%" >
+
+                                                            <tr>
+                                                                <th colspan="2">견적서번호</th>
+                                                                <td colspan="3">
+                                                                    <input type="text" th:value="${quotation.id}" id="quotationId" readonly>
+                                                                </td>
+                                                                <th colspan="2">회사명</th>
+                                                                <td colspan="3">
+                                                                    <input type="text" id="company_name" th:value="${quotation.company_name}" readonly>
+                                                                </td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <th rowspan="2" colspan="2">수신</th>
+                                                                <td rowspan="2" colspan="3">
+                                                                    <p style="font-size: larger;"><u>GURO자전거</u></p>
+                                                                    <p><u>권나현 대표 귀하</u></p>
+                                                                </td>
+                                                                <th rowspan="1" colspan="2">사업자번호</th>
+                                                                <td colspan="3">
+                                                                    <input type="text" id="company_id" th:value="${quotation.Company.companyId}" readonly>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th rowspan="1" colspan="2">Bidding No.</th>
+                                                                <td colspan="3" th:text="${quotation.biddingNo}">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th rowspan="2" colspan="2">주소</th>
+                                                                <td colspan="3" rowspan="2" th:text="${quotation.Company.address}">
+                                                                </td>
+                                                                <th colspan="2" rowspan="2">대표자(혹은 담당자)</th>
+                                                                <th>성명</th>
+                                                                <td colspan="2" th:text="${quotation.Company.ceo}">>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th >연락처</th>
+                                                                <td colspan="2" th:text="${quotation.Company.tel}">
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2">리드타임</th>
+                                                                <td colspan="3" th:text="${quotation.leadTime}">
+
+                                                                </td>
+                                                                <th colspan="2">거래조건</th>
+                                                                <td colspan="3" th:text="${quotation.tradeTerms}">
+
+                                                                </td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2">지불조건</th>
+                                                                <td colspan="3" th:text="${quotation.paymentTerms}"></td>
+                                                                <th colspan="2">납기일</th>
+                                                                <td colspan="3" th:text="${quotation.deadline}"></td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>PID</th>
+                                                                <th colspan="2">품명</th>
+                                                                <th>규격</th>
+                                                                <th>수량</th>
+                                                                <th>단위</th>
+                                                                <th>단가</th>
+                                                                <th colspan="2">금액</th>
+
+
+                                                            </tr>
+
+                                                            <tbody id="tableBody">
+
+                                                            </tbody>
+
+
+                                                            <tr th:each="qd, itemStat : ${quotationDetailDTOList}">
+                                                                <th scope="row" th:text="${itemStat.count}"></th>
+                                                                <td th:text="${qd.Material.materialId}"></td>
+                                                                <td colspan="2" th:text="${qd.Material.materialName}"></td>
+                                                                <td th:text="${qd.Material.materialDescription}"></td>
+                                                                <td th:text="${qd.quotationCnt}"></td>
+                                                                <td th:text="${qd.quotationMeasure}"></td>
+                                                                <td th:text="${qd.quotationPrice}"></td>
+                                                                <td colspan="2" th:text="${qd.quotationPrice*qd.quotationCnt}"></td>
+                                                            </tr>
+                                                            <!---------------------------------------------------->
+                                                            <tr>
+                                                                <th colspan="3">합계(VAT 포함)</th>
+
+                                                                <td colspan="7" class="total" th:text="${quotation.quotation_totalprice}"></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2">특기사항</th>
+                                                                <td colspan="8" th:text="${quotation.quotation_memo}"></td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Page end -->
+                        </div>
+                    </div>
+                    <!-- Main-body end -->
+
+                    <div id="styleSelector">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="assets/js/modernizr/css-scrollbars.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- classie js -->
+<script type="text/javascript" src="assets/js/classie/classie.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    function printPage() {
+        document.body.innerHTML = document.getElementById('print-area').innerHTML;
+        window.print();
+        location.reload();
+    }
+</script>
+</body>
+</html>
