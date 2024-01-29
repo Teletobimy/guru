@@ -126,6 +126,7 @@ public class PlanController {
 
         return "plan/bicycle_insert";
     }
+
     @PostMapping("/bicycle_save")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String bicycle_save(@RequestBody BicycleDTO newBicycle) {

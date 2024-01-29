@@ -29,7 +29,6 @@ public class MaterialServiceImpl implements MaterialService {
     private MaterialDTO convertToDTO(Material material) {
         MaterialDTO materialDTO = new MaterialDTO();
         materialDTO.setMaterialId(material.getMaterialId());
-        materialDTO.setMaterialCode(material.getMaterialCode());
         materialDTO.setCompanyId(material.getCompanyId());
         materialDTO.setCompanyName(material.getCompanyName());
         materialDTO.setMaterialName(material.getMaterialName());
@@ -44,7 +43,6 @@ public class MaterialServiceImpl implements MaterialService {
     private Material convertToEntity(MaterialDTO materialDTO) {
         Material material = Material.builder()
                 .materialId(materialDTO.getMaterialId())
-                .materialCode(materialDTO.getMaterialCode())
                 .companyId(materialDTO.getCompanyId())
                 .companyName(materialDTO.getCompanyName())
                 .materialName(materialDTO.getMaterialName())
