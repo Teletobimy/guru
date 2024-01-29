@@ -85,6 +85,9 @@
             background-color: rgba(254, 214, 150);
             border-color: rgb(255, 185, 99);
         }
+        .page-link:focus, .page-link:hover {
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -137,8 +140,6 @@
                                                     <a href="/">
                                                         <i class="icofont icofont-home"></i>
                                                     </a>
-                                                </li>
-                                                <li class="breadcrumb-item"><a href="#!">출고</a>
                                                 </li>
                                                 <li class="breadcrumb-item"><a href="/export/materialStock">재고:[원자재]</a>
                                                 </li>
@@ -306,6 +307,12 @@
         window.location.href = '/export/materialStock?size=10&page=0&category='+ category
                                 +'&keyword=' + encodedSearchValue
     }
+
+    document.getElementById('searchInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
 
     $(document).ready(function() {
 

@@ -1,19 +1,25 @@
 package com.ezen.guru.controller.export;
 
+import com.ezen.guru.domain.Bicycle;
 import com.ezen.guru.domain.Code;
+import com.ezen.guru.domain.Recipe;
 import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.export.ExportDTO;
 import com.ezen.guru.dto.export.IdRequest;
 import com.ezen.guru.dto.plan.BicycleDTO;
 import com.ezen.guru.dto.plan.MaterialDTO;
 import com.ezen.guru.dto.plan.ProducePlanerDTO;
+import com.ezen.guru.dto.plan.RecipeDTO;
 import com.ezen.guru.dto.purchase.CompanyListViewResponse;
 import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.export.ExportService;
 import com.ezen.guru.service.plan.BicycleService;
 import com.ezen.guru.service.plan.MaterialService;
+import com.ezen.guru.service.plan.RecipeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +39,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/export")
@@ -42,22 +49,9 @@ public class ExportController {
     private final ExportService exportService;
     private final MaterialService materialService;
     private final BicycleService bicycleService;
+    private final RecipeService recipeService;
 
-    // 공통 유저 정보 설정 메소드
-    private UserDTO getUser(HttpServletRequest request) {
-        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
-        Set<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
-
-        return new UserDTO(userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getName(),
-                userDetails.getEmail(),
-                userDetails.getPart(),
-                roles,
-                userDetails.getPhone());
-    }
+    private final UserDTO userDTO = new UserDTO();
 
     @GetMapping("/producePlanerList")
     public String producePlanerList(Model model, HttpServletRequest request,
@@ -68,7 +62,7 @@ public class ExportController {
                                     @RequestParam(name = "startDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                     @RequestParam(name = "endDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
 
@@ -92,7 +86,7 @@ public class ExportController {
     public String producePlanerRegister(Model model, HttpServletRequest request){
 
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         //생산계획서 번호 생성(생성시점 날짜&시간)
@@ -107,13 +101,13 @@ public class ExportController {
     }
 
     @GetMapping("/bicycleSearch")
-    public String company_search(Model model, HttpServletRequest request,
+    public String bicycleSearch(Model model, HttpServletRequest request,
                                  @RequestParam(value = "size", defaultValue = "10") int size,
                                  @RequestParam(value ="page" ,defaultValue = "0") int page,
                                  @RequestParam(value = "keyword", required = false) String keyword) {
 
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         Page<BicycleDTO> bicycles = bicycleService.getAllBicycles(keyword, PageRequest.of(page, size));
@@ -122,11 +116,53 @@ public class ExportController {
         return "export/bicycleSearch";
     }
 
+    @GetMapping("/getRecipeList")
+    public ResponseEntity<?> getRecipeList(Model model, HttpServletRequest request, @RequestParam(name = "bicycleId") int bicycleId) {
+
+        System.out.println("-----------bicycleId : " + bicycleId);
+
+        //공통 유저 정보
+        UserDTO user = userDTO.getUser(request);
+        model.addAttribute("user",user);
+
+        Bicycle bicycle = bicycleService.getBicycleById(bicycleId);
+        List<Recipe> recipe = recipeService.findByBicycle(bicycle);
+        List<RecipeDTO> recipeList = recipe.stream().map(RecipeDTO::new).toList();
+
+        System.out.println("----recipe : " + recipe);
+        System.out.println("---------recipeList : " + recipeList);
+
+        try {
+//            String jsonRecipeList = objectMapper.writeValueAsString(recipeList);
+            model.addAttribute("recipeList", recipeList);
+            return ResponseEntity.ok(recipeList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing JSON");
+        }
+    }
+
+    @GetMapping("/choiceRecipe")
+    public String choiceRecipe(Model model, HttpServletRequest request,
+                                 @RequestParam(value = "size", defaultValue = "10") int size,
+                                 @RequestParam(value ="page" ,defaultValue = "0") int page,
+                                 @RequestParam(value = "keyword", required = false) String keyword) {
+
+        //공통 유저 정보
+        UserDTO user = userDTO.getUser(request);
+        model.addAttribute("user",user);
+
+        Page<BicycleDTO> bicycles = bicycleService.getAllBicycles(keyword, PageRequest.of(page, size));
+
+        model.addAttribute("bicycles", bicycles);
+        return "export/recipeSearch";
+    }
+
     @GetMapping("/producePlanerDetail")
     public String producePlanerDetail(@RequestParam("producePlanerId") String producePlanerId, Model model, HttpServletRequest request) {
 
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         List<ProducePlanerDTO> list = exportService.findByProducePlanerId(producePlanerId);
@@ -152,7 +188,7 @@ public class ExportController {
                                     @RequestParam(name = "startDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                     @RequestParam(name = "endDate", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         //출고데이터
@@ -175,7 +211,7 @@ public class ExportController {
     public String exportDetail(@RequestParam("producePlanerId") String producePlanerId, Model model, HttpServletRequest request) {
 
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         List<ExportDTO> export = exportService.findExport(producePlanerId);
@@ -197,7 +233,7 @@ public class ExportController {
                                @RequestParam(value = "category", required = false, defaultValue = "-1") Integer  category) {
 
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         System.out.println("--------------------");
@@ -220,7 +256,7 @@ public class ExportController {
                               @RequestParam(value = "keyword", defaultValue = "", required = false) String bicycleName) {
 
         //공통 유저 정보
-        UserDTO user = getUser(request);
+        UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         Page<BicycleDTO> bicycles = bicycleService.getAllBicycles(bicycleName, PageRequest.of(page, size));

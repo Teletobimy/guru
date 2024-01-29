@@ -32,11 +32,37 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
     <style>
+        .input-box{
+         width:100%;
+         display:flex;
+         justify-content:end;
+         padding:5px;
+         box-sizing:border-box;
+         margin :15px auto;
+         margin-top:0;
+         align-items:center;
+        }
+        .d-inline {
+            display: flex;
+            align-items: center;
+        }
+        input{
+            padding:5px 10px;
+        }
+        p{
+            padding:5px 10px;
+            cursor: pointer;
+        }
+        .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+            padding-right: 5px;
+        }
         .btn-card {
             text-transform: uppercase;
             font-size: 13px;
             padding: 5px 10px;
-            margin: 0px 10px;
+            margin: 0px 5px;
             color: #fff;
             border-radius: 5px;
         }
@@ -45,14 +71,17 @@
 <body>
 
 
-<div id="companyInfo"></div>
+<div id="bicycleInfo"></div>
 <div class="card">
     <div class="card-header">
         <h1>자전거 리스트</h1>
-        <div class="pcoded-search">
-            <div class="pcoded-search-box ">
-                <input type="text" placeholder="자전거명으로 검색">
-                <p class="search-icon"><i class="ti-search" aria-hidden="true"></i></p>
+        <div class="pcoded-search-box input-box">
+            <div class="search-long">
+                <input type="text" placeholder="search" id="searchInput" style="border:none;">
+                <p class="search-icon" th:attr="onclick='performSearch()'"
+                   style="display:inline; margin:0;">
+                    <i class="ti-search" aria-hidden="true"></i>
+                </p>
             </div>
         </div>
     </div>
@@ -69,10 +98,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="bicycle:${bicycles}" style="cursor:pointer;" onclick="outPutRow(this)">
+                    <tr th:each="bicycle, stat : ${bicycles}" style="cursor:pointer;" onclick="outPutRow(this)">
                         <th scope="row" th:text="${stat.count}"></th>
                         <td th:text="${bicycle.bicycleId}"></td>
-                        <td th:text="${bicycle.bicycleName}"></td>
+                        <td id="bicycleName" th:text="${bicycle.bicycleName}"></td>
                         <td th:text="${bicycle.bicycleDescription}"></td>
                         <td th:text="${bicycle.bicycleStock}"></td>
                         <td th:text="'&#8361; ' + ${#numbers.formatInteger(bicycle.bicyclePrice, 1, 'COMMA')}"></td>
@@ -82,7 +111,6 @@
         </div>
     </div>
 </div>
-
 <script>
     function outPutRow(row) {
         var rowData = [];
@@ -94,32 +122,24 @@
         console.log(rowData);
 
         // 여기서 rowData를 check 함수에 전달하거나 다른 처리를 수행할 수 있습니다.
-       window.opener.comapnyInput(rowData);
+       window.opener.bicycleInput(rowData);
        window.close();
     }
 
-    function searchMaterial() {
-        var companyName = document.getElementById('materialID').value;
+    function performSearch(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var searchValue = document.getElementById('searchInput').value;
 
-        // AJAX를 사용하여 서버에 검색 요청을 보냄
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // 검색 결과를 받아서 companyInfo 영역에 표시
-                    document.getElementById('companyInfo').innerHTML = xhr.responseText;
-                } else {
-                    // 에러 처리
-                    document.getElementById('companyInfo').innerHTML = '검색 실패';
-                }
-            }
-        };
+        var encodedSearchValue = encodeURIComponent(searchValue);
 
-        // 서버의 검색 기능을 사용하는 API 엔드포인트 URL을 설정
-        var url = '/plan/searchCompany?name=' + encodeURIComponent(companyName);
-        xhr.open('GET', url, true);
-        xhr.send();
+        window.location.href = '/export/bicycleSearch?size=10&page=0&keyword='+ encodedSearchValue
     }
+
+    document.getElementById('searchInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
 </script>
 </body>
 </html>

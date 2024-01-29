@@ -166,11 +166,6 @@
                                                 </tr>
                                                 <tbody id="tableBody">
                                                 </tbody>
-                                                <tr>
-                                                    <td colspan="10">
-                                                        <input type="button" class="btn-brown" onclick="choiceRecipe()" value="레시피선택">
-                                                    </td>
-                                                </tr>
                                             </table>
                                         </div>
                                     </div>
@@ -216,38 +211,95 @@
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-  function gotoList(){
-    var url = '/export/producePlanerList';
-    window.location.href = url;
-  }
-
-  function selectBicycle() {
-    var newWindow = window.open('/export/bicycleSearch', '_blank', 'width=1300,height=800');
-    if (newWindow) {
-        newWindow.focus();
-    } else {
-        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+    function gotoList(){
+        var url = '/export/producePlanerList';
+        window.location.href = url;
     }
-  }
 
-  function comapnyInput(rowData) {
-    // rowData를 사용하여 각 ID에 값을 채우는 동작을 수행
-
-    // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
-    document.getElementById("bicycle_name").value = rowData[0];
-    document.getElementById("bicycle_id").value = rowData[1];
-    // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
-  }
-
-  //레시피선택
-  function choiceRecipe() {
-    var newWindow = window.open('/export/choiceRecipe', '_blank', 'width=800,height=800');
-    if (newWindow) {
-        newWindow.focus();
-    } else {
-        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+    function selectBicycle() {
+        var newWindow = window.open('/export/bicycleSearch', '_blank', 'width=1300,height=800');
+        if (newWindow) {
+            newWindow.focus();
+        } else {
+            alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+        }
     }
-  }
+
+    function bicycleInput(rowData) {
+        // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
+        document.getElementById("bicycle_id").value = rowData[0];
+        document.getElementById("bicycle_name").value = rowData[1];
+
+        // AJAX를 통해 bicycleId를 서버로 전송하여 레시피 목록을 가져옴
+        bicycleId = document.getElementById("bicycle_id").value;
+        var xhr = new XMLHttpRequest();
+        var url = '/export/getRecipeList?bicycleId=' + bicycleId; // 컨트롤러 엔드포인트 URL로 변경
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var recipeList = JSON.parse(xhr.responseText);
+                    populateTable(recipeList);
+                } else {
+                    console.error('Request failed. Status: ' + xhr.status);
+                }
+            }
+        };
+        xhr.open('GET', url, true);
+        xhr.send();
+    }
+
+    //레시피선택
+    function choiceRecipe() {
+        var newWindow = window.open('/export/choiceRecipe', '_blank', 'width=800,height=800');
+        if (newWindow) {
+            newWindow.focus();
+        } else {
+            alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+        }
+    }
+
+    // 테이블에 레시피 목록을 입력하는 함수
+    function populateTable(recipeList) {
+        var tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = ''; // 기존 내용 지우기
+
+        for (var i = 0; i < recipeList.length; i++) {
+            var recipe = recipeList[i];
+            var row = tableBody.insertRow(-1);
+
+            // 각 셀에 데이터 입력
+            var cellNo = row.insertCell(0);
+            cellNo.textContent = i + 1;
+
+            var cellPID = row.insertCell(1);
+            cellPID.textContent = recipe.bicycleId;
+
+            var cellName = row.insertCell(2);
+            cellName.setAttribute('colspan', '2');
+            cellName.textContent = recipe.materialName;
+
+            var cellSpec = row.insertCell(3);
+
+            var cellQuantity = row.insertCell(4);
+            cellQuantity.textContent = recipe.recipeCnt;
+
+            var cellUnit = row.insertCell(5);
+
+            var cellPrice = row.insertCell(6);
+
+            var cellAmount = row.insertCell(7);
+            cellAmount.setAttribute('colspan', '2');
+
+            // 버튼 생성 및 추가
+            var button = document.createElement('input');
+            button.setAttribute('type', 'button');
+            button.setAttribute('value', '원자재 선택');
+            button.classList.add('recipeButton'); // 부트스트랩 버튼 스타일을 적용하기 위해 클래스 추가
+            button.classList.add('btn-brown'); // 부트스트랩 버튼 스타일을 적용하기 위해 클래스 추가
+            cellAmount.appendChild(button); // 버튼을 마지막 셀에 추가
+        }
+    }
 
 function check(materialId) {
 
