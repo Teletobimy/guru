@@ -113,7 +113,7 @@
 
 
                                 <div class="card">
-                                    <form action="/plan/material_save" method="post">
+                                    <form id="materialForm">
                                     <div class="card-header">
                                         <div class="container">
                                         <h1>원자재품목생성</h1><br>
@@ -185,18 +185,11 @@
                                                         </select>
                                                     </td>
                                                 </tr>
-
-
-
-
                                         </table>
-
-
                                     </div>
                                     </div>
-
                                     <div class="btn-display">
-                                        <button type="submit" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;">등록</button>
+                                        <button type="submit" onclick="submitForm(event)" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;">등록</button>
                                         <input type="button"
                                                class="btn btn-warning"
                                                onclick="gotoList()"
@@ -258,6 +251,24 @@
     window.location.href = url;
 }
 
+ function submitForm(event) {
+        event.preventDefault();
+        var formData = $("#materialForm").serialize();
+
+        $.ajax({
+            type: "POST",
+            url: "/plan/material_save",  // Update the URL accordingly
+            data: formData,
+            success: function(response) {
+               alert(response);
+               window.location.href = '/plan/material';
+            },
+            error: function(error) {
+                // Handle the error response if needed
+                console.error(error);
+            }
+        });
+    }
 
 
 // 품목 추가를 위한 행 추가 기능 시작
