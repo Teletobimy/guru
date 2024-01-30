@@ -141,6 +141,38 @@ public class ExportService {
         return codeList;
     }
 
+    public void saveProducePlaner(List<ProducePlanerDTO> dtoList) {
+
+        System.out.println("dtoList : " + dtoList);
+
+        List<ProducePlaner> entityList = new ArrayList<>();
+        for (ProducePlanerDTO dto : dtoList) {
+
+            ProducePlaner entity = ProducePlanerDTO.toEntity(dto);
+            entityList.add(entity);
+        }
+        System.out.println("after--entityList : " + entityList.size());
+
+        if (dtoList.size() == entityList.size()) {
+
+            for (ProducePlaner entity : entityList) {
+
+                producePlanerRepository.save(entity);
+                System.out.println("---saved entity : " + entity);
+            }
+        }
+    }
+
+    public void deleteProducePlaner(String producePlanerId) {
+
+        System.out.println("service delete-------------------------------");
+
+        List<ProducePlaner> list = producePlanerRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
+
+        producePlanerRepository.deleteProducePlanerById(producePlanerId);
+        System.out.println("status delete success---------------------- ");
+    }
+
     public void updateStatus(ProducePlanerDTO dto) {
 
         System.out.println("service dto---------------------- : " + dto);

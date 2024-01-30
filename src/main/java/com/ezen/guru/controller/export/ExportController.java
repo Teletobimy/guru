@@ -100,6 +100,20 @@ public class ExportController {
         return "export/producePlanerRegister";
     }
 
+    @GetMapping("/producePlanerUpdate")
+    public String producePlanerUpdate(Model model, HttpServletRequest request, @RequestParam("producePlanerId") String producePlanerId){
+
+        //공통 유저 정보
+        UserDTO user = userDTO.getUser(request);
+        model.addAttribute("user",user);
+
+        List<ProducePlanerDTO> producePlanerList = exportService.findByProducePlanerId(producePlanerId);
+        model.addAttribute("producePlanerList",producePlanerList);
+        model.addAttribute("producePlanerId",producePlanerId);
+
+        return "export/producePlanerUpdate";
+    }
+
     @GetMapping("/bicycleSearch")
     public String bicycleSearch(Model model, HttpServletRequest request,
                                  @RequestParam(value = "size", defaultValue = "10") int size,
@@ -114,6 +128,26 @@ public class ExportController {
 
         model.addAttribute("bicycles", bicycles);
         return "export/bicycleSearch";
+    }
+
+    @GetMapping("/materialSearch")
+    public String materialSearch(Model model, HttpServletRequest request,
+                                 @RequestParam(value = "size", defaultValue = "10") int size,
+                                 @RequestParam(value ="page" ,defaultValue = "0") int page,
+                                 @RequestParam(value = "keyword", required = false) String keyword,
+                                 @RequestParam(value = "rowIndex", required = false) int rowIndex) {
+
+        //공통 유저 정보
+        UserDTO user = userDTO.getUser(request);
+        model.addAttribute("user",user);
+
+        System.out.println("materialName : " + keyword);
+        System.out.println("rowIndex : " + rowIndex);
+        Page<MaterialDTO> materials = materialService.getAllMaterials(keyword, -1, PageRequest.of(page, size));
+
+        model.addAttribute("materials", materials);
+        model.addAttribute("rowIndex", rowIndex);
+        return "export/materialSearch";
     }
 
     @GetMapping("/getRecipeList")
@@ -263,6 +297,36 @@ public class ExportController {
         model.addAttribute("bicycles", bicycles);
 
         return "export/productStock";
+    }
+
+    @PostMapping("/producePlanerRegister")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_D')")
+    public ResponseEntity<?> producePlanerRegister(@RequestBody List<ProducePlanerDTO> request) {
+
+        System.out.println("----------------producePlanerRegister controller");
+        try {
+            System.out.println("----------------try");
+            exportService.saveProducePlaner(request);
+            System.out.println("----------------success save");
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/producePlanerDelete")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_D')")
+    public ResponseEntity<?> producePlanerDelete(@RequestBody IdRequest request) {
+
+        System.out.println("----------------producePlanerRegister controller");
+        try {
+            System.out.println("----------------try");
+            exportService.deleteProducePlaner(request.getProducePlanerId());
+            System.out.println("----------------success save");
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/producePlanerDetail")

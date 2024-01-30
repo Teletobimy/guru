@@ -198,6 +198,7 @@
                                                                         <th>생산계획수량</th>
                                                                         <th>마감일</th>
                                                                         <th colspan="2">진행상태</th>
+                                                                        <th colspan="2">수정/삭제</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -209,6 +210,12 @@
                                                                         <td th:text="${codeList[index.index].codeName}"></td>
                                                                         <td>
                                                                             <button type="button" class="btn btn-card btn-brown" onclick="handleButtonClick(event)" th:if="${codeList[index.index].codeNum == 2}">출고처리</button>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-card btn-warning" onclick="rowUpdate(event)" th:if="${codeList[index.index].codeNum != 99}">수정</button>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-card btn-danger" onclick="rowDelete(event)" th:if="${codeList[index.index].codeNum != 99}">삭제</button>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -298,6 +305,72 @@
         if (status !== '출고완료') {
             location.href = '/export/producePlanerDetail?producePlanerId=' + producePlanerId;
         }
+    }
+
+    function rowUpdate(event) {
+        // 이벤트 전파(stopPropagation)를 사용하여 상위 요소의 클릭 이벤트를 막음
+        event.stopPropagation();
+
+        // 클릭된 엘리먼트에서 데이터 추출
+        var producePlanerId = $(event.target).closest('tr').find('th:eq(0)').text();
+
+        location.href = '/export/producePlanerUpdate?producePlanerId=' + producePlanerId;
+    }
+
+    function rowDelete(event) {
+        // 이벤트 전파(stopPropagation)를 사용하여 상위 요소의 클릭 이벤트를 막음
+        event.stopPropagation();
+
+        // 삭제 전 확인 메시지 표시
+        var confirmed = confirm('정말 삭제하시겠습니까?');
+        if (!confirmed) {
+            return; // 삭제를 취소하면 함수 종료
+        }
+
+        // 클릭된 엘리먼트에서 데이터 추출
+        var producePlanerId = $(event.target).closest('tr').find('th:eq(0)').text();
+
+        // 진행상태 확인
+        var status = $(event.target).closest('tr').find('td:eq(3)').text();
+        if (status.trim() !== '미불출') {
+            alert('생산계획서를 삭제하기 위해서는 해당 생선계획서가 미불출상태여야합니다!');
+            return; // 미불출 상태가 아니면 함수 종료
+        }
+
+        // 서버로 데이터 전송 (Ajax 사용 예시)
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/export/producePlanerDelete', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+        // 서버로 전송할 데이터
+        const data = {
+            producePlanerId: producePlanerId
+            // 추가적으로 필요한 데이터가 있다면 여기에 추가
+        };
+
+        xhr.send(JSON.stringify(data));
+
+        // Ajax 요청 완료 후 실행할 코드 (예시: 페이지 리로드)
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // 성공적으로 서버와 통신한 경우, 여기에 추가적으로 처리할 코드 작성
+                // 예: 페이지 리로드
+                location.reload();
+            } else if(xhr.status === 403){
+                var message = xhr.responseText;
+                Swal.fire({
+                  title: "Warning",
+                  text: message,
+                  icon: "error",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+            } else {
+                // 서버와 통신 실패 시, 여기에 추가적으로 처리할 코드 작성
+                console.error('Failed to send data to the server.');
+            }
+        };
     }
 
     function handleButtonClick(event) {

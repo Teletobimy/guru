@@ -114,7 +114,7 @@
                                                 </li>
                                                 <li class="breadcrumb-item"><a href="/export/producePlanerList">생산계획서:[미출고]</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/export/producePlanerRegister">생산계획서:[등록]</a>
+                                                <li class="breadcrumb-item"><a th:href="@{/export/producePlanerUpdate(producePlanerId=${producePlanerId})}">생산계획서:[수정]</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -135,7 +135,7 @@
                                                         </td>
                                                         <th colspan="2">생산목표 상품 <input type="button" class="btn-brown" onclick="selectBicycle()" value="상품검색"/></th>
                                                         <td colspan="3">
-                                                            <input type="text" id="bicycle_name" readonly>
+                                                            <input type="text" th:value="${producePlanerList[0].bicycleName}" id="bicycle_name" readonly>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -145,32 +145,40 @@
                                                         </td>
                                                         <th rowspan="1" colspan="2">상품 번호</th>
                                                         <td colspan="3">
-                                                            <input type="text" id="bicycle_id" readonly>
+                                                            <input type="text" th:value="${producePlanerList[0].bicycleId}" id="bicycle_id" readonly>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th rowspan="1" colspan="2">생산목표 수량</th>
                                                         <td colspan="3">
-                                                            <input type="text" id="produceBicycleCnt">
+                                                            <input type="text" th:value="${producePlanerList[0].produceBicycleCnt}" id="produceBicycleCnt">
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>원자재번호</th>
+                                                        <th colspan="2">원자재번호</th>
                                                         <th colspan="2">원자재명</th>
                                                         <th>1/개당수량</th>
                                                         <th>총필요수량</th>
-                                                        <th>1/개당단가</th>
-                                                        <th>총단가</th>
                                                         <th colspan="2">원자재선택</th>
                                                     </tr>
                                                     <tbody id="tableBody">
+                                                        <tr th:each="item, stat : ${producePlanerList}">
+                                                            <th scope="row" th:text="${stat.count}"></th>
+                                                            <td colspan="2" th:text="${item.materialId}"></td>
+                                                            <td colspan="2" th:text="${item.materialName}"></td>
+                                                            <td th:text="${item.produceMaterialCnt}"></td>
+                                                            <td th:text="${item.produceMaterialCnt}"></td>
+                                                            <td colspan="2">
+                                                                <input type="button" class="recipeButton btn-brown" onclick="handleButtonClick(event)" value="원자재 선택">
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                         <div class="btn-display">
-                                            <input type="button" id="saveButton" class="btn btn-brown" style="margin: 5px;" value="등록"/>
+                                            <input type="button" id="saveButton" class="btn btn-brown" style="margin: 5px;" value="수정"/>
                                             <input type="button" th:attr="onclick='gotoList()'" class="btn btn-brown" style="margin: 5px;" value="목록"/>
                                             <input type="reset" onclick="populateTable(0)" class="btn btn-brown" style="margin: 5px;"/>
                                         </div>
@@ -210,8 +218,31 @@
 <script src="/js/pcoded.min.js"></script>
 <script src="/js/demo-12.js"></script>
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script>
+<script th:inline="javascript">
+    var localDateTimeStr = [[${producePlanerList[0].producePlanerDeadline}]];
+
     document.addEventListener('DOMContentLoaded', function() {
+        // Java LocalDateTime 값을 JavaScript Date 객체로 변환하는 함수
+        function convertLocalDateTimeToDate(localDateTimeStr) {
+            var parts = localDateTimeStr.split('T');
+            var datePart = parts[0].split('-');
+
+            // JavaScript Date 객체 생성
+            var year = parseInt(datePart[0]);
+            var month = parseInt(datePart[1]) - 1; // JavaScript Date 객체에서 월은 0부터 시작하므로 1을 빼줍니다.
+            var day = parseInt(datePart[2]) + 1;
+
+            return new Date(year, month, day);
+        }
+
+        // LocalDateTime 값을 Date 객체로 변환
+        var date = convertLocalDateTimeToDate(localDateTimeStr);
+
+        // Date 객체를 input 요소에 설정
+        var deadlineInput = document.getElementById('deadline');
+        deadlineInput.valueAsDate = date;
+
+        //등록버튼 유효성검사
         var saveButton = document.getElementById('saveButton');
         if (saveButton) {
             saveButton.addEventListener('click', function(event) {
@@ -276,7 +307,7 @@
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
                             // 성공적으로 처리된 경우
-                            alert('생산계획서가 성공적으로 등록되었습니다.');
+                            alert('생산계획서가 성공적으로 수정되었습니다.');
                             gotoList();
                         } else if (xhr.status === 403) {
                             var message = xhr.responseText;
@@ -300,6 +331,17 @@
             });
         }
     });
+
+    function handleButtonClick(event) {
+        // 클릭된 버튼이 속한 행의 인덱스 가져오기
+        var rowIndex = event.target.parentNode.parentNode.rowIndex;
+
+        // 해당 행의 materialName 가져오기
+        var materialName = event.target.parentNode.parentNode.cells[2].textContent;
+
+        // 일치하는 데이터를 불러오는 함수 호출
+        loadMatchingData(rowIndex, materialName);
+    }
 
     // 클라이언트 측에서 선택한 날짜를 LocalDateTime 형식으로 변환하여 반환하는 함수
     function formatDateForServer(dateString) {

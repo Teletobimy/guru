@@ -18,11 +18,13 @@ public class QQuotation extends EntityPathBase<Quotation> {
 
     private static final long serialVersionUID = -743435236L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QQuotation quotation = new QQuotation("quotation");
 
     public final NumberPath<Integer> biddingNo = createNumber("biddingNo", Integer.class);
 
-    public final StringPath company_id = createString("company_id");
+    public final QCompany company;
 
     public final StringPath company_name = createString("company_name");
 
@@ -47,15 +49,24 @@ public class QQuotation extends EntityPathBase<Quotation> {
     public final StringPath tradeTerms = createString("tradeTerms");
 
     public QQuotation(String variable) {
-        super(Quotation.class, forVariable(variable));
+        this(Quotation.class, forVariable(variable), INITS);
     }
 
     public QQuotation(Path<? extends Quotation> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QQuotation(PathMetadata metadata) {
-        super(Quotation.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QQuotation(PathMetadata metadata, PathInits inits) {
+        this(Quotation.class, metadata, inits);
+    }
+
+    public QQuotation(Class<? extends Quotation> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.company = inits.isInitialized("company") ? new QCompany(forProperty("company")) : null;
     }
 
 }

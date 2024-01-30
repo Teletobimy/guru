@@ -24,7 +24,7 @@ public class QQuotationDetail extends EntityPathBase<QuotationDetail> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final NumberPath<Integer> material_id = createNumber("material_id", Integer.class);
+    public final QMaterial material;
 
     public final StringPath materialName = createString("materialName");
 
@@ -54,7 +54,8 @@ public class QQuotationDetail extends EntityPathBase<QuotationDetail> {
 
     public QQuotationDetail(Class<? extends QuotationDetail> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.quotation = inits.isInitialized("quotation") ? new QQuotation(forProperty("quotation")) : null;
+        this.material = inits.isInitialized("material") ? new QMaterial(forProperty("material")) : null;
+        this.quotation = inits.isInitialized("quotation") ? new QQuotation(forProperty("quotation"), inits.get("quotation")) : null;
     }
 
 }
