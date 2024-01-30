@@ -31,48 +31,63 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
-        .search-long{
-             width:90%;
-             display:flex;
-             justify-content:center;
-             padding:5px;
-             box-sizing:border-box;
-             margin :15px auto;
-             margin-top:0;
-             align-items:center;
-             border:#ddd 1px solid;
-        }
-
+        .input-box{
+        width:100%;
+        display:flex;
+        justify-content:end;
+        padding:5px;
+        box-sizing:border-box;
+        margin :15px auto;
+        margin-top:0;
+        align-items:center;
+       }
 
           .btn-card {
-            text-transform: uppercase;
-            font-size: 13px;
-            padding: 5px 10px;
-            margin: 0px 10px;
-            color: #fff;
-            border-radius: 5px;
+           text-transform: uppercase;
+           font-size: 13px;
+           padding: 5px 10px;
+           margin: 0px 10px;
+           color: #fff;
+           border-radius: 5px;
+       }
+
+
+        input{
+            padding:5px 10px;
         }
-        .ellipsis {
-    max-width: 200px; /* 최대 너비 설정 */
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: inline-block; /* 텍스트 줄임 처리를 위한 설정 */
-}
-         .pageA{
-           background-color:#fff;
+
+         .search-long{
+            border:1px solid #ccc;
+            margin-right:10px;
+            padding-right: 5px;
+        }
+
+
+       .ellipsis {
+               max-width: 200px; /* 최대 너비 설정 */
+               overflow: hidden;
+               white-space: nowrap;
+               text-overflow: ellipsis;
+               display: inline-block; /* 텍스트 줄임 처리를 위한 설정 */
+           }
+        .pageA{
+          background-color:#fff;
+          color:#FC6180;
+       }
+       .btn-warning{
+       background-color:#fff;
            color:#FC6180;
-        }
-        .btn-warning{
-        background-color:#fff;
-            color:#FC6180;
-        }
-        .current-page {
-    background-color: #FC6180; /* 배경색을 원하는 색상으로 설정하세요 */
-    color: #fff; /* 텍스트 색상을 원하는 색상으로 설정하세요 */
-    /* 기타 스타일 속성들을 추가하세요 */
-}
+       }
+       .current-page {
+           background-color: #FC6180; /* 배경색을 원하는 색상으로 설정하세요 */
+           color: #fff; /* 텍스트 색상을 원하는 색상으로 설정하세요 */
+           /* 기타 스타일 속성들을 추가하세요 */
+       }
     </style>
 </head>
 
@@ -106,6 +121,7 @@
                  th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
+                    <DatePicker displayFormat="yyyy-MM"/>
                     <div class="main-body">
                         <div class="page-wrapper">
                             <div class="page-header card">
@@ -162,17 +178,31 @@
                                                 </li>
 
                                             </ul>
+                                        </div>
+                                            <div class="card-header-right">
+                                                <ul class="list-unstyled card-option">
+                                                    <li><i class="icofont icofont-simple-left "></i></li>
+                                                    <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                    <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                    <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                    <li><i class="icofont icofont-error close-card"></i></li>
+                                                </ul>
+                                            </div>
+
                                             <div class="tab-content tabs card-block">
+                                                <div class="col-lg-12">
+
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
-                                                    <div class="pcoded-search-box search-long" >
-
-                                                        <input type="text" placeholder="견적서 검색" id="searchInput"
-                                                               style="width:95%; border:none; margin-right:5px; ">
-                                                        <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
-                                                        <p class="search-icon" th:attr="onclick='performSearch()'" style="display:inline; margin:0;">
-                                                            <i class="ti-search" aria-hidden="true"></i>
-                                                        </p>
-
+                                                    <div class="pcoded-search-box input-box" >
+                                                        <div class="search-long">
+                                                            <input type="text" placeholder="search" id="searchInput" style="border:none;"
+                                                            th:value="${keyword}">
+                                                            <p class="search-icon" th:attr="onclick='performSearch()'"
+                                                               style="display:inline; margin:0;">
+                                                                <i class="ti-search" aria-hidden="true"></i>
+                                                            </p>
+                                                        </div>
+                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
                                                     </div>
 
 
@@ -229,42 +259,34 @@
                                                     <!-- 페이지네이션  -->
 
                                                    <nav id="pagination-container" aria-label="Page navigation example" style="padding:20px;">
-                                    <ul class="pagination" style="justify-content: end;">
-                                        <li th:class="${page.hasPrevious() ? 'page-item' : 'page-item disabled'}">
-                                            <a class="page-link" th:if="${page.number > 0}" th:href="@{'/plan/quotation?page=' + (${page.number} - 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}" aria-label="Previous">
+                                                        <ul class="pagination" style="justify-content: end;">
+                                                            <li th:class="${page.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                                                                <a class="page-link" th:if="${page.number > 0}" th:href="@{'/plan/quotation?page=' + (${page.number} - 1) + '&size=' + 10 + '&keyword='+${keyword} +'&category='+${category}}" aria-label="Previous">
 
-                                                <span aria-hidden="true" style="margin-top: 1px;">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li th:each="pageNumber : ${#numbers.sequence(1, page.totalPages)}" class="page-item"
-                                        >
-                                            <a th:classappend="${pageNumber == (page.number + 1) ? 'page-link current-page' : 'page-link pageA'}"
-                                               th:href="@{'/plan/quotation?page=' + (${pageNumber} - 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}"
-                                               th:text="${pageNumber}"></a>
+                                                                    <span aria-hidden="true" style="margin-top: 1px;">&laquo;</span>
+                                                                </a>
+                                                            </li>
+                                                            <li th:each="pageNumber : ${#numbers.sequence(1, page.totalPages)}" class="page-item"
+                                                            >
+                                                                <a th:classappend="${pageNumber == (page.number + 1) ? 'page-link current-page' : 'page-link pageA'}"
+                                                                   th:href="@{'/plan/quotation?page=' + (${pageNumber} - 1) + '&size=' + 10 + '&keyword='+${keyword} +'&category='+${category}+'&startDate='+${startDate}+'&endDate='+${endDate}}"
+                                                                   th:text="${pageNumber}"></a>
 
-                                        </li>
-                                        <li th:class="${page.hasNext() ? 'page-item' : 'page-item disabled'}"
-                                            th:style="${page.hasNext() ? '' : 'display: none;'}">
-                                            <a class="page-link" th:if="${page.number != page.totalPages}" th:href="@{'/plan/quotation?page=' + (${page.number} + 1) + '&size=' + 10 + '&materialName='+${materialName} +'&materialCategory='+${category}}" aria-label="Next">
-                                                <span aria-hidden="true" style="margin-top: 1px;">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                                            </li>
+                                                            <li th:class="${page.hasNext() ? 'page-item' : 'page-item disabled'}"
+                                                                th:style="${page.hasNext() ? '' : 'display: none;'}">
+                                                                <a class="page-link" th:if="${page.number != page.totalPages}" th:href="@{'/plan/quotation?page=' + (${page.number} + 1) + '&size=' + 10 + '&keyword='+${keyword} +'&category='+${category}}" aria-label="Next">
+                                                                    <span aria-hidden="true" style="margin-top: 1px;">&raquo;</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
 
                                                 </div>
 
                                             </div>
-                                        </div>
-                                        <div class="card-header-right">
-                                            <ul class="list-unstyled card-option">
-                                                <li><i class="icofont icofont-simple-left "></i></li>
-                                                <li><i class="icofont icofont-maximize full-card"></i></li>
-                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
-                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
-                                                <li><i class="icofont icofont-error close-card"></i></li>
-                                            </ul>
-                                        </div>
+
+
 
                                     </div>
 
@@ -272,8 +294,6 @@
                                 </div>
 
                             </div>
-                            <div id="styleSelector">
-
                             </div>
                         </div>
                     </div>
@@ -315,61 +335,107 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
+<script th:inline="javascript">
+    var category = /*[[${category}]]*/ 'defaultCategory';
+    console.log('Category from server:', category);
+    var page =  /*[[${pageNumber}]]*/ '0';
+</script>
+
     <script>
-        $(function() {
-  $('input[name="datetimes"]').daterangepicker({
-    timePicker: true,
-    startDate: moment().startOf('hour'),
-    endDate: moment().startOf('hour').add(32, 'hour'),
-    locale: {
-      format: 'M/DD hh:mm A'
-    }
-  });
-});
-
-        var $window = $(window);
-        var nav = $('.fixed-button');
-            $window.scroll(function(){
-                if ($window.scrollTop() >= 200) {
-                 nav.addClass('active');
-             }
-             else {
-                 nav.removeClass('active');
-             }
-         });
+        console.log('Category from server:', category);
 
 
-        function updateLocation(category) {
-            var newUrl = '/shipment/shipmentList?size=10&page=0&category=' + category;
+                   $(function() {
+             $('input[name="datetimes"]').daterangepicker({
+               timePicker: true,
+               startDate: moment().startOf('hour'),
+               endDate: moment().startOf('hour').add(32, 'hour'),
+               locale: {
+                 format: 'M/DD hh:mm A'
+               }
+             });
+           });
 
-            window.location.href = newUrl;
-        }
-        function performSearch(){
-            var urlParams = new URLSearchParams(window.location.search);
-            var category = urlParams.get('category');
-            var searchValue = document.getElementById('searchInput').value;
-
-            var encodedSearchValue = encodeURIComponent(searchValue);
-
-            console.log(encodedSearchValue);
-            console.log('Category:', category);
-
-            window.location.href = '/shipment/shipmentList?size=10&page=0&category='+ category +'&keyword=' + encodedSearchValue;
-        }
-         document.getElementById('searchInput').addEventListener('keyup', function (event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        function gotoDetail(element){
-        var quotationId = element.cells[0].innerText;
+                   var $window = $(window);
+                   var nav = $('.fixed-button');
+                       $window.scroll(function(){
+                           if ($window.scrollTop() >= 200) {
+                            nav.addClass('active');
+                        }
+                        else {
+                            nav.removeClass('active');
+                        }
+                    });
 
 
-       var newUrl = '/plan/quotationDetail?quotationId=' + quotationId;
-       window.location.href = newUrl;
+                   function updateLocation(category) {
+                       var newUrl = '/plan/quotation?size=10&page=0&category=' + category;
 
-      }
+                       window.location.href = newUrl;
+                   }
+
+                   function performSearch(){
+                       var searchValue = document.getElementById('searchInput').value;
+                       var encodedSearchValue = encodeURIComponent(searchValue);
+
+                       console.log(encodedSearchValue);
+                       console.log('Category:', category);
+
+                       window.location.href = '/plan/quotation?size=10&page=0&category='+ category +'&keyword=' + encodedSearchValue ;
+                   }
+
+                    document.getElementById('searchInput').addEventListener('keyup', function (event) {
+                       if (event.key === 'Enter') {
+                           performSearch();
+                       }
+                   });
+
+                   function gotoDetail(element){
+                   var quotationId = element.cells[0].innerText;
+
+
+                  var newUrl = '/plan/quotationDetail?quotationId=' + quotationId;
+                  window.location.href = newUrl;
+
+                 }
+
+
+                   $(document).ready(function(){
+                       $('input[name="daterange"]').daterangepicker({
+                       timePicker: true,
+                       startDate: moment().startOf('hour'),
+                       endDate: moment().endOf('hour'),
+                       locale: {
+                           format: 'YYYY-MM-DD HH:mm:ss'
+                       }
+                  })
+
+
+                  $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+                       var startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ss');
+                       var endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ss');
+                       var urlParams = new URLSearchParams(window.location.search);
+                       var category = urlParams.get('processStatus');
+
+                       var size = urlParams.get('size');
+                       var search = $('#searchInput').val();
+                       if(category === null){
+                           category = -1;
+                       }
+                       var newUrl =  "/plan/quotation?page=" + 0 +
+                                       "&size=" + 10 +
+                                       "&category=" + category +
+                                       "&keyword=" + encodeURIComponent(search) +
+                                       "&startDate=" + startDate +
+                                       "&endDate=" + endDate;
+                       $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                     window.location.href = newUrl;
+                     });
+
+                     $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+                         $(this).val('');
+                     });
+                   })
 
 
 

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -76,6 +77,8 @@ public class PlanController {
         return "plan/item";
     }
 
+
+
     @GetMapping("/bicycle_detail")
     public String bicycle_detail(Model model,
                                  @RequestParam(value = "bicycleId") Integer bicycleId,
@@ -106,6 +109,9 @@ public class PlanController {
         return "plan/bicycle_detail";
     }
 
+    
+
+
     @GetMapping("/bicycle_insert")
     public String bicycle_insert(Model model,
                                  HttpServletRequest request){
@@ -127,6 +133,8 @@ public class PlanController {
 
         return "plan/bicycle_insert";
     }
+
+
 
     @PostMapping("/bicycle_save")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
@@ -152,6 +160,8 @@ public class PlanController {
         return "redirect:/plan/item";
     }
 
+
+
     @PostMapping("/bicycle_delete")
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
@@ -176,6 +186,8 @@ public class PlanController {
     }
 
 
+
+
     @PostMapping("/recipe_add")
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
@@ -196,6 +208,9 @@ public class PlanController {
         }
 
     }
+
+
+
 
     @PostMapping("/recipe_update")
     @ResponseBody
@@ -221,6 +236,8 @@ public class PlanController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정실패");
         }
     }
+
+    
 
 
     @PostMapping("/recipe_delete")
@@ -333,29 +350,37 @@ public class PlanController {
     }
 
     @PostMapping("/material_save")
+    @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
-    public String material_save(
+    public ResponseEntity<String> material_save(
             Model model,
             MaterialDTO materialDTO,
             HttpServletRequest request
 
     ){
-       materialService.saveMaterial(materialDTO);
-        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
-        Set<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
 
-        UserDTO user = new UserDTO(userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getName(),
-                userDetails.getEmail(),
-                userDetails.getPart(),
-                roles,
-                userDetails.getPhone());
-        model.addAttribute("user",user);
 
-        return "plan/material_insert";
+        try {
+            materialService.saveMaterial(materialDTO);
+            return ResponseEntity.ok("품목등록성공");
+        } catch (Exception e) {
+            // 예외가 발생한 경우
+            e.printStackTrace(); // 또는 로깅 라이브러리를 사용하여 로그에 기록할 수 있습니다.
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("품목등록실패"); // 실패 시 메시지 반환
+        }
+//        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+//        Set<String> roles = userDetails.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toSet());
+//
+//        UserDTO user = new UserDTO(userDetails.getUserId(),
+//                userDetails.getUsername(),
+//                userDetails.getName(),
+//                userDetails.getEmail(),
+//                userDetails.getPart(),
+//                roles,
+//                userDetails.getPhone());
+//        model.addAttribute("user",user);
     }
 
     @PostMapping("/material_update")
@@ -397,7 +422,7 @@ public class PlanController {
                               HttpServletRequest request
 
     ){
-        Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size));
+        Page<MaterialDTO> materialPage = materialService.getAllMaterials(materialName, materialCategory, PageRequest.of(page, size, Sort.by(Sort.Order.desc("materialId"))));
 
         List<MaterialDTO> materials = materialPage.getContent();
         if(materialName==null||materialName==""||materialName.length()<1){materialName = "";}
@@ -440,11 +465,15 @@ public class PlanController {
     public String quotation(Model model,
                             @RequestParam(value="size", defaultValue = "10") int size,
                             @RequestParam(value="page", defaultValue = "0") int page,
+                            @RequestParam(value="category", defaultValue = "-1") int category,
+                            @RequestParam(value="keyword", defaultValue = "") String keyword,
+                            @RequestParam(name = "startDate", defaultValue = "2020-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                            @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                             HttpServletRequest request
                             ){
         System.out.println("견적서접속요청");
 
-        Page<QuotationDTO> QuotationPage = quotationService.findAllwithPageable(PageRequest.of(page, size));
+        Page<QuotationDTO> QuotationPage = quotationService.quotationList(keyword, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
         List<QuotationDTO> quotationDetailDTOList = QuotationPage.getContent();
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
@@ -465,7 +494,12 @@ public class PlanController {
         model.addAttribute("code", codeList);
         model.addAttribute("page", QuotationPage);
         model.addAttribute("quotations", quotationDetailDTOList);
+        model.addAttribute("category",category);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("startDate",startDate);
+        model.addAttribute("endDate",endDate);
         System.out.println("quotationDTO :" + quotationDetailDTOList);
+
 
         return "plan/quotation";
     }
@@ -518,6 +552,43 @@ public class PlanController {
     public String saveQuotation(@RequestBody QuotationDTO quotationDTO) {
         quotationService.saveQuotation(quotationDTO);
         return "견적서저장";
+    }
+
+    @PostMapping("/quotation_accept")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public String quotation_accept(@RequestBody String Id) {
+        System.out.println(Id);
+
+        try {
+            Quotation quotation = quotationService.findById(Id);
+            QuotationDTO quotationDTO = quotationService.convertToDTO(quotation);
+            quotationDTO.setStatus(2);
+            quotationService.saveQuotation(quotationDTO);
+
+            return "견적서 승인 성공";
+        } catch (Exception e) {
+            // 삭제 중 에러가 발생한 경우 처리
+            return "견적서 승인 실패: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/quotation_drop")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public String quotation_drop(@RequestBody String Id) {
+        System.out.println(Id);
+
+        try {
+            Quotation quotation = quotationService.findById(Id);
+            QuotationDTO quotationDTO = quotationService.convertToDTO(quotation);
+            quotationDTO.setStatus(1);
+            quotationService.saveQuotation(quotationDTO);
+            return "견적서 Drop 성공";
+        } catch (Exception e) {
+            // 삭제 중 에러가 발생한 경우 처리
+            return "견적서 Drop 실패: " + e.getMessage();
+        }
     }
 
     @PostMapping("/quotation_delete")
@@ -588,10 +659,18 @@ public class PlanController {
 
     @GetMapping("/procurementPlan")
     public String procurementPlan(Model model,
-                                  HttpServletRequest request){
-        List<DocumentDTO> documents = documentService.getAllProcurementPlan();
+                            @RequestParam(value="size", defaultValue = "10") int size,
+                            @RequestParam(value="page", defaultValue = "0") int page,
+                            @RequestParam(value="category", defaultValue = "-1") int category,
+                            @RequestParam(value="keyword", defaultValue = "") String keyword,
+                            @RequestParam(name = "startDate", defaultValue = "2020-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                            @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
+                            HttpServletRequest request
+    ){
+        System.out.println("견적서접속요청");
 
-
+        Page<DocumentDTO> dtoPage = documentService.procurementList(keyword, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
+        List<DocumentDTO> documentDTOList = dtoPage.getContent();
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -606,12 +685,22 @@ public class PlanController {
                 roles,
                 userDetails.getPhone());
         model.addAttribute("user",user);
-        model.addAttribute("documents", documents);
 
+        List<Code> codeList = materialService.findByCodeCategory("quotation_status");
+        model.addAttribute("code", codeList);
+        model.addAttribute("page", dtoPage);
+        model.addAttribute("procurements", documentDTOList);
+        model.addAttribute("category",category);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("startDate",startDate);
+        model.addAttribute("endDate",endDate);
+        System.out.println("quotationDTO :" + documentDTOList);
 
 
         return "plan/procurementPlan";
     }
+
+
     @GetMapping("/procurementPlan_insert")
     public String procurementPlan_insert(Model model, HttpServletRequest request){
         System.out.println("조달계획서생성");

@@ -238,12 +238,8 @@
                                                 th:attr="onclick='gotoList()'"
                                                 class="btn btn-warning"
                                                 style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
-                                        <input type="button" class="btn btn-card btn-primary btn-success"
-                                                th:if="${firstItem.status == 2}"
-                                                th:onclick="|location.href='@{/purchase/order_print?id={id}(id=${firstItem.id})}'|" value="발주서출력">
                                     </div>
                                     </form>
-
 
                                 </div>
 
@@ -462,21 +458,11 @@ totalPriceInputs = document.querySelectorAll('.totalPrice');
 
 
     updateTotalSumOfAllRows();
-
-
-
-
-
                             } else {
                                 row.cells[7].textContent = ''; // 하나라도 숫자가 아니면 빈 문자열로 표시합니다.
                             }
-
-
                         });
-
-
                     }
-
         } else {
             console.log('Request failed. Status: ' + xhr.status);
         }
@@ -536,141 +522,46 @@ for (var i = 0; i < rows.length; i++) {
     }
 }
 }
+
 //index 기능 종료
 
 
-document.getElementById('saveButton').addEventListener('click', function () {
-    var rows = document.getElementById('tableBody').getElementsByTagName('tr');
-    var quotationDetailDTOList = [];
 
-    // 각 행의 데이터 수집
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-
-        var materialId = parseFloat(cells[1].textContent);
-        var materialName = cells[2].textContent;
-        var materialDescription = cells[3].textContent;
-        var countNumber = parseFloat(cells[4].getElementsByTagName('input')[0].value);
-        if(isNaN(countNumber)){
-        alert("품목 수량을 입혁하세요");
-        cells[4].getElementsByTagName('input')[0].focus();
-        return false;
+function acceptQuotaion(){
+var quotationId = document.getElementById('quotationId').value;
+    $.ajax({
+        type: 'POST',
+        url: '/plan/quotation_accept',
+        contentType: 'application/json',
+        data: quotationId,
+        success: function (response) {
+            alert(response);
+            window.location.href = '/plan/quotation';
+        },
+        error: function (error) {
+            alert('삭제실패:', error);
         }
-        var materialMeasure = cells[5].textContent;
-        var materialPrice = parseFloat(cells[6].textContent);
-        var totalPrice = parseFloat(cells[7].textContent);
-        var quotationId = document.getElementById('quotationId').value;
+    });
+}
 
-        // 데이터를 DTO로 만들어 List에 추가
-        var quotationDetailDTO = {
-            // 필드들
-            quotation_id : quotationId,
-            material_id: materialId,
-            materialName: materialName,
-            quotationCnt: countNumber,
-            quotationMeasure: materialMeasure,
-            quotationPrice: totalPrice
-        };
 
-        quotationDetailDTOList.push(quotationDetailDTO);
-    }
 
-    var quotationTotalPriceElement = document.querySelector('.total');
-var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
-  var biddingNo = document.getElementById('biddingNo').value;
-   var company_id = document.getElementById('company_id').value;
-    var company_name = document.getElementById("company_name").value;
-    var deadlinePre = document.getElementById("deadline").value;
-     var deadline = new Date(deadlinePre);
-    var quotation_memo = document.getElementById("quotation_memo").value;
-    var leadTime = document.getElementById('leadTime').value;
-    var tradeTerms = document.getElementById('tradeTerms').value;
-    var paymentTerms = document.getElementById('paymentTerms').value;
-
-     if(biddingNo.length<1){
-    alert("BiddingNo를 입력하세요");
-    document.getElementById('biddingNo').focus();
-    return false;
-    }
-    if (isNaN(biddingNo)) {
-                alert('BiddingNo는 숫자로 입력해주세요');
-               document.getElementById('biddingNo').focus();
-                return false;
-    }
-    if(leadTime.length<1){
-    alert("리드타임을 입력하세요");
-    document.getElementById('leadTime').focus();
-    return false;
-    }
-    if(tradeTerms.length<1){
-    alert("거래조건을 입력하세요");
-    document.getElementById('tradeTerms').focus();
-    return false;
-    }
-    if(paymentTerms.length<1){
-    alert("지불조건을 입력하세요");
-    document.getElementById('paymentTerms').focus();
-    return false;
-    }
-
-    if(company_id.length<1){
-    alert("사업자번호를 입력하세요");
-    document.getElementById('company_id').focus();
-    return false;
-    }
-    if(company_name.length<1){
-    alert("회사명을 입력하세요");
-    document.getElementById('company_name').focus();
-    return false;
-    }
-      if(deadlinePre.length<1){
-    alert("마감일을 입력하세요");
-    document.getElementById('deadline').focus();
-    return false;
-    }
-
-    // QuotationDTO 객체 구성
-    var quotationDTO = {
-        id:quotationId,
-        biddingNo:biddingNo,
-        company_id:company_id,  // company_id도 서버에서 설정
-        company_name: company_name,  // company_name도 서버에서 설정
-        quotation_totalprice: quotationTotalPrice,  // 서버에서 계산
-        regdate: null,  // 서버에서 설정
-        deadline: deadline,  // 서버에서 설정
-        status: 0,  // 서버에서 설정
-        leadTime: leadTime,
-        tradeTerms: tradeTerms,
-        paymentTerms: paymentTerms,
-        quotation_memo: quotation_memo,  // 서버에서 설정
-        quotationDetails: quotationDetailDTOList
-    };
-    if (quotationDetailDTOList.length<1){
-    alert("품목을 추가해 주세요");
-    return false;
-    }
-    // List를 JSON 형태로 변환
-    var quotationDTOJSON = JSON.stringify(quotationDTO);
-
-    // AJAX를 사용하여 서버에 데이터 전송
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                alert("견적서등록완료");
-                window.location.href = '/plan/quotation';
-
-            } else {
-                alert("견적서등록실패");
-            }
+function dropQuotation(){
+var quotationId = document.getElementById('quotationId').value;
+    $.ajax({
+        type: 'POST',
+        url: '/plan/quotation_drop',
+        contentType: 'application/json',
+        data: quotationId,
+        success: function (response) {
+            alert(response);
+           window.location.href = '/plan/quotation';
+        },
+        error: function (error) {
+            alert('삭제실패:', error);
         }
-    };
-
-    xhr.open('POST', '/plan/save_quotation', true); // 실제 컨트롤러 엔드포인트 URL로 변경
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(quotationDTOJSON);
-});
-
+    });
+}
 
 
 function deleteQuotation(){
@@ -688,7 +579,6 @@ var quotationId = document.getElementById('quotationId').value;
             alert('삭제실패:', error);
         }
     });
-
 }
 
 

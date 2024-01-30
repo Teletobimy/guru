@@ -6,7 +6,6 @@ import com.ezen.guru.repository.CodeRepository;
 import com.ezen.guru.repository.purchase.CompanyRepository;
 import com.ezen.guru.repository.purchase.OrderDetailRepository;
 import com.ezen.guru.repository.purchase.OrderRepository;
-import com.ezen.guru.repository.receive.QcCheckRepository;
 import com.ezen.guru.repository.receive.ShipmentRepository;
 import com.ezen.guru.service.purchase.OrderService;
 import jakarta.transaction.Transactional;
@@ -93,5 +92,19 @@ public class OrderServiceImpl implements OrderService {
         return shipmentRepository.saveAll(shipmentEntities);
     }
 
+    @Override
+    public List<OrderMainListResponse> getOrderMainList() {
+        return orderRepository.orderMainList();
+    }
+
+    @Override
+    public Long countBy() {
+        return orderRepository.countBy();
+    }
+
+    @Override
+    public Long countByStatus(int status) {
+        return orderRepository.countByStatus(status);
+    }
 
 }

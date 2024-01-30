@@ -108,7 +108,7 @@ public class OrderController {
 //        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
 //        }
         orderService.saveToShipment(shipments);
-        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
+        return ResponseEntity.ok("Entities added successfully");
     }
     @GetMapping("/order_print")
     public String getPrint(Model model, HttpServletRequest request, @RequestParam(value = "id") String id) {
@@ -177,7 +177,7 @@ public class OrderController {
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @DeleteMapping("/company/delete/{companyId}")
-    public ResponseEntity<String> removeCompany(@PathVariable String companyId) {
+    public ResponseEntity<String> removeCompany(@PathVariable(value="companyId") String companyId) {
         companyService.removeCompany(companyId);
         return ResponseEntity.ok("협력사가 삭제되었습니다.");
     }
