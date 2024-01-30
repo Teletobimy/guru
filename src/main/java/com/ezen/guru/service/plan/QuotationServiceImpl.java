@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -105,6 +106,11 @@ public class QuotationServiceImpl implements QuotationService {
         return detailDTO;
     }
 
+    @Override
+    public Page<QuotationDTO> findAllwithPageable(String keyword, Integer category, Pageable pageable) {
+        return null;
+    }
+
     public QuotationDetail convertToDetailEntity(QuotationDetailDTO detailDTO) {
         QuotationDetail detailEntity = new QuotationDetail();
         detailEntity.setId(detailDTO.getId());
@@ -121,10 +127,6 @@ public class QuotationServiceImpl implements QuotationService {
         return detailEntity;
     }
 
-    @Override
-    public Page<QuotationDTO> findAllwithPageable(Pageable pageable){
-    return quotationRepository.findAll(pageable).map(this::convertToDTO);
-    }
 
     @Override
     public Quotation findById(String id){
@@ -139,6 +141,17 @@ public class QuotationServiceImpl implements QuotationService {
     @Override
     public void deleteQuotation(String id){
         quotationRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<QuotationDTO> quotationList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+
+        if(category==-1) {
+            return quotationRepository.findQuotationsByQuotationIdAndDateRange(keyword,startDate,endDate,pageable).map(this::convertToDTO);
+
+        }else {
+            return quotationRepository.quotationList(keyword, category, startDate, endDate, pageable).map(this::convertToDTO);
+        }
     }
 
 }

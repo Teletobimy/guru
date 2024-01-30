@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
     Page<Material> findBymaterialCategory(int materialCategory, Pageable pageable);
+
     @Query("SELECT b FROM Material b WHERE (:materialName IS NULL OR LOWER(b.materialName) LIKE LOWER(CONCAT('%', :materialName, '%'))) AND (:materialCategory IS NULL OR b.materialCategory = :materialCategory OR :materialCategory = -1) ORDER BY b.materialId ASC")
     Page<Material> findAllWithKeyword(
             @Param("materialName") String materialName,
