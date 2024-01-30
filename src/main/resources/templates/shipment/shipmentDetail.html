@@ -147,6 +147,21 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4">
+                                        <div class="page-header-breadcrumb">
+                                            <ul class="breadcrumb-title">
+                                                <li class="breadcrumb-item">
+                                                    <a href="http://localhost:8080">
+                                                        <i class="icofont icofont-home"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="#!">입고</a>
+                                                </li>
+                                                <li class="breadcrumb-item"><a href="/shipment/shipmentList">출하 명세서 리스트</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -183,7 +198,7 @@
                                                             <td colspan="2" th:text="${shipment.address}"></td>
                                                         </tr>
                                                         <tr>
-                                                            <th rowspan="2" colspan="2">마감일</th>
+                                                            <th rowspan="2" colspan="2">출하일</th>
                                                             <td colspan="2" rowspan="2"
                                                                 th:text="${shipment.shippingDate}"></td>
                                                             <th colspan="2" rowspan="2">대표자</th>
@@ -206,7 +221,7 @@
 
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="2" th:text="${shipment.shipmentId}"></td>
+                                                            <td colspan="2" th:text="${shipment.materialNumber}"></td>
                                                             <td colspan="2" th:text="${shipment.materialName}"></td>
                                                             <td colspan="2" th:text="${shipment.shipmentCnt} + ${shipment.materialMeasure}"></td>
                                                             <td colspan="2"
