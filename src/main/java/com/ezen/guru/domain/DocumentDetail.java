@@ -1,16 +1,15 @@
 package com.ezen.guru.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.*;
 
 @Table(name = "document_detail")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 @Entity
+@Setter
+@ToString
+
 public class DocumentDetail {
 
     @Id
@@ -24,8 +23,9 @@ public class DocumentDetail {
     @JoinColumn(name = "document_id")
     private Document document;
 
-    @Column(name="material_id")
-    private int materialId;
+    @OneToOne
+    @JoinColumn(name = "material_id")
+    private Material material;
 
     @Column(name="material_name")
     private String materialName;

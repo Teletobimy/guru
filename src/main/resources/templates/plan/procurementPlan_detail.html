@@ -100,7 +100,7 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
                                             <div style="display:flex; align-items:center;">
-                                                <h4> 견적서 </h4>
+                                                <h4> 조달계획서상세 </h4>
 
                                             </div>
                                         </div>
@@ -117,71 +117,74 @@
 
                                     <div class="card-header">
                                         <div class="container">
-                                        <h1>견 적 서</h1>
+                                        <h1>조달계획서상세</h1>
 
 
 
                                             <table id="estimateTable" width="90%" >
 
                                             <tr>
-                                                <th colspan="2">견적서번호</th>
+                                                <th colspan="2">조달계획서번호</th>
                                                 <td colspan="3">
-                                                    <input type="text" th:value="${quotation.id}" id="quotationId" readonly>
+                                                    <input type="text" th:value="${document.id}" id="documentId" readonly>
                                                 </td>
                                                 <th colspan="2">회사명</th>
                                                 <td colspan="3">
-                                                    <input type="text" id="company_name" th:value="${quotation.company_name}" readonly>
+                                                    <input type="text" id="company_name" th:value="${document.Company.companyName}" readonly>
                                                 </td>
 
                                             </tr>
                                             <tr>
-                                                <th rowspan="2" colspan="2">수신</th>
+                                                <th rowspan="2" colspan="2">발신</th>
                                                 <td rowspan="2" colspan="3">
                                                     <p style="font-size: larger;"><u>GURO자전거</u></p>
-                                                    <p><u>권나현 대표 귀하</u></p>
+                                                    <p><u>경기 수원시 팔달구 권광로 146 벽산그랜드코아 4층 401호</u></p>
+                                                    <p><u>Tel: 031-548-4664 </u></p>
+                                                    <p><u>권나현 대표</u></p>
+
                                                 </td>
                                                 <th rowspan="1" colspan="2">사업자번호</th>
                                                 <td colspan="3">
-                                                    <input type="text" id="company_id" th:value="${quotation.Company.companyId}" readonly>
+                                                    <input type="text" id="company_id" th:value="${document.Company.companyId}" readonly>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th rowspan="1" colspan="2">Bidding No.</th>
-                                                <td colspan="3" th:text="${quotation.biddingNo}">
+                                                <th rowspan="1" colspan="2"></th>
+                                                <td colspan="3" >
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th rowspan="2" colspan="2">주소</th>
-                                                <td colspan="3" rowspan="2" th:text="${quotation.Company.address}">
+                                                <td colspan="3" rowspan="2" th:text="${document.Company.address}">
                                                 </td>
                                                 <th colspan="2" rowspan="2">대표자(혹은 담당자)</th>
                                                 <th>성명</th>
-                                                <td colspan="2" th:text="${quotation.Company.ceo}">>
+                                                <td colspan="2" th:text="${document.Company.ceo}">>
 
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th >연락처</th>
-                                                <td colspan="2" th:text="${quotation.Company.tel}">
+                                                <td colspan="2" th:text="${document.Company.tel}">
 
                                                 </td>
                                             </tr>
                                                 <tr>
                                                     <th colspan="2">리드타임</th>
-                                                    <td colspan="3" th:text="${quotation.leadTime}">
+                                                    <td colspan="3" th:text="${document.leadTime}">
 
                                                     </td>
                                                     <th colspan="2">거래조건</th>
-                                                    <td colspan="3" th:text="${quotation.tradeTerms}">
+                                                    <td colspan="3" th:text="${document.tradeTerms}">
 
                                                     </td>
 
                                                 </tr>
                                                 <tr>
                                                     <th colspan="2">지불조건</th>
-                                                    <td colspan="3" th:text="${quotation.paymentTerms}"></td>
+                                                    <td colspan="3" th:text="${document.paymentTerms}"></td>
                                                     <th colspan="2">납기일</th>
-                                                    <td colspan="3" th:text="${quotation.deadline}"></td>
+                                                    <td colspan="3" th:text="${document.deadline}"></td>
                                                 </tr>
 
                                             <tr>
@@ -202,26 +205,26 @@
                                             </tbody>
 
 
-                                            <tr th:each="qd, itemStat : ${quotationDetailDTOList}">
+                                            <tr th:each="qd, itemStat : ${documentDetailList}">
                                                 <th scope="row" th:text="${itemStat.count}"></th>
                                                 <td th:text="${qd.Material.materialId}"></td>
                                                 <td colspan="2" th:text="${qd.Material.materialName}"></td>
                                                 <td th:text="${qd.Material.materialDescription}"></td>
-                                                <td th:text="${qd.quotationCnt}"></td>
-                                                <td th:text="${qd.quotationMeasure}"></td>
-                                                <td th:text="${qd.quotationPrice}"></td>
-                                                <td colspan="2" th:text="${qd.quotationPrice*qd.quotationCnt}"></td>
+                                                <td th:text="${qd.documentCnt}"></td>
+                                                <td th:text="${qd.documentMeasure}"></td>
+                                                <td th:text="${qd.documentPrice}"></td>
+                                                <td colspan="2" th:text="${qd.documentPrice*qd.documentCnt}"></td>
                                             </tr>
                                             <!---------------------------------------------------->
                                             <tr>
                                                 <th colspan="3">합계(VAT 포함)</th>
 
-                                                <td colspan="7" class="total" th:text="${quotation.quotation_totalprice}"></td>
+                                                <td colspan="7" class="total" th:text="${document.documentTotalPrice}"></td>
 
                                             </tr>
                                             <tr>
                                                 <th colspan="2">특기사항</th>
-                                                <td colspan="8" th:text="${quotation.quotation_memo}"></td>
+                                                <td colspan="8" th:text="${document.documentMemo}"></td>
                                             </tr>
 
                                         </table>
@@ -231,20 +234,8 @@
                                     </div>
 
                                     <div class="btn-display">
-                                        <input type="button"
-                                               th:attr="onclick=${quotation.status == 1 or quotation.status == 2 ? null : 'acceptQuotaion()'}"
-                                               th:if="${quotation.status != 1 and quotation.status != 2}"
-                                               class="btn btn-warning"
-                                               style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
-                                               value="수락"/>
-                                        <input type="button"
-                                               th:attr="onclick=${quotation.status == 1 or quotation.status == 2 ? null : 'dropQuotation()'}"
-                                               th:if="${quotation.status != 1 and quotation.status != 2}"
-                                               class="btn btn-warning"
-                                               style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
-                                               value="거절"/>
-
-                                        <input type="button"  th:attr="onclick='deleteQuotation()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="삭제"/>
+                                        <input type="button"  th:attr="onclick='submitPO()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="발송"/>
+                                        <input type="button"  th:attr="onclick='deleteDoc()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="삭제"/>
                                         <input type="button"
                                                 th:attr="onclick='gotoList()'"
                                                 class="btn btn-warning"
@@ -299,21 +290,22 @@
 
 
   function gotoList(){
-    var url = '/plan/quotation';
+    var url = '/plan/procurementPlan';
     window.location.href = url;
 }
 
 
-function acceptQuotaion(){
-var quotationId = document.getElementById('quotationId').value;
+
+function submitPO(){
+var documentId = document.getElementById('documentId').value;
     $.ajax({
         type: 'POST',
-        url: '/plan/quotation_accept',
+        url: '/plan/procurement_trans',
         contentType: 'application/json',
-        data: quotationId,
+        data: documentId,
         success: function (response) {
             alert(response);
-            window.location.href = '/plan/quotation';
+            window.location.href = '/plan/procurementPlan';
         },
         error: function (error) {
             alert('삭제실패:', error);
@@ -323,34 +315,16 @@ var quotationId = document.getElementById('quotationId').value;
 
 
 
-function dropQuotation(){
-var quotationId = document.getElementById('quotationId').value;
+function deleteDoc(){
+var documentId = document.getElementById('documentId').value;
     $.ajax({
         type: 'POST',
-        url: '/plan/quotation_drop',
+        url: '/plan/procurement_delete',
         contentType: 'application/json',
-        data: quotationId,
+        data: documentId,
         success: function (response) {
             alert(response);
-           window.location.href = '/plan/quotation';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
-}
-
-
-function deleteQuotation(){
-var quotationId = document.getElementById('quotationId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/quotation_delete',
-        contentType: 'application/json',
-        data: quotationId,
-        success: function (response) {
-            alert(response);
-            window.location.href = '/plan/quotation';
+            window.location.href = '/plan/procurementPlan';
         },
         error: function (error) {
             alert('삭제실패:', error);

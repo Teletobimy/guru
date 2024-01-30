@@ -22,9 +22,9 @@ public class QuotationDetailDTO {
     private Quotation quotation;
     private Material material;
     private String materialName;
-    private Integer quotationCnt;
+    private int quotationCnt;
     private String quotationMeasure;
-    private Integer quotationPrice;
+    private int quotationPrice;
 
 
 }

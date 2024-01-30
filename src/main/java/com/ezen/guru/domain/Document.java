@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Random;
 @Table(name = "document")
 @Getter
 @Entity
+@Setter
 public class Document {
 
     @Id
@@ -54,4 +56,9 @@ public class Document {
 
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL)
     private List<DocumentDetail> documentDetails;
+
+    @PrePersist
+    public void prePersist() {
+        this.regdate = LocalDateTime.now();
+    }
 }
