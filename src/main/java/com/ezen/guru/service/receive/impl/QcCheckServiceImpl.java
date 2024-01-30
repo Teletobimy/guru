@@ -118,4 +118,19 @@ public class QcCheckServiceImpl implements QcCheckService {
         return qcCheckRepository.countByProcessStatus(processStatus);
     }
 
+    @Override
+    public Long passCntSum() {
+        return qcCheckRepository.passCntSum();
+    }
+
+    @Override
+    public Long returnSum() {
+        return qcCheckRepository.returnSum();
+    }
+
+    @Override
+    public Long totalSum() {
+        return qcCheckRepository.totalSum();
+    }
+
 }

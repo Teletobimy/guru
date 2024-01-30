@@ -41,15 +41,29 @@ public class MainController {
         long totalCount = qcCheckService.countBy();
         long statusCount = qcCheckService.countByProcessStatus(3);
 
+        // 검수 마감율
         double percent = ((double) statusCount / totalCount) * 100;
         int totalPercent = (int)percent;
 
         List<OrderMainListResponse> orderList = orderService.getOrderMainList();
 
+        // 발주 마감율
         long orderTotalCount = orderService.countBy();
         long orderStatusCount = orderService.countByStatus(3);
         double orderPercent = ((double) orderStatusCount / orderTotalCount) * 100;
         int orderTotalPercent = (int)orderPercent;
+
+        long passCnt = qcCheckService.passCntSum();
+        long returnCnt = qcCheckService.returnSum();
+        long totalCnt = qcCheckService.totalSum();
+
+        // 정품율
+        double passC =((double) passCnt / totalCnt) * 100;
+        int passPercent = (int)passC;
+
+        // 반품율
+        double returnC = ((double) returnCnt / totalCnt) * 100;
+        int returnPercent = (int)returnC;
 
         model.addAttribute("user",user);
         model.addAttribute("percent",totalPercent);
@@ -59,6 +73,8 @@ public class MainController {
         model.addAttribute("pototal",orderTotalCount);
         model.addAttribute("postatus",orderStatusCount);
         model.addAttribute("orderPercent",orderTotalPercent);
+        model.addAttribute("pass",passPercent);
+        model.addAttribute("return",returnPercent);
         return "index";
     }
 }

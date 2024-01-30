@@ -30,6 +30,7 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .bg-c-brown {
             background-color: #ab7967;
@@ -193,45 +194,18 @@
                                     </div>
                                     <div class="col-md-12 col-xl-6">
                                         <div class="card project-task">
+                                            <input type="hidden" id="pass" th:value="${pass}">
+                                            <input type="hidden" id="return" th:value="${return}">
                                             <div class="card-header">
-                                                <h5>Basic table</h5>
-                                                <span>use class <code>table</code> inside table element</span>
-                                                <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
+                                                <h5>정품 반품 비율</h5>
+                                                <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                    <li><i class="icofont icofont-error close-card"></i></li>
+                                                </ul></div>
                                             </div>
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table table-inverse">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>First Name</th>
-                                                            <th>Last Name</th>
-                                                            <th>Username</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>Mark</td>
-                                                            <td>Otto</td>
-                                                            <td>@mdo</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">2</th>
-                                                            <td>Jacob</td>
-                                                            <td>Thornton</td>
-                                                            <td>@fat</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">3</th>
-                                                            <td>Larry</td>
-                                                            <td>the Bird</td>
-                                                            <td>@twitter</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                            <div>
+                                                <canvas id="myChart"></canvas>
                                             </div>
+
                                         </div>
                                     </div>
                                     <!-- Data widget End -->
@@ -294,6 +268,36 @@
 
         window.location.href = newUrl;
     }
+      const ctx = document.getElementById('myChart');
+      var pass = $('#pass').val();
+      var returnVal = $('#return').val();
+
+      new Chart(ctx, {
+      type: 'doughnut',
+        data:{
+         labels: [
+            '반품율',
+            '정품율'
+          ],
+          datasets: [{
+            label: '정/반품율',
+            data: [returnVal, pass],
+            backgroundColor: [
+              '#FC6180',
+              '#4680ff'
+            ],
+            hoverOffset: 4
+          }]
+        },
+         options: {
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+    }
+});
 </script>
 </body>
 
