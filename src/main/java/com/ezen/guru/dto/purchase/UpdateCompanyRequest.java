@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
+
 public class UpdateCompanyRequest {
 
     @NotBlank(message = "회사명을 입력해주세요.")
