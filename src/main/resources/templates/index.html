@@ -30,6 +30,14 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .bg-c-brown {
+            background-color: #ab7967;
+        }
+        .text-c-brown {
+            color: #ab7967;
+        }
+    </style>
 
 </head>
 
@@ -89,15 +97,16 @@
                                     </div>
                                     <!-- card1 end -->
                                     <!-- card1 start -->
-                                    <div class="col-md-6 col-xl-3">
+                                    <div class="col-md-6 col-xl-3" onclick="location.href='/purchase/order?size=10&page=0&category=3'">
                                         <div class="card widget-card-1">
                                             <div class="card-block-small">
-                                                <i class="icofont icofont-ui-home bg-c-pink card1-icon"></i>
-                                                <span class="text-c-pink f-w-600">Revenue</span>
-                                                <h4>$23,589</h4>
+                                                <i class="icofont icofont-ui-home bg-c-green card1-icon"></i>
+                                                <span class="text-c-green f-w-600">발주 마감률</span>
+                                                <h4 th:text="${orderPercent} + '%'"></h4>
                                                 <div>
                                                             <span class="f-left m-t-10 text-muted">
-                                                                <i class="text-c-pink f-16 icofont icofont-calendar m-r-10"></i>Last 24 hours
+                                                                <i class="text-c-green f-16 icofont icofont-arrow-right"></i>
+                                                                <span th:text="${postatus} + ' out of ' + ${pototal}"></span>
                                                             </span>
                                                 </div>
                                             </div>
@@ -125,12 +134,12 @@
                                     <div class="col-md-6 col-xl-3">
                                         <div class="card widget-card-1">
                                             <div class="card-block-small">
-                                                <i class="icofont icofont-social-twitter bg-c-yellow card1-icon"></i>
-                                                <span class="text-c-yellow f-w-600">Followers</span>
+                                                <i class="icofont icofont-social-twitter bg-c-brown card1-icon"></i>
+                                                <span class="text-c-brown f-w-600">Followers</span>
                                                 <h4>+562</h4>
                                                 <div>
                                                             <span class="f-left m-t-10 text-muted">
-                                                                <i class="text-c-yellow f-16 icofont icofont-refresh m-r-10"></i>Just update
+                                                                <i class="text-c-brown f-16 icofont icofont-refresh m-r-10"></i>Just update
                                                             </span>
                                                 </div>
                                             </div>
@@ -146,39 +155,34 @@
 
 
                                                     <div class="card-header">
-                                                        <h5>Basic table</h5>
-                                                        <span>use class <code>table</code> inside table element</span>
-                                                        <div class="card-header-right">    <ul class="list-unstyled card-option">        <li><i class="icofont icofont-simple-left "></i></li>        <li><i class="icofont icofont-maximize full-card"></i></li>        <li><i class="icofont icofont-minus minimize-card"></i></li>        <li><i class="icofont icofont-refresh reload-card"></i></li>        <li><i class="icofont icofont-error close-card"></i></li>    </ul></div>
+                                                        <h5>최근 발주</h5>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><i class="icofont icofont-simple-left "></i></li>
+                                                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                                                <li><i class="icofont icofont-error close-card"></i></li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
                                                             <table class="table">
                                                                 <thead>
                                                                 <tr>
-                                                                    <th>#</th>
-                                                                    <th>First Name</th>
-                                                                    <th>Last Name</th>
-                                                                    <th>Username</th>
+                                                                    <th>주문번호</th>
+                                                                    <th>품목</th>
+                                                                    <th>총액</th>
+                                                                    <th>납기</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <tr>
-                                                                    <th scope="row">1</th>
-                                                                    <td>Mark</td>
-                                                                    <td>Otto</td>
-                                                                    <td>@mdo</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">2</th>
-                                                                    <td>Jacob</td>
-                                                                    <td>Thornton</td>
-                                                                    <td>@fat</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">3</th>
-                                                                    <td>Larry</td>
-                                                                    <td>the Bird</td>
-                                                                    <td>@twitter</td>
+                                                                <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${order.id}+ ')'" th:each="order : ${polist}">
+                                                                    <th th:text="${order.id}" class="data-id" th:attr="data-id=${order.id}"></th>
+                                                                    <td th:text="${order.purchaseOrderDetails == 1 ? order.materialName : order.materialName + ' 외 ' + (order.purchaseOrderDetails - 1) + '건'}"></td>
+                                                                    <td th:text="${order.totalprice} + &#8361;"></td>
+                                                                    <td th:text="${#temporals.format(order.deadline, 'yyyy-MM-dd')}"></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
@@ -285,6 +289,11 @@
              nav.removeClass('active');
          }
      });
+    function gotoDetail(id){
+        var newUrl = '/purchase/order_detail?id=' + id;
+
+        window.location.href = newUrl;
+    }
 </script>
 </body>
 

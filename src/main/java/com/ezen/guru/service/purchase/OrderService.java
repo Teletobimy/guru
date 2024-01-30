@@ -27,5 +27,9 @@ public interface OrderService {
 
     public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments);
 
+    public List<OrderMainListResponse> getOrderMainList();
 
+    public Long countBy();
+
+    public Long countByStatus(int status);
 }
