@@ -65,7 +65,7 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
                 .on(qOrder.company.companyId.eq(qCompany.companyId))
                 .where(whereCondition)
                 .groupBy(qOrder.id, qOrder.status, qCompany.companyName, qOrder.totalprice, qOrder.deadline)
-                .orderBy(qOrder.deadline.asc())
+                .orderBy(qOrder.status.asc(), qOrder.deadline.asc())
                 .offset(size * page)
                 .limit(size)
                 .fetchResults();

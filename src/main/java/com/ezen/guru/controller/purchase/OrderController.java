@@ -108,7 +108,7 @@ public class OrderController {
 //        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
 //        }
         orderService.saveToShipment(shipments);
-        return new ResponseEntity<>("Entities added successfully", HttpStatus.OK);
+        return ResponseEntity.ok("Entities added successfully");
     }
     @GetMapping("/order_print")
     public String getPrint(Model model, HttpServletRequest request, @RequestParam(value = "id") String id) {

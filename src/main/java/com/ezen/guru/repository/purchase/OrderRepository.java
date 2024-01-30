@@ -1,6 +1,7 @@
 package com.ezen.guru.repository.purchase;
 
 import com.ezen.guru.domain.PurchaseOrder;
+import com.ezen.guru.dto.purchase.OrderMainListResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,4 +37,17 @@ public interface OrderRepository extends JpaRepository<PurchaseOrder, Integer>,O
 
     Page<PurchaseOrder> findAll(Specification<PurchaseOrder> spec, Pageable pageable);
 
+    @Query("SELECT distinct NEW com.ezen.guru.dto.purchase.OrderMainListResponse(" +
+            "p.id, MIN(d.materialName), SIZE(p.purchaseOrderDetails), p.totalprice, p.deadline, s.shippingDate) " +
+            "FROM PurchaseOrder p " +
+            "JOIN PurchaseOrderDetail d ON d.purchaseOrder.id = p.id " +
+            "JOIN Shipment s ON s.purchaseOrderId = p.id " +
+            "GROUP BY p.id, p.totalprice, p.deadline, s.shippingDate " +
+            "ORDER BY s.shippingDate DESC " +
+            "LIMIT 5")
+    public List<OrderMainListResponse> orderMainList();
+
+    Long countBy();
+
+    Long countByStatus(int status);
 }

@@ -241,8 +241,8 @@
                                                         </th:block>
                                                     </tr>
                                                     </thead>
-                                                    <tbody>
-                                                    <tr th:each="item,stat : ${list}" th:attr="data-item-check=${item.check}">
+                                                    <tbody id="tbody">
+                                                    <tr th:each="item,stat : ${list}" th:attr="data-id=${item.id}">
                                                         <input type="hidden" id="orderId" th:value="${item.id}" th:attr="data-order-id=${item.id}">
                                                         <input type="hidden" id="materialId" th:value="${item.materialId}" th:attr="data-mat-id=${item.materialId}">
                                                         <input type="hidden" id="companyId" th:value="${item.companyId}" th:attr="data-com-id=${item.companyId}">
@@ -561,7 +561,7 @@
 
         var items = [];  // 데이터 배열 초기화
         // 각 행(tr)에 대해 반복
-        $('tbody tr').each(function() {
+        $('#tbody tr').each(function() {
             var item = {};
             var row = $(this);
 
@@ -581,7 +581,6 @@
             // 배열에 현재 행의 데이터 추가
             items.push(item);
         });
-        items.shift();
         console.log(items);
 
         $.ajax({
