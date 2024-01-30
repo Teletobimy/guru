@@ -3,10 +3,13 @@ import com.ezen.guru.dto.plan.DocumentDTO;
 import com.ezen.guru.repository.plan.DocumentDetailRepository;
 import com.ezen.guru.repository.plan.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.ezen.guru.domain.Document;
 import com.ezen.guru.domain.DocumentDetail;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,18 +39,38 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentDTO convertToDocumentDTO(Document document) {
         DocumentDTO documentDTO = new DocumentDTO();
         documentDTO.setId(document.getId());
-        documentDTO.setType(document.getType());
         documentDTO.setBiddingNo(document.getBiddingNo());
-        documentDTO.setCompanyId(document.getCompany_id());
-        documentDTO.setTotalprice(document.getTotalprice());
+        documentDTO.setType(document.getType());
+        documentDTO.setCompany(document.getCompany());
+        documentDTO.setDocumentTotalPrice(document.getDocument_totalprice());
         documentDTO.setRegdate(document.getRegdate());
         documentDTO.setDeadline(document.getDeadline());
         documentDTO.setStatus(document.getStatus());
         documentDTO.setLeadTime(document.getLeadTime());
-        documentDTO.setPaymentTerms(document.getPaymentTerms());
         documentDTO.setTradeTerms(document.getTradeTerms());
-        documentDTO.setMemo(document.getMemo());
+        documentDTO.setPaymentTerms(document.getPaymentTerms());
+        documentDTO.setDocumentMemo(document.getDocument_memo());
+        documentDTO.setDocumentDetails(document.getDocumentDetails());
         return documentDTO;
+    }
+
+    @Override
+    public Document convertToDocument(DocumentDTO documentDTO) {
+        Document document = new Document();
+        document.setId(documentDTO.getId());
+        document.setBiddingNo(documentDTO.getBiddingNo());
+        document.setType(documentDTO.getType());
+        document.setCompany(documentDTO.getCompany());
+        document.setDocument_totalprice(documentDTO.getDocumentTotalPrice());
+        document.setRegdate(documentDTO.getRegdate());
+        document.setDeadline(documentDTO.getDeadline());
+        document.setStatus(documentDTO.getStatus());
+        document.setLeadTime(documentDTO.getLeadTime());
+        document.setTradeTerms(documentDTO.getTradeTerms());
+        document.setPaymentTerms(documentDTO.getPaymentTerms());
+        document.setDocument_memo(documentDTO.getDocumentMemo());
+        document.setDocumentDetails(documentDTO.getDocumentDetails());
+        return document;
     }
 
 
@@ -82,6 +105,26 @@ public class DocumentServiceImpl implements DocumentService {
     public List<DocumentDetail> findDocumentDetailsByDocumentId(String documentId) {
         List<DocumentDetail> documentDetails = documentDetailRepository.findByDocumentId(documentId);
         return documentDetails;
+    }
+
+    @Override
+    public Page<DocumentDTO> procurementList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        if(category==-1){
+            return documentRepository.findDocumentsByIdAndDateRange(0, keyword,startDate,endDate,pageable).map(this::convertToDocumentDTO);
+        }else {
+            return documentRepository.procurementList(0, keyword, category, startDate, endDate, pageable).map(this::convertToDocumentDTO);
+        }
+    }
+
+    @Override
+    public void documentSave(DocumentDTO documentDTO){
+
+        documentRepository.save(convertToDocument(documentDTO));
+    }
+
+    @Override
+    public void documentDelete(String id) {
+        documentRepository.deleteById(id);
     }
 
     // DTO to Entity 변환 메서드도 추가 가능

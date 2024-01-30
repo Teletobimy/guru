@@ -26,7 +26,7 @@ public class OrderApiController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PostMapping("orders/{orderId}/update-status")
     public ResponseEntity<String> updateOrderStatus(
-            @PathVariable int orderId,
+            @PathVariable(value="orderId") int orderId,
             @RequestParam(name = "newStatus") int newStatus) {
         orderService.updateOrderDetailStatus(orderId, newStatus);
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
@@ -34,13 +34,13 @@ public class OrderApiController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PutMapping("/order/{id}/update-status")
-    public ResponseEntity<String> updateOrderStatus(@PathVariable String id) {
+    public ResponseEntity<String> updateOrderStatus(@PathVariable(value="id") String id) {
         orderService.updateOrderStatus(id);
         return ResponseEntity.ok("발주 상태가 업데이트되었습니다.");
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PutMapping("/order/{id}/force-close")
-    public ResponseEntity<String> forceOrderClose(@PathVariable String id) {
+    public ResponseEntity<String> forceOrderClose(@PathVariable(value="id") String id) {
         try {
             orderService.forceClose(id);
             return ResponseEntity.ok("발주 마감 완료");
@@ -52,7 +52,7 @@ public class OrderApiController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PutMapping("/company/{companyId}/update")
-    public ResponseEntity<?> updateCompany(@PathVariable String companyId, @Valid @RequestBody UpdateCompanyRequest company, BindingResult bindingResult) {
+    public ResponseEntity<?> updateCompany(@PathVariable(value="companyId") String companyId, @Valid @RequestBody UpdateCompanyRequest company, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 검증 오류가 발생한 경우
             List<String> errors = bindingResult.getAllErrors().stream()

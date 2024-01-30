@@ -36,4 +36,12 @@ public interface QcCheckRepository extends JpaRepository<QcCheck, Integer>, JpaS
 
     Long countByProcessStatus(int processStatus);
 
+    @Query("SELECT SUM(passCnt) from QcCheck where processStatus = 3")
+    Long passCntSum();
+
+    @Query("SELECT SUM(returnCnt) from QcCheck where processStatus = 3")
+    Long returnSum();
+
+    @Query("SELECT SUM(passCnt) + SUM(returnCnt) from QcCheck where processStatus = 3")
+    Long totalSum();
 }

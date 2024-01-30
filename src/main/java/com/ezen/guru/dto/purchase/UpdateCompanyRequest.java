@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
+
 public class UpdateCompanyRequest {
 
     @NotBlank(message = "회사명을 입력해주세요.")
@@ -30,4 +31,13 @@ public class UpdateCompanyRequest {
 
     @NotBlank(message = "주소를 입력해주세요.")
     private final String address;
+
+    public UpdateCompanyRequest() {
+        this.companyName = null;
+        this.ceo = null;
+        this.tel = null;
+        this.email = null;
+        this.zipcode = null;
+        this.address = null;
+    }
 }
