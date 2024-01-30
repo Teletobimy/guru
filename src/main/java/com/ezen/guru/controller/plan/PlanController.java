@@ -115,7 +115,6 @@ public class PlanController {
     @GetMapping("/bicycle_insert")
     public String bicycle_insert(Model model,
                                  HttpServletRequest request){
-        System.out.println("아이템생성");
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -192,8 +191,8 @@ public class PlanController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> recipe_add (
-            @RequestParam String previousCellValue,
-            @RequestParam Integer bicycleIdValue
+            @RequestParam(value = "previousCellValue") String previousCellValue,
+            @RequestParam(value = "bicycleIdValue") Integer bicycleIdValue
     ){
 
         RecipeId recipeId = new RecipeId(bicycleIdValue, previousCellValue);
@@ -220,9 +219,7 @@ public class PlanController {
             @RequestParam Integer previousInputValue,
             @RequestParam Integer bicycleIdValue
     ){
-        System.out.println("previousCellValue : "+previousCellValue);
-        System.out.println("previousInputValue :"+previousInputValue);
-        System.out.println("bicycleIdValue :"+bicycleIdValue);
+
 
         RecipeId recipeId = new RecipeId(bicycleIdValue, previousCellValue);
 
@@ -247,8 +244,7 @@ public class PlanController {
             @RequestParam(value="previousCellValue") String previousCellValue,
             @RequestParam(value="bicycleIdValue") Integer bicycleIdValue
     ){
-        System.out.println("previousCellValue : "+previousCellValue);
-        System.out.println("bicycleIdValue :"+bicycleIdValue);
+
         try {
             recipeService.deleteRecipe(bicycleIdValue, previousCellValue);
             return ResponseEntity.ok("삭제완료");
@@ -295,7 +291,7 @@ public class PlanController {
         model.addAttribute("code",codeList);
 
         model.addAttribute("category",materialCategory);
-        System.out.println("codeList!!! : "+ codeList);
+
 
         return "plan/material";
     }
@@ -303,10 +299,10 @@ public class PlanController {
     public String material_detail(
             Model model, @RequestParam(value = "materialId") Integer materialId,
             HttpServletRequest request){
-        System.out.println("materialId : " + materialId);
+
 
         MaterialDTO materialDTO = materialService.getMaterialById(materialId);
-        System.out.println(materialDTO);
+
         List<Code> codeList = materialService.findByCodeCategory("material_category");
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
@@ -389,7 +385,7 @@ public class PlanController {
     public ResponseEntity<String> material_update(
             MaterialDTO materialDTO
     ){
-        System.out.println(materialDTO);
+
         try {
         materialService.saveMaterial(materialDTO);
             return ResponseEntity.ok("수정완료");
@@ -448,7 +444,7 @@ public class PlanController {
         model.addAttribute("code",codeList);
 
         model.addAttribute("category",materialCategory);
-        System.out.println("codeList!!! : "+ codeList);
+
         return "plan/item_search";
     }
 
@@ -471,7 +467,7 @@ public class PlanController {
                             @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                             HttpServletRequest request
                             ){
-        System.out.println("견적서접속요청");
+
 
         Page<QuotationDTO> QuotationPage = quotationService.quotationList(keyword, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
         List<QuotationDTO> quotationDetailDTOList = QuotationPage.getContent();
@@ -498,7 +494,7 @@ public class PlanController {
         model.addAttribute("keyword",keyword);
         model.addAttribute("startDate",startDate);
         model.addAttribute("endDate",endDate);
-        System.out.println("quotationDTO :" + quotationDetailDTOList);
+
 
 
         return "plan/quotation";
@@ -508,15 +504,14 @@ public class PlanController {
     public String quotationDetail(
             Model model, @RequestParam(value = "quotationId") String quotationId,
             HttpServletRequest request){
-        System.out.println("quotationId : " + quotationId);
+
 
         Quotation quotation = quotationService.findById(quotationId);
 
         QuotationDTO quotationDTO = quotationService.convertToDTO(quotation);
 
         List<QuotationDetailDTO> quotationDetailDTOList = quotationService.findAllByQuotation(quotation);
-        System.out.println("quotationDTO :" + quotationDTO);
-        System.out.println("quotationDetailDTOList :"+quotationDetailDTOList);
+
 
 
 
@@ -558,13 +553,43 @@ public class PlanController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String quotation_accept(@RequestBody String Id) {
-        System.out.println(Id);
+
 
         try {
             Quotation quotation = quotationService.findById(Id);
             QuotationDTO quotationDTO = quotationService.convertToDTO(quotation);
             quotationDTO.setStatus(2);
+            System.out.println(quotationDTO);
             quotationService.saveQuotation(quotationDTO);
+            DocumentDTO documentDTO = new DocumentDTO();
+            documentDTO.setType(1);
+            documentDTO.setId(quotationDTO.getId());
+            documentDTO.setBiddingNo(quotationDTO.getBiddingNo());
+            documentDTO.setCompany(quotationDTO.getCompany());
+            documentDTO.setDocumentTotalPrice(quotationDTO.getQuotation_totalprice());
+            documentDTO.setDeadline(quotationDTO.getDeadline());
+            documentDTO.setDocumentMemo(quotationDTO.getQuotation_memo());
+            documentDTO.setLeadTime(quotationDTO.getLeadTime());
+            documentDTO.setPaymentTerms(quotationDTO.getPaymentTerms());
+            documentDTO.setTradeTerms(quotationDTO.getTradeTerms());
+
+
+            List<DocumentDetail> documentDetailList = quotationDTO.getQuotationDetails()
+                    .stream()
+                    .map(quotationDetailDTO -> {
+                        DocumentDetail documentDetail = new DocumentDetail();
+                        documentDetail.setDocument(documentService.convertToDocument(documentDTO));
+                        documentDetail.setMaterial(quotationDetailDTO.getMaterial());
+                        documentDetail.setMaterialName(quotationDetailDTO.getMaterialName());
+                        documentDetail.setDocumentCnt(quotationDetailDTO.getQuotationCnt());
+                        documentDetail.setDocumentMeasure(quotationDetailDTO.getQuotationMeasure());
+                        documentDetail.setDocumentPrice(quotationDetailDTO.getQuotationPrice());
+                        return documentDetail;
+                    })
+                    .collect(Collectors.toList());
+
+            documentDTO.setDocumentDetails(documentDetailList);
+            documentService.documentSave(documentDTO);
 
             return "견적서 승인 성공";
         } catch (Exception e) {
@@ -577,7 +602,7 @@ public class PlanController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String quotation_drop(@RequestBody String Id) {
-        System.out.println(Id);
+
 
         try {
             Quotation quotation = quotationService.findById(Id);
@@ -595,7 +620,7 @@ public class PlanController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public String quotation_delete(@RequestBody String Id) {
-        System.out.println(Id);
+
 
         try {
             // 여기에 ID를 이용한 삭제 로직 추가
@@ -667,7 +692,7 @@ public class PlanController {
                             @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                             HttpServletRequest request
     ){
-        System.out.println("견적서접속요청");
+
 
         Page<DocumentDTO> dtoPage = documentService.procurementList(keyword, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
         List<DocumentDTO> documentDTOList = dtoPage.getContent();
@@ -686,7 +711,7 @@ public class PlanController {
                 userDetails.getPhone());
         model.addAttribute("user",user);
 
-        List<Code> codeList = materialService.findByCodeCategory("quotation_status");
+        List<Code> codeList = materialService.findByCodeCategory("document_status");
         model.addAttribute("code", codeList);
         model.addAttribute("page", dtoPage);
         model.addAttribute("procurements", documentDTOList);
@@ -694,7 +719,7 @@ public class PlanController {
         model.addAttribute("keyword",keyword);
         model.addAttribute("startDate",startDate);
         model.addAttribute("endDate",endDate);
-        System.out.println("quotationDTO :" + documentDTOList);
+
 
 
         return "plan/procurementPlan";
@@ -703,7 +728,91 @@ public class PlanController {
 
     @GetMapping("/procurementPlan_insert")
     public String procurementPlan_insert(Model model, HttpServletRequest request){
-        System.out.println("조달계획서생성");
+        LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    String formattedDate = now.format(formatter);
+    String documentId = formattedDate.toString() +"00"+ new Random().nextInt(1000);
+
+    CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+    Set<String> roles = userDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toSet());
+
+    UserDTO user = new UserDTO(userDetails.getUserId(),
+            userDetails.getUsername(),
+            userDetails.getName(),
+            userDetails.getEmail(),
+            userDetails.getPart(),
+            roles,
+            userDetails.getPhone());
+        model.addAttribute("user",user);
+
+        model.addAttribute("documentId",documentId);
+
+        return "plan/procurementPlan_insert";
+    }
+
+
+
+    //procurementPlan_save
+    @PostMapping("/procurementPlan_save")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public void procurementPlan_save(@RequestBody DocumentDTO documentDTO) {
+        documentService.documentSave(documentDTO);
+
+    }
+
+    @PostMapping("/procurement_trans")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public String procurement_trans(@RequestBody String Id) {
+
+
+        try {
+
+            DocumentDTO documentDTO = documentService.findDocumentById(Id);
+            documentDTO.setStatus(1);
+            documentService.documentSave(documentDTO);
+
+            return "발주 성공";
+        } catch (Exception e) {
+            // 삭제 중 에러가 발생한 경우 처리
+            return "발주 실패: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/procurement_delete")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public String procurement_delete(@RequestBody String Id) {
+
+
+        try {
+            // 여기에 ID를 이용한 삭제 로직 추가
+            documentService.documentDelete(Id);
+            return "조달계획서 삭제 성공";
+        } catch (Exception e) {
+            // 삭제 중 에러가 발생한 경우 처리
+            return "조달계획서 삭제 실패: " + e.getMessage();
+        }
+    }
+
+
+
+
+
+    @GetMapping("/procurementPlan_detail")
+    public String procurementPlan_detail(
+            Model model, @RequestParam(value = "procurementId") String procurementId,
+            HttpServletRequest request){
+
+
+
+        DocumentDTO documentdto = documentService.findDocumentById(procurementId);
+        List<DocumentDetail> documentDetailList = documentdto.getDocumentDetails();
+
+        List<Code> codeList = materialService.findByCodeCategory("document_status");
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -717,11 +826,14 @@ public class PlanController {
                 userDetails.getPart(),
                 roles,
                 userDetails.getPhone());
+
         model.addAttribute("user",user);
+        model.addAttribute("code",codeList);
+        model.addAttribute("document", documentdto);
+        model.addAttribute("documentDetailList", documentDetailList);
 
-        return "plan/procurementPlan_insert";
+        return "plan/procurementPlan_detail";
     }
-
 
 
     @GetMapping("/document")
@@ -776,14 +888,7 @@ public class PlanController {
 
     @GetMapping("/searchCompany")
     public String searchCompany(@RequestParam("name") String companyName, Model model) {
-        // 여기서 companyName을 사용하여 MySQL 데이터베이스에서 회사 정보를 검색
-        // 예를 들어, CompanyService를 통해 데이터베이스에서 정보를 가져온다고 가정
-       System.out.println(companyName);
 
-
-
-            // 검색된 회사 정보를 모델에 추가하여 HTML로 반환
-         //   model.addAttribute("company", company);
             return "plan/company_search"; // 회사 정보 템플릿 이름
 
     }

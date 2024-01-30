@@ -32,7 +32,7 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
     @Query("SELECT d FROM Document d " +
             "WHERE (:type IS NULL OR d.type = :type) " +
             "AND (:id IS NULL OR d.id LIKE %:id%) " +
-            "AND (:status IS NULL OR :status = 0 OR d.status = :status) " +
+            "AND (:status IS NULL OR d.status = :status) " +
             "AND (:startDate IS NULL OR d.regdate >= :startDate) " +
             "AND (:endDate IS NULL OR d.regdate <= :endDate)")
     Page<Document> procurementList(

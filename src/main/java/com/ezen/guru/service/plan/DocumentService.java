@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DocumentService {
+    Document convertToDocument(DocumentDTO documentDTO);
+
     List<DocumentDTO> getAllDocuments();
 
     List<DocumentDTO> getAllProcurementPlan();
@@ -18,4 +20,8 @@ public interface DocumentService {
     List<DocumentDetail> findDocumentDetailsByDocumentId(String documentId);
 
     Page<DocumentDTO> procurementList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate,  Pageable pageable);
+
+    void documentSave(DocumentDTO documentDTO);
+
+    void documentDelete(String id);
 }

@@ -54,6 +54,25 @@ public class DocumentServiceImpl implements DocumentService {
         return documentDTO;
     }
 
+    @Override
+    public Document convertToDocument(DocumentDTO documentDTO) {
+        Document document = new Document();
+        document.setId(documentDTO.getId());
+        document.setBiddingNo(documentDTO.getBiddingNo());
+        document.setType(documentDTO.getType());
+        document.setCompany(documentDTO.getCompany());
+        document.setDocument_totalprice(documentDTO.getDocumentTotalPrice());
+        document.setRegdate(documentDTO.getRegdate());
+        document.setDeadline(documentDTO.getDeadline());
+        document.setStatus(documentDTO.getStatus());
+        document.setLeadTime(documentDTO.getLeadTime());
+        document.setTradeTerms(documentDTO.getTradeTerms());
+        document.setPaymentTerms(documentDTO.getPaymentTerms());
+        document.setDocument_memo(documentDTO.getDocumentMemo());
+        document.setDocumentDetails(documentDTO.getDocumentDetails());
+        return document;
+    }
+
 
     @Override
     public List<DocumentDTO> getAllDocuments() {
@@ -95,6 +114,17 @@ public class DocumentServiceImpl implements DocumentService {
         }else {
             return documentRepository.procurementList(0, keyword, category, startDate, endDate, pageable).map(this::convertToDocumentDTO);
         }
+    }
+
+    @Override
+    public void documentSave(DocumentDTO documentDTO){
+
+        documentRepository.save(convertToDocument(documentDTO));
+    }
+
+    @Override
+    public void documentDelete(String id) {
+        documentRepository.deleteById(id);
     }
 
     // DTO to Entity 변환 메서드도 추가 가능

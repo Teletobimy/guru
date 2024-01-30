@@ -22,7 +22,7 @@ public class QuotationDTO {
     private int biddingNo;
     private Company company;
     private String company_name;
-    private int quotation_totalprice;
+    private Integer quotation_totalprice;
     private LocalDateTime regdate;
     private LocalDateTime deadline;
     private String leadTime;
