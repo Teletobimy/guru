@@ -250,9 +250,9 @@
 
                                         <input type="button"  th:attr="onclick='deleteQuotation()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="삭제"/>
                                         <input type="button"
-                                                th:attr="onclick='gotoList()'"
-                                                class="btn btn-warning"
-                                                style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
+                                               th:attr="onclick='goBack()'"
+                                               class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="뒤로"/>
                                     </div>
                                     </form>
 
@@ -300,67 +300,69 @@
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
 
+    function goBack() {
+             window.history.back();
+         }
+
+      function gotoList(){
+        var url = '/plan/quotation';
+        window.location.href = url;
+    }
 
 
-  function gotoList(){
-    var url = '/plan/quotation';
-    window.location.href = url;
-}
-
-
-function acceptQuotaion(){
-var quotationId = document.getElementById('quotationId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/quotation_accept',
-        contentType: 'application/json',
-        data: quotationId,
-        success: function (response) {
-            alert(response);
-            window.location.href = '/plan/quotation';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
-}
+    function acceptQuotaion(){
+    var quotationId = document.getElementById('quotationId').value;
+        $.ajax({
+            type: 'POST',
+            url: '/plan/quotation_accept',
+            contentType: 'application/json',
+            data: quotationId,
+            success: function (response) {
+                alert(response);
+                window.location.href = '/plan/quotation';
+            },
+            error: function (error) {
+                alert('삭제실패:', error);
+            }
+        });
+    }
 
 
 
-function dropQuotation(){
-var quotationId = document.getElementById('quotationId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/quotation_drop',
-        contentType: 'application/json',
-        data: quotationId,
-        success: function (response) {
-            alert(response);
-           window.location.href = '/plan/quotation';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
-}
+    function dropQuotation(){
+    var quotationId = document.getElementById('quotationId').value;
+        $.ajax({
+            type: 'POST',
+            url: '/plan/quotation_drop',
+            contentType: 'application/json',
+            data: quotationId,
+            success: function (response) {
+                alert(response);
+               window.location.href = '/plan/quotation';
+            },
+            error: function (error) {
+                alert('삭제실패:', error);
+            }
+        });
+    }
 
 
-function deleteQuotation(){
-var quotationId = document.getElementById('quotationId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/quotation_delete',
-        contentType: 'application/json',
-        data: quotationId,
-        success: function (response) {
-            alert(response);
-            window.location.href = '/plan/quotation';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
-}
+    function deleteQuotation(){
+    var quotationId = document.getElementById('quotationId').value;
+        $.ajax({
+            type: 'POST',
+            url: '/plan/quotation_delete',
+            contentType: 'application/json',
+            data: quotationId,
+            success: function (response) {
+                alert(response);
+                window.location.href = '/plan/quotation';
+            },
+            error: function (error) {
+                alert('삭제실패:', error);
+            }
+        });
+    }
 
 
 

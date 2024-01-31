@@ -29,4 +29,6 @@ public interface QuotationService {
 
 
     Page<QuotationDTO> quotationList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    List<QuotationDTO> findAllByBiddingNo(int biddingNo);
 }
