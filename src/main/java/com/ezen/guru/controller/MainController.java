@@ -4,6 +4,7 @@ import com.ezen.guru.domain.PurchaseOrder;
 import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.purchase.OrderMainListResponse;
 import com.ezen.guru.service.CustomUserDetails;
+import com.ezen.guru.service.export.ExportService;
 import com.ezen.guru.service.purchase.OrderService;
 import com.ezen.guru.service.receive.QcCheckService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class MainController {
     private final QcCheckService qcCheckService;
     private final OrderService orderService;
+    private final ExportService exportService;
 
     @GetMapping("/")
     public String main(HttpServletRequest request, Model model){
@@ -65,6 +67,9 @@ public class MainController {
         double returnC = ((double) returnCnt / totalCnt) * 100;
         int returnPercent = (int)returnC;
 
+        //생산계획서 마감률
+        int[] array = exportService.producePlanerCnt();
+
         model.addAttribute("user",user);
         model.addAttribute("percent",totalPercent);
         model.addAttribute("total",totalCount);
@@ -75,6 +80,9 @@ public class MainController {
         model.addAttribute("orderPercent",orderTotalPercent);
         model.addAttribute("pass",passPercent);
         model.addAttribute("return",returnPercent);
+        model.addAttribute("producePercent",array[0]);
+        model.addAttribute("planerTotal",array[1]);
+        model.addAttribute("noCompletePlaner",array[2]);
         return "index";
     }
 }
