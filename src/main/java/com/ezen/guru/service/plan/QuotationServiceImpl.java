@@ -154,4 +154,13 @@ public class QuotationServiceImpl implements QuotationService {
         }
     }
 
+    @Override
+    public List<QuotationDTO> findAllByBiddingNo(int biddingNo){
+        List<Quotation> quotations = quotationRepository.findAllByBiddingNoOrderByStatusDesc(biddingNo);
+
+        return quotations.stream()
+                .map(quotation -> convertToDTO(quotation))
+                .collect(Collectors.toList());
+    }
+
 }

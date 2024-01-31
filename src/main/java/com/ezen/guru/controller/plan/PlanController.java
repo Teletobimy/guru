@@ -558,9 +558,22 @@ public class PlanController {
         try {
             Quotation quotation = quotationService.findById(Id);
             QuotationDTO quotationDTO = quotationService.convertToDTO(quotation);
+
+                List<QuotationDTO> quotations = quotationService.findAllByBiddingNo(quotationDTO.getBiddingNo());
+                for (int i = 0; i < quotations.size(); i++) {
+                    quotations.get(i).setStatus(1);
+                    quotationService.saveQuotation(quotations.get(i));
+                }
+
             quotationDTO.setStatus(2);
             System.out.println(quotationDTO);
             quotationService.saveQuotation(quotationDTO);
+
+
+
+
+
+
             DocumentDTO documentDTO = new DocumentDTO();
             documentDTO.setType(1);
             documentDTO.setId(quotationDTO.getId());
@@ -590,6 +603,8 @@ public class PlanController {
 
             documentDTO.setDocumentDetails(documentDetailList);
             documentService.documentSave(documentDTO);
+
+
 
             return "견적서 승인 성공";
         } catch (Exception e) {
@@ -885,7 +900,10 @@ public class PlanController {
 
         DocumentDTO documentdto = documentService.findDocumentById(documentId);
         List<DocumentDetail> documentDetailList = documentdto.getDocumentDetails();
+        int biddingNo = documentdto.getBiddingNo();
+        List<QuotationDTO> quotationDTOList = quotationService.findAllByBiddingNo(biddingNo);
 
+        System.out.println(quotationDTOList);
         List<Code> codeList = materialService.findByCodeCategory("document_status");
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
@@ -900,8 +918,10 @@ public class PlanController {
                 userDetails.getPart(),
                 roles,
                 userDetails.getPhone());
-
+        List<Code> codeList2 = materialService.findByCodeCategory("quotation_status");
+        model.addAttribute("code2", codeList2);
         model.addAttribute("user",user);
+        model.addAttribute("quotations",quotationDTOList);
         model.addAttribute("code",codeList);
         model.addAttribute("document", documentdto);
         model.addAttribute("documentDetailList", documentDetailList);
@@ -942,6 +962,41 @@ public class PlanController {
             // 삭제 중 에러가 발생한 경우 처리
             return "계약서 삭제 실패: " + e.getMessage();
         }
+    }
+
+
+
+    @GetMapping("/po_ready")
+    public String po_ready(
+            Model model, @RequestParam(value = "documentId") String documentId,
+            HttpServletRequest request){
+
+
+
+        DocumentDTO documentdto = documentService.findDocumentById(documentId);
+        List<DocumentDetail> documentDetailList = documentdto.getDocumentDetails();
+
+        List<Code> codeList = materialService.findByCodeCategory("document_status");
+
+        CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        UserDTO user = new UserDTO(userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getEmail(),
+                userDetails.getPart(),
+                roles,
+                userDetails.getPhone());
+
+        model.addAttribute("user",user);
+        model.addAttribute("code",codeList);
+        model.addAttribute("document", documentdto);
+        model.addAttribute("documentDetailList", documentDetailList);
+
+        return "plan/po_ready";
     }
 
 

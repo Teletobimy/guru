@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GURU Able - Free Lite Admin Template </title>
+    <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="CodedThemes">
+    <meta name="keywords"
+          content=" Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="CodedThemes">
+    <!-- Favicon icon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/icon/icofont/css/icofont.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.mCustomScrollbar.css">
+    <style>
+        .btn-card {
+          text-transform: uppercase;
+          font-size: 13px;
+          padding: 5px 10px;
+          margin: 0px 10px;
+          color: #fff;
+          border-radius: 5px;
+      }
+       table{
+        border-collapse: collapse;
+        border-spacing: 0
+       }
+       th{
+           background-color: #f6f7fb;
+       color: #000;
+       }
+       th, td{
+           border: 1px solid #ccc;
+       padding: 10px;
+       }
+       input{
+           border:none;
+       }
+       .container{
+           display: flex;
+           max-width: 1141px;
+           flex-flow: column;
+           justify-content: center;
+           align-items: center;
+       }
+       .btn-display{
+        display: flex;
+        justify-content: center;
+        margin-bottom:20px;
+       }
+       button{
+           margin:10px;
+       }
+        textarea {
+       border: none;
+       resize: none;
+   }
+
+          #myTable {
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: auto; /* 가로 스크롤을 활성화합니다. */
+        }
+
+        #myTable th, #myTable td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        #myTable th button {
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Pre-loader start -->
+
+<!-- Pre-loader end -->
+<div id="pcoded" class="pcoded">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <nav class="navbar header-navbar pcoded-header" th:include="includes/header :: header"
+             th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></nav>
+
+        <div class="pcoded-main-container">
+            <div th:include="includes/navbar :: navbar"
+                 th:with="name=${user.name}, part=${user.part}, roles=${user.roles}"></div>
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-header card">
+                                <div class="row align-items-end">
+                                    <div class="col-lg-8">
+                                        <div class="page-header-title">
+                                            <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
+                                            <div style="display:flex; align-items:center;">
+                                                <h4> 발주서작성 </h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="page-body">
+
+
+                                <div class="card">
+
+
+                                    <div class="card-header">
+                                        <div class="container">
+                                            <h1>발주서작성</h1>
+
+
+                                            <table id="estimateTable" width="60%">
+
+                                                <tr>
+                                                    <th colspan="2">계약서번호</th>
+                                                    <td colspan="3">
+                                                        <input type="text" th:value="${document.id}" id="documentId"
+                                                               readonly>
+                                                    </td>
+                                                    <th colspan="2">수신회사명</th>
+                                                    <td colspan="3">
+                                                        <input type="text" id="company_name"
+                                                               th:value="${document.Company.companyName}" readonly>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <th colspan="2">리드타임</th>
+                                                    <td colspan="3" th:text="${document.leadTime}">
+
+                                                    </td>
+                                                    <th colspan="2">거래조건</th>
+                                                    <td colspan="3" th:text="${document.tradeTerms}">
+
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2">지불조건</th>
+                                                    <td colspan="3" th:text="${document.paymentTerms}"></td>
+                                                    <th colspan="2">납기일</th>
+                                                    <td colspan="3" th:text="${document.deadline}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="3">합계(VAT 포함)</th>
+
+                                                    <td colspan="7" class="total"
+                                                        th:text="${document.documentTotalPrice}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2">비고</th>
+                                                    <td colspan="8">
+                                                        <textarea rows="10" style="width:100%;"
+                                                                  th:text="${document.documentMemo}"
+                                                                  readonly></textarea>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+
+                                            <table style="margin-top:50px; overflow-x: auto;" id="myTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>PID</th>
+                                                    <th colspan="2">품명</th>
+                                                    <th>수량</th>
+                                                    <th>남은수량</th>
+                                                    <th>단위</th>
+                                                    <th>단가</th>
+                                                    <th colspan="2">금액</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <tr th:each="qd, itemStat : ${documentDetailList}">
+                                                    <th scope="row" th:text="${itemStat.count}"></th>
+                                                    <td th:text="${qd.Material.materialId}"></td>
+                                                    <td colspan="2" th:text="${qd.Material.materialName}"></td>
+                                                    <td th:text="${qd.documentCnt}"></td>
+                                                    <td th:text="${qd.documentCnt}"></td>
+                                                    <td th:text="${qd.documentMeasure}"></td>
+                                                    <td th:text="${qd.documentPrice}"></td>
+                                                    <td colspan="2" th:text="${qd.documentPrice*qd.documentCnt}"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="btn-display" style="margin-top:30px;">
+                                        <input type="button" th:attr="onclick='addColumn()'" class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
+                                               value="발주서 작성 추가"/>
+                                        <input type="button" th:attr="onclick='submitPO()'" class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
+                                               value="발송"/>
+                                        <input type="button"
+                                               th:attr="onclick='goBack()'"
+                                               class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180;  margin:10px;"
+                                               value="뒤로"/>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                            <div id="styleSelector">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+
+<![endif]-->
+<!-- Warning Section Ends -->
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- modernizr js -->
+<script type="text/javascript" src="/js/modernizr/modernizr.js"></script>
+<!-- am chart -->
+<script src="/pages/widget/amchart/amcharts.min.js"></script>
+<script src="/pages/widget/amchart/serial.min.js"></script>
+<!-- Todo js -->
+<script type="text/javascript " src="/pages/todo/todo.js "></script>
+<!-- Custom js -->
+<script type="text/javascript" src="/pages/dashboard/custom-dashboard.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript " src="/js/SmoothScroll.js"></script>
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/demo-12.js"></script>
+<script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    window.onload = function() {
+            addColumn();
+        };
+
+    function goBack() {
+         window.history.back();
+     }
+
+
+    function addColumn() {
+        var table = document.getElementById("myTable");
+        var header = table.getElementsByTagName('thead')[0];
+        if (!header) {
+            header = table.createTHead();
+            table.appendChild(header);
+        }
+
+        var row = header.getElementsByTagName('tr')[0];
+        if (!row) {
+            row = header.insertRow(0);
+        }
+
+        var cell = document.createElement("th");
+         var now = new Date();
+        var dateTimeString = now.toISOString().replace(/[-:TZ]/g, "").slice(0, 14);
+        var random4Digits = Math.floor(1000 + Math.random() * 9000);
+        cell.innerHTML = "PO : " + dateTimeString + random4Digits;
+        row.appendChild(cell);
+
+        var tbody = table.getElementsByTagName('tbody')[0];
+        if (!tbody) {
+            tbody = table.createTBody();
+            table.appendChild(tbody);
+        }
+
+        var rows = tbody.getElementsByTagName('tr');
+        for (var i = 0; i < rows.length; i++) {
+            addCell(rows[i]);
+        }
+    }
+    // 각 행의 이전 값 저장을 위한 객체
+var previousValues = {};
+
+function addCell(row) {
+    var cell = row.insertCell(-1);
+    var input = document.createElement("input");
+    input.type = "number";
+    cell.appendChild(input);
+
+    // 'input' 이벤트를 사용하여 값이 입력될 때마다 계산 수행
+    input.addEventListener('input', function(event) {
+        calculateAndDisplay(row);
+    });
+}
+
+function calculateAndDisplay(row) {
+    var fourthCellIndex = 3;  // 0부터 시작하는 인덱스
+    var fifthCellIndex = 4;
+    var fourthCell = row.cells[fourthCellIndex];
+    var fifthCell = row.cells[fifthCellIndex];
+
+    // 현재 행의 모든 input 값을 더하여 4번째 셀에 표시
+    var inputs = row.getElementsByTagName('input');
+    var sum = 0;
+    for (var i = 0; i < inputs.length; i++) {
+        sum += parseInt(inputs[i].value, 10) || 0;
+    }
+
+    // 이전 값이 저장되어 있는지 확인하고 없으면 현재 값으로 초기화
+    if (!(row in previousValues)) {
+        previousValues[row] = parseInt(fifthCell.textContent, 10) || 0;
+    }
+
+    // 5번째 셀에서 4번째 셀의 값에서 계산된 결과를 빼고 표시
+    var currentValue = previousValues[row];
+    var totalNumber = currentValue - sum;
+    if(totalNumber<0){
+    alert("구매발주서 품목 수량은 계약서 총 수량을 넘을 수 없습니다.");
+    }
+    fifthCell.textContent = totalNumber;
+}
+
+
+
+
+ function submitPO(){
+ var documentId = document.getElementById('documentId').value;
+     $.ajax({
+         type: 'POST',
+         url: '/plan/procurement_trans',
+         contentType: 'application/json',
+         data: documentId,
+         success: function (response) {
+             alert(response);
+             window.location.href = '/plan/procurementPlan';
+         },
+         error: function (error) {
+             alert('삭제실패:', error);
+         }
+     });
+ }
+
+
+
+ function deleteDoc(){
+ var documentId = document.getElementById('documentId').value;
+     $.ajax({
+         type: 'POST',
+         url: '/plan/procurement_delete',
+         contentType: 'application/json',
+         data: documentId,
+         success: function (response) {
+             alert(response);
+             window.location.href = '/plan/procurementPlan';
+         },
+         error: function (error) {
+             alert('삭제실패:', error);
+         }
+     });
+ }
+
+
+</script>
+</body>
+
+</html>
