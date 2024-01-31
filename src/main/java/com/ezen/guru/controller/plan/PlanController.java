@@ -462,7 +462,7 @@ public class PlanController {
                             @RequestParam(value="size", defaultValue = "10") int size,
                             @RequestParam(value="page", defaultValue = "0") int page,
                             @RequestParam(value="category", defaultValue = "-1") int category,
-                            @RequestParam(value="keyword", defaultValue = "") String keyword,
+                            @RequestParam(value="keyword", required = false) Integer keyword,
                             @RequestParam(name = "startDate", defaultValue = "2020-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                             @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                             HttpServletRequest request

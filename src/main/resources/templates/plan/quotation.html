@@ -195,7 +195,7 @@
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
                                                     <div class="pcoded-search-box input-box" >
                                                         <div class="search-long">
-                                                            <input type="text" placeholder="search" id="searchInput" style="border:none;"
+                                                            <input type="text" placeholder="Bidding검색" id="searchInput" style="border:none;"
                                                             th:value="${keyword}">
                                                             <p class="search-icon" th:attr="onclick='performSearch()'"
                                                                style="display:inline; margin:0;">
@@ -221,11 +221,11 @@
                                                                     <th>견적가</th>
                                                                     <th>견적등록일</th>
                                                                     <th>견적유효</th>
-                                                                    <th>견적서상태</th>
                                                                     <th>리드타임</th>
                                                                     <th>거래조건</th>
                                                                     <th>지불조건</th>
                                                                     <th>비고</th>
+                                                                    <th>견적서상태</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -238,10 +238,7 @@
                                                                     <td th:text="${quotation.quotation_totalprice}"></td>
                                                                     <td th:text="${#temporals.format(quotation.regdate, 'yyyy-MM-dd HH:mm')}"></td>
                                                                     <td th:text="${#temporals.format(quotation.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                    <td th:each="code:${code}"
-                                                                        th:if ="${quotation.status == code.codeNum}"
-                                                                            th:text="${code.codeName}"
-                                                                    ></td>
+
                                                                     <td th:text="${quotation.leadTime}"></td>
                                                                     <td th:text="${quotation.tradeTerms}"></td>
                                                                     <td th:text="${quotation.paymentTerms}"></td>
@@ -249,6 +246,11 @@
                                                                     <span th:utext="${quotation.quotation_memo.length() > 50} ? ${#strings.substring(quotation.quotation_memo, 0, 50)} + '...' : ${quotation.quotation_memo}">
                                                                     </span>
                                                                     </td>
+                                                                    <td th:each="code:${code}"
+                                                                        th:if ="${quotation.status == code.codeNum}"
+                                                                        th:text="${code.codeName}"
+                                                                        th:classappend="${quotation.status == 2} ? 'text-c-pink' : ''"
+                                                                    ></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
