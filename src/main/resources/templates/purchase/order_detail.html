@@ -163,7 +163,7 @@
                                                     th:each="type:${type}"
                                                     th:if="${type.codeNum} == ${firstItem.type}"
                                                     th:text="|${type.codeName}|"
-                                                    th:onclick="|location.href='@{/plan/document/{documentId}(documentId=${firstItem.documentId})}'|"></button>
+                                                    th:onclick="|location.href='@{/plan/document_detail?documentId={documentId}(documentId=${firstItem.documentId})}'|"></button>
                                             <button class="btn btn-primary btn-success" style="margin-right: 5px;"
                                                     th:if="${firstItem.status == 3}"
                                                     th:onclick="|location.href='@{/tradeDetail?purchaseOrderId={id}(id=${firstItem.id})}'|">거래명세서</button>
@@ -269,7 +269,7 @@
                                             </div>
                                             <div class="button-area" style="padding: 20px; text-align: center;">
                                                 <th:block th:with="firstItem=${list[0]}">
-                                                    <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="location.href='/purchase/order'">목록</button>
+                                                    <button type="button" class="btn btn-secondary" style="margin-right: 5px;" th:onclick="history.back()">목록</button>
                                                     <div th:if="${firstItem.status == 1}" style="display: inline-block;">
                                                         <button type="button" class="btn btn-primary complete-btn btn-success" style="margin-right: 5px;" th:onclick="toShipment(this);" th:attr="data-id=${firstItem.id}">발주</button>
                                                     </div>
