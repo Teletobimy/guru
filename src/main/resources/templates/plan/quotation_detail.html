@@ -248,7 +248,13 @@
                                                style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
                                                value="거절"/>
 
-                                        <input type="button"  th:attr="onclick='deleteQuotation()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="삭제"/>
+                                        <input type="button"
+                                               th:attr="onclick=${quotation.status == 1 or quotation.status == 2 ? null : 'deleteQuotation()'}"
+                                               th:if="${quotation.status != 1 and quotation.status != 2}"
+                                               class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
+                                               value="삭제"/>
+
                                         <input type="button"
                                                th:attr="onclick='goBack()'"
                                                class="btn btn-warning"

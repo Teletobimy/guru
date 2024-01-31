@@ -462,14 +462,19 @@ public class PlanController {
                             @RequestParam(value="size", defaultValue = "10") int size,
                             @RequestParam(value="page", defaultValue = "0") int page,
                             @RequestParam(value="category", defaultValue = "-1") int category,
-                            @RequestParam(value="keyword", required = false) Integer keyword,
+                            @RequestParam(value="keyword", defaultValue = "") String keyword,
                             @RequestParam(name = "startDate", defaultValue = "2020-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                             @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                             HttpServletRequest request
                             ){
+        Integer biddingNo;
+        try {
+            biddingNo = Integer.valueOf(keyword);
 
-
-        Page<QuotationDTO> QuotationPage = quotationService.quotationList(keyword, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
+        } catch (NumberFormatException e) {
+            biddingNo=null;
+        }
+        Page<QuotationDTO> QuotationPage = quotationService.quotationList(biddingNo, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
         List<QuotationDTO> quotationDetailDTOList = QuotationPage.getContent();
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");

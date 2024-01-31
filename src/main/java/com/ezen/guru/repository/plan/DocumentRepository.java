@@ -20,8 +20,7 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
             "WHERE (:type IS NULL OR d.type = :type) " +
             "AND (:id IS NULL OR d.id LIKE %:id%) " +
             "AND (:startDate IS NULL OR d.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR d.regdate <= :endDate)"+
-            "ORDER BY d.status DESC")
+            "AND (:endDate IS NULL OR d.regdate <= :endDate)")
     Page<Document> findDocumentsByIdAndDateRange(
             @Param("type") Integer type,
             @Param("id") String id,
@@ -35,8 +34,7 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
             "AND (:id IS NULL OR d.id LIKE %:id%) " +
             "AND (:status IS NULL OR d.status = :status) " +
             "AND (:startDate IS NULL OR d.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR d.regdate <= :endDate)" +
-            "ORDER BY d.status DESC")
+            "AND (:endDate IS NULL OR d.regdate <= :endDate)")
     Page<Document> procurementList(
             @Param("type") Integer type,
             @Param("id") String id,
