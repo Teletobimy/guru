@@ -107,7 +107,7 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
-    public Page<QuotationDTO> findAllwithPageable(String keyword, Integer category, Pageable pageable) {
+    public Page<QuotationDTO> findAllwithPageable(int keyword, Integer category, Pageable pageable) {
         return null;
     }
 
@@ -144,10 +144,10 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
-    public Page<QuotationDTO> quotationList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+    public Page<QuotationDTO> quotationList(Integer keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
 
         if(category==-1) {
-            return quotationRepository.findQuotationsByQuotationIdAndDateRange(keyword,startDate,endDate,pageable).map(this::convertToDTO);
+            return quotationRepository.findQuotationsByBiddingNoAndDateRange(keyword,startDate,endDate,pageable).map(this::convertToDTO);
 
         }else {
             return quotationRepository.quotationList(keyword, category, startDate, endDate, pageable).map(this::convertToDTO);

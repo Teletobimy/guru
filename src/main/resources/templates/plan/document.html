@@ -220,10 +220,10 @@
                                                                     <th>총계약가격</th>
                                                                     <th>계약체결일</th>
                                                                     <th>납기일</th>
-                                                                    <th>발주서발행상태</th>
                                                                     <th>거래조건</th>
                                                                     <th>지불조건</th>
                                                                     <th>비고</th>
+                                                                    <th>발주서발행상태</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -235,16 +235,18 @@
                                                                     <td th:text="${document.documentTotalPrice}"></td>
                                                                     <td th:text="${#temporals.format(document.regdate, 'yyyy-MM-dd HH:mm')}"></td>
                                                                     <td th:text="${#temporals.format(document.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                    <td th:each="code:${code}"
-                                                                        th:if ="${document.status == code.codeNum}"
-                                                                            th:text="${code.codeName}"
-                                                                    ></td>
+
                                                                     <td th:text="${document.tradeTerms}"></td>
                                                                     <td th:text="${document.paymentTerms}"></td>
                                                                     <td th:class="${document.documentMemo.length() > 50} ? 'ellipsis' : ''">
                                                                     <span th:utext="${document.documentMemo.length() > 50} ? ${#strings.substring(document.documentMemo, 0, 50)} + '...' : ${document.documentMemo}">
                                                                     </span>
                                                                     </td>
+                                                                    <td th:each="code:${code}"
+                                                                        th:if ="${document.status == code.codeNum}"
+                                                                        th:text="${code.codeName}"
+                                                                        th:classappend="${document.status == 1} ? 'text-c-pink' : ''"
+                                                                    ></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>

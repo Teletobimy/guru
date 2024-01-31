@@ -20,7 +20,8 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
             "WHERE (:type IS NULL OR d.type = :type) " +
             "AND (:id IS NULL OR d.id LIKE %:id%) " +
             "AND (:startDate IS NULL OR d.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR d.regdate <= :endDate)")
+            "AND (:endDate IS NULL OR d.regdate <= :endDate)"+
+            "ORDER BY d.status DESC")
     Page<Document> findDocumentsByIdAndDateRange(
             @Param("type") Integer type,
             @Param("id") String id,
@@ -34,7 +35,8 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
             "AND (:id IS NULL OR d.id LIKE %:id%) " +
             "AND (:status IS NULL OR d.status = :status) " +
             "AND (:startDate IS NULL OR d.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR d.regdate <= :endDate)")
+            "AND (:endDate IS NULL OR d.regdate <= :endDate)" +
+            "ORDER BY d.status DESC")
     Page<Document> procurementList(
             @Param("type") Integer type,
             @Param("id") String id,
@@ -43,4 +45,10 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable
     );
+
+    @Query("SELECT COUNT(d) FROM Document d WHERE d.type = :documentType")
+    long countByDocumentType(@Param("documentType") int documentType);
+
+    @Query("SELECT COUNT(d) FROM Document d WHERE d.type = 1 AND d.status = 1")
+    long countByTypeAndStatus();
 }

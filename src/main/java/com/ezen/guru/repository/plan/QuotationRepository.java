@@ -17,12 +17,13 @@ public interface QuotationRepository extends CrudRepository<Quotation, String> {
     Page<Quotation> findAll(Pageable pageable);
 
     @Query("SELECT q FROM Quotation q " +
-            "WHERE (:quotationId IS NULL OR q.id LIKE %:quotationId%) " +
+            "WHERE (:biddingNo IS NULL OR q.biddingNo = :biddingNo) " +
             "AND (:status IS NULL OR q.status = :status) " +
             "AND (:startDate IS NULL OR q.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR q.regdate <= :endDate)")
+            "AND (:endDate IS NULL OR q.regdate <= :endDate)" +
+            "ORDER BY q.status DESC")
     Page<Quotation> quotationList(
-            @Param("quotationId") String quotationId,
+            @Param("biddingNo") Integer biddingNo,
             @Param("status") Integer status,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
@@ -30,15 +31,17 @@ public interface QuotationRepository extends CrudRepository<Quotation, String> {
     );
 
     @Query("SELECT q FROM Quotation q " +
-            "WHERE (:quotationId IS NULL OR q.id LIKE %:quotationId%) " +
+            "WHERE (:biddingNo IS NULL OR q.biddingNo = :biddingNo) " +
             "AND (:startDate IS NULL OR q.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR q.regdate <= :endDate)")
-    Page<Quotation> findQuotationsByQuotationIdAndDateRange(
-            @Param("quotationId") String quotationId,
+            "AND (:endDate IS NULL OR q.regdate <= :endDate) " +
+            "ORDER BY q.status DESC")
+    Page<Quotation> findQuotationsByBiddingNoAndDateRange(
+            @Param("biddingNo") Integer biddingNo,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable
     );
+
 
     List<Quotation> findAllByBiddingNoOrderByStatusDesc(int biddingNo);
 }

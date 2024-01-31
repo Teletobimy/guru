@@ -26,4 +26,8 @@ public interface DocumentService {
     void documentDelete(String id);
 
     Page<DocumentDTO> documentList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    long countByDocumentType();
+
+    long countByTypeAndStatus();
 }

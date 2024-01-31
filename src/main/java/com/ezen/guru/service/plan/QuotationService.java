@@ -18,7 +18,7 @@ public interface QuotationService {
 
     QuotationDetailDTO convertToDetailDTO(QuotationDetail detail);
 
-    Page<QuotationDTO> findAllwithPageable(String keyword, Integer category, Pageable pageable);
+    Page<QuotationDTO> findAllwithPageable(int keyword, Integer category, Pageable pageable);
 
     Quotation findById(String id);
 
@@ -28,7 +28,7 @@ public interface QuotationService {
 
 
 
-    Page<QuotationDTO> quotationList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+    Page<QuotationDTO> quotationList(Integer keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
     List<QuotationDTO> findAllByBiddingNo(int biddingNo);
 }
