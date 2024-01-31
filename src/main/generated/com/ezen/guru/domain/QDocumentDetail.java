@@ -32,7 +32,7 @@ public class QDocumentDetail extends EntityPathBase<DocumentDetail> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final NumberPath<Integer> materialId = createNumber("materialId", Integer.class);
+    public final QMaterial material;
 
     public final StringPath materialName = createString("materialName");
 
@@ -54,7 +54,8 @@ public class QDocumentDetail extends EntityPathBase<DocumentDetail> {
 
     public QDocumentDetail(Class<? extends DocumentDetail> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.document = inits.isInitialized("document") ? new QDocument(forProperty("document")) : null;
+        this.document = inits.isInitialized("document") ? new QDocument(forProperty("document"), inits.get("document")) : null;
+        this.material = inits.isInitialized("material") ? new QMaterial(forProperty("material")) : null;
     }
 
 }

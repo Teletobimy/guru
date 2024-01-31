@@ -18,13 +18,19 @@ public class QDocument extends EntityPathBase<Document> {
 
     private static final long serialVersionUID = 1024213131L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QDocument document = new QDocument("document");
 
     public final NumberPath<Integer> biddingNo = createNumber("biddingNo", Integer.class);
 
-    public final StringPath company_id = createString("company_id");
+    public final QCompany company;
 
     public final DateTimePath<java.time.LocalDateTime> deadline = createDateTime("deadline", java.time.LocalDateTime.class);
+
+    public final StringPath document_memo = createString("document_memo");
+
+    public final NumberPath<Integer> document_totalprice = createNumber("document_totalprice", Integer.class);
 
     public final ListPath<DocumentDetail, QDocumentDetail> documentDetails = this.<DocumentDetail, QDocumentDetail>createList("documentDetails", DocumentDetail.class, QDocumentDetail.class, PathInits.DIRECT2);
 
@@ -32,30 +38,35 @@ public class QDocument extends EntityPathBase<Document> {
 
     public final StringPath leadTime = createString("leadTime");
 
-    public final StringPath memo = createString("memo");
-
     public final StringPath paymentTerms = createString("paymentTerms");
 
     public final DateTimePath<java.time.LocalDateTime> regdate = createDateTime("regdate", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
 
-    public final NumberPath<Integer> totalprice = createNumber("totalprice", Integer.class);
-
     public final StringPath tradeTerms = createString("tradeTerms");
 
     public final NumberPath<Integer> type = createNumber("type", Integer.class);
 
     public QDocument(String variable) {
-        super(Document.class, forVariable(variable));
+        this(Document.class, forVariable(variable), INITS);
     }
 
     public QDocument(Path<? extends Document> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QDocument(PathMetadata metadata) {
-        super(Document.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QDocument(PathMetadata metadata, PathInits inits) {
+        this(Document.class, metadata, inits);
+    }
+
+    public QDocument(Class<? extends Document> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.company = inits.isInitialized("company") ? new QCompany(forProperty("company")) : null;
     }
 
 }

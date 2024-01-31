@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
     Page<Material> findBymaterialCategory(int materialCategory, Pageable pageable);
@@ -36,4 +38,7 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
     @Modifying
     @Query("UPDATE Material m SET m.materialStock = m.materialStock + :qcCheckCnt WHERE m.materialId = (SELECT q.materialId.materialId FROM QcCheck q WHERE q.qcCheckId = :qcCheckId)")
     void updateMaterialStock(@Param("qcCheckId")int qcCheckId, @Param("qcCheckCnt")int qcCheckCnt);
+
+    @Query("SELECT m.materialName, m.materialDescription, m.materialCategory, SUM(m.materialStock) AS totalStock FROM Material m GROUP BY m.materialName, m.materialDescription, m.materialCategory")
+    Page<Object[]> getTotalStockByMaterial(Pageable pageable);
 }

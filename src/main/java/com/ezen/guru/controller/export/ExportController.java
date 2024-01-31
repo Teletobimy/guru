@@ -264,6 +264,30 @@ public class ExportController {
                                @RequestParam(value="size", defaultValue = "10") int size,
                                @RequestParam(value="page", defaultValue = "0") int page,
                                @RequestParam(value = "keyword", required = false, defaultValue = "") String materialName,
+                               @RequestParam(value = "category", required = false, defaultValue = "-1") Integer category) {
+
+        //공통 유저 정보
+        UserDTO user = userDTO.getUser(request);
+        model.addAttribute("user",user);
+
+        System.out.println("--------------------");
+        System.out.println("category : " + category);
+        System.out.println("keyword : " + materialName);
+        Page<MaterialDTO> materials = materialService.getAllMaterials(materialName, category, PageRequest.of(page, size));
+        List<Code> code = exportService.findByCodeCategory("material_category");
+
+        model.addAttribute("materials", materials);
+        model.addAttribute("category", category);
+        model.addAttribute("code", code);
+
+        return "export/materialStock";
+    }
+
+    @GetMapping("/materialDetailStock")
+    public String materialDetailStock(Model model, HttpServletRequest request,
+                               @RequestParam(value="size", defaultValue = "10") int size,
+                               @RequestParam(value="page", defaultValue = "0") int page,
+                               @RequestParam(value = "keyword", required = false, defaultValue = "") String materialName,
                                @RequestParam(value = "category", required = false, defaultValue = "-1") Integer  category) {
 
         //공통 유저 정보
