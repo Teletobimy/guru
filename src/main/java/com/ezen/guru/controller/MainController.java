@@ -65,6 +65,7 @@ public class MainController {
         double returnC = ((double) returnCnt / totalCnt) * 100;
         int returnPercent = (int)returnC;
 
+
         model.addAttribute("user",user);
         model.addAttribute("percent",totalPercent);
         model.addAttribute("total",totalCount);
