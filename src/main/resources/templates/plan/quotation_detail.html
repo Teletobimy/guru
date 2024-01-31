@@ -138,7 +138,9 @@
                                                 <th rowspan="2" colspan="2">수신</th>
                                                 <td rowspan="2" colspan="3">
                                                     <p style="font-size: larger;"><u>GURO자전거</u></p>
-                                                    <p><u>권나현 대표 귀하</u></p>
+                                                    <p><u>경기 수원시 팔달구 권광로 146 벽산그랜드코아 4층 401호</u></p>
+                                                    <p><u>Tel: 031-548-4664 </u></p>
+                                                    <p><u>권나현 대표</u></p>
                                                 </td>
                                                 <th rowspan="1" colspan="2">사업자번호</th>
                                                 <td colspan="3">
@@ -180,7 +182,7 @@
                                                 <tr>
                                                     <th colspan="2">지불조건</th>
                                                     <td colspan="3" th:text="${quotation.paymentTerms}"></td>
-                                                    <th colspan="2">납기일</th>
+                                                    <th colspan="2">최종납기일</th>
                                                     <td colspan="3" th:text="${quotation.deadline}"></td>
                                                 </tr>
 
@@ -220,8 +222,10 @@
 
                                             </tr>
                                             <tr>
-                                                <th colspan="2">특기사항</th>
-                                                <td colspan="8" th:text="${quotation.quotation_memo}"></td>
+                                                <th colspan="2">비고</th>
+                                                <td colspan="8">
+                                                    <textarea rows="10" style="width:100%;" th:text="${quotation.quotation_memo}" readonly></textarea>
+                                                </td>
                                             </tr>
 
                                         </table>
@@ -230,7 +234,7 @@
                                     </div>
                                     </div>
 
-                                    <div class="btn-display">
+                                    <div class="btn-display" style="margin-top:30px;">
                                         <input type="button"
                                                th:attr="onclick=${quotation.status == 1 or quotation.status == 2 ? null : 'acceptQuotaion()'}"
                                                th:if="${quotation.status != 1 and quotation.status != 2}"
@@ -246,9 +250,9 @@
 
                                         <input type="button"  th:attr="onclick='deleteQuotation()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="삭제"/>
                                         <input type="button"
-                                                th:attr="onclick='gotoList()'"
-                                                class="btn btn-warning"
-                                                style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
+                                               th:attr="onclick='goBack()'"
+                                               class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="뒤로"/>
                                     </div>
                                     </form>
 
@@ -296,67 +300,69 @@
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
 
+    function goBack() {
+             window.history.back();
+         }
+
+      function gotoList(){
+        var url = '/plan/quotation';
+        window.location.href = url;
+    }
 
 
-  function gotoList(){
-    var url = '/plan/quotation';
-    window.location.href = url;
-}
-
-
-function acceptQuotaion(){
-var quotationId = document.getElementById('quotationId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/quotation_accept',
-        contentType: 'application/json',
-        data: quotationId,
-        success: function (response) {
-            alert(response);
-            window.location.href = '/plan/quotation';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
-}
+    function acceptQuotaion(){
+    var quotationId = document.getElementById('quotationId').value;
+        $.ajax({
+            type: 'POST',
+            url: '/plan/quotation_accept',
+            contentType: 'application/json',
+            data: quotationId,
+            success: function (response) {
+                alert(response);
+                window.location.href = '/plan/quotation';
+            },
+            error: function (error) {
+                alert('삭제실패:', error);
+            }
+        });
+    }
 
 
 
-function dropQuotation(){
-var quotationId = document.getElementById('quotationId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/quotation_drop',
-        contentType: 'application/json',
-        data: quotationId,
-        success: function (response) {
-            alert(response);
-           window.location.href = '/plan/quotation';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
-}
+    function dropQuotation(){
+    var quotationId = document.getElementById('quotationId').value;
+        $.ajax({
+            type: 'POST',
+            url: '/plan/quotation_drop',
+            contentType: 'application/json',
+            data: quotationId,
+            success: function (response) {
+                alert(response);
+               window.location.href = '/plan/quotation';
+            },
+            error: function (error) {
+                alert('삭제실패:', error);
+            }
+        });
+    }
 
 
-function deleteQuotation(){
-var quotationId = document.getElementById('quotationId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/quotation_delete',
-        contentType: 'application/json',
-        data: quotationId,
-        success: function (response) {
-            alert(response);
-            window.location.href = '/plan/quotation';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
-}
+    function deleteQuotation(){
+    var quotationId = document.getElementById('quotationId').value;
+        $.ajax({
+            type: 'POST',
+            url: '/plan/quotation_delete',
+            contentType: 'application/json',
+            data: quotationId,
+            success: function (response) {
+                alert(response);
+                window.location.href = '/plan/quotation';
+            },
+            error: function (error) {
+                alert('삭제실패:', error);
+            }
+        });
+    }
 
 
 

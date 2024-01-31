@@ -72,12 +72,34 @@ public class QcCheckServiceImpl implements QcCheckService {
     @Override
     @Transactional
     public int updateAllStatus( int qcCheckId, int qcCheckCnt) {
-        qcCheckRepository.updatePurchaseReturnStatus(qcCheckId, qcCheckCnt);
-        orderDetailRepository.updateQcCheckCnt(qcCheckId, qcCheckCnt);
-        qcCheckRepository.updateProcessStatus();
-        materialRepository.updateMaterialStock(qcCheckId, qcCheckCnt);
-
-        return 1;
+        try {
+            int result = qcCheckRepository.updatePurchaseReturnStatus(qcCheckId, qcCheckCnt);
+            if(result == 0){
+                return 0;
+            }
+            orderDetailRepository.updateQcCheckCnt(qcCheckId, qcCheckCnt);
+            qcCheckRepository.updateProcessStatus();
+            materialRepository.updateMaterialStock(qcCheckId, qcCheckCnt);
+            return 1;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    @Override
+    @Transactional
+    public int updateReturnStatus(int qcCheckId, int qcCheckCnt) {
+        try {
+            int result = qcCheckRepository.updateShipmentReturnStatus(qcCheckId, qcCheckCnt);
+            if(result == 0){
+                return 0;
+            }
+            qcCheckRepository.updateProcessStatus();
+            return 1;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
@@ -101,14 +123,6 @@ public class QcCheckServiceImpl implements QcCheckService {
     }
 
     @Override
-    @Transactional
-    public int updateReturnStatus(int qcCheckId, int qcCheckCnt) {
-        qcCheckRepository.updateShipmentReturnStatus(qcCheckId,qcCheckCnt);
-        qcCheckRepository.updateProcessStatus();
-        return 1;
-    }
-
-    @Override
     public Long countBy() {
         return qcCheckRepository.countBy();
     }
@@ -120,16 +134,25 @@ public class QcCheckServiceImpl implements QcCheckService {
 
     @Override
     public Long passCntSum() {
+        if(qcCheckRepository.passCntSum() == null){
+            return Long.valueOf(100);
+        }
         return qcCheckRepository.passCntSum();
     }
 
     @Override
     public Long returnSum() {
+        if(qcCheckRepository.returnSum() == null){
+            return Long.valueOf(0);
+        }
         return qcCheckRepository.returnSum();
     }
 
     @Override
     public Long totalSum() {
+        if(qcCheckRepository.totalSum() == null){
+            return Long.valueOf(100);
+        }
         return qcCheckRepository.totalSum();
     }
 

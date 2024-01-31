@@ -24,4 +24,6 @@ public interface DocumentService {
     void documentSave(DocumentDTO documentDTO);
 
     void documentDelete(String id);
+
+    Page<DocumentDTO> documentList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 }

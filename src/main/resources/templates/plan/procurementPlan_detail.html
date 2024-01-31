@@ -223,8 +223,10 @@
 
                                             </tr>
                                             <tr>
-                                                <th colspan="2">특기사항</th>
-                                                <td colspan="8" th:text="${document.documentMemo}"></td>
+                                                <th colspan="2">비고</th>
+                                                <td colspan="8">
+                                                    <textarea rows="10" style="width:100%;" th:text="${document.documentMemo}" readonly></textarea>
+                                                </td>
                                             </tr>
 
                                         </table>
@@ -233,8 +235,8 @@
                                     </div>
                                     </div>
 
-                                    <div class="btn-display">
-                                        <input type="button"  th:attr="onclick='submitPO()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="발송"/>
+                                    <div class="btn-display" style="margin-top:30px;">
+                                        <input type="button"  th:attr="onclick='submitPO()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="발주준비"/>
                                         <input type="button"  th:attr="onclick='deleteDoc()'" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="삭제"/>
                                         <input type="button"
                                                 th:attr="onclick='gotoList()'"
@@ -298,19 +300,8 @@
 
 function submitPO(){
 var documentId = document.getElementById('documentId').value;
-    $.ajax({
-        type: 'POST',
-        url: '/plan/procurement_trans',
-        contentType: 'application/json',
-        data: documentId,
-        success: function (response) {
-            alert(response);
-            window.location.href = '/plan/procurementPlan';
-        },
-        error: function (error) {
-            alert('삭제실패:', error);
-        }
-    });
+ var url = '/plan/po_ready?documentId='+documentId;
+    window.location.href = url;
 }
 
 
