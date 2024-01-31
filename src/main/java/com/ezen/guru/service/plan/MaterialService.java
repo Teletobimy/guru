@@ -15,6 +15,8 @@ public interface MaterialService {
     MaterialDTO getMaterialById(int materialId);
     Page<MaterialDTO> getAllMaterials(String keyword, Integer materialCategory, Pageable pageable);
 
+    Page<MaterialDTO> findByCompanyName(String keyword, String materialName, Integer materialCategory, Pageable pageable);
+
     Page<GroupingMaterialDTO> getAllByMaterialName(String materialName, Integer materialCategory, Pageable pageable);
 
     void saveMaterial(MaterialDTO materialDTO);

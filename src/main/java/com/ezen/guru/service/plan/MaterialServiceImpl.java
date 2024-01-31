@@ -95,10 +95,21 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
+    public Page<MaterialDTO> findByCompanyName(String keyword, String materialName, Integer materialCategory, Pageable pageable) {
+
+        if (keyword == null || keyword.isEmpty()) {
+            return materialRepository.findByMaterialName(materialName, pageable).map(this::convertToDTO);
+        } else {
+            return materialRepository.findByCompanyNameAndMaterialName(keyword, materialName, pageable).map(this::convertToDTO);
+        }
+
+    }
+
+    @Override
     public Page<GroupingMaterialDTO> getAllByMaterialName(String materialName, Integer materialCategory, Pageable pageable) {
 
         Page<Object[]> totalStockByMaterial = materialRepository.getTotalStockByMaterial(pageable);
-        Page<GroupingMaterialDTO> materialAll = GroupingMaterialDTO.toDTOList(totalStockByMaterial);
+        Page<GroupingMaterialDTO> materialAll = GroupingMaterialDTO.toDTOPage(totalStockByMaterial);
 
         //이름, 카테고리 모두 입력값 없을 때(모든 리스트)
         if ((materialName == null || materialName.isEmpty()) && (materialCategory == null || materialCategory == -1)) {

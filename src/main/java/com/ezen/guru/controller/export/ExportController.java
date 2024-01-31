@@ -6,10 +6,7 @@ import com.ezen.guru.domain.Recipe;
 import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.export.ExportDTO;
 import com.ezen.guru.dto.export.IdRequest;
-import com.ezen.guru.dto.plan.BicycleDTO;
-import com.ezen.guru.dto.plan.MaterialDTO;
-import com.ezen.guru.dto.plan.ProducePlanerDTO;
-import com.ezen.guru.dto.plan.RecipeDTO;
+import com.ezen.guru.dto.plan.*;
 import com.ezen.guru.dto.purchase.CompanyListViewResponse;
 import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.export.ExportService;
@@ -263,7 +260,7 @@ public class ExportController {
     public String materialList(Model model, HttpServletRequest request,
                                @RequestParam(value="size", defaultValue = "10") int size,
                                @RequestParam(value="page", defaultValue = "0") int page,
-                               @RequestParam(value = "keyword", required = false, defaultValue = "") String materialName,
+                               @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                @RequestParam(value = "category", required = false, defaultValue = "-1") Integer category) {
 
         //공통 유저 정보
@@ -272,8 +269,8 @@ public class ExportController {
 
         System.out.println("--------------------");
         System.out.println("category : " + category);
-        System.out.println("keyword : " + materialName);
-        Page<MaterialDTO> materials = materialService.getAllMaterials(materialName, category, PageRequest.of(page, size));
+        System.out.println("keyword : " + keyword);
+        Page<GroupingMaterialDTO> materials = materialService.getAllByMaterialName(keyword, category, PageRequest.of(page, size));
         List<Code> code = exportService.findByCodeCategory("material_category");
 
         model.addAttribute("materials", materials);
@@ -287,24 +284,26 @@ public class ExportController {
     public String materialDetailStock(Model model, HttpServletRequest request,
                                @RequestParam(value="size", defaultValue = "10") int size,
                                @RequestParam(value="page", defaultValue = "0") int page,
-                               @RequestParam(value = "keyword", required = false, defaultValue = "") String materialName,
-                               @RequestParam(value = "category", required = false, defaultValue = "-1") Integer  category) {
+                               @RequestParam(value = "category", required = false, defaultValue = "") int category,
+                               @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                               @RequestParam(value = "materialName", required = false, defaultValue = "") String materialName) {
 
         //공통 유저 정보
         UserDTO user = userDTO.getUser(request);
         model.addAttribute("user",user);
 
         System.out.println("--------------------");
-        System.out.println("category : " + category);
-        System.out.println("keyword : " + materialName);
-        Page<MaterialDTO> materials = materialService.getAllMaterials(materialName, category, PageRequest.of(page, size));
+        System.out.println("keyword : " + keyword);
+        System.out.println("materialName : " + materialName);
+        Page<MaterialDTO> materials = materialService.findByCompanyName(keyword, materialName, category, PageRequest.of(page, size));
         List<Code> code = exportService.findByCodeCategory("material_category");
 
+        model.addAttribute("materialName", materialName);
         model.addAttribute("materials", materials);
         model.addAttribute("category", category);
         model.addAttribute("code", code);
 
-        return "export/materialStock";
+        return "export/materialDetailStock";
     }
 
     @GetMapping("/productStock")

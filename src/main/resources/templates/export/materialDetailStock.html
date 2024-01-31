@@ -143,6 +143,8 @@
                                                 </li>
                                                 <li class="breadcrumb-item"><a href="/export/materialStock">재고:[원자재]</a>
                                                 </li>
+                                                <li class="breadcrumb-item"><a th:href="@{/export/materialDetailStock(materialName=${materialName})}" th:text="'재고:[' + ${materialName} + ']'"></a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -157,19 +159,6 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="col-lg-12">
-                                            <ul class="nav nav-tabs  tabs" role="tablist">
-
-                                                <li th:each="code:${code}" class="nav-item">
-                                                    <a class="nav-link"
-                                                       data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
-                                                       role="tab"
-                                                       style="cursor:pointer;"
-                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
-                                                       th:text="${code.codeName}">
-                                                    </a>
-                                                </li>
-                                            </ul>
                                             <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
@@ -181,7 +170,6 @@
                                                                 <i class="ti-search" aria-hidden="true"></i>
                                                             </p>
                                                         </div>
-                                                        <input class="search-long" type="text" placeholder="choose date" name="daterange" value="" />
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
@@ -296,6 +284,7 @@
     function performSearch(){
         var urlParams = new URLSearchParams(window.location.search);
         var category = urlParams.get('category');
+        var materialName = urlParams.get('materialName');
         var searchValue = document.getElementById('searchInput').value;
 
         var encodedSearchValue = encodeURIComponent(searchValue);
@@ -304,8 +293,8 @@
             category = -1;
         }
 
-        window.location.href = '/export/materialStock?size=10&page=0&category='+ category
-                                +'&keyword=' + encodedSearchValue
+        window.location.href = '/export/materialDetailStock?materialName=' + materialName + '&size=10&page=0&category='+ category
+                                +'&keyword=' + encodedSearchValue;
     }
 
     document.getElementById('searchInput').addEventListener('keyup', function (event) {

@@ -194,10 +194,10 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr th:each="material : ${materials}">
+                                                                    <tr th:each="material : ${materials}" onclick="handleRowClick(this)" th:data-category="${material.materialCategory}" style="cursor:pointer;">
                                                                         <td th:text="${material.materialName}"></td>
                                                                         <td th:text="${material.materialDescription}"></td>
-                                                                        <td th:text="${material.materialStock} + ' ' + ${material.materialMeasure}"></td>
+                                                                        <td th:text="${material.totalStock} + ' ' + ${material.materialMeasure}"></td>
                                                                         <td th:each="code : ${code}"
                                                                             th:if="${code.codeNum == material.materialCategory}" th:text="${code.codeName}">
                                                                         </td>
@@ -284,6 +284,13 @@
         var newUrl = '/export/materialStock?size=10&page=0&category=' + codeNum;
 
         window.location.href = newUrl;
+    }
+
+    function handleRowClick(button) {
+        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
+        var materialName = row.find('td:eq(0)').text();
+        var category = $(row).data('category');
+        location.href = '/export/materialDetailStock?materialName=' + materialName + '&category=' + category;
     }
 
     function performSearch(){
