@@ -160,16 +160,20 @@
                                                         <th colspan="2">원자재명</th>
                                                         <th>1/개당수량</th>
                                                         <th>총필요수량</th>
-                                                        <th colspan="2">원자재선택</th>
+                                                        <th>진행상태</th>
+                                                        <th>원자재선택</th>
                                                     </tr>
                                                     <tbody id="tableBody">
                                                         <tr th:each="item, stat : ${producePlanerList}">
                                                             <th scope="row" th:text="${stat.count}"></th>
                                                             <td colspan="2" th:text="${item.materialId}"></td>
                                                             <td colspan="2" th:text="${item.materialName}"></td>
+                                                            <td th:text="${item.produceMaterialCnt}/${item.produceBicycleCnt}"></td>
                                                             <td th:text="${item.produceMaterialCnt}"></td>
-                                                            <td th:text="${item.produceMaterialCnt}"></td>
-                                                            <td colspan="2">
+                                                            <td th:each="code : ${code}"
+                                                                th:if="${code.codeNum == item.producePlanerStatus}" th:text="${code.codeName}">
+                                                            </td>
+                                                            <td>
                                                                 <input type="button" class="recipeButton btn-brown" onclick="handleButtonClick(event)" value="원자재 선택">
                                                             </td>
                                                         </tr>
@@ -404,47 +408,12 @@
             if (targetRow.cells.length > 1) {
                 targetRow.cells[1].textContent = rowData[0];
             }
-            if (targetRow.cells.length > 5) {
-                targetRow.cells[5].textContent = rowData[5];
-            }
-            // 개당 단가 입력 후 총단가 계산
-            calculateTotalPrice(targetRow);
         } else {
             console.error("Target row is undefined or out of bounds.");
             console.error("rowData : " + rowData);
             console.error("rowIndex : " + rowIndex);
             console.error("rows[rowIndex] : " + rows[rowIndex]);
         }
-    }
-
-    // 총단가 계산 함수
-    function calculateTotalPrice(targetRow) {
-        // 생산목표 수량 가져오기
-        var produceBicycleCntInput = document.getElementById('produceBicycleCnt');
-        if (!produceBicycleCntInput) {
-            console.error("Produce bicycle count input not found.");
-            return;
-        }
-        var produceBicycleCnt = parseInt(produceBicycleCntInput.value);
-        if (isNaN(produceBicycleCnt)) {
-            console.error("Invalid produce bicycle count:", produceBicycleCntInput.value);
-            return;
-        }
-
-        // 개당 수량, 개당 단가 가져오기
-        var cellSpec = targetRow.cells[3];
-        var cellQuantity = targetRow.cells[4];
-        var cellUnitPrice = targetRow.cells[5];
-        var extractedUnitPrice = extractNumberFromText(cellUnitPrice.textContent);
-
-        // 총필요수량 계산
-        var totalQuantity = produceBicycleCnt * parseInt(cellSpec.textContent);
-        cellQuantity.textContent = totalQuantity;
-
-        // 총단가 계산 및 표시
-        var totalAmount = extractedUnitPrice * totalQuantity;
-        var cellTotalPrice = targetRow.cells[6];
-        cellTotalPrice.innerHTML = '&#8361; ' + totalAmount.toLocaleString();
     }
 
     //레시피선택
@@ -471,6 +440,7 @@
             cellNo.textContent = i + 1;
 
             var cellPID = row.insertCell(1);
+            cellPID.setAttribute('colspan', '2');
 
             var cellName = row.insertCell(2);
             cellName.setAttribute('colspan', '2');
@@ -482,11 +452,8 @@
             var cellQuantity = row.insertCell(4);
 
             var cellUnit = row.insertCell(5);
+            cellUnit.setAttribute('colspan', '2');
 
-            var cellPrice = row.insertCell(6);
-
-            var cellAmount = row.insertCell(7);
-            cellAmount.setAttribute('colspan', '2');
 
             // 버튼 생성 및 추가
             var button = document.createElement('input');
@@ -499,7 +466,7 @@
                 var materialName = this.parentNode.parentNode.cells[2].textContent; // 해당 행의 materialName 가져오기
                 loadMatchingData(rowIndex, materialName); // 일치하는 데이터를 불러오는 함수 호출
             });
-            cellAmount.appendChild(button); // 버튼을 마지막 셀에 추가
+            cellUnit.appendChild(button); // 버튼을 마지막 셀에 추가
 
             // 생산목표 수량 입력 시 이벤트 처리
             var produceBicycleCntInput = document.getElementById('produceBicycleCnt');
@@ -512,12 +479,6 @@
                             var cellSpec = row.cells[3];
                             var cellQuantity = row.cells[4];
                             cellQuantity.textContent = value * parseInt(cellSpec.textContent); // 생산목표 수량 * 개당 수량 계산하여 입력
-
-                            var cellUnitPrice = row.cells[5].textContent; // 개당 단가 가져오기
-                            var extractedUnitPrice = extractNumberFromText(cellUnitPrice); //해당 텍스트의 숫자데이터만 가져옴
-                            var totalQuantity = parseInt(cellQuantity.textContent); // 총 필요 수량 가져오기
-                            var totalAmount = parseInt(extractedUnitPrice) * totalQuantity; // 총 단가 계산
-                            row.cells[6].innerHTML = '&#8361; ' + totalAmount.toLocaleString(); // 총 단가 입력
                         });
                     }
                 });
@@ -535,15 +496,6 @@
         }
         // AJAX를 통해 materialName을 서버로 전송하여 일치하는 데이터를 가져오는 로직 작성
         console.log('일치하는 데이터를 불러옵니다:', materialName);
-    }
-
-    // HTML 요소에서 텍스트 내용을 가져와서 숫자 값만 추출하는 함수
-    function extractNumberFromText(text) {
-        // 숫자와 쉼표(,)를 제외한 모든 문자를 제거하고 숫자만 남깁니다.
-        var numberOnly = text.replace(/[^\d,]/g, '');
-
-        // 쉼표(,)를 제거하고 숫자 문자열을 정수로 변환하여 반환합니다.
-        return parseInt(numberOnly.replace(/,/g, ''));
     }
 </script>
 </body>

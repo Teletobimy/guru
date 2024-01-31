@@ -198,7 +198,7 @@
                                                                         <th>생산계획수량</th>
                                                                         <th>마감일</th>
                                                                         <th colspan="2">진행상태</th>
-                                                                        <th colspan="2">수정/삭제</th>
+                                                                        <th>삭제</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -210,9 +210,6 @@
                                                                         <td th:text="${codeList[index.index].codeName}"></td>
                                                                         <td>
                                                                             <button type="button" class="btn btn-card btn-brown" onclick="handleButtonClick(event)" th:if="${codeList[index.index].codeNum == 2}">출고처리</button>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-card btn-warning" onclick="rowUpdate(event)" th:if="${codeList[index.index].codeNum != 99}">수정</button>
                                                                         </td>
                                                                         <td>
                                                                             <button type="button" class="btn btn-card btn-danger" onclick="rowDelete(event)" th:if="${codeList[index.index].codeNum != 99}">삭제</button>
