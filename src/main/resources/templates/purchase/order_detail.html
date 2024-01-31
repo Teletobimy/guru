@@ -123,7 +123,8 @@
                                             <i class="icofont icofont-table bg-c-green"></i>
                                             <div class="d-inline">
                                                 <th:block th:with="firstItem=${list[0]}">
-                                                    <h4> 발주 상세 내역</h4>
+                                                    <h4 th:utext="'No. ' + ${firstItem.id} + '<br/>' +
+                                                                  '상세 내역'"></h4>
                                                 </th:block>
                                             </div>
                                         </div>
@@ -136,10 +137,13 @@
                                                         <i class="icofont icofont-home"></i>
                                                     </a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">구매</a>
+                                                <li class="breadcrumb-item"><a href="/purchase/order">발주 목록</a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="/purchase/order">발주</a>
+                                                <th:block th:with="firstItem=${list[0]}">
+                                                <li class="breadcrumb-item" style="cursor:pointer;">
+                                                    <a th:onclick="|location.href='@{/purchase/order_detail?id={id}(id=${firstItem.id})}'|">발주 상세 내역</a>
                                                 </li>
+                                                </th:block>
                                             </ul>
                                         </div>
                                     </div>
