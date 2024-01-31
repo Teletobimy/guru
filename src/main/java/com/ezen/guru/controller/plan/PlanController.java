@@ -799,9 +799,6 @@ public class PlanController {
     }
 
 
-
-
-
     @GetMapping("/procurementPlan_detail")
     public String procurementPlan_detail(
             Model model, @RequestParam(value = "procurementId") String procurementId,
@@ -838,8 +835,16 @@ public class PlanController {
 
     @GetMapping("/document")
     public String document(Model model,
+                           @RequestParam(value="size", defaultValue = "10") int size,
+                           @RequestParam(value="page", defaultValue = "0") int page,
+                           @RequestParam(value="category", defaultValue = "-1") int category,
+                           @RequestParam(value="keyword", defaultValue = "") String keyword,
+                           @RequestParam(name = "startDate", defaultValue = "2020-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                           @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                            HttpServletRequest request){
-        List<DocumentDTO> documents = documentService.getAllDocuments();
+
+        Page<DocumentDTO> dtoPage = documentService.documentList(keyword, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
+        List<DocumentDTO> documentDTOList = dtoPage.getContent();
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -854,18 +859,34 @@ public class PlanController {
                 roles,
                 userDetails.getPhone());
         model.addAttribute("user",user);
-        model.addAttribute("documents", documents);
+
+        List<Code> codeList = materialService.findByCodeCategory("document_status");
+
+        model.addAttribute("code", codeList);
+        model.addAttribute("page", dtoPage);
+        model.addAttribute("documents", documentDTOList);
+        model.addAttribute("category",category);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("startDate",startDate);
+        model.addAttribute("endDate",endDate);
+
+
+
         return "plan/document";
     }
 
-    @GetMapping("/document/{documentId}")
-    public String getDocumentWithDetails(
-            @PathVariable("documentId")String documentId,
-            HttpServletRequest request,
-            Model model
-    ){
-        DocumentDTO documents = documentService.findDocumentById(documentId);
-        List<DocumentDetail> documentDetails = documentService.findDocumentDetailsByDocumentId(documentId);
+
+    @GetMapping("/document_detail")
+    public String document_detail(
+            Model model, @RequestParam(value = "documentId") String documentId,
+            HttpServletRequest request){
+
+
+
+        DocumentDTO documentdto = documentService.findDocumentById(documentId);
+        List<DocumentDetail> documentDetailList = documentdto.getDocumentDetails();
+
+        List<Code> codeList = materialService.findByCodeCategory("document_status");
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
         Set<String> roles = userDetails.getAuthorities().stream()
@@ -879,18 +900,57 @@ public class PlanController {
                 userDetails.getPart(),
                 roles,
                 userDetails.getPhone());
+
         model.addAttribute("user",user);
-        model.addAttribute("documents", documents);
-        model.addAttribute("documentDetails", documentDetails);
-        return "plan/document_detail_list";
+        model.addAttribute("code",codeList);
+        model.addAttribute("document", documentdto);
+        model.addAttribute("documentDetailList", documentDetailList);
+
+        return "plan/document_detail";
+    }
+
+    @PostMapping("/document_trans")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public String document_trans(@RequestBody String Id) {
+
+
+        try {
+
+            DocumentDTO documentDTO = documentService.findDocumentById(Id);
+            documentDTO.setStatus(1);
+            documentService.documentSave(documentDTO);
+
+            return "발주 성공";
+        } catch (Exception e) {
+            // 삭제 중 에러가 발생한 경우 처리
+            return "발주 실패: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/document_delete")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public String document_delete(@RequestBody String Id) {
+
+
+        try {
+            // 여기에 ID를 이용한 삭제 로직 추가
+            documentService.documentDelete(Id);
+            return "계약서 삭제 성공";
+        } catch (Exception e) {
+            // 삭제 중 에러가 발생한 경우 처리
+            return "계약서 삭제 실패: " + e.getMessage();
+        }
     }
 
 
-    @GetMapping("/searchCompany")
-    public String searchCompany(@RequestParam("name") String companyName, Model model) {
-
-            return "plan/company_search"; // 회사 정보 템플릿 이름
-
-    }
+//
+//    @GetMapping("/searchCompany")
+//    public String searchCompany(@RequestParam("name") String companyName, Model model) {
+//
+//            return "plan/company_search"; // 회사 정보 템플릿 이름
+//
+//    }
 
 }

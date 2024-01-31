@@ -127,7 +127,12 @@ public class DocumentServiceImpl implements DocumentService {
         documentRepository.deleteById(id);
     }
 
-    // DTO to Entity 변환 메서드도 추가 가능
-
-    // 다른 메서드들...
+    @Override
+    public Page<DocumentDTO> documentList(String keyword, int category, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        if(category==-1){
+            return documentRepository.findDocumentsByIdAndDateRange(1, keyword,startDate,endDate,pageable).map(this::convertToDocumentDTO);
+        }else {
+            return documentRepository.procurementList(1, keyword, category, startDate, endDate, pageable).map(this::convertToDocumentDTO);
+        }
+    }
 }
