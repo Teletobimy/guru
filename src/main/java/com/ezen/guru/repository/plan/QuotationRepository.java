@@ -20,8 +20,7 @@ public interface QuotationRepository extends CrudRepository<Quotation, String> {
             "WHERE (:biddingNo IS NULL OR q.biddingNo = :biddingNo) " +
             "AND (:status IS NULL OR q.status = :status) " +
             "AND (:startDate IS NULL OR q.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR q.regdate <= :endDate)" +
-            "ORDER BY q.status DESC")
+            "AND (:endDate IS NULL OR q.regdate <= :endDate)")
     Page<Quotation> quotationList(
             @Param("biddingNo") Integer biddingNo,
             @Param("status") Integer status,
@@ -33,8 +32,7 @@ public interface QuotationRepository extends CrudRepository<Quotation, String> {
     @Query("SELECT q FROM Quotation q " +
             "WHERE (:biddingNo IS NULL OR q.biddingNo = :biddingNo) " +
             "AND (:startDate IS NULL OR q.regdate >= :startDate) " +
-            "AND (:endDate IS NULL OR q.regdate <= :endDate) " +
-            "ORDER BY q.status DESC")
+            "AND (:endDate IS NULL OR q.regdate <= :endDate) ")
     Page<Quotation> findQuotationsByBiddingNoAndDateRange(
             @Param("biddingNo") Integer biddingNo,
             @Param("startDate") LocalDateTime startDate,
