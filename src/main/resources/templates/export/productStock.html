@@ -137,8 +137,6 @@
                                                         <i class="icofont icofont-home"></i>
                                                     </a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">출고</a>
-                                                </li>
                                                 <li class="breadcrumb-item"><a href="/export/productStock">재고:[상품]</a>
                                                 </li>
                                             </ul>
@@ -170,22 +168,22 @@
                                                         <div class="table-responsive">
                                                             <table class="table table-hover">
                                                                 <thead>
-                                                                <tr>
-                                                                    <th>번호</th>
-                                                                    <th>상품명</th>
-                                                                    <th>상품스펙</th>
-                                                                    <th>현재고</th>
-                                                                    <th>판매가</th>
-                                                                </tr>
+                                                                    <tr>
+                                                                        <th>번호</th>
+                                                                        <th>상품명</th>
+                                                                        <th>상품스펙</th>
+                                                                        <th>현재고</th>
+                                                                        <th>판매가</th>
+                                                                    </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <tr th:each="bicycle, itemStat : ${bicycles}">
-                                                                    <td th:text="${bicycle.bicycleId}"></td>
-                                                                    <td th:text="${bicycle.bicycleName}"></td>
-                                                                    <td th:text="${bicycle.bicycleDescription}"></td>
-                                                                    <td th:text="${bicycle.bicycleStock}"></td>
-                                                                    <td th:text="'&#8361; ' + ${#numbers.formatInteger(bicycle.bicyclePrice, 1, 'COMMA')}"></td>
-                                                                </tr>
+                                                                    <tr th:each="bicycle: ${bicycles}">
+                                                                        <td th:text="${bicycle.bicycleId}"></td>
+                                                                        <td th:text="${bicycle.bicycleName}"></td>
+                                                                        <td th:text="${bicycle.bicycleDescription}"></td>
+                                                                        <td th:text="${bicycle.bicycleStock}"></td>
+                                                                        <td th:text="'&#8361; ' + ${#numbers.formatInteger(bicycle.bicyclePrice, 1, 'COMMA')}"></td>
+                                                                    </tr>
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -256,6 +254,12 @@
 
         window.location.href = '/export/productStock?size=10&page=0&keyword='+ encodedSearchValue
     }
+
+    document.getElementById('searchInput').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
 </script>
 </body>
 </html>

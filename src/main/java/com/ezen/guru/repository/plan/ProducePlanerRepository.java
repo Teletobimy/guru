@@ -19,4 +19,8 @@ public interface ProducePlanerRepository extends JpaRepository<ProducePlaner, Pr
     @Modifying
     @Query("UPDATE ProducePlaner p SET p.producePlanerStatus = :status WHERE p.embeddedId.producePlanerId = :producePlanerId")
     void updateProducePlanerStatusById(@Param("producePlanerId") String producePlanerId, @Param("status") int status);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM ProducePlaner p WHERE p.embeddedId.producePlanerId = :producePlanerId")
+    void deleteProducePlanerById(@Param("producePlanerId") String producePlanerId);
 }

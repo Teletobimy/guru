@@ -132,16 +132,17 @@
                                     </div>
                                     <!-- card1 end -->
                                     <!-- card1 start -->
-                                    <div class="col-md-6 col-xl-3">
+                                    <div style="cursor:pointer;" class="col-md-6 col-xl-3" onclick="location.href='/export/producePlanerList'">
                                         <div class="card widget-card-1">
                                             <div class="card-block-small">
                                                 <i class="icofont icofont-social-twitter bg-c-brown card1-icon"></i>
-                                                <span class="text-c-brown f-w-600">Followers</span>
-                                                <h4>+562</h4>
+                                                <span class="text-c-brown f-w-600">생산계획서 마감률</span>
+                                                <h4 th:text="${producePercent} + '%'"></h4>
                                                 <div>
-                                                            <span class="f-left m-t-10 text-muted">
-                                                                <i class="text-c-brown f-16 icofont icofont-refresh m-r-10"></i>Just update
-                                                            </span>
+                                                    <span class="f-left m-t-10 text-muted">
+                                                        <i style="margin:0;" class="text-c-brown f-16 icofont icofont-arrow-right m-r-10"></i>
+                                                        <span th:text="${noCompletePlaner} + ' out of ' + ${planerTotal}"></span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

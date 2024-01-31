@@ -139,8 +139,6 @@
                                                         <i class="icofont icofont-home"></i>
                                                     </a>
                                                 </li>
-                                                <li class="breadcrumb-item"><a href="#!">출고</a>
-                                                </li>
                                                 <li class="breadcrumb-item"><a href="/export/producePlanerList">생산계획서:[미출고]</a>
                                                 </li>
                                             </ul>
@@ -345,6 +343,7 @@
                       timer: 1500
                     });
                 } else{
+                    location.reload();
                     console.error("Error: " , status, error);
                 }
             }

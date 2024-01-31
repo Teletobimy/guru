@@ -37,9 +37,54 @@ public class ExportService {
     private final MaterialRepository materialRepository;
     private final BicycleRepository bicycleRepository;
 
-    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
-        Map<Object, Boolean> map = new ConcurrentHashMap<>();
-        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    public int[] producePlanerCnt() {
+
+        int[] array = new int[3];
+        List<ProducePlaner> all = producePlanerRepository.findAll();
+        int cnt = 0;
+        int cnt1 = 0;
+        int cnt99 = 0;
+        List<String> id = new ArrayList<>();
+
+        for (ProducePlaner entity : all) {
+            //출고완료개수측정
+            if (entity.getProducePlanerStatus() == 99) {
+                cnt++;
+            }
+            //생산계획서번호별로 구분하는 코드
+            if (id.isEmpty()) {
+                id.add(entity.getEmbeddedId().getProducePlanerId());
+                cnt1++;
+                //생산계획서번호별 출고처리 카운트
+                if (entity.getProducePlanerStatus() == 99) {
+                    cnt99++;
+                }
+            } else {
+                int idCnt = 0;
+                for (String i : id) {
+
+                    if (entity.getEmbeddedId().getProducePlanerId().equals(i)) {
+                        idCnt++;
+                        break;
+                    }
+                }
+                if (idCnt == 0) {
+                    id.add(entity.getEmbeddedId().getProducePlanerId());
+                    cnt1++;
+                    //생산계획서번호별 출고처리 카운트
+                    if (entity.getProducePlanerStatus() == 99) {
+                        cnt99++;
+                    }
+                }
+            }
+        }
+
+        double result = ((double) cnt / all.size()) * 100;
+        array[0] = (int) result; //인덱스[0]:생산계획서 마감률
+        array[1] = cnt1; //인덱스[1]:생산계획서 총 개수
+        array[2] = cnt1-cnt99; //인덱스[2]:(생산계획서 총 개수)-(출고완료된 생산계획서)
+
+        return array;
     }
 
     public Page<ProducePlanerDTO> findAll(int size, int page, int category, String keyword, LocalDateTime startDate, LocalDateTime endDate) {
@@ -139,6 +184,38 @@ public class ExportService {
             codeList.add(code);
         }
         return codeList;
+    }
+
+    public void saveProducePlaner(List<ProducePlanerDTO> dtoList) {
+
+        System.out.println("dtoList : " + dtoList);
+
+        List<ProducePlaner> entityList = new ArrayList<>();
+        for (ProducePlanerDTO dto : dtoList) {
+
+            ProducePlaner entity = ProducePlanerDTO.toEntity(dto);
+            entityList.add(entity);
+        }
+        System.out.println("after--entityList : " + entityList.size());
+
+        if (dtoList.size() == entityList.size()) {
+
+            for (ProducePlaner entity : entityList) {
+
+                producePlanerRepository.save(entity);
+                System.out.println("---saved entity : " + entity);
+            }
+        }
+    }
+
+    public void deleteProducePlaner(String producePlanerId) {
+
+        System.out.println("service delete-------------------------------");
+
+        List<ProducePlaner> list = producePlanerRepository.findByEmbeddedIdProducePlanerId(producePlanerId);
+
+        producePlanerRepository.deleteProducePlanerById(producePlanerId);
+        System.out.println("status delete success---------------------- ");
     }
 
     public void updateStatus(ProducePlanerDTO dto) {

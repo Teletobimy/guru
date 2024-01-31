@@ -143,6 +143,8 @@
                                                 </li>
                                                 <li class="breadcrumb-item"><a href="/export/materialStock">재고:[원자재]</a>
                                                 </li>
+                                                <li class="breadcrumb-item"><a th:href="@{/export/materialDetailStock(materialName=${materialName})}" th:text="'재고:[' + ${materialName} + ']'"></a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -157,19 +159,6 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="col-lg-12">
-                                            <ul class="nav nav-tabs  tabs" role="tablist">
-
-                                                <li th:each="code:${code}" class="nav-item">
-                                                    <a class="nav-link"
-                                                       data-toggle="tab"
-                                                       th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
-                                                       role="tab"
-                                                       style="cursor:pointer;"
-                                                       th:classappend="${category == code.codeNum ? 'active' : ''}"
-                                                       th:text="${code.codeName}">
-                                                    </a>
-                                                </li>
-                                            </ul>
                                             <!-- Tab panes -->
                                             <div class="tab-content tabs card-block">
                                                 <div class="tab-pane active" id="home1" role="tabpanel">
@@ -187,17 +176,23 @@
                                                             <table class="table table-hover">
                                                                 <thead>
                                                                 <tr>
+                                                                    <th>자재번호</th>
+                                                                    <th>판매처</th>
                                                                     <th>자재명</th>
                                                                     <th>자재스펙</th>
-                                                                    <th>총재고</th>
+                                                                    <th>현재고</th>
+                                                                    <th>원가</th>
                                                                     <th>종류</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr th:each="material : ${materials}" onclick="handleRowClick(this)" th:data-category="${material.materialCategory}" style="cursor:pointer;">
+                                                                    <tr th:each="material : ${materials}">
+                                                                        <td th:text="${material.materialId}"></td>
+                                                                        <td th:text="${material.companyName}"></td>
                                                                         <td th:text="${material.materialName}"></td>
                                                                         <td th:text="${material.materialDescription}"></td>
-                                                                        <td th:text="${material.totalStock} + ' ' + ${material.materialMeasure}"></td>
+                                                                        <td th:text="${material.materialStock} + ' ' + ${material.materialMeasure}"></td>
+                                                                        <td th:text="'&#8361; ' + ${#numbers.formatInteger(material.materialPrice, 1, 'COMMA')}"></td>
                                                                         <td th:each="code : ${code}"
                                                                             th:if="${code.codeNum == material.materialCategory}" th:text="${code.codeName}">
                                                                         </td>
@@ -286,16 +281,10 @@
         window.location.href = newUrl;
     }
 
-    function handleRowClick(button) {
-        var row = $(button).closest('tr'); // 눌린 버튼이 속한 행 가져오기
-        var materialName = row.find('td:eq(0)').text();
-        var category = $(row).data('category');
-        location.href = '/export/materialDetailStock?materialName=' + materialName + '&category=' + category;
-    }
-
     function performSearch(){
         var urlParams = new URLSearchParams(window.location.search);
         var category = urlParams.get('category');
+        var materialName = urlParams.get('materialName');
         var searchValue = document.getElementById('searchInput').value;
 
         var encodedSearchValue = encodeURIComponent(searchValue);
@@ -304,8 +293,8 @@
             category = -1;
         }
 
-        window.location.href = '/export/materialStock?size=10&page=0&category='+ category
-                                +'&keyword=' + encodedSearchValue
+        window.location.href = '/export/materialDetailStock?materialName=' + materialName + '&size=10&page=0&category='+ category
+                                +'&keyword=' + encodedSearchValue;
     }
 
     document.getElementById('searchInput').addEventListener('keyup', function (event) {
