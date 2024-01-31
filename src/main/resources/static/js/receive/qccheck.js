@@ -119,7 +119,6 @@
 
            function onBtnClick() {
                window.location.href = "/qcCheck/qcCheckList?size=10&page=0&processStatus=0";
-               console.log("호출!!")
            }
 
             $(".purchase").on("click",function(e){
@@ -130,24 +129,21 @@
                    var qcCheckCnt = modal.find('.qcCheckCnt').val();
                    var qcCheckId = $('input[name=qcCheckId]').val();
 
-                   console.log(qcCheckCnt)
-                   console.log(qcCheckId)
-
                    $.ajax({
                        url: "/api/updateQcCheckCnt?qcCheckId=" + qcCheckId + "&qcCheckCnt=" + qcCheckCnt,
                        type: "PUT",
                        contentType: 'application/json',
                        success: function(response){
-                               Swal.fire({
-                                  position: "center",
-                                  icon: "success",
-                                  title: "Success!",
-                                  text: qcCheckCnt + "개가 정품 처리 되었습니다.",
-                                  showConfirmButton: false,
-                                  timer: 1500
-                                }).then(() => {
-                                    onBtnClick();
-                                });
+                            Swal.fire({
+                              position: "center",
+                              icon: "success",
+                              title: "Success!",
+                              text: qcCheckCnt + "개가 정품 처리 되었습니다.",
+                              showConfirmButton: false,
+                              timer: 1500
+                            }).then(() => {
+                                onBtnClick();
+                            });
                        },
                        error: function(xhr, status, error){
                            if(xhr.status === 403){
@@ -164,6 +160,16 @@
                                 });
                            }else{
                                console.error("Error: " , status, error);
+                               Swal.fire({
+                                     position: "center",
+                                     icon: "error",
+                                     title: "Warning",
+                                     text: "검수 개수를 초과하였습니다. 다시 입력 하세요.",
+                                     showConfirmButton: false,
+                                     timer: 1500
+                                   }).then(() => {
+                                       modal.find('.qcCheckCnt').focus();
+                                   });
                            }
                        }
                      })
@@ -200,55 +206,31 @@
                        materialName:materialName,
                        companyId:companyId
                    };
-                   $.ajax({
-                       url: "/api/fromQcCheckToShipment?cnt="+qcCheckCnt,
-                       type: "POST",
-                       contentType: 'application/json',
-                       data: JSON.stringify(qcCheckRequest),
-                       success: function(response){
-                           Swal.fire({
-                                  position: "center",
-                                  icon: "success",
-                                  title: "Success!",
-                                  text: qcCheckCnt + "개가 반품 처리 되었습니다.",
-                                  showConfirmButton: false,
-                                  timer: 1500
-                                }).then(() => {
-                                    onBtnClick();
-                                });
-                       },
-                       error: function(xhr, status, error){
-                           if(xhr.status === 403){
-                               var message = xhr.responseText;
-                               Swal.fire({
-                                  position: "center",
-                                  icon: "error",
-                                  title: "Warning",
-                                  text: message,
-                                  showConfirmButton: false,
-                                  timer: 1500
-                                }).then(() => {
-                                    onBtnClick();
-                                });
-                           }else{
-                               console.log("Error: " , status, error);
-                           }
-                       }
-                    })
+
                    $.ajax({
                        url: "/api/updateReturnStatus?qcCheckId=" + qcCheckId + "&qcCheckCnt=" + qcCheckCnt,
                        type: "PUT",
                        contentType: 'application/json',
                        success: function(response){
-                           Swal.fire({
+                                Swal.fire({
                                   position: "center",
-                                  icon: "error",
-                                  title: qcCheckCnt + "개가 반품 처리가 되었습니다.",
+                                  icon: "success",
+                                  title: "Success!",
+                                  text: qcCheckCnt + "개가 반품 처리가 되었습니다.",
                                   showConfirmButton: false,
                                   timer: 1500
                                 }).then(() => {
                                     onBtnClick();
                                 });
+                                $.ajax({
+                                   url: "/api/fromQcCheckToShipment?cnt="+qcCheckCnt,
+                                   type: "POST",
+                                   contentType: 'application/json',
+                                   data: JSON.stringify(qcCheckRequest),
+                                   success: function(response){
+
+                                   }
+                                })
                            },
                        error: function(xhr, status, error){
                            if(xhr.status === 403){
@@ -264,6 +246,16 @@
                                 });
                            }else{
                                console.log("Error: " , status, error);
+                               Swal.fire({
+                                 position: "center",
+                                 icon: "error",
+                                 title: "Warning",
+                                 text: "검수 개수를 초과하였습니다. 다시 입력 하세요.",
+                                 showConfirmButton: false,
+                                 timer: 1500
+                               }).then(() => {
+                                   modal.find('.qcCheckCnt').focus();
+                               });
                            }
                        }
                    })
