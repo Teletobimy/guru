@@ -105,8 +105,11 @@ public class ExportController {
         model.addAttribute("user",user);
 
         List<ProducePlanerDTO> producePlanerList = exportService.findByProducePlanerId(producePlanerId);
+        List<Code> code = exportService.findByCodeCategory("produce_planer_status");
+
         model.addAttribute("producePlanerList",producePlanerList);
         model.addAttribute("producePlanerId",producePlanerId);
+        model.addAttribute("code", code);
 
         return "export/producePlanerUpdate";
     }
