@@ -1,15 +1,17 @@
 package com.ezen.guru.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class JoinDTO {
-    private final String userName;
-    private final String name;
-    private final String password;
-    private final String email;
-    private final String part;
-    private final String phone;
+    private String userName;
+    private String name;
+    private String password;
+    private String email;
+    private String phone;
+    private String part;
 }
