@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminAPIController {
     private final AdminService adminService;
     @PutMapping("/updateRoles")
-    public ResponseEntity<String> updateRoles(@RequestParam Long userId, @RequestParam String roles){
+    public ResponseEntity<String> updateRoles(@RequestParam(name = "userId") Long userId, @RequestParam(name = "roles") String roles){
         try {
             adminService.updateAll(userId,roles);
             return ResponseEntity.ok("Update Success" + userId);
@@ -23,7 +23,7 @@ public class AdminAPIController {
     }
 
     @DeleteMapping("/deleteUser")
-    public ResponseEntity<String> deleteUser(@RequestParam Long userId){
+    public ResponseEntity<String> deleteUser(@RequestParam(name = "userId") Long userId){
         try {
             adminService.deleteUser(userId);
             return ResponseEntity.ok("Delete Success" + userId);
