@@ -118,7 +118,7 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
                                             <div style="display:flex; align-items:center;">
-                                                <h4> 발주서작성 </h4>
+                                                <h4> 발주서 작성 </h4>
 
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@
 
                                     <div class="card-header">
                                         <div class="container">
-                                            <h1>발주서작성</h1>
+                                            <h1>발주서 작성</h1>
 
 
                                             <table id="estimateTable" width="60%">
@@ -181,41 +181,44 @@
                                                 <tr>
                                                     <th colspan="2">비고</th>
                                                     <td colspan="8">
-                                                        <textarea rows="10" style="width:100%;"
+                                                        <textarea rows="4" style="width:100%;"
                                                                   th:text="${document.documentMemo}"
                                                                   readonly></textarea>
                                                     </td>
                                                 </tr>
 
                                             </table>
+                                            <div style="overflow-x: auto;" id="addingStyle">
 
-                                            <table style="margin-top:50px; overflow-x: auto;" id="myTable">
-                                                <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>PID</th>
-                                                    <th colspan="2">품명</th>
-                                                    <th>수량</th>
-                                                    <th>남은수량</th>
-                                                    <th>단위</th>
-                                                    <th>단가</th>
-                                                    <th colspan="2">금액</th>
-                                                </tr>
-                                                </thead>
+                                                <table style="margin-top:50px; overflow-x: auto;" id="myTable">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>PID</th>
+                                                        <th >품명</th>
+                                                        <th>수량</th>
+                                                        <th>남은수량</th>
+                                                        <th>단위</th>
+                                                        <th>단가</th>
+                                                        <th >금액</th>
+                                                    </tr>
+                                                    </thead>
 
-                                                <tbody>
-                                                <tr th:each="qd, itemStat : ${documentDetailList}">
-                                                    <th scope="row" th:text="${itemStat.count}"></th>
-                                                    <td th:text="${qd.Material.materialId}"></td>
-                                                    <td colspan="2" th:text="${qd.Material.materialName}"></td>
-                                                    <td th:text="${qd.documentCnt}"></td>
-                                                    <td th:text="${qd.documentCnt}"></td>
-                                                    <td th:text="${qd.documentMeasure}"></td>
-                                                    <td th:text="${qd.documentPrice}"></td>
-                                                    <td colspan="2" th:text="${qd.documentPrice*qd.documentCnt}"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                                    <tbody>
+                                                    <tr th:each="qd, itemStat : ${documentDetailList}">
+                                                        <th scope="row" th:text="${itemStat.count}"></th>
+                                                        <td th:text="${qd.Material.materialId}"></td>
+                                                        <td  th:text="${qd.Material.materialName}"></td>
+                                                        <td th:text="${qd.documentCnt}"></td>
+                                                        <td th:text="${qd.documentCnt}"></td>
+                                                        <td th:text="${qd.documentMeasure}"></td>
+                                                        <td th:text="${qd.documentPrice}"></td>
+                                                        <td
+                                                            th:text="${qd.documentPrice*qd.documentCnt}"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
 
                                         </div>
@@ -287,7 +290,7 @@
          window.history.back();
      }
 
-
+    var number = 0;
     function addColumn() {
         var table = document.getElementById("myTable");
         var header = table.getElementsByTagName('thead')[0];
@@ -301,12 +304,14 @@
             row = header.insertRow(0);
         }
 
+        number++;
         var cell = document.createElement("th");
-         var now = new Date();
-        var dateTimeString = now.toISOString().replace(/[-:TZ]/g, "").slice(0, 14);
-        var random4Digits = Math.floor(1000 + Math.random() * 9000);
-        cell.innerHTML = "PO : " + dateTimeString + random4Digits;
+         var input = document.createElement("input");
+        input.type = "date";
+        cell.textContent =  number + "번째 PO (마감일) : "
+        cell.appendChild(input);
         row.appendChild(cell);
+
 
         var tbody = table.getElementsByTagName('tbody')[0];
         if (!tbody) {
@@ -332,6 +337,8 @@ function addCell(row) {
     input.addEventListener('input', function(event) {
         calculateAndDisplay(row);
     });
+
+
 }
 
 function calculateAndDisplay(row) {
