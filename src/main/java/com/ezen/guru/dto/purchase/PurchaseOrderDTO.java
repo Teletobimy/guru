@@ -17,12 +17,11 @@ public class PurchaseOrderDTO {
     private String documentId;
     private String companyId;
     private int totalprice;
-    private LocalDateTime regdate;
     private int status;
     private String memo;
     private LocalDateTime deadline;
     private String leadTime;
     private String tradeTerms;
     private String paymentTerms;
-    private List<PurchaseOrderDetail> purchaseOrderDetails;
+    private List<PurchaseOrderDetailDTO> PurchaseOrderDetailDTO;
 }
