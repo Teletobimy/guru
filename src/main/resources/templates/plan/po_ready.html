@@ -138,7 +138,7 @@
                                             <h1>발주서 작성</h1>
 
 
-                                            <table id="estimateTable" width="60%">
+                                            <table id="estimateTable">
 
                                                 <tr>
                                                     <th colspan="2">계약서번호</th>
@@ -188,19 +188,19 @@
                                                 </tr>
 
                                             </table>
-                                            <div style="overflow-x: auto;" id="addingStyle">
+                                            <div id="addingStyle" style="overflow-x: auto; width: 95%; layout: fixed; padding-bottom: 50px;">
 
-                                                <table style="margin-top:50px; overflow-x: auto;" id="myTable">
+                                                <table style="margin-top:50px; overflow-x: auto; width: 101%; " id="myTable">
                                                     <thead>
                                                     <tr>
                                                         <th>No</th>
                                                         <th>PID</th>
-                                                        <th >품명</th>
+                                                        <th>품명</th>
                                                         <th>수량</th>
                                                         <th>남은수량</th>
                                                         <th>단위</th>
                                                         <th>단가</th>
-                                                        <th >금액</th>
+                                                        <th>금액</th>
                                                     </tr>
                                                     </thead>
 
@@ -214,7 +214,7 @@
                                                         <td th:text="${qd.documentMeasure}"></td>
                                                         <td th:text="${qd.documentPrice}"></td>
                                                         <td
-                                                            th:text="${qd.documentPrice*qd.documentCnt}"></td>
+                                                                th:text="${qd.documentPrice*qd.documentCnt}"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -293,39 +293,54 @@
          window.history.back();
      }
 
-    function deleteColumn() {
+
+var fixedColumnCount = 9; // 왼쪽에 고정할 열의 개수
+
+function deleteColumn() {
     var table = document.getElementById("myTable");
     var header = table.getElementsByTagName('thead')[0];
     var tbody = table.getElementsByTagName('tbody')[0];
 
     if (header && tbody) {
         var headerRow = header.getElementsByTagName('tr')[0];
-        var bodyRows = tbody.getElementsByTagName('tr');
-        number--;
 
-        if (headerRow && bodyRows.length > 0) {
-            // 헤더 행의 마지막 열 삭제
-            headerRow.deleteCell(headerRow.cells.length - 1);
+        if (headerRow) {
+            // 열 삭제
+            var columnIndexToDelete = headerRow.cells.length - 1;
 
-            // 각 데이터 행의 마지막 열 삭제
-            for (var i = 0; i < bodyRows.length; i++) {
-                bodyRows[i].deleteCell(bodyRows[i].cells.length - 1);
-            }
+            if (columnIndexToDelete >= fixedColumnCount) {
+                // 왼쪽 8개 셀은 삭제하지 않음
+                // 헤더 행의 열 삭제
+                headerRow.deleteCell(columnIndexToDelete);
 
-            // 테이블을 감싸는 div 갱신
-            var tableContainer = document.getElementById("tableContainer");
-            if (tableContainer) {
-                tableContainer.innerHTML = '';
-                tableContainer.appendChild(table);
+                // 각 데이터 행의 열 삭제
+                var bodyRows = tbody.getElementsByTagName('tr');
+                for (var i = 0; i < bodyRows.length; i++) {
+                    bodyRows[i].deleteCell(columnIndexToDelete);
+                }
+                number--;
+                // 테이블을 감싸는 div 갱신
+                var tableContainer = document.getElementById("addingStyle");
+                if (tableContainer) {
+                    tableContainer.style.overflowX = 'auto';
+                }
             }
         }
     }
 }
 
 
+// 나머지 코드는 그대로 유지
+// ...
+
+
+
+
+
 
 
     var number = 0;
+
     function addColumn() {
         var table = document.getElementById("myTable");
         var header = table.getElementsByTagName('thead')[0];
@@ -358,6 +373,10 @@
         for (var i = 0; i < rows.length; i++) {
             addCell(rows[i]);
         }
+          var tableContainer = document.getElementById("addingStyle");
+    if (tableContainer) {
+        tableContainer.style.overflowX = 'auto';
+    }
     }
     // 각 행의 이전 값 저장을 위한 객체
 var previousValues = {};
@@ -406,24 +425,6 @@ function calculateAndDisplay(row) {
 
 
 
- function submitPO(){
- var documentId = document.getElementById('documentId').value;
-     $.ajax({
-         type: 'POST',
-         url: '/plan/procurement_trans',
-         contentType: 'application/json',
-         data: documentId,
-         success: function (response) {
-             alert(response);
-             window.location.href = '/plan/procurementPlan';
-         },
-         error: function (error) {
-             alert('삭제실패:', error);
-         }
-     });
- }
-
-
 
  function deleteDoc(){
  var documentId = document.getElementById('documentId').value;
@@ -441,6 +442,34 @@ function calculateAndDisplay(row) {
          }
      });
  }
+
+
+    // PO 저장 로직 시작
+
+function submitPO() {
+ var documentId = document.getElementById('documentId').value;
+
+
+ var tableRows = document.getElementById("myTable").getElementsByTagName('thead')[0].getElementsByTagName('th');
+
+
+
+ for (var i = 8; i < tableRows.length; i++) {
+         var dateInput = tableRows[i].querySelector('input');
+         var date = dateInput.value;
+        console.log(date);
+
+         var tbodyRows = document.getElementById("myTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        for (var j = 0; j < tbodyRows.length; j++) {
+            var inputNumberInput = tbodyRows[j].querySelector('td:nth-child(' + (i + 1) + ') input[type="number"]');
+            var inputNumberValue = inputNumberInput.value;
+            console.log('Input Number (Row ' + (j + 1) + '):', inputNumberValue);
+        }
+
+        }
+
+}
+
 
 
 </script>

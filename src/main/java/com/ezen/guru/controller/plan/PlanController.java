@@ -7,6 +7,7 @@ import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.plan.*;
 import com.ezen.guru.dto.purchase.CompanyListViewResponse;
+import com.ezen.guru.dto.purchase.PurchaseOrderDTO;
 import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.plan.*;
 import com.ezen.guru.service.purchase.CompanyService;
@@ -1004,13 +1005,22 @@ public class PlanController {
         return "plan/po_ready";
     }
 
+    // /plan/purchaseOrder_save
+    @PostMapping("/document_delete")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public void document_delete(@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
+        System.out.println(purchaseOrderDTO);
 
+//        try {
+//            // 여기에 ID를 이용한 삭제 로직 추가
 //
-//    @GetMapping("/searchCompany")
-//    public String searchCompany(@RequestParam("name") String companyName, Model model) {
-//
-//            return "plan/company_search"; // 회사 정보 템플릿 이름
-//
-//    }
+//            //return "계약서 삭제 성공";
+//        } catch (Exception e) {
+//            // 삭제 중 에러가 발생한 경우 처리
+//            //return "계약서 삭제 실패: " + e.getMessage();
+//        }
+    }
+
 
 }
