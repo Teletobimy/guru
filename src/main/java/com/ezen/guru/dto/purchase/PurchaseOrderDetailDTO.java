@@ -12,14 +12,9 @@ import lombok.*;
 @ToString
 public class PurchaseOrderDetailDTO {
 
-    private int id;
+    private int materialId;
     private int purchaseOrderCnt;
-    private String materialName;
-    private int materialCategory;
-    private String materialMeasure;
-    private int materialPrice;
     private int check;
     private int qcCheckCnt;
-
 
 }

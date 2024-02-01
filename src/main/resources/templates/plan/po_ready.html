@@ -188,9 +188,11 @@
                                                 </tr>
 
                                             </table>
-                                            <div id="addingStyle" style="overflow-x: auto; width: 95%; layout: fixed; padding-bottom: 50px;">
+                                            <div id="addingStyle"
+                                                 style="overflow-x: auto; width: 95%; layout: fixed; padding-bottom: 50px;">
 
-                                                <table style="margin-top:50px; overflow-x: auto; width: 101%; " id="myTable">
+                                                <table style="margin-top:50px; overflow-x: auto; width: 101%; "
+                                                       id="myTable">
                                                     <thead>
                                                     <tr>
                                                         <th>No</th>
@@ -207,16 +209,16 @@
                                                     <tbody>
                                                     <tr th:each="qd, itemStat : ${documentDetailList}">
                                                         <th scope="row" th:text="${itemStat.count}"></th>
-                                                        <td th:text="${qd.Material.materialId}"></td>
-                                                        <td  th:text="${qd.Material.materialName}"></td>
+                                                        <td th:id="'materialId' + ${itemStat.count-1}" th:text="${qd.Material.materialId}"></td>
+                                                        <td th:text="${qd.Material.materialName}"></td>
                                                         <td th:text="${qd.documentCnt}"></td>
                                                         <td th:text="${qd.documentCnt}"></td>
                                                         <td th:text="${qd.documentMeasure}"></td>
                                                         <td th:text="${qd.documentPrice}"></td>
-                                                        <td
-                                                                th:text="${qd.documentPrice*qd.documentCnt}"></td>
+                                                        <td th:text="${qd.documentPrice*qd.documentCnt}"></td>
                                                     </tr>
                                                     </tbody>
+
                                                 </table>
                                             </div>
 
@@ -464,12 +466,17 @@ function submitPO() {
             var inputNumberInput = tbodyRows[j].querySelector('td:nth-child(' + (i + 1) + ') input[type="number"]');
             var inputNumberValue = inputNumberInput.value;
             console.log('Input Number (Row ' + (j + 1) + '):', inputNumberValue);
+
+            var elementId = 'materialId' + j;
+            var element = document.getElementById(elementId);
+            var materialId = ;
+            element.textContent
+            PurchaseOrderDetailDTO
         }
 
         }
 
 }
-
 
 
 </script>
