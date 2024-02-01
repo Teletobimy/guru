@@ -74,6 +74,9 @@
        border: none;
        resize: none;
    }
+        #textA:last-child{
+            text-align:right;
+        }
     </style>
 </head>
 
@@ -128,18 +131,18 @@
                                                 <td colspan="3">
                                                     <input type="text" th:value="${quotationId}" id="quotationId">
                                                 </td>
-                                                <th colspan="2">회사명<input type="button" onclick="addCompany()" value="회사검색"
-                                                                          class="btn-warning"
-                                                                          style="background-color: #FC6180; border-color: #FC6180;  margin:10px;"/></th>
-                                                <td colspan="3">
-                                                    <input type="text" id="company_name" readonly>
+                                                <th colspan="2">회사명
+
+                                                <td colspan="3" onclick="addCompany()" id="textA">
+                                                    <input style="width: 95%;" type="text" id="company_name" readonly>
+                                                    <i class="icofont icofont-search"></i>
                                                 </td>
 
                                             </tr>
                                             <tr>
                                                 <th rowspan="2" colspan="2">수신</th>
                                                 <td rowspan="2" colspan="3">
-                                                    <p style="font-size: larger;"><u>GURO자전거</u></p>
+                                                    <p style="font-size: larger;"><u>GURU자전거</u></p>
                                                     <p><u>권나현 대표 귀하</u></p>
                                                 </td>
                                                 <th rowspan="1" colspan="2">사업자번호</th>

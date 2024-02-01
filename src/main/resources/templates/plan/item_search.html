@@ -43,7 +43,13 @@
     </style>
 </head>
 <body>
-<h1>원자재 정보 검색</h1>
+<div style="display:flex; justify-content:space-between; padding:10px;">
+    <h1>원자재 정보 검색</h1>
+    <button onclick="window.close()" style="width:30px; height:30px; border:1px solid #ccc; background-color:inherit;">
+        <i class="icofont icofont-close"></i>
+    </button>
+</div>
+
 
 <div id="companyInfo"></div>
 <div class="card">
@@ -69,7 +75,6 @@
                     <th>품목번호</th>
                     <th>판매회사</th>
                     <th>원자재명</th>
-                    <th>스펙</th>
                     <th>재고</th>
                     <th>구매가</th>
                     <th>단위</th>
@@ -85,11 +90,12 @@
                     <td th:text="${material.materialId}"></td>
                     <td th:text="${material.companyName}"></td>
                     <td th:text="${material.materialName}"></td>
-                    <td th:text="${material.materialDescription}"></td>
                     <td th:text="${material.materialStock}"></td>
                     <td th:text="${material.materialPrice}"></td>
                     <td th:text="${material.materialMeasure}"></td>
-                    <td th:text="${material.materialCategory}"></td>
+                    <td th:each="code:${code}"
+                        th:if="${code.codeNum} == ${material.materialCategory}"
+                        th:text="${code.codeName}"></td>
 
                 </tr>
                 </tbody>
