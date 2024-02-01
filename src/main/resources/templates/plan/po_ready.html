@@ -228,6 +228,9 @@
                                         <input type="button" th:attr="onclick='addColumn()'" class="btn btn-warning"
                                                style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
                                                value="발주서 작성 추가"/>
+                                        <input type="button" th:attr="onclick='deleteColumn()'" class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
+                                               value="발주서 작성 삭제"/>
                                         <input type="button" th:attr="onclick='submitPO()'" class="btn btn-warning"
                                                style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
                                                value="발송"/>
@@ -289,6 +292,38 @@
     function goBack() {
          window.history.back();
      }
+
+    function deleteColumn() {
+    var table = document.getElementById("myTable");
+    var header = table.getElementsByTagName('thead')[0];
+    var tbody = table.getElementsByTagName('tbody')[0];
+
+    if (header && tbody) {
+        var headerRow = header.getElementsByTagName('tr')[0];
+        var bodyRows = tbody.getElementsByTagName('tr');
+        number--;
+
+        if (headerRow && bodyRows.length > 0) {
+            // 헤더 행의 마지막 열 삭제
+            headerRow.deleteCell(headerRow.cells.length - 1);
+
+            // 각 데이터 행의 마지막 열 삭제
+            for (var i = 0; i < bodyRows.length; i++) {
+                bodyRows[i].deleteCell(bodyRows[i].cells.length - 1);
+            }
+
+            // 테이블을 감싸는 div 갱신
+            var tableContainer = document.getElementById("tableContainer");
+            if (tableContainer) {
+                tableContainer.innerHTML = '';
+                tableContainer.appendChild(table);
+            }
+        }
+    }
+}
+
+
+
 
     var number = 0;
     function addColumn() {
