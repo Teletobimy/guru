@@ -239,8 +239,10 @@
                                                         <th>No.</th>
                                                         <th>품목명</th>
                                                         <th>카테고리</th>
+                                                        <th>단가</th>
+                                                        <th>수량</th>
+                                                            <th>단위</th>
                                                         <th>가격</th>
-                                                        <th>수량 (단위)</th>
                                                         <th th:if="${firstItem.status != 1}">검수완료수량</th>
                                                         </th:block>
                                                     </tr>
@@ -251,7 +253,6 @@
                                                         <input type="hidden" id="materialId" th:value="${item.materialId}" th:attr="data-mat-id=${item.materialId}">
                                                         <input type="hidden" id="companyId" th:value="${item.companyId}" th:attr="data-com-id=${item.companyId}">
                                                         <input type="hidden" id="orderCnt" th:value="${item.orderCnt}" th:attr="data-order-cnt=${item.orderCnt}">
-                                                        <input type="hidden" id="measure" th:value="${item.measure}" th:attr="data-mat-measure=${item.measure}">
                                                         <input type="hidden" id="detailId" th:value="${item.detailId}" th:attr="data-detail-id=${item.detailId}">
                                                         <td scope="row" th:text="${stat.count}"></td>
                                                         <td th:text="${item.materialName}" id="materialName" th:attr="data-mat-name=${item.materialName}"></td>
@@ -259,10 +260,17 @@
                                                             th:if="${code.codeNum} == ${item.category}" id="category" th:attr="data-mat-category=${item.category}"
                                                             th:text="${code.codeName}"></td>
                                                         <td th:text="${item.price} + &#8361;" id="price" th:attr="data-mat-price=${item.price}"></td>
-                                                        <td th:text="${item.cnt}"></td>
+                                                        <td>
+                                                            <input th:if="${item.status == 1}" type="text" th:value="${item.orderCnt}" style="width:100px;" name="orderCnt">
+                                                            <input th:if="${item.status != 1}" type="text" th:value="${item.orderCnt}" style="width:100px;" readonly>
+                                                            <button th:if="${item.status == 1}"
+                                                                    type="button" class="btn btn-card btn-success cnt-button" onclick="changeCnt(this)">수정</button>
+                                                            <button th:if="${item.status != 1}"
+                                                                    type="button" class="btn btn-card btn-success btn-disabled disabled">수정</button>
+                                                        </td>
+                                                        <td th:text="${item.measure}" th:attr="data-mat-measure=${item.measure}"></td>
+                                                        <td th:text="${item.materialprice} + &#8361;"></td>
                                                         <td th:if="${item.status != 1}" th:text="|${item.qccheckCnt + ' (' + item.measure + ')'}|"></td>
-
-
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -451,6 +459,32 @@
 <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script>
+    function changeCnt(button) {
+
+        var id = $(button).closest('tr').find('[data-detail-id]').data('detail-id');
+        console.log(id);
+        orderCnt = $('input[name=orderCnt]').val();
+        console.log(orderCnt);
+
+        $.ajax({
+            type: "PUT",
+            url: '/purchase/api/detail/' + id + '/count?orderCnt=' + orderCnt,
+            contentType: "application/json",
+            success: function (response) {
+                console.log(response); // 성공적으로 응답을 받았을 때
+                Swal.fire({
+                  icon: "success",
+                  title: "수정 완료",
+                  showConfirmButton: false
+                });
+                setTimeout (function() {location.reload();}, 1500);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
     //디테일 체크 1로 바꾸는 함수
     function confirmOrder(id) {
         var orderId = $(id).data('detail-id');
