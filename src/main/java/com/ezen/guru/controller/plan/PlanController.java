@@ -1005,11 +1005,11 @@ public class PlanController {
         return "plan/po_ready";
     }
 
-    // /plan/purchaseOrder_save
-    @PostMapping("/document_delete")
+    // /
+    @PostMapping("/plan/purchaseOrder_save")
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
-    public void document_delete(@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
+    public void purchaseOrder_save(@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
         System.out.println(purchaseOrderDTO);
 
 //        try {
