@@ -161,7 +161,6 @@
                                                     <div class="pcoded-search-box input-box" >
                                                         <div class="search-long">
                                                             <input type="text" placeholder="search" id="searchInput" style="border:none;">
-                                                            <!--th:attr="onclick='updateLocation(' + ${code.codeNum == 0 ? -1 : code.codeNum} + ')'"-->
                                                             <p class="search-icon" th:attr="onclick='performSearch()'"
                                                                style="display:inline; margin:0;">
                                                                 <i class="ti-search" aria-hidden="true"></i>
@@ -193,7 +192,7 @@
                                                                 <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'" th:each="list : ${list}">
                                                                     <th th:text="${list.shipmentId}"></th>
                                                                     <th th:text="${list.materialName}"></th>
-ㄴ                                                                    <td th:text="${list.shipmentCnt}"></td>
+                                                                    <td th:text="${list.shipmentCnt}"></td>
                                                                     <td th:text="${list.materialPrice} + &#8361;"></td>
                                                                     <td th:each="code:${code}"
                                                                         th:if="${code.codeNum} == ${list.materialCategory}"
