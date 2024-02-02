@@ -15,7 +15,7 @@ public interface QcCheckService {
     public Page<QcCheckResponse> qcCheckList(int processStatus, String search, Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
     public List<Code> findByCodeCategory(String codeCategory);
     public int updateAllStatus(int qcCheckId,int qcCheckCnt);
-    public Shipment addShipment(QcCheckRequest shipment, int cnt);
+    public Shipment addShipment(QcCheckRequest shipment, int cnt, int detailId);
     public int updateReturnStatus(int qcCheckId, int qcCheckCnt);
     public Long countBy();
     public Long countByProcessStatus(int processStatus);

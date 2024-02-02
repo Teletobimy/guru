@@ -105,6 +105,7 @@
                    html += '<input class="modalInput" name="materialPrice" value='+ data.materialId.materialPrice +' type="hidden" readOnly></input>';
                    html += '<input class="modalInput" name="materialCategory" value='+ data.materialId.materialCategory +' type="hidden" readOnly></input>';
                    html += '<input class="modalInput" name="materialNumber" value='+ data.materialId.materialId +' type="hidden" readOnly></input>';
+                   html += '<input class="modalInput" name="purchaseOrderDetailId" value='+ data.purchaseOrderDetailId +' type="hidden" readOnly></input>';
                    html += '<input class="modalInput" name="manager" value='+ data.manager +' type="hidden" readOnly></input>';
                    html += '<tr><th>검수 번호</th><td><input name="qcCheckId" class="modalInput"  value='+ data.qcCheckId +' type="text" readOnly></input></td></tr>';
                    html += '<tr><th>자재 이름</th><td><input name="materialName" class="modalInput" value='+ data.materialId.materialName +'  type="text" readOnly></input></td></tr>';
@@ -193,6 +194,7 @@
                    var materialName = $('input[name=materialName]').val();
                    var materialNumber = $('input[name=materialNumber]').val();
                    var companyId = $('input[name=companyId]').val();
+                   var detailId = $('input[name=purchaseOrderDetailId]').val();
 
                    var qcCheckRequest = {
                        materialId: materialId,
@@ -223,7 +225,7 @@
                                     onBtnClick();
                                 });
                                 $.ajax({
-                                   url: "/api/fromQcCheckToShipment?cnt="+qcCheckCnt,
+                                   url: "/api/fromQcCheckToShipment?cnt="+qcCheckCnt + "&detailId=" + detailId,
                                    type: "POST",
                                    contentType: 'application/json',
                                    data: JSON.stringify(qcCheckRequest),

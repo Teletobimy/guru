@@ -103,7 +103,7 @@ public class QcCheckServiceImpl implements QcCheckService {
     }
 
     @Override
-    public Shipment addShipment(QcCheckRequest shipment, int cnt) {
+    public Shipment addShipment(QcCheckRequest shipment, int cnt, int detailId) {
         LocalDateTime targetDateTime = LocalDateTime.now();
 
         Shipment shipmentItem = Shipment.builder()
@@ -117,6 +117,7 @@ public class QcCheckServiceImpl implements QcCheckService {
                 .materialPrice(shipment.getMaterialPrice())
                 .materialMeasure(shipment.getMaterialMeasure())
                 .purchaseOrderId(shipment.getPurchaseOrderId())
+                .purchaseOrderDetailId(detailId)
                 .build();
 
         return shipmentRepository.save(shipmentItem);

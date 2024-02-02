@@ -26,8 +26,9 @@ public class QcCheckApiController {
     @PostMapping("/fromQcCheckToShipment")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_C')")
     public ResponseEntity<String> addShipment(@RequestParam(value = "cnt") int cnt,
-                                              @RequestBody QcCheckRequest shipment){
-        qcCheckService.addShipment(shipment,cnt);
+                                              @RequestBody QcCheckRequest shipment,
+                                              @RequestParam(value = "detailId") int detailId){
+        qcCheckService.addShipment(shipment,cnt,detailId);
         return ResponseEntity.ok("Seccessful insert shipment! : " + shipment);
     }
     @PutMapping("/updateReturnStatus")
