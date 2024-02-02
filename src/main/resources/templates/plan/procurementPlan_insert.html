@@ -74,6 +74,27 @@
        border: none;
        resize: none;
    }
+        #textA:last-child{
+            text-align:right;
+        }
+        #add-btn1{
+            background-color: inherit;
+            border: 1px solid #ccc;
+            outline: none;
+            padding: 10px;
+            border-radius: 5px
+            margin:0;
+            transition: all 0.2s ease-in-out;
+            border-radius:5px;
+        }
+        #add-btn1:hover{
+            background-color: #FC6180;
+            border-color: #FC6180;
+            color:#fff;
+        }
+        #add-btn2{
+             padding: 10px;
+        }
     </style>
 </head>
 
@@ -128,11 +149,11 @@
                                                 <td colspan="3">
                                                     <input type="text" th:value="${documentId}" id="quotationId">
                                                 </td>
-                                                <th colspan="2">회사명<input type="button" onclick="addCompany()" value="회사검색"
-                                                                          class="btn-warning"
-                                                                          style="background-color: #FC6180; border-color: #FC6180;  margin:10px;"/></th>
-                                                <td colspan="3">
-                                                    <input type="text" id="company_name" readonly>
+                                                <th colspan="2">회사명
+
+                                                <td colspan="3" onclick="addCompany()" id="textA">
+                                                    <input style="width: 95%;" type="text" id="company_name" readonly>
+                                                    <i class="icofont icofont-search"></i>
                                                 </td>
 
                                             </tr>
@@ -220,12 +241,12 @@
 
                                             <tr>
                                                 <td colspan="10">
-                                                    <input type="button" onclick="addRow()" value="품목추가하기"
-                                                           class="btn-warning"
-                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
-                                                    <input type="button" onclick="deleteRow()" value="품목삭제하기"
-                                                           class="btn-warning"
-                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
+                                                    <div style="display:flex; justify-content: space-between;">
+                                                        <button style="margin:0;" onclick="addRow()" class="ti-plus " id="add-btn1">
+                                                            품목 추가
+                                                        </button>
+                                                        <i class="icofont icofont-ui-delete" id="add-btn2" onclick="deleteRow()" style="font-size:20px;"></i>
+                                                    </div>
                                                 </td>
                                             </tr>
 

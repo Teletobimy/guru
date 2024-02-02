@@ -20,7 +20,7 @@ public class Quotation {
     private String id;
 
     @Column(name="bidding_no")
-    private int biddingNo;
+    private Integer biddingNo;
 
     @ManyToOne
     @JoinColumn(name = "company_id")

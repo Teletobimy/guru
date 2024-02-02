@@ -2,6 +2,7 @@ package com.ezen.guru.service.purchase;
 
 import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.purchase.*;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,8 @@ public interface OrderService {
 
     public void forceClose(String id);
 
+    public void updateOrderCnt(int id, int orderCnt);
+
     public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments);
 
     public List<OrderMainListResponse> getOrderMainList();
@@ -32,4 +35,8 @@ public interface OrderService {
     public Long countBy();
 
     public Long countByStatus(int status);
+
+    PurchaseOrder saveOrder(PurchaseOrder purchaseOrder);
+
+    void saveDetailOrder(PurchaseOrderDetail purchaseOrderDetail);
 }

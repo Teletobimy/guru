@@ -141,19 +141,11 @@
                                         <li th:each="code:${code}" class="nav-item">
                                             <a class="nav-link"
                                                data-toggle="tab"
-                                               th:attr="onclick='updateLocation(' + ${code.codeNum == -1 ? -1 : code.codeNum} + ')'"
+                                               th:attr="onclick='updateLocation(' + ${code.codeNum} + ')'"
                                                role="tab"
                                                style="cursor:pointer;"
-                                               th:classappend="        ${category == -1 and code.codeNum == -1 ? 'active' : ''} +
-                                                                       ${category == 0 and code.codeNum == 0 ? 'active' : ''} +
-                                                                       ${category == 1 and code.codeNum == 1 ? 'active' : ''} +
-                                                                       ${category == 2 and code.codeNum == 2 ? 'active' : ''} +
-                                                                       ${category == 3 and code.codeNum == 3 ? 'active' : ''}"
-                                               th:text="${        code.codeNum == -1 ? 'ALL' :
-                                                                  code.codeNum == 0 ? '원자재' :
-                                                                  code.codeNum == 1 ? '손잡이' :
-                                                                  code.codeNum == 2 ? '프레임' :
-                                                                  code.codeNum == 3 ? '휠' : ''}">
+                                               th:classappend="${category == code.codeNum ? 'active' : ''}"
+                                               th:text="${code.codeName}">
                                             </a>
                                         </li>
 

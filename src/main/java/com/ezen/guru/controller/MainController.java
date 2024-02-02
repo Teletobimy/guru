@@ -5,6 +5,7 @@ import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.purchase.OrderMainListResponse;
 import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.export.ExportService;
+import com.ezen.guru.service.plan.DocumentService;
 import com.ezen.guru.service.purchase.OrderService;
 import com.ezen.guru.service.receive.QcCheckService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class MainController {
     private final QcCheckService qcCheckService;
     private final OrderService orderService;
     private final ExportService exportService;
+    private final DocumentService documentService;
 
     @GetMapping("/")
     public String main(HttpServletRequest request, Model model){
@@ -70,6 +72,12 @@ public class MainController {
         //생산계획서 마감률
         int[] array = exportService.producePlanerCnt();
 
+        //계약서 마감률
+        long agreementTotalCount = documentService.countByDocumentType();
+        long agreementStatusCount = documentService.countByTypeAndStatus();
+        double preAgreementPercent = ((double)agreementStatusCount/agreementTotalCount)*100;
+        int agreementPercent = (int)preAgreementPercent;
+
         model.addAttribute("user",user);
         model.addAttribute("percent",totalPercent);
         model.addAttribute("total",totalCount);
@@ -83,6 +91,9 @@ public class MainController {
         model.addAttribute("producePercent",array[0]);
         model.addAttribute("planerTotal",array[1]);
         model.addAttribute("noCompletePlaner",array[2]);
+        model.addAttribute("agreementStatusCount",agreementStatusCount);
+        model.addAttribute("agreementTotalCount",agreementTotalCount);
+        model.addAttribute("agreementPercent",agreementPercent);
         return "index";
     }
 }

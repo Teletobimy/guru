@@ -82,15 +82,16 @@
                             <div class="page-body">
                                 <div class="row">
                                     <!-- card1 start -->
-                                    <div class="col-md-6 col-xl-3">
+                                    <div class="col-md-6 col-xl-3" onclick="location.href='/purchase/order?size=10&page=0&category=3'" style="cursor:pointer;">
                                         <div class="card widget-card-1">
                                             <div class="card-block-small">
-                                                <i class="icofont icofont-pie-chart bg-c-blue card1-icon"></i>
-                                                <span class="text-c-blue f-w-600">Use space</span>
-                                                <h4>dddd</h4>
+                                                <i class="icofont icofont-pie-chart bg-c-pink card1-icon"></i>
+                                                <span class="text-c-pink f-w-600">계약서 마감률</span>
+                                                <h4 th:text="${agreementPercent} + '%'"></h4>
                                                 <div>
                                                             <span class="f-left m-t-10 text-muted">
-                                                                <i class="text-c-blue f-16 icofont icofont-warning m-r-10"></i>Get more space
+                                                                <i class="text-c-pink f-16 icofont icofont-arrow-right"></i>
+                                                                <span th:text="${agreementStatusCount} + ' out of ' + ${agreementTotalCount}"></span>
                                                             </span>
                                                 </div>
                                             </div>
@@ -101,7 +102,7 @@
                                     <div class="col-md-6 col-xl-3" onclick="location.href='/purchase/order?size=10&page=0&category=3'" style="cursor:pointer;">
                                         <div class="card widget-card-1">
                                             <div class="card-block-small">
-                                                <i class="icofont icofont-ui-home bg-c-green card1-icon"></i>
+                                                <i class="icofont icofont-law-document bg-c-green card1-icon"></i>
                                                 <span class="text-c-green f-w-600">발주 마감률</span>
                                                 <h4 th:text="${orderPercent} + '%'"></h4>
                                                 <div>
@@ -119,7 +120,7 @@
                                         <div class="card widget-card-1">
                                             <div class="card-block-small">
                                                 <i class="icofont icofont-stamp bg-c-yellow card1-icon"></i>
-                                                <span class="text-c-yellow f-w-600">검수 마감 율</span>
+                                                <span class="text-c-yellow f-w-600">검수 마감률</span>
                                                 <h4 th:text="${percent} + '%'"></h4>
                                                 <div>
                                                             <span class="f-left m-t-10 text-muted">

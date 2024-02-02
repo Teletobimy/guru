@@ -220,11 +220,10 @@
                                                                     <th>총가격</th>
                                                                     <th>등록일</th>
                                                                     <th>납기일</th>
-                                                                    <th>발주상태</th>
-
                                                                     <th>거래조건</th>
                                                                     <th>지불조건</th>
                                                                     <th>메모</th>
+                                                                    <th>발주상태</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -235,16 +234,19 @@
                                                                     <td th:text="${procurement.documentTotalPrice}"></td>
                                                                     <td th:text="${#temporals.format(procurement.regdate, 'yyyy-MM-dd HH:mm')}"></td>
                                                                     <td th:text="${#temporals.format(procurement.deadline, 'yyyy-MM-dd HH:mm')}"></td>
-                                                                    <td th:each="code:${code}"
-                                                                        th:if ="${procurement.status == code.codeNum}"
-                                                                            th:text="${code.codeName}"
-                                                                    ></td>
+
                                                                     <td th:text="${procurement.tradeTerms}"></td>
                                                                     <td th:text="${procurement.paymentTerms}"></td>
                                                                     <td th:class="${procurement.documentMemo.length() > 50} ? 'ellipsis' : ''">
                                                                     <span th:utext="${procurement.documentMemo.length() > 50} ? ${#strings.substring(procurement.documentMemo, 0, 50)} + '...' : ${procurement.documentMemo}">
                                                                     </span>
                                                                     </td>
+                                                                    <td style="color: #009000;font-weight:bold;"
+                                                                        th:each="code:${code}"
+                                                                        th:if ="${procurement.status == code.codeNum}"
+                                                                        th:text="${code.codeName}"
+                                                                        th:classappend="${procurement.status == 1} ? 'text-c-pink' : ''"
+                                                                    ></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>

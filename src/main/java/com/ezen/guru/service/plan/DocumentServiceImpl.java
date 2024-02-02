@@ -135,4 +135,14 @@ public class DocumentServiceImpl implements DocumentService {
             return documentRepository.procurementList(1, keyword, category, startDate, endDate, pageable).map(this::convertToDocumentDTO);
         }
     }
+
+    @Override
+    public long countByDocumentType(){
+        return documentRepository.countByDocumentType(1);
+    }
+
+    @Override
+    public long countByTypeAndStatus(){
+        return documentRepository.countByTypeAndStatus();
+    }
 }

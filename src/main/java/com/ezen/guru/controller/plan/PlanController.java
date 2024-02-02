@@ -7,9 +7,12 @@ import com.ezen.guru.domain.*;
 import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.plan.*;
 import com.ezen.guru.dto.purchase.CompanyListViewResponse;
+import com.ezen.guru.dto.purchase.PurchaseOrderDTO;
+import com.ezen.guru.dto.purchase.PurchaseOrderDetailDTO;
 import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.plan.*;
 import com.ezen.guru.service.purchase.CompanyService;
+import com.ezen.guru.service.purchase.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,12 +28,13 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.SplittableRandom;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -45,6 +49,7 @@ public class PlanController {
     private final QuotationService quotationService;
     private final CompanyService companyService;
     private final RecipeService recipeService;
+    private final OrderService orderService;
 
 
     @GetMapping("/item")
@@ -215,9 +220,9 @@ public class PlanController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> recipe_update(
-            @RequestParam String previousCellValue,
-            @RequestParam Integer previousInputValue,
-            @RequestParam Integer bicycleIdValue
+            @RequestParam(value = "previousCellValue") String previousCellValue,
+            @RequestParam(value = "previousInputValue") Integer previousInputValue,
+            @RequestParam(value = "bicycleIdValue") Integer bicycleIdValue
     ){
 
 
@@ -467,9 +472,14 @@ public class PlanController {
                             @RequestParam(name = "endDate", defaultValue = "2030-01-01T13:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                             HttpServletRequest request
                             ){
+        Integer biddingNo;
+        try {
+            biddingNo = Integer.valueOf(keyword);
 
-
-        Page<QuotationDTO> QuotationPage = quotationService.quotationList(keyword, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
+        } catch (NumberFormatException e) {
+            biddingNo=null;
+        }
+        Page<QuotationDTO> QuotationPage = quotationService.quotationList(biddingNo, category,startDate, endDate ,PageRequest.of(page, size,Sort.by(Sort.Order.desc("id"))));
         List<QuotationDTO> quotationDetailDTOList = QuotationPage.getContent();
 
         CustomUserDetails userDetails = (CustomUserDetails) request.getSession().getAttribute("user");
@@ -1000,12 +1010,80 @@ public class PlanController {
     }
 
 
-//
-//    @GetMapping("/searchCompany")
-//    public String searchCompany(@RequestParam("name") String companyName, Model model) {
-//
-//            return "plan/company_search"; // 회사 정보 템플릿 이름
-//
-//    }
+    @PostMapping("/purchaseOrder_save")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
+    public ResponseEntity<String> purchaseOrder_save(@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+        String currentDate = dateFormat.format(new Date());
+
+        // 4자리의 랜덤 숫자 생성
+        Random random = new Random();
+        int randomNum = random.nextInt(1000); // 0부터 9999까지의 숫자 중에서 랜덤
+
+        // 랜덤 아이디 조합
+        String randomId = currentDate + String.format("%04d", randomNum);
+
+
+        DocumentDTO document = documentService.findDocumentById(purchaseOrderDTO.getDocumentId());
+        System.out.println("document : "+document);
+        Document documentchange = documentService.convertToDocument(document);
+        System.out.println("documentchange : "+documentchange);
+
+        int totalprice = document.getDocumentTotalPrice();
+        String memo = document.getDocumentMemo();
+        LocalDate localDate = LocalDate.parse(purchaseOrderDTO.getDeadline());
+        LocalDateTime deadline = localDate.atTime(LocalTime.MIN);
+
+        LocalDateTime regdate = LocalDateTime.now();
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
+
+        purchaseOrder.setId(randomId);
+        purchaseOrder.setDocument(documentchange);
+        purchaseOrder.setCompany(document.getCompany());
+        purchaseOrder.setTotalprice(totalprice);
+        purchaseOrder.setRegdate(regdate);
+        purchaseOrder.setStatus(1);
+        purchaseOrder.setMemo(memo);
+        purchaseOrder.setDeadline(deadline);
+        purchaseOrder.setLeadTime(document.getLeadTime());
+        purchaseOrder.setTradeTerms(document.getTradeTerms());
+        purchaseOrder.setPaymentTerms(document.getPaymentTerms());
+        PurchaseOrder savedOrder = orderService.saveOrder(purchaseOrder);
+
+        List<PurchaseOrderDetailDTO> purchaseOrderDetails = purchaseOrderDTO.getPurchaseOrderDetailDTOList();
+
+        List<PurchaseOrderDetail> Detaillist = new ArrayList<>();
+        int total=0;
+        for (PurchaseOrderDetailDTO detailDTO : purchaseOrderDetails) {
+
+            MaterialDTO material = materialService.getMaterialById(detailDTO.getMaterialId());
+            Material materialEntity = materialService.convertToEntity(material);
+
+            PurchaseOrderDetail purchaseOrderDetail = PurchaseOrderDetail.builder()
+                    .purchaseOrderCnt(detailDTO.getPurchaseOrderCnt())
+                    .materialName(material.getMaterialName())
+                    .materialCategory(material.getMaterialCategory())
+                    .materialMeasure(material.getMaterialMeasure())
+                    .materialPrice(material.getMaterialPrice())
+                    .check(detailDTO.getCheck())
+                    .purchaseOrder(savedOrder)
+                    .material(materialEntity)
+                    .qcCheckCnt(detailDTO.getQcCheckCnt())
+                    .build();
+            orderService.saveDetailOrder(purchaseOrderDetail);
+            total = (detailDTO.getPurchaseOrderCnt()*material.getMaterialPrice())+total;
+        }
+
+        savedOrder.setTotalprice(total);
+        orderService.saveOrder(savedOrder);
+
+
+
+        return ResponseEntity.ok("전송완료");
+    }
+
 
 }

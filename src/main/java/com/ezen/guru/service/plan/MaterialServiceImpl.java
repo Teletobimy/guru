@@ -43,8 +43,8 @@ public class MaterialServiceImpl implements MaterialService {
         materialDTO.setMaterialCategory(material.getMaterialCategory());
         return materialDTO;
     }
-
-    private Material convertToEntity(MaterialDTO materialDTO) {
+    @Override
+    public Material convertToEntity(MaterialDTO materialDTO) {
         Material material = Material.builder()
                 .materialId(materialDTO.getMaterialId())
                 .companyId(materialDTO.getCompanyId())

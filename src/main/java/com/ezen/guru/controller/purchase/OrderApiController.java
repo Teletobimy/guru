@@ -51,6 +51,20 @@ public class OrderApiController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
+    @PutMapping("/detail/{id}/count")
+    public ResponseEntity<String> updateOrderCnt(@PathVariable(value="id") int id,
+                                                  @RequestParam(name = "orderCnt") int orderCnt) {
+        try {
+            orderService.updateOrderCnt(id,orderCnt);
+            return ResponseEntity.ok("성공적으로 수량 업데이트");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류");
+        }
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_B')")
     @PutMapping("/company/{companyId}/update")
     public ResponseEntity<?> updateCompany(@PathVariable(value="companyId") String companyId, @Valid @RequestBody UpdateCompanyRequest company, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

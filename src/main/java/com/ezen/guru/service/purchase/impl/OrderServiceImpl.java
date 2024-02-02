@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDetailRepository detailRepository;
     private final CodeRepository codeRepository;
     private final ShipmentRepository shipmentRepository;
-    private final CompanyRepository companyRepository;
+
 
     @Override
     public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category, LocalDateTime startDate, LocalDateTime endDate) {
@@ -85,6 +85,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
+    public void updateOrderCnt(int id, int orderCnt) {
+        try {
+            detailRepository.updateOrderCnt(id, orderCnt);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
     public List<Shipment> saveToShipment(List<AddShipmentRequest> shipments) {
         List<Shipment> shipmentEntities = shipments.stream()
                 .map(AddShipmentRequest::toEntity) // toEntity 메서드 사용
@@ -107,4 +118,12 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.countByStatus(status);
     }
 
+    @Override
+    public PurchaseOrder saveOrder(PurchaseOrder purchaseOrder){
+       return orderRepository.save(purchaseOrder);
+    }
+    @Override
+    public void saveDetailOrder(PurchaseOrderDetail purchaseOrderDetail){
+        detailRepository.save(purchaseOrderDetail);
+    }
 }

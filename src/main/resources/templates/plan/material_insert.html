@@ -130,15 +130,10 @@
                                             </tr>
                                                 <tr>
                                                     <th >회사명</th>
-                                                    <td >
-                                                        <input type="text" placeholder="회사찾기를 눌러주세요" style="width: 100%;"
-                                                               id="companyName" name="companyName" required >
+                                                    <td onclick="addCompany()">
+                                                        <input placeholder="회사를 검색하세요." style="width: 95%;" type="text" id="company_name" readonly>
+                                                        <i class="icofont icofont-search"></i>
                                                     </td>
-                                                    <td><input type="button" onclick="addCompany()"
-                                                               class="btn btn-card btn-primary"
-                                                               style="background-color: #FC6180; border-color: #FC6180;"
-                                                               value="회사찾기"
-                                                    ></td>
                                                 </tr>
                                                 <tr>
                                                     <th >사업자등록증</th>

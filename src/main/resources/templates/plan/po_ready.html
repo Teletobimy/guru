@@ -118,7 +118,7 @@
                                         <div class="page-header-title">
                                             <i class="icofont icofont-table" style="background-color: #FC6180;"></i>
                                             <div style="display:flex; align-items:center;">
-                                                <h4> 발주서작성 </h4>
+                                                <h4> 발주서 작성 </h4>
 
                                             </div>
                                         </div>
@@ -135,10 +135,10 @@
 
                                     <div class="card-header">
                                         <div class="container">
-                                            <h1>발주서작성</h1>
+                                            <h1>발주서 작성</h1>
 
 
-                                            <table id="estimateTable" width="60%">
+                                            <table id="estimateTable">
 
                                                 <tr>
                                                     <th colspan="2">계약서번호</th>
@@ -181,41 +181,46 @@
                                                 <tr>
                                                     <th colspan="2">비고</th>
                                                     <td colspan="8">
-                                                        <textarea rows="10" style="width:100%;"
+                                                        <textarea rows="4" style="width:100%;"
                                                                   th:text="${document.documentMemo}"
                                                                   readonly></textarea>
                                                     </td>
                                                 </tr>
 
                                             </table>
+                                            <div id="addingStyle"
+                                                 style="overflow-x: auto; width: 95%; layout: fixed; padding-bottom: 50px;">
 
-                                            <table style="margin-top:50px; overflow-x: auto;" id="myTable">
-                                                <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>PID</th>
-                                                    <th colspan="2">품명</th>
-                                                    <th>수량</th>
-                                                    <th>남은수량</th>
-                                                    <th>단위</th>
-                                                    <th>단가</th>
-                                                    <th colspan="2">금액</th>
-                                                </tr>
-                                                </thead>
+                                                <table style="margin-top:50px; overflow-x: auto; width: 101%; "
+                                                       id="myTable">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>PID</th>
+                                                        <th>품명</th>
+                                                        <th>수량</th>
+                                                        <th>남은수량</th>
+                                                        <th>단위</th>
+                                                        <th>단가</th>
+                                                        <th>금액</th>
+                                                    </tr>
+                                                    </thead>
 
-                                                <tbody>
-                                                <tr th:each="qd, itemStat : ${documentDetailList}">
-                                                    <th scope="row" th:text="${itemStat.count}"></th>
-                                                    <td th:text="${qd.Material.materialId}"></td>
-                                                    <td colspan="2" th:text="${qd.Material.materialName}"></td>
-                                                    <td th:text="${qd.documentCnt}"></td>
-                                                    <td th:text="${qd.documentCnt}"></td>
-                                                    <td th:text="${qd.documentMeasure}"></td>
-                                                    <td th:text="${qd.documentPrice}"></td>
-                                                    <td colspan="2" th:text="${qd.documentPrice*qd.documentCnt}"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                                    <tbody>
+                                                    <tr th:each="qd, itemStat : ${documentDetailList}">
+                                                        <th scope="row" th:text="${itemStat.count}"></th>
+                                                        <td th:id="'materialId' + ${itemStat.count-1}" th:text="${qd.Material.materialId}"></td>
+                                                        <td th:text="${qd.Material.materialName}"></td>
+                                                        <td th:text="${qd.documentCnt}"></td>
+                                                        <td th:text="${qd.documentCnt}"></td>
+                                                        <td th:text="${qd.documentMeasure}"></td>
+                                                        <td th:text="${qd.documentPrice}"></td>
+                                                        <td th:text="${qd.documentPrice*qd.documentCnt}"></td>
+                                                    </tr>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
 
 
                                         </div>
@@ -225,6 +230,9 @@
                                         <input type="button" th:attr="onclick='addColumn()'" class="btn btn-warning"
                                                style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
                                                value="발주서 작성 추가"/>
+                                        <input type="button" th:attr="onclick='deleteColumn()'" class="btn btn-warning"
+                                               style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
+                                               value="발주서 작성 삭제"/>
                                         <input type="button" th:attr="onclick='submitPO()'" class="btn btn-warning"
                                                style="background-color: #FC6180; border-color: #FC6180; margin:10px;"
                                                value="발송"/>
@@ -288,6 +296,53 @@
      }
 
 
+var fixedColumnCount = 9; // 왼쪽에 고정할 열의 개수
+
+function deleteColumn() {
+    var table = document.getElementById("myTable");
+    var header = table.getElementsByTagName('thead')[0];
+    var tbody = table.getElementsByTagName('tbody')[0];
+
+    if (header && tbody) {
+        var headerRow = header.getElementsByTagName('tr')[0];
+
+        if (headerRow) {
+            // 열 삭제
+            var columnIndexToDelete = headerRow.cells.length - 1;
+
+            if (columnIndexToDelete >= fixedColumnCount) {
+                // 왼쪽 8개 셀은 삭제하지 않음
+                // 헤더 행의 열 삭제
+                headerRow.deleteCell(columnIndexToDelete);
+
+                // 각 데이터 행의 열 삭제
+                var bodyRows = tbody.getElementsByTagName('tr');
+                for (var i = 0; i < bodyRows.length; i++) {
+                    bodyRows[i].deleteCell(columnIndexToDelete);
+                }
+                number--;
+                // 테이블을 감싸는 div 갱신
+                var tableContainer = document.getElementById("addingStyle");
+                if (tableContainer) {
+                    tableContainer.style.overflowX = 'auto';
+                }
+            }
+        }
+    }
+}
+
+
+// 나머지 코드는 그대로 유지
+// ...
+
+
+
+
+
+
+
+    var number = 0;
+
     function addColumn() {
         var table = document.getElementById("myTable");
         var header = table.getElementsByTagName('thead')[0];
@@ -301,12 +356,14 @@
             row = header.insertRow(0);
         }
 
+        number++;
         var cell = document.createElement("th");
-         var now = new Date();
-        var dateTimeString = now.toISOString().replace(/[-:TZ]/g, "").slice(0, 14);
-        var random4Digits = Math.floor(1000 + Math.random() * 9000);
-        cell.innerHTML = "PO : " + dateTimeString + random4Digits;
+         var input = document.createElement("input");
+        input.type = "date";
+        cell.textContent =  number + "번째 PO (마감일) : "
+        cell.appendChild(input);
         row.appendChild(cell);
+
 
         var tbody = table.getElementsByTagName('tbody')[0];
         if (!tbody) {
@@ -318,6 +375,10 @@
         for (var i = 0; i < rows.length; i++) {
             addCell(rows[i]);
         }
+          var tableContainer = document.getElementById("addingStyle");
+    if (tableContainer) {
+        tableContainer.style.overflowX = 'auto';
+    }
     }
     // 각 행의 이전 값 저장을 위한 객체
 var previousValues = {};
@@ -332,6 +393,8 @@ function addCell(row) {
     input.addEventListener('input', function(event) {
         calculateAndDisplay(row);
     });
+
+
 }
 
 function calculateAndDisplay(row) {
@@ -364,24 +427,6 @@ function calculateAndDisplay(row) {
 
 
 
- function submitPO(){
- var documentId = document.getElementById('documentId').value;
-     $.ajax({
-         type: 'POST',
-         url: '/plan/procurement_trans',
-         contentType: 'application/json',
-         data: documentId,
-         success: function (response) {
-             alert(response);
-             window.location.href = '/plan/procurementPlan';
-         },
-         error: function (error) {
-             alert('삭제실패:', error);
-         }
-     });
- }
-
-
 
  function deleteDoc(){
  var documentId = document.getElementById('documentId').value;
@@ -399,6 +444,80 @@ function calculateAndDisplay(row) {
          }
      });
  }
+
+
+    // PO 저장 로직 시작
+
+function submitPO() {
+ var documentId = document.getElementById('documentId').value;
+
+
+ var tableRows = document.getElementById("myTable").getElementsByTagName('thead')[0].getElementsByTagName('th');
+
+  var purchaseOrderDetailDTOList = {};
+
+ for (var i = 8; i < tableRows.length; i++) {
+         var dateInput = tableRows[i].querySelector('input');
+         var date = dateInput.value;
+         var list = [];
+
+
+
+
+
+         var tbodyRows = document.getElementById("myTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        for (var j = 0; j < tbodyRows.length; j++) {
+            var inputNumberInput = tbodyRows[j].querySelector('td:nth-child(' + (i + 1) + ') input[type="number"]');
+            var inputNumberValue = inputNumberInput.value;
+            console.log('Input Number (Row ' + (j + 1) + '):', inputNumberValue);
+
+            var elementId = 'materialId' + j;
+            var element = document.getElementById(elementId);
+            var materialId = element.textContent;
+            var adding = {
+                materialId: materialId,
+                purchaseOrderCnt: inputNumberValue,
+                check: 0,
+                qcCheckCnt: 0
+            };
+
+              list.push(adding);
+        }
+
+         var purchaseOrderDTO = {
+        documentId: documentId,
+        deadline: date,
+        purchaseOrderDetailDTOList: list };
+
+
+         var JSONpurchaseOrderDTO = JSON.stringify(purchaseOrderDTO);
+
+         console.log(purchaseOrderDTO);
+         console.log(JSONpurchaseOrderDTO);
+
+         var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('성공');
+
+                    } else {
+                          console.log('실패');
+                }
+                }
+            };
+
+
+           xhr.open('POST', '/plan/purchaseOrder_save', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+           xhr.setRequestHeader('Content-Type', 'application/json');
+           xhr.send(JSONpurchaseOrderDTO);
+
+
+
+
+}
+window.location.href = '/purchase/order?size=10&page=0&category=-1';
+}
 
 
 </script>

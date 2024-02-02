@@ -657,7 +657,13 @@
                       showConfirmButton: false
                     });
                     setTimeout (function() {location.reload();}, 1500);
-               } else{
+               } else if(xhr.status === 500) {
+                    Swal.fire({
+                      title: "Error Occurred",
+                      text: error,
+                      icon: "error"
+                    });
+                } else {
                     console.error("Error: " , status, error);
                }
             }

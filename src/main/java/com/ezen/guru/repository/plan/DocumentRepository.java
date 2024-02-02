@@ -43,4 +43,10 @@ public interface DocumentRepository extends JpaRepository<Document, String> {
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable
     );
+
+    @Query("SELECT COUNT(d) FROM Document d WHERE d.type = :documentType")
+    long countByDocumentType(@Param("documentType") int documentType);
+
+    @Query("SELECT COUNT(d) FROM Document d WHERE d.type = 1 AND d.status = 1")
+    long countByTypeAndStatus();
 }
