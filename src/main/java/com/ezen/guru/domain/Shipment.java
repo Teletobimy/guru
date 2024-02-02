@@ -40,7 +40,7 @@ public class Shipment {
     @Column(name = "material_category")
     private int materialCategory;
 
-    @ManyToOne(targetEntity = Company.class,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "company_id", insertable = false, updatable = false)
     private Company companyId;
 
