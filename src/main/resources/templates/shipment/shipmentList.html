@@ -193,7 +193,7 @@
                                                                 <tr style="cursor:pointer;" th:attr="onclick='gotoDetail('+ ${list.shipmentId}+ ')'" th:each="list : ${list}">
                                                                     <th th:text="${list.shipmentId}"></th>
                                                                     <th th:text="${list.materialName}"></th>
-                                                                    <td th:text="${list.shipmentCnt} + ${list.materialMeasure}"></td>
+ㄴ                                                                    <td th:text="${list.shipmentCnt}"></td>
                                                                     <td th:text="${list.materialPrice} + &#8361;"></td>
                                                                     <td th:each="code:${code}"
                                                                         th:if="${code.codeNum} == ${list.materialCategory}"
