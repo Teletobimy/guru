@@ -1079,6 +1079,8 @@ public class PlanController {
 
         savedOrder.setTotalprice(total);
         orderService.saveOrder(savedOrder);
+        document.setStatus(1);
+        documentService.documentSave(document);
 
 
 
