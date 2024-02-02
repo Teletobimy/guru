@@ -11,10 +11,8 @@ import lombok.*;
 @Builder
 @ToString
 public class PurchaseOrderDetailDTO {
-
     private int materialId;
     private int purchaseOrderCnt;
     private int check;
     private int qcCheckCnt;
-
 }

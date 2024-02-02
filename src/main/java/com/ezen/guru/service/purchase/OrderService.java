@@ -32,4 +32,8 @@ public interface OrderService {
     public Long countBy();
 
     public Long countByStatus(int status);
+
+    PurchaseOrder saveOrder(PurchaseOrder purchaseOrder);
+
+    void saveDetailOrder(PurchaseOrderDetail purchaseOrderDetail);
 }

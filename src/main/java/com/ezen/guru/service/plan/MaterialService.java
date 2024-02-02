@@ -12,6 +12,8 @@ import java.util.List;
 // MaterialService.java
 
 public interface MaterialService {
+    Material convertToEntity(MaterialDTO materialDTO);
+
     MaterialDTO getMaterialById(int materialId);
     Page<MaterialDTO> getAllMaterials(String keyword, Integer materialCategory, Pageable pageable);
 

@@ -28,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final ShipmentRepository shipmentRepository;
     private final CompanyRepository companyRepository;
 
+
     @Override
     public Page<OrderListViewResponse> orderList(int size, int page, String keyword, int category, LocalDateTime startDate, LocalDateTime endDate) {
         return orderRepository.orderList(size, page, keyword, category,startDate,endDate);
@@ -107,4 +108,12 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.countByStatus(status);
     }
 
+    @Override
+    public PurchaseOrder saveOrder(PurchaseOrder purchaseOrder){
+       return orderRepository.save(purchaseOrder);
+    }
+    @Override
+    public void saveDetailOrder(PurchaseOrderDetail purchaseOrderDetail){
+        detailRepository.save(purchaseOrderDetail);
+    }
 }

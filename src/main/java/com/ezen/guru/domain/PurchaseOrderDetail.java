@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 @Entity
+@ToString
 public class PurchaseOrderDetail {
 
     @Id

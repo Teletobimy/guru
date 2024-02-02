@@ -9,9 +9,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name = "purchase_order")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Data
+@AllArgsConstructor
 @Entity
+@ToString
 public class PurchaseOrder {
 
     @Id

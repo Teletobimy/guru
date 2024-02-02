@@ -3,6 +3,7 @@ import com.ezen.guru.domain.PurchaseOrderDetail;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -12,16 +13,8 @@ import java.util.List;
 @Builder
 @ToString
 public class PurchaseOrderDTO {
-
-    private String id;
     private String documentId;
-    private String companyId;
-    private int totalprice;
-    private int status;
-    private String memo;
-    private LocalDateTime deadline;
-    private String leadTime;
-    private String tradeTerms;
-    private String paymentTerms;
-    private List<PurchaseOrderDetailDTO> PurchaseOrderDetailDTO;
+    private String deadline;
+    private List<PurchaseOrderDetailDTO> purchaseOrderDetailDTOList;
+
 }

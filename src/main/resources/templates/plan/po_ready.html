@@ -454,12 +454,16 @@ function submitPO() {
 
  var tableRows = document.getElementById("myTable").getElementsByTagName('thead')[0].getElementsByTagName('th');
 
-
+  var purchaseOrderDetailDTOList = {};
 
  for (var i = 8; i < tableRows.length; i++) {
          var dateInput = tableRows[i].querySelector('input');
          var date = dateInput.value;
-        console.log(date);
+         var list = [];
+
+
+
+
 
          var tbodyRows = document.getElementById("myTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
         for (var j = 0; j < tbodyRows.length; j++) {
@@ -469,13 +473,49 @@ function submitPO() {
 
             var elementId = 'materialId' + j;
             var element = document.getElementById(elementId);
-            var materialId = ;
-            element.textContent
-            PurchaseOrderDetailDTO
+            var materialId = element.textContent;
+            var adding = {
+                materialId: materialId,
+                purchaseOrderCnt: inputNumberValue,
+                check: 0,
+                qcCheckCnt: 0
+            };
+
+              list.push(adding);
         }
 
-        }
+         var purchaseOrderDTO = {
+        documentId: documentId,
+        deadline: date,
+        purchaseOrderDetailDTOList: list };
 
+
+         var JSONpurchaseOrderDTO = JSON.stringify(purchaseOrderDTO);
+
+         console.log(purchaseOrderDTO);
+         console.log(JSONpurchaseOrderDTO);
+
+         var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('성공');
+
+                    } else {
+                          console.log('실패');
+                }
+                }
+            };
+
+
+           xhr.open('POST', '/plan/purchaseOrder_save', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+           xhr.setRequestHeader('Content-Type', 'application/json');
+           xhr.send(JSONpurchaseOrderDTO);
+
+
+
+
+}
 }
 
 
