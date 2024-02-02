@@ -240,9 +240,9 @@
                                                     <tr>
                                                         <td colspan="10">
                                                             <div style="display:flex; justify-content: space-between;">
-                                                                <button style="margin:0;" onclick="addRow()" class="ti-plus " id="add-btn1">
+                                                                <div style="margin:0;" onclick="addRow()" class="ti-plus " id="add-btn1">
                                                                     품목 추가
-                                                                </button>
+                                                                </div>
                                                                 <i class="icofont icofont-ui-delete" id="add-btn2" onclick="deleteRow()" style="font-size:20px;"></i>
                                                             </div>
                                                         </td>
@@ -376,6 +376,7 @@
   // 품목 추가를 위한 행 추가 기능 시작
 
      function addRow() {
+
 
 
       var newWindow = window.open('/plan/item_search', '_blank', 'width=800,height=800');

@@ -114,87 +114,98 @@
 
                                 <div class="card">
                                     <form id="materialForm">
-                                    <div class="card-header">
-                                        <div class="container">
-                                        <h1>원자재품목생성</h1><br>
+                                        <div class="card-header">
+                                            <div class="container">
+                                                <h1>원자재품목생성</h1><br>
 
-                                            <table id="estimateTable" width="60%" >
-                                                <input type="hidden">
+                                                <table id="estimateTable" width="60%">
+                                                    <input type="hidden">
 
-                                            <tr>
-                                                <th >원자재명</th>
-                                                <td colspan="2">
-                                                    <input type="text" placeholder="원자재명 입력하세요" style="width: 100%;"
-                                                           id="materialName" name="materialName" required>
-                                                </td>
-                                            </tr>
-                                                <tr>
-                                                    <th >회사명</th>
-                                                    <td onclick="addCompany()">
-                                                        <input placeholder="회사를 검색하세요." style="width: 95%;" type="text" id="company_name" readonly>
-                                                        <i class="icofont icofont-search"></i>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th >사업자등록증</th>
-                                                    <td colspan="2" >
-                                                        <input type="text" placeholder="회사찾기를 눌러주세요" style="width: 100%;"
-                                                               id="companyId" name="companyId" required >
-                                                    </td>
-                                                </tr>
-                                                <tr> <th >원자재설명</th>
-                                                    <td colspan="2">
+                                                    <tr>
+                                                        <th>원자재명</th>
+                                                        <td colspan="2">
+                                                            <input type="text" placeholder="원자재명 입력하세요"
+                                                                   style="width: 100%;"
+                                                                   id="materialName" name="materialName" required>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>회사명</th>
+                                                        <td onclick="addCompany()">
+                                                            <input placeholder="회사를 검색하세요." style="width: 95%;"
+                                                                   type="text" id="company_name" readonly>
+                                                            <i class="icofont icofont-search"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>사업자등록증</th>
+                                                        <td colspan="2">
+                                                            <input type="text" placeholder="회사찾기를 눌러주세요"
+                                                                   style="width: 100%;"
+                                                                   id="companyId" name="companyId" required>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>원자재설명</th>
+                                                        <td colspan="2">
                                                         <textarea cols="80" rows="3" placeholder="원자재에 대한 설명을 입력하세요"
-                                                                  id="materialDescription" name="materialDescription" required></textarea>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th >재고</th>
-                                                    <td colspan="2" >
-                                                        <input type="number" placeholder="기초재고를 입력하세요" style="width: 100%;"
-                                                               id="materialStock" name="materialStock" required>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th >구매가</th>
-                                                    <td colspan="2" >
-                                                        <input type="number" placeholder="구매가 입력하세요(vat포함)" style="width: 100%;"
-                                                               id="materialPrice" name="materialPrice" required>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th >단위</th>
-                                                    <td colspan="2" >
-                                                        <input type="text" placeholder="kg, ea, pc 등 단위를 입력하세요" style="width: 100%;"
-                                                               id="materialMeasure" name="materialMeasure" required>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th >자재종류</th>
-                                                    <td colspan="2" >
-                                                        <select id="materialCategory" name="materialCategory" style="border: none;">
-                                                            <option value="0">원자재</option>
-                                                            <option value="1">손잡이</option>
-                                                            <option value="2">프레임</option>
-                                                            <option value="3">휠</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                        </table>
-                                    </div>
-                                    </div>
-                                    <div class="btn-display">
-                                        <button type="submit" onclick="submitForm(event)" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;">등록</button>
-                                        <input type="button"
-                                               class="btn btn-warning"
-                                               onclick="gotoList()"
-                                               style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
-                                        <input type="reset" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
-                                    </div>
+                                                                  id="materialDescription" name="materialDescription"
+                                                                  required></textarea>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>재고</th>
+                                                        <td colspan="2">
+                                                            <input type="number" placeholder="기초재고를 입력하세요"
+                                                                   style="width: 100%;"
+                                                                   id="materialStock" name="materialStock" required>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>구매가</th>
+                                                        <td colspan="2">
+                                                            <input type="number" placeholder="구매가 입력하세요(vat포함)"
+                                                                   style="width: 100%;"
+                                                                   id="materialPrice" name="materialPrice" required>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>단위</th>
+                                                        <td colspan="2">
+                                                            <input type="text" placeholder="kg, ea, pc 등 단위를 입력하세요"
+                                                                   style="width: 100%;"
+                                                                   id="materialMeasure" name="materialMeasure" required>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>자재종류</th>
+                                                        <td colspan="2">
+                                                            <select id="materialCategory" name="materialCategory"
+                                                                    style="border: none;">
+                                                                <option value="0">원자재</option>
+                                                                <option value="1">손잡이</option>
+                                                                <option value="2">프레임</option>
+                                                                <option value="3">휠</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="btn-display">
+                                            <button type="submit" onclick="submitForm(event)" class="btn btn-warning"
+                                                    style="background-color: #FC6180; border-color: #FC6180; margin:10px;">
+                                                등록
+                                            </button>
+                                            <input type="button"
+                                                   class="btn btn-warning"
+                                                   onclick="gotoList()"
+                                                   style="background-color: #FC6180; border-color: #FC6180;  margin:10px;"
+                                                   value="목록"/>
+                                            <input type="reset" class="btn btn-warning"
+                                                   style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
+                                        </div>
                                     </form>
-
-
-
                                 </div>
 
 
@@ -240,58 +251,52 @@
 <script>
 
 
+    function gotoList(){
+      var url = '/plan/material';
+      window.location.href = url;
+  }
 
-  function gotoList(){
-    var url = '/plan/material';
-    window.location.href = url;
-}
+   function submitForm(event) {
+          event.preventDefault();
+          var formData = $("#materialForm").serialize();
 
- function submitForm(event) {
-        event.preventDefault();
-        var formData = $("#materialForm").serialize();
-
-        $.ajax({
-            type: "POST",
-            url: "/plan/material_save",  // Update the URL accordingly
-            data: formData,
-            success: function(response) {
-               alert(response);
-               window.location.href = '/plan/material';
-            },
-            error: function(error) {
-                // Handle the error response if needed
-                console.error(error);
-            }
-        });
-    }
-
-
-// 품목 추가를 위한 행 추가 기능 시작
-
-   function addCompany() {
+          $.ajax({
+              type: "POST",
+              url: "/plan/material_save",  // Update the URL accordingly
+              data: formData,
+              success: function(response) {
+                 alert(response);
+                 window.location.href = '/plan/material';
+              },
+              error: function(error) {
+                  // Handle the error response if needed
+                  console.error(error);
+              }
+          });
+      }
 
 
-    var newWindow = window.open('/plan/company_search', '_blank', 'width=1000,height=800');
-    if (newWindow) {
-        newWindow.focus();
-    } else {
-        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
-    }
-}
+  // 품목 추가를 위한 행 추가 기능 시작
 
-      function comapnyInput(rowData) {
-        // rowData를 사용하여 각 ID에 값을 채우는 동작을 수행
-
-        // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
-        document.getElementById("companyName").value = rowData[0];
-        document.getElementById("companyId").value = rowData[1];
-        // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
-    }
+     function addCompany() {
 
 
+      var newWindow = window.open('/plan/company_search', '_blank', 'width=1000,height=800');
+      if (newWindow) {
+          newWindow.focus();
+      } else {
+          alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+      }
+  }
 
+        function comapnyInput(rowData) {
+          // rowData를 사용하여 각 ID에 값을 채우는 동작을 수행
 
-
+          // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
+          document.getElementById("companyName").value = rowData[0];
+          document.getElementById("companyId").value = rowData[1];
+          // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
+      }
 
 
 </script>
