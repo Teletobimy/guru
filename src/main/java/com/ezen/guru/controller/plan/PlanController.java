@@ -1045,7 +1045,7 @@ public class PlanController {
         purchaseOrder.setCompany(document.getCompany());
         purchaseOrder.setTotalprice(totalprice);
         purchaseOrder.setRegdate(regdate);
-        purchaseOrder.setStatus(0);
+        purchaseOrder.setStatus(1);
         purchaseOrder.setMemo(memo);
         purchaseOrder.setDeadline(deadline);
         purchaseOrder.setLeadTime(document.getLeadTime());
