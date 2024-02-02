@@ -77,6 +77,24 @@
         #textA:last-child{
             text-align:right;
         }
+        #add-btn1{
+            background-color: inherit;
+            border: 1px solid #ccc;
+            outline: none;
+            padding: 10px;
+            border-radius: 5px
+            margin:0;
+            transition: all 0.2s ease-in-out;
+            border-radius:5px;
+        }
+        #add-btn1:hover{
+            background-color: #FC6180;
+            border-color: #FC6180;
+            color:#fff;
+        }
+        #add-btn2{
+             padding: 10px;
+        }
     </style>
 </head>
 
@@ -118,150 +136,150 @@
                                 <div class="card">
                                     <form>
 
-                                    <div class="card-header">
-                                        <div class="container">
-                                        <h1>견 적 서</h1>
+                                        <div class="card-header">
+                                            <div class="container">
+                                                <h1>견 적 서</h1>
 
 
 
-                                            <table id="estimateTable" width="90%" >
+                                                <table id="estimateTable" width="90%" >
 
-                                            <tr>
-                                                <th colspan="2">견적서번호</th>
-                                                <td colspan="3">
-                                                    <input type="text" th:value="${quotationId}" id="quotationId">
-                                                </td>
-                                                <th colspan="2">회사명
+                                                    <tr>
+                                                        <th colspan="2">견적서번호</th>
+                                                        <td colspan="3">
+                                                            <input type="text" th:value="${quotationId}" id="quotationId">
+                                                        </td>
+                                                        <th colspan="2">회사명
 
-                                                <td colspan="3" onclick="addCompany()" id="textA">
-                                                    <input style="width: 95%;" type="text" id="company_name" readonly>
-                                                    <i class="icofont icofont-search"></i>
-                                                </td>
+                                                        <td colspan="3" onclick="addCompany()" id="textA">
+                                                            <input style="width: 95%;" type="text" id="company_name" readonly>
+                                                            <i class="icofont icofont-search"></i>
+                                                        </td>
 
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2" colspan="2">수신</th>
-                                                <td rowspan="2" colspan="3">
-                                                    <p style="font-size: larger;"><u>GURU자전거</u></p>
-                                                    <p><u>권나현 대표 귀하</u></p>
-                                                </td>
-                                                <th rowspan="1" colspan="2">사업자번호</th>
-                                                <td colspan="3">
-                                                    <input type="text" id="company_id" readonly>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="1" colspan="2">Bidding No.</th>
-                                                <td colspan="3">
-                                                    <input type="text" id="biddingNo" name="biddingNo" >
+                                                    </tr>
+                                                    <tr>
+                                                        <th rowspan="2" colspan="2">수신</th>
+                                                        <td rowspan="2" colspan="3">
+                                                            <p style="font-size: larger;"><u>GURU자전거</u></p>
+                                                            <p><u>권나현 대표 귀하</u></p>
+                                                        </td>
+                                                        <th rowspan="1" colspan="2">사업자번호</th>
+                                                        <td colspan="3">
+                                                            <input type="text" id="company_id" readonly>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th rowspan="1" colspan="2">Bidding No.</th>
+                                                        <td colspan="3">
+                                                            <input type="text" id="biddingNo" name="biddingNo" >
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2" colspan="2">주소</th>
-                                                <td colspan="3" rowspan="2">
-                                                    <textarea cols="20" rows="4" style="width:100%" id="companyAddress" readonly></textarea>
-
-
-                                                </td>
-                                                <th colspan="2" rowspan="2">대표자(혹은 담당자)</th>
-                                                <th>성명</th>
-                                                <td colspan="2">
-                                                    <input type="text" id="companyCeo" style="width:100%" readonly>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th >연락처</th>
-                                                <td colspan="2">
-                                                    <input type="text" id="phoneNumber" style="width:100%" readonly>
-
-                                                </td>
-                                            </tr>
-                                                <tr>
-                                                    <th colspan="2">리드타임</th>
-                                                    <td colspan="3">
-                                                        <input type="text" style="width:100%" id="leadTime">
-                                                    </td>
-                                                    <th colspan="2">거래조건</th>
-                                                    <td colspan="3">
-                                                        <input type="text" style="width:100%" id="tradeTerms" >
-                                                    </td>
-
-                                                </tr>
-                                                <tr>
-                                                    <th colspan="2">지불조건</th>
-                                                    <td colspan="3">
-                                                        <input type="text" style="width:100%" id="paymentTerms">
-                                                    </td>
-                                                    <th colspan="2">납기일</th>
-                                                    <td colspan="3">
-                                                        <input type="date" style="width:100%" id="deadline">
-                                                    </td>
-
-                                                </tr>
-
-                                            <tr>
-                                                <th>No</th>
-                                                <th>PID</th>
-                                                <th colspan="2">품명</th>
-                                                <th>규격</th>
-                                                <th>수량</th>
-                                                <th>단위</th>
-                                                <th>단가</th>
-                                                <th colspan="2">금액</th>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th rowspan="2" colspan="2">주소</th>
+                                                        <td colspan="3" rowspan="2">
+                                                            <textarea cols="20" rows="4" style="width:100%" id="companyAddress" readonly></textarea>
 
 
-                                            </tr>
+                                                        </td>
+                                                        <th colspan="2" rowspan="2">대표자(혹은 담당자)</th>
+                                                        <th>성명</th>
+                                                        <td colspan="2">
+                                                            <input type="text" id="companyCeo" style="width:100%" readonly>
 
-                                            <tbody id="tableBody">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th >연락처</th>
+                                                        <td colspan="2">
+                                                            <input type="text" id="phoneNumber" style="width:100%" readonly>
 
-                                            </tbody>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="2">리드타임</th>
+                                                        <td colspan="3">
+                                                            <input type="text" style="width:100%" id="leadTime">
+                                                        </td>
+                                                        <th colspan="2">거래조건</th>
+                                                        <td colspan="3">
+                                                            <input type="text" style="width:100%" id="tradeTerms" >
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="2">지불조건</th>
+                                                        <td colspan="3">
+                                                            <input type="text" style="width:100%" id="paymentTerms">
+                                                        </td>
+                                                        <th colspan="2">납기일</th>
+                                                        <td colspan="3">
+                                                            <input type="date" style="width:100%" id="deadline">
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>PID</th>
+                                                        <th colspan="2">품명</th>
+                                                        <th>규격</th>
+                                                        <th>수량</th>
+                                                        <th>단위</th>
+                                                        <th>단가</th>
+                                                        <th colspan="2">금액</th>
 
 
-                                            <tr>
-                                                <td colspan="10">
-                                                    <input type="button" onclick="addRow()" value="품목추가하기"
-                                                           class="btn-warning"
-                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
-                                                    <input type="button" onclick="deleteRow()" value="품목삭제하기"
-                                                           class="btn-warning"
-                                                           style="background-color: #FC6180; border-color: #FC6180;  margin:10px;">
-                                                </td>
-                                            </tr>
+                                                    </tr>
+
+                                                    <tbody id="tableBody">
+
+                                                    </tbody>
+
+
+                                                    <tr>
+                                                        <td colspan="10">
+                                                            <div style="display:flex; justify-content: space-between;">
+                                                                <button style="margin:0;" onclick="addRow()" class="ti-plus " id="add-btn1">
+                                                                    품목 추가
+                                                                </button>
+                                                                <i class="icofont icofont-ui-delete" id="add-btn2" onclick="deleteRow()" style="font-size:20px;"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
 
 
 
-                                            <!---------------------------------------------------->
-                                            <tr>
-                                                <th colspan="3">합계(VAT 포함)</th>
+                                                    <!---------------------------------------------------->
+                                                    <tr>
+                                                        <th colspan="3">합계(VAT 포함)</th>
 
-                                                <td colspan="7" class="total"></td>
+                                                        <td colspan="7" class="total"></td>
 
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2">특기사항</th>
-                                                <td colspan="8">
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="2">특기사항</th>
+                                                        <td colspan="8">
 
-                                                        <textarea style="width:100%;" cols="40" rows="6" id="quotation_memo"></textarea>
+                                                            <textarea style="width:100%;" cols="40" rows="6" id="quotation_memo"></textarea>
 
-                                                </td>
-                                            </tr>
+                                                        </td>
+                                                    </tr>
 
-                                        </table>
+                                                </table>
 
 
-                                    </div>
-                                    </div>
+                                            </div>
+                                        </div>
 
-                                    <div class="btn-display">
-                                        <input type="button" id="saveButton" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="등록"/>
-                                        <input type="button"
-                                                th:attr="onclick='gotoList()'"
-                                                class="btn btn-warning"
-                                                style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
-                                        <input type="reset" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
-                                    </div>
+                                        <div class="btn-display">
+                                            <input type="button" id="saveButton" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;" value="등록"/>
+                                            <input type="button"
+                                                   th:attr="onclick='gotoList()'"
+                                                   class="btn btn-warning"
+                                                   style="background-color: #FC6180; border-color: #FC6180;  margin:10px;" value="목록"/>
+                                            <input type="reset" class="btn btn-warning" style="background-color: #FC6180; border-color: #FC6180; margin:10px;"/>
+                                        </div>
                                     </form>
 
 
@@ -311,387 +329,387 @@
 
 
 
-  function gotoList(){
-    var url = '/plan/quotation';
-    window.location.href = url;
-}
+    function gotoList(){
+      var url = '/plan/quotation';
+      window.location.href = url;
+  }
 
 
-  function addCompany() {
+    function addCompany() {
 
 
-    var newWindow = window.open('/plan/company_search', '_blank', 'width=1000,height=800');
-    if (newWindow) {
-        newWindow.focus();
-    } else {
-        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
-    }
-}
+      var newWindow = window.open('/plan/company_search', '_blank', 'width=1000,height=800');
+      if (newWindow) {
+          newWindow.focus();
+      } else {
+          alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+      }
+  }
 
-      function comapnyInput(rowData) {
-        // rowData를 사용하여 각 ID에 값을 채우는 동작을 수행
+        function comapnyInput(rowData) {
+          // rowData를 사용하여 각 ID에 값을 채우는 동작을 수행
 
-        // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
-        document.getElementById("company_name").value = rowData[0];
-        document.getElementById("company_id").value = rowData[1];
-        document.getElementById("companyAddress").value = rowData[5];
-        document.getElementById("companyCeo").value = rowData[2];
-        document.getElementById("phoneNumber").value = rowData[3];
+          // 예: 각 ID에 해당하는 요소를 찾아서 값 채우기
+          document.getElementById("company_name").value = rowData[0];
+          document.getElementById("company_id").value = rowData[1];
+          document.getElementById("companyAddress").value = rowData[5];
+          document.getElementById("companyCeo").value = rowData[2];
+          document.getElementById("phoneNumber").value = rowData[3];
 
-        // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
-    }
+          // 나머지 필요한 데이터에 대해서도 동일한 방식으로 처리 가능
+      }
 
 
-// 행을 반대로 삭제하는 메서드
+  // 행을 반대로 삭제하는 메서드
 
 
-function deleteRow() {
-var table = document.getElementById("tableBody");
-var rowCount = table.rows.length;
+  function deleteRow() {
+  var table = document.getElementById("tableBody");
+  var rowCount = table.rows.length;
 
-if (rowCount > 0) { // 최소한의 행이 유지되도록 설정
-    table.deleteRow(rowCount - 1); // 맨 끝 행 삭제
-}
-}
+  if (rowCount > 0) { // 최소한의 행이 유지되도록 설정
+      table.deleteRow(rowCount - 1); // 맨 끝 행 삭제
+  }
+  }
 
 
-// 품목 추가를 위한 행 추가 기능 시작
+  // 품목 추가를 위한 행 추가 기능 시작
 
-   function addRow() {
+     function addRow() {
 
 
-    var newWindow = window.open('/plan/item_search', '_blank', 'width=800,height=800');
-    if (newWindow) {
-        newWindow.focus();
-    } else {
-        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
-    }
-}
+      var newWindow = window.open('/plan/item_search', '_blank', 'width=800,height=800');
+      if (newWindow) {
+          newWindow.focus();
+      } else {
+          alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+      }
+  }
 
 
-function check(materialId) {
+  function check(materialId) {
 
-console.log(materialId);
+  console.log(materialId);
 
-var xhr = new XMLHttpRequest();
-var url = '/plan/material_search/' + materialId; // 실제 컨트롤러 엔드포인트 URL로 변경해주세요
+  var xhr = new XMLHttpRequest();
+  var url = '/plan/material_search/' + materialId; // 실제 컨트롤러 엔드포인트 URL로 변경해주세요
 
-xhr.onreadystatechange = function() {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-            var materialDTO = JSON.parse(xhr.responseText);
-            console.log(materialDTO); // 가져온 데이터 확인
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+              var materialDTO = JSON.parse(xhr.responseText);
+              console.log(materialDTO); // 가져온 데이터 확인
 
-            var companyId = materialDTO.companyId;
-            var materialCategory = materialDTO.materialCategory;
-            var materialCode = materialDTO.materialCode;
-            var materialDescription = materialDTO.materialDescription;
-            var materialId = materialDTO.materialId;
-            var materialMeasure = materialDTO.materialMeasure;
-            var materialName = materialDTO.materialName;
-            var materialPrice = materialDTO.materialPrice;
+              var companyId = materialDTO.companyId;
+              var materialCategory = materialDTO.materialCategory;
+              var materialCode = materialDTO.materialCode;
+              var materialDescription = materialDTO.materialDescription;
+              var materialId = materialDTO.materialId;
+              var materialMeasure = materialDTO.materialMeasure;
+              var materialName = materialDTO.materialName;
+              var materialPrice = materialDTO.materialPrice;
 
 
 
 
-                var table = document.getElementById("tableBody");
-                var rows = table.getElementsByTagName("tr");
-                var rowNum = rows.length;
-                var row = table.insertRow(-1);
+                  var table = document.getElementById("tableBody");
+                  var rows = table.getElementsByTagName("tr");
+                  var rowNum = rows.length;
+                  var row = table.insertRow(-1);
 
 
-                   var idInput = "index"+rowNum;
-                var cell = row.insertCell(0);
-                   cell.setAttribute("id", idInput);
-                 cell.appendChild(document.createTextNode(""));
+                     var idInput = "index"+rowNum;
+                  var cell = row.insertCell(0);
+                     cell.setAttribute("id", idInput);
+                   cell.appendChild(document.createTextNode(""));
 
 
 
-                 cell = row.insertCell(1);
-                 cell.colSpan = "2";
-                idInput = "materialId"+rowNum;
-                   cell.setAttribute("id", idInput);
-                 cell.appendChild(document.createTextNode(materialId));
+                   cell = row.insertCell(1);
+                   cell.colSpan = "2";
+                  idInput = "materialId"+rowNum;
+                     cell.setAttribute("id", idInput);
+                   cell.appendChild(document.createTextNode(materialId));
 
-                 cell = row.insertCell(2);
-                 cell.colSpan = "1";
-                    idInput = "materialName"+rowNum;
-                   cell.setAttribute("id", idInput);
-                 cell.appendChild(document.createTextNode(materialName));
+                   cell = row.insertCell(2);
+                   cell.colSpan = "1";
+                      idInput = "materialName"+rowNum;
+                     cell.setAttribute("id", idInput);
+                   cell.appendChild(document.createTextNode(materialName));
 
-                 cell = row.insertCell(3); //규격
-                 cell.colSpan = "1";
-                  idInput = "materialDescription"+rowNum;
-                   cell.setAttribute("id", idInput);
-                 cell.appendChild(document.createTextNode(materialDescription));
+                   cell = row.insertCell(3); //규격
+                   cell.colSpan = "1";
+                    idInput = "materialDescription"+rowNum;
+                     cell.setAttribute("id", idInput);
+                   cell.appendChild(document.createTextNode(materialDescription));
 
-                 cell = row.insertCell(4); //수량
-                 cell.colSpan = "1";
-                 var input = document.createElement("input");
-                    input.setAttribute("type", "text");
-                    input.classList.add("countNumber");
-                    cell.appendChild(input);
+                   cell = row.insertCell(4); //수량
+                   cell.colSpan = "1";
+                   var input = document.createElement("input");
+                      input.setAttribute("type", "text");
+                      input.classList.add("countNumber");
+                      cell.appendChild(input);
 
-                 cell = row.insertCell(5); //단위
-                 cell.colSpan = "1";
-                     idInput = "materialMeasure"+rowNum;
-                   cell.setAttribute("id", idInput);
-                 cell.appendChild(document.createTextNode(materialMeasure));
+                   cell = row.insertCell(5); //단위
+                   cell.colSpan = "1";
+                       idInput = "materialMeasure"+rowNum;
+                     cell.setAttribute("id", idInput);
+                   cell.appendChild(document.createTextNode(materialMeasure));
 
-                 cell = row.insertCell(6); //단가
-                 cell.colSpan = "1";
-                    idInput = "materialPrice"+rowNum;
-                   cell.setAttribute("id", idInput);
+                   cell = row.insertCell(6); //단가
+                   cell.colSpan = "1";
+                      idInput = "materialPrice"+rowNum;
+                     cell.setAttribute("id", idInput);
 
-                 cell.appendChild(document.createTextNode(materialPrice));
+                   cell.appendChild(document.createTextNode(materialPrice));
 
-                 cell = row.insertCell(7); //금액
-                 cell.colSpan = "1";
-                  idInput = "materialMeasure"+rowNum;
-                    cell.setAttribute("id", idInput);
+                   cell = row.insertCell(7); //금액
+                   cell.colSpan = "1";
+                    idInput = "materialMeasure"+rowNum;
+                      cell.setAttribute("id", idInput);
 
 
-                    cell.classList.add("totalPrice");
+                      cell.classList.add("totalPrice");
 
 
 
-                 renumberRows();
-                 row.style.width = "60%";
+                   renumberRows();
+                   row.style.width = "60%";
 
-                    var elements = document.getElementsByClassName('countNumber');
-                     var totalPrice = 0;
+                      var elements = document.getElementsByClassName('countNumber');
+                       var totalPrice = 0;
 
-                    for (var i = 0; i < elements.length; i++) {
+                      for (var i = 0; i < elements.length; i++) {
 
-                        elements[i].addEventListener('input', function() {
-                            var row = this.parentNode.parentNode; // 현재 요소의 부모 요소인 셀의 부모 요소인 행을 가져옵니다.
+                          elements[i].addEventListener('input', function() {
+                              var row = this.parentNode.parentNode; // 현재 요소의 부모 요소인 셀의 부모 요소인 행을 가져옵니다.
 
-                            var input1Value = parseFloat(row.cells[4].children[0].value); // cell = row.insertCell(4); 셀의 값
-                            var input2Value = parseFloat(row.cells[6].textContent); // cell = row.insertCell(6); 셀의 값
+                              var input1Value = parseFloat(row.cells[4].children[0].value); // cell = row.insertCell(4); 셀의 값
+                              var input2Value = parseFloat(row.cells[6].textContent); // cell = row.insertCell(6); 셀의 값
 
-                            // 두 값이 모두 숫자인 경우에만 곱셈을 진행합니다.
-                            if (!isNaN(input1Value) && !isNaN(input2Value)) {
-                              var multiplicationResult = input1Value * input2Value; // 두 값의 곱셈
+                              // 두 값이 모두 숫자인 경우에만 곱셈을 진행합니다.
+                              if (!isNaN(input1Value) && !isNaN(input2Value)) {
+                                var multiplicationResult = input1Value * input2Value; // 두 값의 곱셈
 
 
-                                // 결과가 숫자가 아니거나 Infinity 또는 -Infinity인 경우 빈 문자열로 대체합니다.
-                                row.cells[7].textContent = isFinite(multiplicationResult) ? multiplicationResult : '';
+                                  // 결과가 숫자가 아니거나 Infinity 또는 -Infinity인 경우 빈 문자열로 대체합니다.
+                                  row.cells[7].textContent = isFinite(multiplicationResult) ? multiplicationResult : '';
 
-                                // 'totalPrice' 클래스를 가진 모든 input 요소를 선택합니다.
-totalPriceInputs = document.querySelectorAll('.totalPrice');
+                                  // 'totalPrice' 클래스를 가진 모든 input 요소를 선택합니다.
+  totalPriceInputs = document.querySelectorAll('.totalPrice');
 
 
-    updateTotalSumOfAllRows();
+      updateTotalSumOfAllRows();
 
 
 
 
 
-                            } else {
-                                row.cells[7].textContent = ''; // 하나라도 숫자가 아니면 빈 문자열로 표시합니다.
-                            }
+                              } else {
+                                  row.cells[7].textContent = ''; // 하나라도 숫자가 아니면 빈 문자열로 표시합니다.
+                              }
 
 
-                        });
+                          });
 
 
-                    }
+                      }
 
-        } else {
-            console.log('Request failed. Status: ' + xhr.status);
-        }
-    }
-};
- xhr.open('GET', url, true);
-xhr.send();
-}
+          } else {
+              console.log('Request failed. Status: ' + xhr.status);
+          }
+      }
+  };
+   xhr.open('GET', url, true);
+  xhr.send();
+  }
 
-var totalPriceInputs;
+  var totalPriceInputs;
 
-// 모든 행에 대한 총합을 갱신하는 함수
-function updateTotalSumOfAllRows() {
-    var grandTotalSum = 0;
+  // 모든 행에 대한 총합을 갱신하는 함수
+  function updateTotalSumOfAllRows() {
+      var grandTotalSum = 0;
 
-    // 각 'totalPrice' 클래스를 가진 td 또는 input 요소의 값을 가져와서 총합을 계산합니다.
-    totalPriceInputs.forEach(function (element) {
-        var inputValue;
+      // 각 'totalPrice' 클래스를 가진 td 또는 input 요소의 값을 가져와서 총합을 계산합니다.
+      totalPriceInputs.forEach(function (element) {
+          var inputValue;
 
-        // td 안의 텍스트 값을 가져옴
-        if (element.tagName.toLowerCase() === 'td') {
-            inputValue = parseFloat(element.textContent);
-        } else if (element.tagName.toLowerCase() === 'input') {
-            inputValue = parseFloat(element.value);
-        }
+          // td 안의 텍스트 값을 가져옴
+          if (element.tagName.toLowerCase() === 'td') {
+              inputValue = parseFloat(element.textContent);
+          } else if (element.tagName.toLowerCase() === 'input') {
+              inputValue = parseFloat(element.value);
+          }
 
-        if (!isNaN(inputValue)) {
-            grandTotalSum += inputValue;
-        }
-    });
+          if (!isNaN(inputValue)) {
+              grandTotalSum += inputValue;
+          }
+      });
 
-    // 변경된 전체 '총합'을 콘솔에 출력합니다.
-
-    // 변경된 전체 '총합'을 'total' 클래스를 가진 td에 업데이트합니다.
-    var totalTd = document.querySelector('td.total'); // 적절한 선택자를 사용하여 'total' 클래스를 가진 td를 찾습니다.
-
-    if (totalTd) {
-        totalTd.textContent = grandTotalSum;
-    } else {
-        console.error("Total TD not found!"); // 적절한 td를 찾지 못한 경우 에러를 출력합니다.
-    }
-}
-
-
-
-// 첫셀에서 index 주는 메서드
-
-function renumberRows() {
- var rowNum = 0; // 초기 번호
-var table = document.getElementById("tableBody");
-var rows = table.getElementsByTagName("tr");
-
-for (var i = 0; i < rows.length; i++) {
-    var cells = rows[i].getElementsByTagName("td");
-    if (cells.length > 0) {
-        cells[0].innerText = ++rowNum; // 첫 번째 셀에 순차적으로 번호를 매깁니다.
-    }
-}
-}
-//index 기능 종료
-
-
-document.getElementById('saveButton').addEventListener('click', function () {
-    var rows = document.getElementById('tableBody').getElementsByTagName('tr');
-    var quotationDetailDTOList = [];
-
-    // 각 행의 데이터 수집
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-
-        var material_id = parseFloat(cells[1].textContent);
-        var materialName = cells[2].textContent;
-        var materialDescription = cells[3].textContent;
-        var countNumber = parseFloat(cells[4].getElementsByTagName('input')[0].value);
-        if(isNaN(countNumber)){
-        alert("품목 수량을 입혁하세요");
-        cells[4].getElementsByTagName('input')[0].focus();
-        return false;
-        }
-        var materialMeasure = cells[5].textContent;
-        var materialPrice = parseFloat(cells[6].textContent);
-        var totalPrice = parseFloat(cells[7].textContent);
-        var quotationId = document.getElementById('quotationId').value;
-
-        // 데이터를 DTO로 만들어 List에 추가
-        var quotationDetailDTO = {
-            // 필드들
-             quotation: { id: quotationId // 이 부분은 필요에 따라 다르게 수정
-
-                        },
-            material: {materialId: material_id},
-            materialName: materialName,
-            quotationCnt: countNumber,
-            quotationMeasure: materialMeasure,
-            quotationPrice: totalPrice
-        };
-
-        quotationDetailDTOList.push(quotationDetailDTO);
-    }
-
-    var quotationTotalPriceElement = document.querySelector('.total');
-var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
-  var biddingNo = document.getElementById('biddingNo').value;
-   var company_id = document.getElementById('company_id').value;
-    var company_name = document.getElementById("company_name").value;
-    var deadlinePre = document.getElementById("deadline").value;
-     var deadline = new Date(deadlinePre);
-    var quotation_memo = document.getElementById("quotation_memo").value;
-    var leadTime = document.getElementById('leadTime').value;
-    var tradeTerms = document.getElementById('tradeTerms').value;
-    var paymentTerms = document.getElementById('paymentTerms').value;
-
-     if(biddingNo.length<1){
-    alert("BiddingNo를 입력하세요");
-    document.getElementById('biddingNo').focus();
-    return false;
-    }
-    if (isNaN(biddingNo)) {
-                alert('BiddingNo는 숫자로 입력해주세요');
-               document.getElementById('biddingNo').focus();
-                return false;
-    }
-    if(leadTime.length<1){
-    alert("리드타임을 입력하세요");
-    document.getElementById('leadTime').focus();
-    return false;
-    }
-    if(tradeTerms.length<1){
-    alert("거래조건을 입력하세요");
-    document.getElementById('tradeTerms').focus();
-    return false;
-    }
-    if(paymentTerms.length<1){
-    alert("지불조건을 입력하세요");
-    document.getElementById('paymentTerms').focus();
-    return false;
-    }
-
-    if(company_id.length<1){
-    alert("사업자번호를 입력하세요");
-    document.getElementById('company_id').focus();
-    return false;
-    }
-    if(company_name.length<1){
-    alert("회사명을 입력하세요");
-    document.getElementById('company_name').focus();
-    return false;
-    }
-      if(deadlinePre.length<1){
-    alert("마감일을 입력하세요");
-    document.getElementById('deadline').focus();
-    return false;
-    }
-
-    // QuotationDTO 객체 구성
-    var quotationDTO = {
-        id:quotationId,
-        biddingNo:biddingNo,
-        company:{companyId:company_id},  // company_id도 서버에서 설정
-        company_name: company_name,  // company_name도 서버에서 설정
-        quotation_totalprice: quotationTotalPrice,  // 서버에서 계산
-        regdate: null,  // 서버에서 설정
-        deadline: deadline,  // 서버에서 설정
-        status: 0,  // 서버에서 설정
-        leadTime: leadTime,
-        tradeTerms: tradeTerms,
-        paymentTerms: paymentTerms,
-        quotation_memo: quotation_memo,  // 서버에서 설정
-        quotationDetails: quotationDetailDTOList
-    };
-    if (quotationDetailDTOList.length<1){
-    alert("품목을 추가해 주세요");
-    return false;
-    }
-    // List를 JSON 형태로 변환
-    var quotationDTOJSON = JSON.stringify(quotationDTO);
-
-    // AJAX를 사용하여 서버에 데이터 전송
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                alert("견적서등록완료");
-                window.location.href = '/plan/quotation';
-
-            } else {
-                alert("견적서등록실패");
-            }
-        }
-    };
-
-    xhr.open('POST', '/plan/save_quotation', true); // 실제 컨트롤러 엔드포인트 URL로 변경
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(quotationDTOJSON);
-});
+      // 변경된 전체 '총합'을 콘솔에 출력합니다.
+
+      // 변경된 전체 '총합'을 'total' 클래스를 가진 td에 업데이트합니다.
+      var totalTd = document.querySelector('td.total'); // 적절한 선택자를 사용하여 'total' 클래스를 가진 td를 찾습니다.
+
+      if (totalTd) {
+          totalTd.textContent = grandTotalSum;
+      } else {
+          console.error("Total TD not found!"); // 적절한 td를 찾지 못한 경우 에러를 출력합니다.
+      }
+  }
+
+
+
+  // 첫셀에서 index 주는 메서드
+
+  function renumberRows() {
+   var rowNum = 0; // 초기 번호
+  var table = document.getElementById("tableBody");
+  var rows = table.getElementsByTagName("tr");
+
+  for (var i = 0; i < rows.length; i++) {
+      var cells = rows[i].getElementsByTagName("td");
+      if (cells.length > 0) {
+          cells[0].innerText = ++rowNum; // 첫 번째 셀에 순차적으로 번호를 매깁니다.
+      }
+  }
+  }
+  //index 기능 종료
+
+
+  document.getElementById('saveButton').addEventListener('click', function () {
+      var rows = document.getElementById('tableBody').getElementsByTagName('tr');
+      var quotationDetailDTOList = [];
+
+      // 각 행의 데이터 수집
+      for (var i = 0; i < rows.length; i++) {
+          var cells = rows[i].getElementsByTagName('td');
+
+          var material_id = parseFloat(cells[1].textContent);
+          var materialName = cells[2].textContent;
+          var materialDescription = cells[3].textContent;
+          var countNumber = parseFloat(cells[4].getElementsByTagName('input')[0].value);
+          if(isNaN(countNumber)){
+          alert("품목 수량을 입혁하세요");
+          cells[4].getElementsByTagName('input')[0].focus();
+          return false;
+          }
+          var materialMeasure = cells[5].textContent;
+          var materialPrice = parseFloat(cells[6].textContent);
+          var totalPrice = parseFloat(cells[7].textContent);
+          var quotationId = document.getElementById('quotationId').value;
+
+          // 데이터를 DTO로 만들어 List에 추가
+          var quotationDetailDTO = {
+              // 필드들
+               quotation: { id: quotationId // 이 부분은 필요에 따라 다르게 수정
+
+                          },
+              material: {materialId: material_id},
+              materialName: materialName,
+              quotationCnt: countNumber,
+              quotationMeasure: materialMeasure,
+              quotationPrice: totalPrice
+          };
+
+          quotationDetailDTOList.push(quotationDetailDTO);
+      }
+
+      var quotationTotalPriceElement = document.querySelector('.total');
+  var quotationTotalPrice = parseFloat(quotationTotalPriceElement.textContent);
+    var biddingNo = document.getElementById('biddingNo').value;
+     var company_id = document.getElementById('company_id').value;
+      var company_name = document.getElementById("company_name").value;
+      var deadlinePre = document.getElementById("deadline").value;
+       var deadline = new Date(deadlinePre);
+      var quotation_memo = document.getElementById("quotation_memo").value;
+      var leadTime = document.getElementById('leadTime').value;
+      var tradeTerms = document.getElementById('tradeTerms').value;
+      var paymentTerms = document.getElementById('paymentTerms').value;
+
+       if(biddingNo.length<1){
+      alert("BiddingNo를 입력하세요");
+      document.getElementById('biddingNo').focus();
+      return false;
+      }
+      if (isNaN(biddingNo)) {
+                  alert('BiddingNo는 숫자로 입력해주세요');
+                 document.getElementById('biddingNo').focus();
+                  return false;
+      }
+      if(leadTime.length<1){
+      alert("리드타임을 입력하세요");
+      document.getElementById('leadTime').focus();
+      return false;
+      }
+      if(tradeTerms.length<1){
+      alert("거래조건을 입력하세요");
+      document.getElementById('tradeTerms').focus();
+      return false;
+      }
+      if(paymentTerms.length<1){
+      alert("지불조건을 입력하세요");
+      document.getElementById('paymentTerms').focus();
+      return false;
+      }
+
+      if(company_id.length<1){
+      alert("사업자번호를 입력하세요");
+      document.getElementById('company_id').focus();
+      return false;
+      }
+      if(company_name.length<1){
+      alert("회사명을 입력하세요");
+      document.getElementById('company_name').focus();
+      return false;
+      }
+        if(deadlinePre.length<1){
+      alert("마감일을 입력하세요");
+      document.getElementById('deadline').focus();
+      return false;
+      }
+
+      // QuotationDTO 객체 구성
+      var quotationDTO = {
+          id:quotationId,
+          biddingNo:biddingNo,
+          company:{companyId:company_id},  // company_id도 서버에서 설정
+          company_name: company_name,  // company_name도 서버에서 설정
+          quotation_totalprice: quotationTotalPrice,  // 서버에서 계산
+          regdate: null,  // 서버에서 설정
+          deadline: deadline,  // 서버에서 설정
+          status: 0,  // 서버에서 설정
+          leadTime: leadTime,
+          tradeTerms: tradeTerms,
+          paymentTerms: paymentTerms,
+          quotation_memo: quotation_memo,  // 서버에서 설정
+          quotationDetails: quotationDetailDTOList
+      };
+      if (quotationDetailDTOList.length<1){
+      alert("품목을 추가해 주세요");
+      return false;
+      }
+      // List를 JSON 형태로 변환
+      var quotationDTOJSON = JSON.stringify(quotationDTO);
+
+      // AJAX를 사용하여 서버에 데이터 전송
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                  alert("견적서등록완료");
+                  window.location.href = '/plan/quotation';
+
+              } else {
+                  alert("견적서등록실패");
+              }
+          }
+      };
+
+      xhr.open('POST', '/plan/save_quotation', true); // 실제 컨트롤러 엔드포인트 URL로 변경
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(quotationDTOJSON);
+  });
 
 
 
