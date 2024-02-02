@@ -1,12 +1,13 @@
 package com.ezen.guru.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class UserInfoDTO {
-    private final String name;
-    private final String email;
-    private final String phone;
+    private String name;
+    private String email;
+    private String phone;
 }

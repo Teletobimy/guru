@@ -241,7 +241,8 @@
                                                                     <span th:utext="${procurement.documentMemo.length() > 50} ? ${#strings.substring(procurement.documentMemo, 0, 50)} + '...' : ${procurement.documentMemo}">
                                                                     </span>
                                                                     </td>
-                                                                    <td th:each="code:${code}"
+                                                                    <td style="color: #009000;font-weight:bold;"
+                                                                        th:each="code:${code}"
                                                                         th:if ="${procurement.status == code.codeNum}"
                                                                         th:text="${code.codeName}"
                                                                         th:classappend="${procurement.status == 1} ? 'text-c-pink' : ''"

@@ -220,9 +220,9 @@ public class PlanController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_A')")
     public ResponseEntity<String> recipe_update(
-            @RequestParam String previousCellValue,
-            @RequestParam Integer previousInputValue,
-            @RequestParam Integer bicycleIdValue
+            @RequestParam(value = "previousCellValue") String previousCellValue,
+            @RequestParam(value = "previousInputValue") Integer previousInputValue,
+            @RequestParam(value = "bicycleIdValue") Integer bicycleIdValue
     ){
 
 

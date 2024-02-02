@@ -246,7 +246,8 @@
                                                                     <span th:utext="${quotation.quotation_memo.length() > 50} ? ${#strings.substring(quotation.quotation_memo, 0, 50)} + '...' : ${quotation.quotation_memo}">
                                                                     </span>
                                                                     </td>
-                                                                    <td th:each="code:${code}"
+                                                                    <td style="color: #009000;font-weight:bold;"
+                                                                        th:each="code:${code}"
                                                                         th:if ="${quotation.status == code.codeNum}"
                                                                         th:text="${code.codeName}"
                                                                         th:classappend="${quotation.status == 2} ? 'text-c-pink' : ''"

@@ -42,7 +42,7 @@ public class UserController {
 
     @PutMapping("/updateUserInfo")
     public ResponseEntity<String> updateUserInfo(@RequestBody UserInfoDTO infoDTO,
-                                                 @RequestParam Long userId){
+                                                 @RequestParam(name = "userId") Long userId){
         try {
             adminService.updateUserInfo(infoDTO,userId);
             return ResponseEntity.ok("Success Update User~!");

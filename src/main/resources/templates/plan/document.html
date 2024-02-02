@@ -242,10 +242,10 @@
                                                                     <span th:utext="${document.documentMemo.length() > 50} ? ${#strings.substring(document.documentMemo, 0, 50)} + '...' : ${document.documentMemo}">
                                                                     </span>
                                                                     </td>
-                                                                    <td th:each="code:${code}"
+                                                                    <td style="color: #009000;font-weight:bold;"
+                                                                        th:each="code:${code}"
                                                                         th:if ="${document.status == code.codeNum}"
                                                                         th:text="${code.codeName}"
-                                                                        th:classappend="${document.status == 1} ? 'text-c-pink' : ''"
                                                                     ></td>
                                                                 </tr>
                                                                 </tbody>
