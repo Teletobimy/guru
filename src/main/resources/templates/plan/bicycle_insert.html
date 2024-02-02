@@ -78,7 +78,24 @@
        table input {
        width: 100%;
        }
-
+       #add-btn1{
+            background-color: inherit;
+            border: 1px solid #ccc;
+            outline: none;
+            padding: 10px;
+            border-radius: 5px
+            margin:0;
+            transition: all 0.2s ease-in-out;
+            border-radius:5px;
+        }
+      #add-btn1:hover{
+        background-color: #FC6180;
+        border-color: #FC6180;
+        color:#fff;
+        }
+       #add-btn2{
+             padding: 10px;
+        }
     </style>
 </head>
 
@@ -175,12 +192,12 @@
 
                                             <tr>
                                                 <td colspan="10">
-                                                    <button onclick="addRow()"
-                                                            class="btn btn-card btn-primary"
-                                                            style="background-color: #FC6180; border-color: #FC6180;">레시피추가하기</button>
-                                                    <button onclick="deleteRow()"
-                                                            class="btn btn-card btn-primary"
-                                                            style="background-color: #FC6180; border-color: #FC6180;">삭제하기</button>
+                                                    <div style="display:flex; justify-content: space-between;">
+                                                        <button style="margin:0;" onclick="addRow()" class="ti-plus" id="add-btn1">
+                                                            품목 추가
+                                                        </button>
+                                                        <i class="icofont icofont-ui-delete" id="add-btn2" onclick="deleteRow()" style="font-size:20px;"></i>
+                                                    </div>
                                                 </td>
                                             </tr>
 
