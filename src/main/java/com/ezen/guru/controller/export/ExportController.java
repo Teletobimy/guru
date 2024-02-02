@@ -7,24 +7,18 @@ import com.ezen.guru.dto.UserDTO;
 import com.ezen.guru.dto.export.ExportDTO;
 import com.ezen.guru.dto.export.IdRequest;
 import com.ezen.guru.dto.plan.*;
-import com.ezen.guru.dto.purchase.CompanyListViewResponse;
-import com.ezen.guru.service.CustomUserDetails;
 import com.ezen.guru.service.export.ExportService;
 import com.ezen.guru.service.plan.BicycleService;
 import com.ezen.guru.service.plan.MaterialService;
 import com.ezen.guru.service.plan.RecipeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +27,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/export")
