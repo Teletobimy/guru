@@ -177,6 +177,7 @@
                                                                 <input type="hidden" name="produceBicycleCnt" th:value="${producePlanerList[index.index].produceBicycleCnt}">
                                                                 <input type="hidden" name="produceMaterialCnt" th:value="${producePlanerList[index.index].produceMaterialCnt}">
                                                                 <input type="hidden" name="producePlanerStatus" th:value="${producePlanerList[index.index].producePlanerStatus}">
+                                                                <input type="hidden" name="materialStock" th:value="${materialList[index.index].materialStock}">
                                                                 <th th:text="${item.materialName}"></th>
                                                                 <td th:text="${materialList[index.index].materialStock} +'('+ ${materialList[index.index].materialMeasure}+')'"></td>
                                                                 <td th:text="${item.produceMaterialCnt} +'('+ ${materialList[index.index].materialMeasure} + ')'"></td>
@@ -254,51 +255,55 @@
         var bicycleName = row.find('input[name="bicycleName"]').val();
         var produceBicycleCnt = row.find('input[name="produceBicycleCnt"]').val();
         var produceMaterialCnt = row.find('input[name="produceMaterialCnt"]').val();
+        var materialStock = row.find('input[name="materialStock"]').val();
         var producePlanerStatus = row.find('input[name="producePlanerStatus"]').val();
         // 나머지 데이터 가져오기
         var materialName = row.find('th:eq(0)').text();
         var producePlanerDeadline = row.find('td:eq(2)').text();
 
-        // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
-        $.ajax({
-            type: 'POST',
-            url: '/export/producePlanerDetail',
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({
-                producePlanerId: producePlanerId,
-                bicycleId: bicycleId,
-                bicycleName: bicycleName,
-                produceBicycleCnt: produceBicycleCnt,
-                materialId: materialId,
-                materialName: materialName,
-                produceMaterialCnt: produceMaterialCnt,
-                producePlanerDeadline: producePlanerDeadline,
-                producePlanerStatus: producePlanerStatus
-            }),
-            dataType: 'json', // 변경된 부분
-            success: function(response) {
-                // 서버로부터의 응답 처리
-                console.log(response);
-                // 성공 시 페이지 새로고침
-                location.reload();
-            },
-            error: function (xhr, status, error){
-                if(xhr.status === 403){
-                    var message = xhr.responseText;
-                    Swal.fire({
-                      title: "Warning",
-                      text: message,
-                      icon: "error",
-                      showConfirmButton: false,
-                      timer: 1500
-                    });
-                } else{
-                    console.error("Error: " , status, error);
+        if(materialStock-produceMaterialCnt<0 && producePlanerStatus == 0) {
+            alert('재고가 부족합니다!');
+        } else {
+            // 데이터를 서버로 전송 (예: AJAX를 사용하여 비동기적으로 전송)
+            $.ajax({
+                type: 'POST',
+                url: '/export/producePlanerDetail',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    producePlanerId: producePlanerId,
+                    bicycleId: bicycleId,
+                    bicycleName: bicycleName,
+                    produceBicycleCnt: produceBicycleCnt,
+                    materialId: materialId,
+                    materialName: materialName,
+                    produceMaterialCnt: produceMaterialCnt,
+                    producePlanerDeadline: producePlanerDeadline,
+                    producePlanerStatus: producePlanerStatus
+                }),
+                dataType: 'json', // 변경된 부분
+                success: function(response) {
+                    // 서버로부터의 응답 처리
+                    console.log(response);
+                    // 성공 시 페이지 새로고침
                     location.reload();
+                },
+                error: function (xhr, status, error){
+                    if(xhr.status === 403){
+                        var message = xhr.responseText;
+                        Swal.fire({
+                          title: "Warning",
+                          text: message,
+                          icon: "error",
+                          showConfirmButton: false,
+                          timer: 1500
+                        });
+                    } else{
+                        console.error("Error: " , status, error);
+                        location.reload();
+                    }
                 }
-            }
-
-        });
+            });
+        }
     }
 
     function cancelRowData(button) {
