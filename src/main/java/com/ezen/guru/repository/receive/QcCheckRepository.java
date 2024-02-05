@@ -18,13 +18,13 @@ public interface QcCheckRepository extends JpaRepository<QcCheck, Integer>, JpaS
 
     // 정품
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE QcCheck qc SET qc.returnStatus = 2, qc.qcCheckCnt = qc.qcCheckCnt - :qcCheckCnt, qc.passCnt = qc.passCnt + :qcCheckCnt WHERE qc.qcCheckId = :qcCheckId AND qc.qcCheckCnt >= :qcCheckCnt")
+    @Query("UPDATE QcCheck qc SET qc.qcCheckCnt = qc.qcCheckCnt - :qcCheckCnt, qc.passCnt = qc.passCnt + :qcCheckCnt WHERE qc.qcCheckId = :qcCheckId AND qc.qcCheckCnt >= :qcCheckCnt")
     int updatePurchaseReturnStatus(@Param("qcCheckId") int qcCheckId, @Param("qcCheckCnt") int qcCheckCnt);
 
 
     // 반품
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE QcCheck qc SET qc.returnStatus = 1, qc.qcCheckCnt = qc.qcCheckCnt - :qcCheckCnt, qc.returnCnt = qc.returnCnt + :qcCheckCnt   WHERE qc.qcCheckId = :qcCheckId AND qc.qcCheckCnt >= :qcCheckCnt")
+    @Query(value = "UPDATE QcCheck qc SET qc.qcCheck_Cnt = qc.qcCheck_Cnt - :qcCheckCnt, qc.return_Cnt = qc.return_Cnt + :qcCheckCnt   WHERE qc.qcCheck_Id = :qcCheckId AND qc.qcCheck_Cnt >= :qcCheckCnt", nativeQuery = true)
     int updateShipmentReturnStatus(@Param("qcCheckId") int qcCheckId, @Param("qcCheckCnt") int qcCheckCnt);
 
     // 검수 상태

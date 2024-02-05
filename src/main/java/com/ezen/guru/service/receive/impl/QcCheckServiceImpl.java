@@ -95,7 +95,7 @@ public class QcCheckServiceImpl implements QcCheckService {
                 return 0;
             }
             qcCheckRepository.updateProcessStatus();
-            return 1;
+            return result;
         }catch (Exception e){
             e.printStackTrace();
             return 0;
